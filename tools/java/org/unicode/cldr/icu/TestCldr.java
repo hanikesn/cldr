@@ -10,7 +10,6 @@ package org.unicode.cldr.icu;
 
 import java.io.File;
 
-import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.Utility;
 import java.io.IOException;
@@ -18,7 +17,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,7 +44,6 @@ import com.ibm.icu.util.ULocale;
 import com.ibm.icu.dev.test.TestFmwk;
 import com.ibm.icu.dev.test.util.BagFormatter;
 import com.ibm.icu.dev.tool.UOption;
-import com.ibm.icu.lang.UScript;
 
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.DateFormat;
@@ -56,7 +53,6 @@ import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.text.Transliterator;
 import com.ibm.icu.text.UTF16;
 import com.ibm.icu.text.UnicodeSet;
-import com.ibm.icu.text.UnicodeSetIterator;
 
 /**
  * This is a file that runs the CLDR tests for ICU4J, to verify that ICU4J implements them
@@ -82,60 +78,6 @@ public class TestCldr extends TestFmwk {
 
     String directory;
     Set allLocales = new TreeSet();
-    
-    public void TestScripts() {
-   		CLDRFile.Factory cldrFactory = CLDRFile.Factory.make(Utility.MAIN_DIRECTORY, MATCH);
-    	ULocale locales[] = ULocale.getAvailableLocales();
-    	for (int i = 0; i < locales.length; ++i) {
-    		ULocale locale = locales[i];
-    		logln(locale.toString());
-    		int[] scriptNumbers = UScript.getCode(locale);
-    		Set ICUScripts = new TreeSet();
-    		for (int j = 0; j < scriptNumbers.length; ++j) {
-    			ICUScripts.add(UScript.getShortName(scriptNumbers[j]));
-    		}
- 
-    		CLDRFile cfile = cldrFactory.make(locale.toString(), true, true);
-    		UnicodeSet exemplars = getExemplarSet(cfile,"").addAll(getExemplarSet(cfile,"auxiliary"));
-    		Set CLDRScripts = getScriptsFromUnicodeSet(exemplars);
-    		if (!CLDRScripts.equals(ICUScripts)) {
-    			errln(locale + "\tscripts not equals.\tCLDR: " + CLDRScripts + ",\tICU: " + ICUScripts);
-    		} else {
-    			logln("\tCLDR:\t" + CLDRScripts + ",\tICU: " + ICUScripts);    			
-    		}
-    	}
-    }
-	private Set getScriptsFromUnicodeSet(UnicodeSet exemplars) {
-		// use bits first, since that's faster
-		BitSet scriptBits = new BitSet();
-		boolean show = false;
-		for (UnicodeSetIterator it = new UnicodeSetIterator(exemplars); it.next();) {
-			if (show) System.out.println(Integer.toHexString(it.codepoint));
-			if (it.codepoint != it.IS_STRING) {
-				scriptBits.set(UScript.getScript(it.codepoint));
-			} else {
-				int cp;
-				for (int i = 0; i < it.string.length(); i += UTF16.getCharCount(cp)) {
-					scriptBits.set(UScript.getScript(cp = UTF16.charAt(it.string,i)));
-				}
-			}
-		}
-		scriptBits.clear(UScript.COMMON);
-		scriptBits.clear(UScript.INHERITED);
-		Set scripts = new TreeSet();
-		for (int j = 0; j < scriptBits.size(); ++j) {
-			if (scriptBits.get(j)) {
-				scripts.add(UScript.getShortName(j));
-			}
-		}
-		return scripts;
-	}
-	public UnicodeSet getExemplarSet(CLDRFile cldrfile, String type) {
-		if (type.length() != 0) type = "[@type=\"" + type + "\"]";
-		String v = cldrfile.getStringValue("//ldml/characters/exemplarCharacters" + type);
-		if (v == null) return new UnicodeSet();
-		return new UnicodeSet(v);
-	}
     
     public void TestFiles() throws SAXException, IOException {
     	directory = Utility.TEST_DIR;
