@@ -248,10 +248,8 @@ public class ICUServiceBuilder {
     		if (item == null) break;
     		result.add(item);
     	}
-//    	 the following code didn't do anything, so I'm wondering what it was there for?
-    	if (false && result.size() < minimumSize) {
-    		if (true) throw new RuntimeException(); 
-    		Collection s = CollectionUtilities.addAll(cldrFile.iterator(prefix), new TreeSet());//cldrFile.keySet(".*gregorian.*months.*", );
+    	if (result.size() < minimumSize) {
+    		Collection s = CollectionUtilities.addAll(cldrFile.iterator(), new TreeSet());//cldrFile.keySet(".*gregorian.*months.*", );
     		String item = cldrFile.getStringValue(prefix + lastType + postfix);
     		//throw new IllegalArgumentException("Can't find enough items");
     	}
@@ -406,20 +404,14 @@ public class ICUServiceBuilder {
         	String currencyDecimal = cldrFile.getStringValue(prefix + "decimal");
         	if (currencyDecimal != null) {
         		symbols.setMonetaryDecimalSeparator(currencyDecimal.charAt(0));
-        	} else {
-        		symbols.setMonetaryDecimalSeparator(symbols.getDecimalSeparator());
         	}
         	String currencyPattern = cldrFile.getStringValue(prefix + "pattern");
         	if (currencyPattern != null) {
         		pattern = currencyPattern;
         	}
         	
-        	String currencyGrouping = cldrFile.getStringValue(prefix + "grouping");
-        	if (currencyGrouping != null) {
-        		symbols.setMonetaryGroupingSeparator(currencyGrouping.charAt(0));
-        	} else {
-        		symbols.setMonetaryGroupingSeparator(symbols.getGroupingSeparator());
-        	}
+        	// TODO USE once ICU has available
+        	String currencyGrouping = cldrFile.getStringValue(prefix + "decimal");
         	
         	//<decimal>,</decimal>
         	//<group>.</group>
@@ -449,11 +441,11 @@ public class ICUServiceBuilder {
         			cldrFile.getStringValue(prefix + "displayName"),
 					null, null);
         	
-//        	String possible = null;
-//        	possible = cldrFile.getStringValue(prefix + "decimal"); 
-//            symbols.setMonetaryDecimalSeparator(possible != null ? possible.charAt(0) : symbols.getDecimalSeparator());
-//            if ((possible = cldrFile.getStringValue(prefix + "pattern")) != null) pattern = possible;
-//            if ((possible = cldrFile.getStringValue(prefix + "group")) != null) symbols.setGroupingSeparator(possible.charAt(0));
+        	String possible = null;
+        	possible = cldrFile.getStringValue(prefix + "decimal"); 
+            symbols.setMonetaryDecimalSeparator(possible != null ? possible.charAt(0) : symbols.getDecimalSeparator());
+            if ((possible = cldrFile.getStringValue(prefix + "pattern")) != null) pattern = possible;
+            if ((possible = cldrFile.getStringValue(prefix + "group")) != null) symbols.setGroupingSeparator(possible.charAt(0));
             //; 
         }
         result = new DecimalFormat(pattern, symbols);

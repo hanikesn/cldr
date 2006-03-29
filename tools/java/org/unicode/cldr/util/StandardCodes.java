@@ -183,16 +183,6 @@ public class StandardCodes {
 	
 	private Map platform_locale_status = null;
 	
-	static Comparator caseless = new Comparator() {
-
-		public int compare(Object arg0, Object arg1) {
-			String s1 = (String)arg0;
-			String s2 = (String)arg1;
-			return s1.compareToIgnoreCase(s2);
-		}
-		
-	};
-	
 	/**
 	 * Returns locales according to status. It returns a Map of Maps,
 	 * key 1 is either IBM or Java (perhaps more later),
@@ -203,7 +193,7 @@ public class StandardCodes {
 	public Map getLocaleTypes() throws IOException {
 		if (platform_locale_status == null) {
             LocaleIDParser parser = new LocaleIDParser();
-            platform_locale_status = new TreeMap(caseless);
+			platform_locale_status = new TreeMap();
 			String line;
 			BufferedReader lstreg = Utility.getUTF8Data( "Locales.txt");
 			while (true) {
@@ -213,18 +203,15 @@ public class StandardCodes {
 				if (commentPos >= 0) line = line.substring(0, commentPos);
 				if (line.length() == 0) continue;
 				List stuff = Utility.splitList(line, ';', true);
-				String organization = (String) stuff.get(0);
+				Map locale_status = (Map) platform_locale_status.get(stuff.get(0));
+				if (locale_status == null)  platform_locale_status.put(stuff.get(0), locale_status = new TreeMap());
                 String locale = (String) stuff.get(1);
-                String status = (String) stuff.get(2);
-				Map locale_status = (Map) platform_locale_status.get(organization);
-				if (locale_status == null)  platform_locale_status.put(organization, locale_status = new TreeMap());
+				locale_status.put(locale, stuff.get(2));
                 parser.set(locale);
-                locale = parser.toString(); // normalize
-				locale_status.put(locale, status);
                 String scriptLoc = parser.getLanguageScript();
-                if (locale_status.get(scriptLoc) == null) locale_status.put(scriptLoc, status);
+                if (locale_status.get(scriptLoc) == null) locale_status.put(scriptLoc, stuff.get(2));
                 String lang = parser.getLanguage();
-                if (locale_status.get(lang) == null) locale_status.put(lang, status);
+                if (locale_status.get(lang) == null) locale_status.put(lang, stuff.get(2));
 			}
 			Utility.protectCollection(platform_locale_status);
 		}
@@ -832,8 +819,6 @@ public class StandardCodes {
     	return TZIDComparator;
     }
     
-	private static List errorData = Arrays.asList(new Object[]{new Double(Double.MIN_VALUE), new Double(Double.MIN_VALUE),""});
-
 	private Comparator TZIDComparator = new Comparator() {
 		Map data = getZoneData();
 		public int compare(Object o1, Object o2) {
@@ -843,26 +828,25 @@ public class StandardCodes {
 			//String ss2 = s2.substring(0,s2.indexOf('/'));
 			//if (!ss1.equals(ss2)) return regionalCompare.compare(ss1, ss2);
 			List data1 = (List) data.get(s1);
-			if (data1 == null) data1 = errorData;
 			List data2 = (List) data.get(s2);
-			if (data2 == null) data2 = errorData;
-			
-			int result;
-			//country
-			String country1 = (String) data1.get(2);
-			String country2 = (String) data2.get(2);
-
-			if ((result = country1.compareTo(country2)) != 0) return result;
-			//longitude
-			Double d1 = (Double) data1.get(1);
-			Double d2 = (Double) data2.get(1);
-			if ((result = d1.compareTo(d2)) != 0) return result;
-			//latitude
-			d1 = (Double) data1.get(0);
-			d2 = (Double) data2.get(0);
-			if ((result = d1.compareTo(d2)) != 0) return result;
-			// name
-			return s1.compareTo(s2); 
+			if (data1 != null && data2 != null) {
+				int result;
+				//country
+				String country1 = (String) data1.get(2);
+				String country2 = (String) data2.get(2);
+				if ((result = country1.compareTo(country2)) != 0) return result;
+				//longitude
+				Double d1 = (Double) data1.get(1);
+				Double d2 = (Double) data2.get(1);
+				if ((result = d1.compareTo(d2)) != 0) return result;
+				//latitude
+				d1 = (Double) data1.get(0);
+				d2 = (Double) data2.get(0);
+				if ((result = d1.compareTo(d2)) != 0) return result;
+				// name
+				return s1.compareTo(s2); 
+			}
+			throw new IllegalArgumentException("Can't compare " + s1 + " and " + s2);
 		}		
 	};
 
@@ -896,9 +880,7 @@ public class StandardCodes {
     			{"America/Argentina/Catamarca", "America/Catamarca"},
     			{"America/Argentina/Cordoba", "America/Cordoba"},
     			{"America/Argentina/Jujuy", "America/Jujuy"},
-    			{"America/Argentina/Mendoza", "America/Mendoza"},
-    			{"America/Kentucky/Louisville", "America/Louisville"},
-    			{"America/Indiana/Indianapolis", "America/Indianapolis"},
+    			{"America/Argentina/Mendoza", "America/Mendoza"}
     	};
     	FIX_UNSTABLE_TZIDS = Utility.asMap(FIX_UNSTABLE_TZID_DATA);
     	RESTORE_UNSTABLE_TZIDS = Utility.asMap(FIX_UNSTABLE_TZID_DATA, new HashMap(), true);
@@ -1050,7 +1032,7 @@ public class StandardCodes {
 		Set funnyTags = new TreeSet();
 		try {
 			String line;
-			BufferedReader lstreg = Utility.getUTF8Data("language-subtag-registry");
+			BufferedReader lstreg = Utility.getUTF8Data("draft-ietf-ltru-initial-06.txt");
 			boolean started = false;
 			String lastType = null;
 			String lastTag = null;
@@ -1062,13 +1044,19 @@ public class StandardCodes {
 				line = lstreg.readLine();
 				if (line == null) break;
 				if (line.length() == 0) continue; // skip blanks
-				if (line.startsWith("File-Date: ")) continue;
-				if (line.startsWith("%%")) continue; // skip separators (ok, since data starts with Type:
-				if (line.startsWith(" ")) {
+				if (line.startsWith("4.  Omitted Code Elements")) break;
+				if (!started) {
+					if (line.startsWith("   File-Date: ")) {
+						started = true;
+					}
+					continue;
+				}
+				if (!line.startsWith("   ")) continue; // skip page header/footer
+				if (line.startsWith("   %%")) continue; // skip separators (ok, since data starts with Type:
+				if (line.startsWith("     ")) {
 					currentData.put(lastLabel, lastRest + " " + line.trim());
 					continue;
 				}
-
 				/*
    Type: language
    Subtag: aa

@@ -172,8 +172,6 @@ public class POSIXUtilities {
            { "G",    "%N" , "%N" },
            { "HH",   "%H" , "%OH" },
            { "H",    "%H" , "%OH" },
-           { "KK",   "%I" , "%OI" },
-           { "K",    "%I" , "%OI" },
            { "MMMM", "%B" , "%B" },
            { "MMM",  "%b" , "%b" },
            { "MM",   "%m" , "%Om" },
@@ -183,18 +181,14 @@ public class POSIXUtilities {
            { "d",    "%e" , "%Oe" },
            { "hh",   "%I" , "%OI" },
            { "h",    "%I" , "%OI" },
-           { "kk",   "%H" , "%OH" },
-           { "k",    "%H" , "%OH" },
            { "mm",   "%M" , "%OM" },
-           { "m",    "%M" , "%OM" },
            { "yyyy", "%Y" , "%Oy" },
            { "yy",   "%y" , "%Oy" },
            { "zzzz", "%Z" , "%Z" },
            { "zzz",  "%Z" , "%Z" },
            { "zz",   "%Z" , "%Z" },
            { "z",    "%Z" , "%Z" },
-           { "ss",   "%S" , "%OS" },
-           { "s",    "%S" , "%OS" }
+           { "ss",   "%S" , "%OS" }
       };
 
       boolean inquotes = false;

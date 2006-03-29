@@ -1,9 +1,7 @@
 package org.unicode.cldr.test;
 
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,46 +40,18 @@ public class CheckDates extends CheckCLDR {
 		"2005-12-02 12:15:16",
 		//"AD 2100-07-11T10:15:16Z",
         }; // keep aligned with following
-	static String SampleList = "{0}"
+	static String SampleList = "Samples:\r\n\t\u200E{0}\u200E"
 	    //+ "\r\n\t\u200E{1}\u200E\r\n\t\u200E{2}\u200E\r\n\t\u200E{3}\u200E"
     ; // keep aligned with previous
 	
-    private static final String DECIMAL_XPATH = "//ldml/numbers/symbols/decimal";
-
 	public CheckCLDR setCldrFileToCheck(CLDRFile cldrFileToCheck, Map options, List possibleErrors) {
 		if (cldrFileToCheck == null) return this;
 		super.setCldrFileToCheck(cldrFileToCheck, options, possibleErrors);
 		icuServiceBuilder.setCldrFile(getResolvedCldrFileToCheck());
-        // the following is a hack to work around a bug in ICU4J (the snapshot, not the released version).
-		try {
-            bi = BreakIterator.getCharacterInstance(new ULocale(cldrFileToCheck.getLocaleID()));
-        } catch (RuntimeException e) {
-            bi = BreakIterator.getCharacterInstance(new ULocale(""));
-        }
-        CLDRFile resolved = getResolvedCldrFileToCheck();
-        flexInfo.set(resolved);
-
-        // load decimal path specially
-        String decimal = resolved.getStringValue(DECIMAL_XPATH);
-        if(decimal != null)  {
-            flexInfo.checkFlexibles(DECIMAL_XPATH,decimal,DECIMAL_XPATH);
-        }
-
-        // load gregorian appendItems
-        for (Iterator it = resolved.iterator("//ldml/dates/calendars/calendar[@type=\"gregorian\"]"); it.hasNext();) {
-            String path = (String) it.next();
-            String value = resolved.getStringValue(path);
-            String fullPath = resolved.getFullXPath(path);
-            flexInfo.checkFlexibles(path, value, fullPath);
-        }
-        
-        redundants.clear();
-        flexInfo.getRedundants(redundants);
+		bi = BreakIterator.getCharacterInstance(new ULocale(cldrFileToCheck.getLocaleID()));
 		return this;
 	}
 	BreakIterator bi;
-    FlexibleDateFromCLDR flexInfo = new FlexibleDateFromCLDR();
-    Collection redundants = new HashSet();
 
 	public CheckCLDR handleCheck(String path, String fullPath, String value, Map options, List result) {
 		if (path.indexOf("/dates") < 0 || path.indexOf("gregorian") < 0) return this;
@@ -107,20 +77,6 @@ public class CheckDates extends CheckCLDR {
 		}
 		return this;
 	}
-	
-	public CheckCLDR handleGetExamples(String path, String fullPath, String value, Map options, List result) {
-		if (path.indexOf("/dates") < 0 || path.indexOf("gregorian") < 0) return this;
-		try {
-			if (path.indexOf("/pattern") >= 0 && path.indexOf("/dateTimeFormat") < 0
-                    || path.indexOf("/dateFormatItem") >= 0) {
-				checkPattern2(path, fullPath, value, result);
-			}
-		} catch (Exception e) {
-			// don't worry about errors
-		}
-		return this;
-	}
-
 
 	//Calendar myCal = Calendar.getInstance(TimeZone.getTimeZone("America/Denver"));
 	TimeZone denver = TimeZone.getTimeZone("America/Denver");
@@ -142,18 +98,9 @@ public class CheckDates extends CheckCLDR {
 
 	private void checkPattern(String path, String fullPath, String value, List result) throws ParseException {
 		pathParts.set(path);
-        if (pathParts.containsElement("dateFormatItem")) {
-            String failureMessage = (String) flexInfo.getFailurePath(path);
-            if (failureMessage != null) {
-                result.add(new CheckStatus().setCause(this).setType(CheckStatus.errorType)
-                .setMessage("{0}", new Object[]{failureMessage}));          
-            }
-            if (redundants.contains(value)) {
-                result.add(new CheckStatus().setCause(this).setType(CheckStatus.errorType)
-                .setMessage("Redundant with some pattern (or combination)", new Object[]{}));          
-            }
-        }
 		String calendar = pathParts.findAttributeValue("calendar", "type");
+        SimpleDateFormat x = icuServiceBuilder.getDateFormat(calendar, value);
+		addSamples(x, value, path.indexOf("/dateFormat") >= 0, result);
 		if (path.indexOf("\"full\"") >= 0) {
 			// for date, check that era is preserved
 			// TODO fix naked constants
@@ -169,7 +116,7 @@ public class CheckDates extends CheckCLDR {
 			//myCal.setTime(dateSource);
 			String result2 = y.format(dateSource);
 			Date backAgain = y.parse(result2);
-			//String isoBackAgain = neutralFormat.format(backAgain);
+			String isoBackAgain = neutralFormat.format(backAgain);
 			if (false && path.indexOf("/dateFormat") >= 0 && year != backAgain.getYear()) {
 				CheckStatus item = new CheckStatus().setCause(this).setType(CheckStatus.errorType)
 				.setMessage("Need Era (G) in full format.", new Object[]{});			
@@ -184,27 +131,28 @@ public class CheckDates extends CheckCLDR {
 		}
 	}
 	
-	private void checkPattern2(String path, String fullPath, String value, List result) throws ParseException {
-		pathParts.set(path);
-		String calendar = pathParts.findAttributeValue("calendar", "type");
-        SimpleDateFormat x = icuServiceBuilder.getDateFormat(calendar, value);
+	private void addSamples(SimpleDateFormat x, String value, boolean isDate, List result) throws ParseException {
 		Object[] arguments = new Object[samples.length];
+		StringBuffer htmlMessage = new StringBuffer();
+		FormatDemo.appendTitle(htmlMessage);
 		for (int i = 0; i < samples.length; ++i) {
 			String source = getRandomDate(date1950, date2010); // samples[i];
 			Date dateSource = neutralFormat.parse(source);
 			String formatted = x.format(dateSource);
 			Date parsed = x.parse(formatted);
 			String resource = neutralFormat.format(parsed);
+            String context = x.getTimeZone().getID();
 			arguments[i] = source + " \u2192 \u200E" + formatted + "\u200E \u2192 " + resource;
+            FormatDemo.appendLine(htmlMessage, value, context, source, formatted, resource);
 		}
-        result.add(new CheckStatus()
-                .setCause(this).setType(CheckStatus.exampleType)
-                .setMessage(SampleList, arguments));
+		htmlMessage.append("</table>");
+        
         result.add(new MyCheckStatus()
                 .setFormat(x)
-                .setCause(this).setType(CheckStatus.demoType));
+                .setCause(this).setType(CheckStatus.exampleType)
+                .setMessage(SampleList, arguments)
+                .setHTMLMessage(htmlMessage.toString()));
 	}
-	
 
 	private int getFirstGraphemeClusterBoundary(String value) {
 		if (value.length() <= 1) return value.length();
@@ -282,23 +230,5 @@ public class CheckDates extends CheckCLDR {
             }
             return result;
         }
-
-		public String getHTML(String path, String fullPath, String value)
-				throws Exception {
-			StringBuffer htmlMessage = new StringBuffer();
-			FormatDemo.appendTitle(htmlMessage);
-			for (int i = 0; i < samples.length; ++i) {
-				String source = getRandomDate(date1950, date2010); // samples[i];
-				Date dateSource = neutralFormat.parse(source);
-				String formatted = df.format(dateSource);
-				Date parsed = df.parse(formatted);
-				String resource = neutralFormat.format(parsed);
-				String context = df.getTimeZone().getID();
-				FormatDemo.appendLine(htmlMessage, value, context, source,
-						formatted, resource);
-			}
-			htmlMessage.append("</table>");
-			return htmlMessage.toString();
-		}
     }
 }

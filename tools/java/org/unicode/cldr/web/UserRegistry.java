@@ -25,26 +25,20 @@ public class UserRegistry {
     // user levels
     public static final int ADMIN   = 0;
     public static final int TC      = 1;
-    public static final int EXPERT  = 3;
     public static final int VETTER  = 5;
     public static final int STREET  = 10;
     public static final int LOCKED  = 999;
     
     public static final int ALL_LEVELS[] = { // for UI presentation
-        ADMIN, TC, EXPERT, VETTER, STREET, LOCKED };
+        ADMIN, TC, VETTER, STREET, LOCKED };
     
 
     public static String levelToStr(WebContext ctx, int level) {
-        return level + ": (" + levelAsStr(level) + ")";
-    }
-    public static String levelAsStr(int level) {
         String thestr = null;
         if(level <= ADMIN) { 
             thestr = "ADMIN";
         } else if(level <= TC) {
             thestr = "TC";
-        } else if (level <= EXPERT) {
-            thestr = "EXPERT";
         } else if (level <= VETTER) {
             thestr = "VETTER";
         } else if (level <= STREET) {
@@ -54,7 +48,7 @@ public class UserRegistry {
         } else {
             thestr = "??";
         }
-        return thestr;
+        return level + ": (" + thestr + ")";
     }
     
     PreparedStatement insertStmt = null;
@@ -189,12 +183,10 @@ public class UserRegistry {
         synchronized(conn) {
           insertStmt = conn.prepareStatement("INSERT INTO " + CLDR_USERS + "(userlevel,name,org,email,password,locales) " +
                                                     "VALUES(?,?,?,?,?,?)" );
-          queryStmt = conn.prepareStatement("SELECT id,name,userlevel,org,locales from " + CLDR_USERS +" where email=? AND password=?",
-                                                        ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
-          queryIdStmt = conn.prepareStatement("SELECT name,org,email from " + CLDR_USERS +" where id=?",
-                                                        ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
-          queryEmailStmt = conn.prepareStatement("SELECT id,name,userlevel,org,locales from " + CLDR_USERS +" where email=?",
-                                                        ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+
+          queryStmt = conn.prepareStatement("SELECT id,name,userlevel,org,locales from " + CLDR_USERS +" where email=? AND password=?");
+          queryIdStmt = conn.prepareStatement("SELECT name,org,email from " + CLDR_USERS +" where id=?");
+          queryEmailStmt = conn.prepareStatement("SELECT id,name,userlevel,org,locales from " + CLDR_USERS +" where email=?");
         }
       }finally{
         if(queryStmt == null) {
@@ -213,9 +205,8 @@ public class UserRegistry {
      * info = name/email/org
      * immutable info, keep it in a separate list for quick lookup.
      */
-    public final static int CHUNKSIZE = 128;
-    int arraySize = 0;
-    UserRegistry.User infoArray[] = new UserRegistry.User[arraySize];
+//    ArrayList infoArray = new ArrayList(2000);
+    UserRegistry.User infoArray[] = new UserRegistry.User[1024];
     
     public UserRegistry.User getInfo(int id) {
 //    System.err.println("Fetching info for id " + id);
@@ -252,13 +243,14 @@ public class UserRegistry {
                     u.email = rs.getString(3);
 //                    System.err.println("SQL Loaded info for U#"+u.id + " - "+u.name +"/"+u.org+"/"+u.email);
                     ret = u; // let it finish..
-
-                    if(id >= arraySize) {
-                        int newchunk = (((id+1)/CHUNKSIZE)+1)*CHUNKSIZE;
-                        System.err.println("UR: userInfo resize from " + infoArray.length + " to " + newchunk);
-                        infoArray = new UserRegistry.User[newchunk];
-                        arraySize = newchunk;
+                    /*
+                    infoArray.ensureCapacity(id);
+                    // ?!!
+                    for(int qq=infoArray.size();qq<=id;qq++) {
+                        System.err.print("[" +qq+"]");
+                        infoArray.add(id,null);
                     }
+                    infoArray.set(id,u);*/
                     infoArray[id]=u;
                     // good so far..
                     if(rs.next()) {
@@ -623,9 +615,6 @@ public class UserRegistry {
     static final boolean userIsTC(User u) {
         return (u!=null)&&(u.userlevel <= UserRegistry.TC);
     }
-    static final boolean userIsExpert(User u) {
-        return (u!=null)&&(u.userlevel <= UserRegistry.EXPERT);
-    }
     static final boolean userIsVetter(User u) {
         return (u!=null)&&(u.userlevel <= UserRegistry.VETTER);
     }
@@ -652,9 +641,6 @@ public class UserRegistry {
     }
     /** Can the user modify anyone's level? */
     static final boolean userCanModifyUsers(User u) {
-        return userIsTC(u);
-    }
-    static final boolean userCanEmailUsers(User u) {
         return userIsTC(u);
     }
     /** can the user modify this particular user? */

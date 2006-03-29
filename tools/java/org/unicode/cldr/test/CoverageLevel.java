@@ -49,28 +49,21 @@ public class CoverageLevel {
         private static List all = new ArrayList();
         private byte level;
         private String name;
-        private String altName;
-        
-        private Level(int i, String name, String altName) {
+        private Level(int i, String string) {
             level = (byte) i;
-            this.name = name;
-            this.altName = altName;
+            name = string;
             all.add(this);
         }
         
-        public static final Level 
-        	UNDETERMINED = new Level(0, "none", "none"),
-        	POSIX = new Level(20,"posix", "G4"),
-        	BASIC = new Level(40,"basic", "G3"),
-            MODERATE = new Level(60, "moderate", "G2"),
-            MODERN = new Level(80, "modern", "G1"),
-            COMPREHENSIVE = new Level(100, "comprehensive", "G0");
+        public static final Level UNDETERMINED = new Level(0, "none"), BASIC = new Level(2,
+                "basic"), MODERATE = new Level(4, "moderate"),
+                MODERN = new Level(6, "modern"), COMPREHENSIVE = new Level(10,
+                        "comprehensive");
     
          public static Level get(String name) {
             for (int i = 0; i < all.size(); ++i) {
                 Level item = (Level) all.get(i);
                 if (item.name.equalsIgnoreCase(name)) return item;
-                if (item.altName.equalsIgnoreCase(name)) return item;
             }
             return UNDETERMINED;
         }
@@ -146,7 +139,7 @@ public class CoverageLevel {
             if (!initialized) {
                 CLDRFile supplementalMetadata = file.make("supplementalMetadata", false);
                 CLDRFile supplementalData = file.make("supplementalData", false);
-                init(supplementalData, supplementalMetadata, options);
+                init(supplementalData, supplementalMetadata);
                 initialized = true;
             }
         }
@@ -349,7 +342,7 @@ public class CoverageLevel {
     
     // ========== Initialization Stuff ===================
 
-    public void init(CLDRFile supplementalData, CLDRFile supplementalMetadata, Map options) {
+    public void init(CLDRFile supplementalData, CLDRFile supplementalMetadata) {
         try {
             getMetadata(supplementalMetadata);
             getData(supplementalData);
@@ -381,34 +374,28 @@ public class CoverageLevel {
             try {
                 // just for now
                 Map platform_local_level = sc.getLocaleTypes();
-                Map locale_level = null;
-                String localeType = (String) options.get("CoverageLevel.localeType"); 
-
-                if (localeType != null) locale_level = (Map) platform_local_level.get(localeType);
-
-                if (locale_level != null) {
-                	for (Iterator it = locale_level.keySet().iterator(); it.hasNext();) {
-                		String locale = (String) it.next();
-                		parser.set(locale);
-                		String level = (String) locale_level.get(locale);
-                		
-                		Level requiredLevel = Level.get(level);
-                		if (requiredLevel == Level.UNDETERMINED) requiredLevel = Level.BASIC;
-                		
-                		String key = parser.getLanguage();
-                		CoverageLevel.Level old = (CoverageLevel.Level) locale_requiredLevel.get(key);
-                		if (old == null || old.compareTo(requiredLevel) > 0) {
-                			locale_requiredLevel.put(key, requiredLevel);
-                		}
-                		String oldKey = key;
-                		key = parser.getLanguageScript();
-                		if (!key.equals(oldKey)) {
-                			old = (CoverageLevel.Level) locale_requiredLevel.get(key);
-                			if (old == null || old.compareTo(requiredLevel) > 0) {
-                				locale_requiredLevel.put(key, requiredLevel);
-                			}
-                		}
-                	}
+                Map locale_level = (Map) platform_local_level.get("IBM");
+                for (Iterator it = locale_level.keySet().iterator(); it.hasNext();) {
+                    String locale = (String) it.next();
+                    parser.set(locale);
+                    String level = (String) locale_level.get(locale);
+                   Level requiredLevel = CoverageLevel.Level.BASIC;
+                    if ("G0".equals(level)) requiredLevel = CoverageLevel.Level.COMPREHENSIVE;
+                    else if ("G1".equals(level)) requiredLevel = CoverageLevel.Level.MODERN;
+                    else if ("G2".equals(level)) requiredLevel = CoverageLevel.Level.MODERATE;
+                    String key = parser.getLanguage();
+                    CoverageLevel.Level old = (CoverageLevel.Level) locale_requiredLevel.get(key);
+                    if (old == null || old.compareTo(requiredLevel) > 0) {
+                        locale_requiredLevel.put(key, requiredLevel);
+                    }
+                    String oldKey = key;
+                    key = parser.getLanguageScript();
+                    if (!key.equals(oldKey)) {
+                        old = (CoverageLevel.Level) locale_requiredLevel.get(key);
+                        if (old == null || old.compareTo(requiredLevel) > 0) {
+                            locale_requiredLevel.put(key, requiredLevel);
+                        }
+                    }
                 }
                 
                 //if(euroCountries != null) {

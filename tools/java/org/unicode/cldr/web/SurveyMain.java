@@ -83,8 +83,6 @@ public class SurveyMain extends HttpServlet {
     public static final String CHANGETO = "change to";
     public static final String PROPOSED_DRAFT = "proposed-draft";
     public static final String MKREFERENCE = "enter-reference";
-    
-    public static final String STFORM = "stform";
 
 //    public static final String MODIFY_THING = "<span title='You are allowed to modify this locale.'>\u270D</span>";             // was: F802
     //public static final String MODIFY_THING = "<img src='' title='You are allowed to modify this locale.'>";             // was: F802
@@ -131,15 +129,12 @@ public class SurveyMain extends HttpServlet {
     // more global prefs
     static final String PREF_ADV = "p_adv"; // show advanced prefs?
     static final String PREF_XPATHS = "p_xpaths"; // show xpaths?
-    public static final String PREF_COVLEV = "p_covlev"; // covlev
-    public static final String PREF_COVTYP = "p_covtyp"; // covtyp
+    static final String PREF_COVLEV = "p_covlev"; // covlev
     //    static final String PREF_SORTMODE_DEFAULT = PREF_SORTMODE_WARNING;
     // types of data
     static final String LOCALEDISPLAYNAMES = "//ldml/localeDisplayNames/";
     static final String CURRENCIES = "currencies";
     static final String TIMEZONES = "timezones";
-    static final String MEASNAMES = "measurementSystemNames";
-    static final String MEASNAME = "measurementSystemName";
     public static final String NUMBERSCURRENCIES = LDMLConstants.NUMBERS + "/"+CURRENCIES;
     public static final String CURRENCYTYPE = "//ldml/"+NUMBERSCURRENCIES+"/currency[@type='";
     /**
@@ -149,8 +144,7 @@ public class SurveyMain extends HttpServlet {
         LDMLConstants.LANGUAGES, LDMLConstants.SCRIPTS, LDMLConstants.TERRITORIES,
         LDMLConstants.VARIANTS, LDMLConstants.KEYS, LDMLConstants.TYPES,
         CURRENCIES,
-        TIMEZONES,
-        MEASNAMES
+        TIMEZONES
     };
     public static String xMAIN = "general";
     public static String xOTHER = "misc";
@@ -192,8 +186,6 @@ public class SurveyMain extends HttpServlet {
             
     public final void init(final ServletConfig config)
     throws ServletException {
-        new com.ibm.icu.text.SimpleDateFormat();
-    
         super.init(config);
         
         cldrHome = config.getInitParameter("cldr.home");
@@ -231,19 +223,15 @@ public class SurveyMain extends HttpServlet {
         // handle raw xml
         if(doRawXml(request,response)) {
             // not counted.
-            xpages++;
             return; 
         }
         pages++;
         
-        if((pages % 100)==0) {
-            freeMem(pages,xpages);        
-        }
-        
         com.ibm.icu.dev.test.util.ElapsedTimer reqTimer = new com.ibm.icu.dev.test.util.ElapsedTimer();
-                
+        
+        response.setContentType("text/html; charset=utf-8");
+        
         if(isBusted != null) {
-            response.setContentType("text/html; charset=utf-8");
             PrintWriter out = response.getWriter();
             out.println("<html>");
             out.println("<head>");
@@ -260,25 +248,11 @@ public class SurveyMain extends HttpServlet {
             return;        
         }
         
-        if(request.getParameter("udump") != null &&
-            request.getParameter("udump").equals(vap)) {  // XML.
-            response.setContentType("application/xml; charset=utf-8");
-            WebContext xctx = new WebContext(request,response);
-            doUDump(xctx);
-            xctx.close();
-            return;
-        }
-        
-        // rest of these are HTML
-        response.setContentType("text/html; charset=utf-8");
-
         WebContext ctx = new WebContext(request,response);
         ctx.reqTimer = reqTimer;
         // TODO: ctx.dbsrc..
         ctx.sm = this;
         
-
-                    
         if(ctx.field("dump").equals(vap)) {
             doDump(ctx);
         } else if(ctx.field("sql").equals(vap)) {
@@ -387,15 +361,6 @@ public class SurveyMain extends HttpServlet {
         printFooter(ctx);
     }
     
-    private static final void freeMem(int pages, int xpages) {
-        Runtime r = Runtime.getRuntime();
-        double total = r.totalMemory();
-        total = total / 1024000.0;
-        double free = r.freeMemory();
-        free = free / 1024000.0;
-        System.err.println("pages: " + pages+"+"+xpages + ", Free memory: " + free + "M / " + total + "M.<br/>");
-    }
-    
     private void doDump(WebContext ctx)
     {
         printHeader(ctx, "Dump System Info");
@@ -404,20 +369,18 @@ public class SurveyMain extends HttpServlet {
         ctx.println("<h1>System info</h1>");
         ctx.printHelpLink("/AdminDump", "Help with this Admin page", true);
         ctx.println("<div class='pager'>");
-        ctx.println("DB version " + dbInfo+ ",  ICU " + com.ibm.icu.util.VersionInfo.ICU_VERSION+"<br>");
-        ctx.println(uptime + ", " + pages + " pages and "+xpages+" xml pages served.<br/>");
+        ctx.println(uptime + ", " + pages + " pages served.<br/>");
         Runtime r = Runtime.getRuntime();
         double total = r.totalMemory();
         total = total / 1024000.0;
         double free = r.freeMemory();
         free = free / 1024000.0;
         ctx.println("Free memory: " + free + "M / " + total + "M.<br/>");
-//        r.gc();
-//        ctx.println("Ran gc();<br/>");
+        r.gc();
+        ctx.println("Ran gc();<br/>");
         
         ctx.println("String hash has " + stringHash.size() + " items.<br/>");
         ctx.println("xString hash info: " + xpt.statistics() +"<br>");
-        ctx.println("CLDRFile.distinguishedXPathStats(): " + CLDRFile.distinguishedXPathStats() + "<br>");
         ctx.println("</div>");
         ctx.println("<hr/>");
         ctx.println("<h1>Current Sessions</h1>");
@@ -567,7 +530,6 @@ public class SurveyMain extends HttpServlet {
         ctx.println("<a href='" + ctx.base() + "?dump=" + vap + "&amp;unlink=" + cs.id + "'>" + "logout" + "</a>");
     }
     
-    static boolean showedComplaint = false;
      
     /**
     * print the header of the thing
@@ -577,12 +539,6 @@ public class SurveyMain extends HttpServlet {
         ctx.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
         ctx.println("<html>");
         ctx.println("<head>");
-/*
-        if(showedComplaint == false) {
-            showedComplaint = true;
-            System.err.println("**** noindex,nofollow is disabled");
-        }
-        */
         ctx.println("<meta name='robots' content='noindex,nofollow'>");
         ctx.println("<link rel='stylesheet' type='text/css' href='"+ ctx.schemeHostPort()  + ctx.context("surveytool.css") + "'>");
         // + "http://www.unicode.org/webscripts/standard_styles.css'>"
@@ -793,11 +749,7 @@ public class SurveyMain extends HttpServlet {
                 ctx.println("<br/>");
             } else {
                 if(UserRegistry.userIsVetter(ctx.session.user)) {
-                    if(UserRegistry.userIsExpert(ctx.session.user)) {
-                        ctx.print("You are an: <b>Expert Vetter:</b> ");
-                    } else {
-                        ctx.println("You are a: <b>Vetter:</b> ");
-                    }
+                    ctx.println("You are a: <b>Vetter:</b> ");
                     ctx.println("<a href='" + ctx.url() + ctx.urlConnector() +"do=list'>[List " + ctx.session.user.org + " Users]</a>");
                     ctx.println("<br/>");
                 } else if(UserRegistry.userIsStreet(ctx.session.user)) {
@@ -862,8 +814,8 @@ public class SurveyMain extends HttpServlet {
                 registeredUser.printPasswordLink(ctx);
                 WebContext nuCtx = new WebContext(ctx);
                 nuCtx.addQuery("do","list");
-                nuCtx.addQuery(LIST_JUST, changeAtTo40(new_email));
-                ctx.println("<p>The password wasn't emailed to this user. You can do so in the '<b><a href='"+nuCtx.url()+"#u_"+u.email+"'>manage users</a></b>' page.</p>");
+                
+                ctx.println("<p>The password wasn't emailed to this user. You can do so in the '<a href='"+nuCtx.url()+"#u_"+u.email+"'>manage users</a>' page.</p>");
             }
         }
         
@@ -1062,66 +1014,10 @@ public class SurveyMain extends HttpServlet {
     static final String LIST_ACTION_SETLOCALES = "set_locales_";
     static final String LIST_ACTION_DELETE0 = "delete0_";
     static final String LIST_ACTION_DELETE1 = "delete_";
-    static final String LIST_JUST = "justu";
-    static final String LIST_MAILUSER = "mailthem";
-    static final String LIST_MAILUSER_WHAT = "mailthem_t";
-    static final String LIST_MAILUSER_CONFIRM = "mailthem_c";
-    
-    public static final String changeAtTo40(String s) {
-        return s.replaceAll("@","%40");
-    }
-    
-    public static final String change40ToAt(String s) {
-        return s.replaceAll("%40","@");
-    }
-
-    public void doUDump(WebContext ctx) {
-        ctx.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-//        ctx.println("<!DOCTYPE ldml SYSTEM \"http://.../.../stusers.dtd\">");
-        ctx.println("<users host=\""+ctx.serverHostport()+"\">");
-        String org = null;
-        try { synchronized(reg) {
-            java.sql.ResultSet rs = reg.list(org);
-            if(rs == null) {
-                ctx.println("\t<!-- No results -->");
-                return;
-            }
-            while(rs.next()) {
-                int theirId = rs.getInt(1);
-                int theirLevel = rs.getInt(2);
-                String theirName = rs.getString(3);
-                String theirEmail = rs.getString(4);
-                String theirOrg = rs.getString(5);
-                String theirLocales = rs.getString(6);
-                
-                ctx.println("\t<user id=\""+theirId+"\" email=\""+theirEmail+"\">");
-                ctx.println("\t\t<level n=\""+theirLevel+"\" type=\""+UserRegistry.levelAsStr(theirLevel)+"\"/>");
-                ctx.println("\t\t<name>"+theirName+"</name>");
-                ctx.println("\t\t<org>"+theirOrg+"</org>");
-                ctx.println("\t\t<locales type=\"edit\">");
-                String theirLocalesList[] = UserRegistry.tokenizeLocale(theirLocales);
-                for(int i=0;i<theirLocalesList.length;i++) {
-                    ctx.println("\t\t\t<locale id=\""+theirLocalesList[i]+"\"/>");
-                }
-                ctx.println("\t\t</locales>");
-                ctx.println("\t</user>");
-            }            
-        }/*end synchronized(reg)*/ } catch(SQLException se) {
-            logger.log(Level.WARNING,"Query for org " + org + " failed: " + unchainSqlException(se),se);
-            ctx.println("<!-- Failure: " + unchainSqlException(se) + " -->");
-        }
-        ctx.println("</users>");
-    }
     
     public void doList(WebContext ctx) {
         int n=0;
-        String just = ctx.field(LIST_JUST);
-        if(just.length()==0) {
-            just = null;
-        } else {
-            just = change40ToAt(just);
-        }
-        printHeader(ctx, "List Users" + ((just==null)?"":(" - " + just)));
+        printHeader(ctx, "List Users");
         printUserMenu(ctx);
         ctx.println("<a href='" + ctx.jspLink("adduser.jsp") +"'>[Add User]</a> |");
         ctx.println("<a href='" + ctx.url()+ctx.urlConnector()+"do=coverage'>[Locale Coverage Reports]</a>");
@@ -1129,29 +1025,8 @@ public class SurveyMain extends HttpServlet {
         ctx.printHelpLink("/AddModifyUser");
         ctx.println("<a href='" + ctx.url() + "'><b>SurveyTool main</b></a><hr>");
         String org = ctx.session.user.org;
-        if(just!=null) {
-            ctx.println("<a href='"+ctx.url()+ctx.urlConnector()+"do=list'>\u22d6 Show all users</a><br>");
-        }
         if(UserRegistry.userCreateOtherOrgs(ctx.session.user)) {
             org = null; // all
-        }
-        String cleanEmail = null;
-        String sendWhat = ctx.field(LIST_MAILUSER_WHAT);
-        boolean areSendingMail = false;
-        String mailBody = null;
-        String mailSubj = null;
-        if(UserRegistry.userCanEmailUsers(ctx.session.user)) {
-            cleanEmail = ctx.session.user.email;
-            if(cleanEmail.equals("admin@")) {
-                cleanEmail = "surveytool@unicode.org";
-            }
-            if(ctx.field(LIST_MAILUSER_CONFIRM).equals(cleanEmail)) {
-                areSendingMail= true;
-                ctx.println("<h4>begin sending mail...</h4>");
-                mailBody = "Message from " + getRequester(ctx) + ":\n--------\n"+sendWhat+
-                    "\n--------\n\nSurvey Tool: http://" + ctx.serverHostport() + ctx.base()+"\n\n";
-                mailSubj = "CLDR SurveyTool message from " +getRequester(ctx);
-            }
         }
         try { synchronized(reg) {
             java.sql.ResultSet rs = reg.list(org);
@@ -1169,9 +1044,7 @@ public class SurveyMain extends HttpServlet {
             }
             // Preset box
             boolean preFormed = false;
-            
-            if(/*(just==null) 
-                  &&*/ UserRegistry.userCanModifyUsers(ctx.session.user)) {
+            if(UserRegistry.userCanModifyUsers(ctx.session.user)) {
                 ctx.println("<div class='pager' style='align: right; float: right; margin-left: 4px;'>");
                 ctx.println("<form method=POST action='" + ctx.base() + "'>");
                 ctx.printUrlAsHiddenFields();
@@ -1197,9 +1070,6 @@ public class SurveyMain extends HttpServlet {
                 ctx.println("   <option value='" + LIST_ACTION_SEND_PASSWORD + "'>Resend password...</option>");
                 ctx.println("   <option value='" + LIST_ACTION_SETLOCALES + "'>Set locales...</option>");
                 ctx.println("</select></label> <br>");
-                if(just!=null) {
-                    ctx.print("<input type='hidden' name='"+LIST_JUST+"' value='"+just+"'>");
-                }
                 ctx.println("<input type='submit' name='do' value='list'></form>");
                 if((ctx.field("preset_from").length()>0)&&!ctx.field("preset_from").equals(LIST_ACTION_NONE)) {
                     ctx.println("<hr><i><b>Menus have been pre-filled. <br> Confirm your choices and click Change.</b></i>");
@@ -1214,12 +1084,9 @@ public class SurveyMain extends HttpServlet {
             if(preset_do.equals(LIST_ACTION_NONE)) {
                 preset_do="nothing";
             }
-            if(/*(just==null)&& */((UserRegistry.userCanModifyUsers(ctx.session.user))) &&
+            if(((UserRegistry.userCanModifyUsers(ctx.session.user))) &&
                !preFormed) { // form was already started, above
                 ctx.println("<form method=POST action='" + ctx.base() + "'>");
-            }
-            if(just!=null) {
-                ctx.print("<input type='hidden' name='"+LIST_JUST+"' value='"+just+"'>");
             }
             if(UserRegistry.userCanModifyUsers(ctx.session.user)) {
                 ctx.printUrlAsHiddenFields();
@@ -1229,6 +1096,7 @@ public class SurveyMain extends HttpServlet {
             ctx.println("<table summary='User List' class='userlist' border='2'>");
             ctx.println(" <tr><th></th><th>Organization / Level</th><th>Name/Email</th><th>Locales</th></tr>");
             while(rs.next()) {
+                n++;
                 int theirId = rs.getInt(1);
                 int theirLevel = rs.getInt(2);
                 String theirName = rs.getString(3);
@@ -1240,19 +1108,8 @@ public class SurveyMain extends HttpServlet {
                 String action = ctx.field(theirTag);
                 CookieSession theUser = CookieSession.retrieveUserWithoutTouch(theirEmail);
                 
-                if(just!=null && !just.equals(theirEmail)) {
-                    continue;
-                }
-                n++;
-                
                 ctx.println("  <tr class='user" + theirLevel + "'>");
                 
-            
-                if(areSendingMail && (theirLevel < UserRegistry.LOCKED) ) {
-                    ctx.print("<td class='framecell'>");
-                    mailUser(ctx,theirEmail,mailSubj,mailBody);
-                    ctx.println("</td>");
-                }
                 // first:  DO.
                 
                 if(havePermToChange) {  // do stuff
@@ -1310,18 +1167,13 @@ public class SurveyMain extends HttpServlet {
                             ctx.println("<label>Locales: (space separated) <input name='" + LIST_ACTION_SETLOCALES + theirTag + "' value='" + theirLocales + "'></label>"); 
                         }
                         // ctx.println("Change to " + action);
+                        ctx.println("</td>");
                     } else {
-                        ctx.print("<td>");
+                        ctx.println("<td></td>");
                     }
                 } else {
-                    ctx.print("<td>");
-                }
-                
-                if(just==null) {
-                    ctx.print("<a href='"+ctx.url()+ctx.urlConnector()+"do=list&"+LIST_JUST+"="+changeAtTo40(theirEmail)+
-                        "' title='More on this user...'>\u22d7</a>");
-                }
-                ctx.println("</td>");
+                    ctx.println("<td></td>");
+                }              
                 
                 // org, level
                 ctx.println("    <td>" + theirOrg + "<br>" +
@@ -1399,40 +1251,6 @@ public class SurveyMain extends HttpServlet {
             ctx.println("</table>");
             ctx.println("<div style='font-size: 70%'>Number of users shown: " + n +"</div><br>");
             if(UserRegistry.userCanModifyUsers(ctx.session.user)) {
-                if((n>0) && UserRegistry.userCanEmailUsers(ctx.session.user)) { // send a mass email to users
-                    if(ctx.field(LIST_MAILUSER).length()==0) {
-                        ctx.println("<label><input type='checkbox' value='y' name='"+LIST_MAILUSER+"'>Check this box to mass-mail these " + n + " users (except locked).</label>");
-                    } else {
-                        ctx.println("<p><div class='pager'>");
-                        ctx.println("<h4>Mailing "+n+" users</h4>");
-                        if(areSendingMail) {
-                            ctx.println("<b>Mail sent.</b><br>");
-                        } else { // dont' allow resend option
-                            ctx.println("<input type='hidden' name='"+LIST_MAILUSER+"' value='y'>");
-                        }
-                        ctx.println("From: "+cleanEmail+"<br>");
-                        if(sendWhat.length()>0) {
-                            ctx.println("<div style='border: 3px dashed olive; margin: 1em; padding: 1em;'>"+
-                                TransliteratorUtilities.toHTML.transliterate(sendWhat).replaceAll("\n","<br>")+
-                                "</div>");
-                            if(!areSendingMail) {
-                                ctx.println("<input type='hidden' name='"+LIST_MAILUSER_WHAT+"' value='"+
-                                        sendWhat.replaceAll("&","&amp;").replaceAll("'","&quot;")+"'>");
-                                if(!ctx.field(LIST_MAILUSER_CONFIRM).equals(cleanEmail) && (ctx.field(LIST_MAILUSER_CONFIRM).length()>0)) {
-                                    ctx.println("<strong>That email didn't match. Try again.</strong><br>");
-                                }
-                                ctx.println("To confirm sending, type your email address (just as it is above): <input name='"+LIST_MAILUSER_CONFIRM+
-                                    "'>");
-                            }
-                        } else {
-                            ctx.println("<textarea NAME='"+LIST_MAILUSER_WHAT+"' id='body' ROWS='15' COLS='85' style='width:100%'></textarea>");
-                        }
-                        ctx.println("</div>");
-                    }
-                    
-                    
-                }
-            
                 ctx.println("<input type='submit' name='doBtn' value='Change'>");
                 ctx.println("</form>");
             }
@@ -1441,9 +1259,6 @@ public class SurveyMain extends HttpServlet {
         }/*end synchronized(reg)*/ } catch(SQLException se) {
             logger.log(Level.WARNING,"Query for org " + org + " failed: " + unchainSqlException(se),se);
             ctx.println("<i>Failure: " + unchainSqlException(se) + "</i><br>");
-        }
-        if(just!=null) {
-            ctx.println("<a href='"+ctx.url()+ctx.urlConnector()+"do=list'>\u22d6 Show all users</a><br>");
         }
         printFooter(ctx);
     }
@@ -1467,25 +1282,13 @@ public class SurveyMain extends HttpServlet {
         return val;
     }
     String showListPref(WebContext ctx, String pref, String what, String[] list) {
-        return showListPref(ctx,pref,what,list,false);
-    }
-    String showListPref(WebContext ctx, String pref, String what, String[] list, boolean doDef) {
-        String val = ctx.pref(pref, doDef?"default":list[0]);
-        ctx.println("<b>"+what+"</b>: ");
-//        ctx.println("<select name='"+pref+"'>");
-        if(doDef) {
-            WebContext nuCtx = new WebContext(ctx);
-            nuCtx.addQuery(pref, "default");
-            ctx.println("<a href='"+nuCtx.url()+"' class='"+(val.equals("default")?"selected":"notselected")+"'>"+"default"+"</a> ");
-        }
+        String val = ctx.pref(pref, list[0]);
+        ctx.println("<label><b>"+what+"</b> ");
+        ctx.println("<select name='"+pref+"'>");
         for(int n=0;n<list.length;n++) {
-//            ctx.println("    <option " + (val.equals(list[n])?" SELECTED ":"") + "value='" + list[n] + "'>"+list[n] +"</option>");
-            WebContext nuCtx = new WebContext(ctx);
-            nuCtx.addQuery(pref, list[n]);
-            ctx.println("<a href='"+nuCtx.url()+"' class='"+(val.equals(list[n])?"selected":"notselected")+"'>"+list[n]+"</a> ");
+            ctx.println("    <option " + (val.equals(list[n])?" SELECTED ":"") + "value='" + list[n] + "'>"+list[n] +"</option>");
         }
-//    ctx.println("</select></label><br>");
-        ctx.println("<br>");
+        ctx.println("</select></label><br>");
         return val;
     }
     public static final String PREF_COVLEV_LIST[] = { "default","comprehensive","modern","moderate","basic" };
@@ -1501,15 +1304,7 @@ public class SurveyMain extends HttpServlet {
 
         showTogglePref(ctx, PREF_XPATHS, "Show full XPaths");
 
-        ctx.println("<br>");
-        String lev = showListPref(ctx, PREF_COVLEV, "Coverage Level", PREF_COVLEV_LIST);
-
-        if(lev.equals("default")) {
-            ctx.print("&nbsp;");
-            ctx.print("&nbsp;");
-            showListPref(ctx,PREF_COVTYP, "Coverage Type", ctx.getLocaleTypes(), true);
-        }
-        ctx.println("(Current effective coverage level: <tt class='codebox'>" + ctx.defaultPtype()+"</tt>)<p>");
+        showListPref(ctx, PREF_COVLEV, "Coverage Level Testing", PREF_COVLEV_LIST);
         
         printFooter(ctx);
     }
@@ -1561,7 +1356,7 @@ public class SurveyMain extends HttpServlet {
         // print 'shopping cart'
         if(ctx.field(QUERY_EXAMPLE).length()==0)  {
             if(ctx.session.user != null) {
-                ctx.println("<form name='"+STFORM+"' method=POST action='" + ctx.base() + "'>");
+                ctx.println("<form method=POST action='" + ctx.base() + "'>");
             }
             ctx.println("<table summary='header' border='0' cellpadding='0' cellspacing='0' style='border-collapse: collapse' "+
                         " width='100%' bgcolor='#EEEEEE'>"); //bordercolor='#111111'
@@ -1824,35 +1619,9 @@ public class SurveyMain extends HttpServlet {
         }
     }
     
-    void mailUser(WebContext ctx, String theirEmail, String subject, String message) {
-        String requester = getRequester(ctx);
-        String from = survprops.getProperty("CLDR_FROM","nobody@example.com");
-        String smtp = survprops.getProperty("CLDR_SMTP",null);
-        
-        if(smtp == null) {
-            ctx.println("<i>Not sending mail- SMTP disabled.</i><br/>");
-            ctx.println("<hr/><pre>" + message + "</pre><hr/>");
-            smtp = "NONE";
-        } else {
-            MailSender.sendMail(smtp, from, theirEmail, subject,
-                                message);
-            ctx.println("Mail sent to " + theirEmail + " from " + from + " via " + smtp + "<br/>\n");
-        }
-        logger.info( "Mail sent to " + theirEmail + "  from " + from + " via " + smtp + " - "+subject);
-        /* some debugging. */
-    }
-    
-    String getRequester(WebContext ctx) {
-        String cleanEmail = ctx.session.user.email;
-        if(cleanEmail.equals("admin@")) {
-            cleanEmail = "surveytool@unicode.org";
-        }
-        String requester = ctx.session.user.name + " <" + cleanEmail + ">";
-        return requester;
-    }
-    
     void notifyUser(WebContext ctx, String theirEmail, String pass) {
-        String body = getRequester(ctx) +  " is notifying you of the CLDR vetting account for you.\n" +
+        String requester = ctx.session.user.name + " <" + ctx.session.user.email + ">";
+        String body = requester +  " is notifying you of the CLDR vetting account for you.\n" +
         "To access it, visit: \n" +
         "   http://" + ctx.serverHostport() + ctx.base() + "?"+QUERY_PASSWORD+"=" + pass + "&"+QUERY_EMAIL+"=" + theirEmail + "\n" +
         //                                                                          // DO NOT ESCAPE THIS AMPERSAND.
@@ -1862,8 +1631,20 @@ public class SurveyMain extends HttpServlet {
         " Please keep this link to yourself. Thanks.\n" +
         " Follow the 'Instructions' link on the main page for more help.\n" +
         " \n";
-        String subject = "CLDR Registration for " + theirEmail;
-        mailUser(ctx,theirEmail,subject,body);
+        
+        String from = survprops.getProperty("CLDR_FROM","nobody@example.com");
+        String smtp = survprops.getProperty("CLDR_SMTP",null);
+        if(smtp == null) {
+            ctx.println("<i>Not sending mail- SMTP disabled.</i><br/>");
+            ctx.println("<hr/><pre>" + body + "</pre><hr/>");
+            smtp = "NONE";
+        } else {
+            MailSender.sendMail(smtp, from, theirEmail, "CLDR Registration for " + theirEmail,
+                                body);
+            ctx.println("Mail sent to " + theirEmail + " from " + from + " via " + smtp + "<br/>\n");
+        }
+        logger.info( "Login URL sent to " + theirEmail + "  from " + from + " via " + smtp);
+        /* some debugging. */
     }
     
     /**
@@ -1876,8 +1657,6 @@ public class SurveyMain extends HttpServlet {
             subtype = LDMLConstants.LANGUAGE;
         } else if(type.equals(LDMLConstants.SCRIPTS)) {
             subtype = LDMLConstants.SCRIPT;
-        } else if(type.equals(MEASNAMES)) {
-            subtype = MEASNAME;
         } else if(type.equals(LDMLConstants.TERRITORIES)) {
             subtype = LDMLConstants.TERRITORY;
         } else if(type.equals(LDMLConstants.VARIANTS)) {
@@ -1924,9 +1703,9 @@ public class SurveyMain extends HttpServlet {
         }
         synchronized (ourSrc) {
             // Set up checks
-            CheckCLDR checkCldr =  (CheckCLDR)ctx.getByLocale(USER_FILE + CHECKCLDR+":"+ctx.defaultPtype());
+            CheckCLDR checkCldr =  (CheckCLDR)ctx.getByLocale(USER_FILE + CHECKCLDR);
+            List checkCldrResult = new ArrayList();
             if (checkCldr == null)  {
-                List checkCldrResult = new ArrayList();
                 //logger.info("Initting tests . . .");
                 long t0 = System.currentTimeMillis();
                 checkCldr = CheckCLDR.getCheckAll(/* "(?!.*Collision.*).*" */  ".*");
@@ -1935,18 +1714,17 @@ public class SurveyMain extends HttpServlet {
                 if(cf==null) {
                     throw new InternalError("cf was null.");
                 }
-                checkCldr.setCldrFileToCheck(cf, ctx.getOptionsMap(), checkCldrResult);
-                //logger.info("fileToCheck set . . . on "+ checkCldr.toString());
-                ctx.putByLocale(USER_FILE + CHECKCLDR+":"+ctx.defaultPtype(), checkCldr);
+                checkCldr.setCldrFileToCheck(cf, null, checkCldrResult); // TODO: when does this get updated?
+                ctx.putByLocale(USER_FILE + CHECKCLDR, checkCldr);
                 {
                     // sanity check: can we get it back out
-                    CheckCLDR subCheckCldr = (CheckCLDR)ctx.getByLocale(SurveyMain.USER_FILE + SurveyMain.CHECKCLDR+":"+ctx.defaultPtype());
+                    CheckCLDR subCheckCldr = (CheckCLDR)ctx.getByLocale(SurveyMain.USER_FILE + SurveyMain.CHECKCLDR);
                     if(subCheckCldr == null) {
                         throw new InternalError("subCheckCldr == null");
                     }
                 }
                 if(!checkCldrResult.isEmpty()) {
-                    ctx.putByLocale(USER_FILE + CHECKCLDR_RES+":"+ctx.defaultPtype(), checkCldrResult); // don't bother if empty . . .
+                    ctx.putByLocale(USER_FILE + CHECKCLDR_RES, checkCldrResult); // don't bother if empty . . .
                 }
                 long t2 = System.currentTimeMillis();
                 //logger.info("Time to init tests: " + (t2-t0));
@@ -2021,27 +1799,19 @@ public class SurveyMain extends HttpServlet {
                 ctx.println("<h3>"+ctx.locale+" "+ctx.locale.getDisplayName()+" / " + which + " Example</h3>");
             }
             
-            {
-                List checkCldrResult = (List)ctx.getByLocale(USER_FILE + CHECKCLDR_RES+":"+ctx.defaultPtype()); // don't bother if empty . . .
-
-                if((checkCldrResult != null) &&  (!checkCldrResult.isEmpty()) && 
-                    (/* true || */ (checkCldr != null) && (xMAIN.equals(which))) ) {
-                    ctx.println("<hr><h4>Possible problems with locale:</h4>");
-                    ctx.println("<div style='border: 1px dashed olive; padding: 1em; background-color: cream; overflow: auto;'>");
-                    for (Iterator it3 = checkCldrResult.iterator(); it3.hasNext();) {
-                        CheckCLDR.CheckStatus status = (CheckCLDR.CheckStatus) it3.next();
-                        try{ 
-                            if (!status.getType().equals(status.exampleType)) {
-                                ctx.println(status.getCause().getClass().toString() +": "+ status.toString() + "<br>");
-                            } else {
-                                ctx.println("<i>example available</i><br>");
-                            }
-                        } catch(Throwable t) {
-                            ctx.println("Error reading status item: <br><font size='-1'>"+status.toString()+"<br> - <br>" + t.toString()+"<hr><br>");
-                        }
+            if( (!checkCldrResult.isEmpty()) && 
+                (/* true || */ (checkCldr != null) && (xMAIN.equals(which))) ) {
+                ctx.println("<hr><h4>Possible problems with locale:</h4>");
+                ctx.println("<div style='border: 1px dashed olive; padding: 1em; background-color: cream; overflow: auto;'>");
+                for (Iterator it3 = checkCldrResult.iterator(); it3.hasNext();) {
+                    CheckCLDR.CheckStatus status = (CheckCLDR.CheckStatus) it3.next();
+                    if (!status.getType().equals(status.exampleType)) {
+                        ctx.println(status.getCause().getClass().toString() +": "+ status.toString() + "<br>");
+                    } else {
+                        ctx.println("<i>example available</i><br>");
                     }
-                    ctx.println("</div><hr>");
                 }
+                ctx.println("</div><hr>");
             }
             subCtx.addQuery("x",which);
             for(n =0 ; n < LOCALEDISPLAYNAMES_ITEMS.length; n++) {        
@@ -2342,7 +2112,6 @@ public void showPathList(WebContext ctx, String xpath, String lastElement) {
     
     synchronized(ourSrc) { // because it has a connection..
                            // Podder
-        // TODO: move this into showExample. . .
         String e = ctx.field(QUERY_EXAMPLE);
         if(e.length() > 0) {
             DataPod oldPod =  ctx.getExistingPod(fullThing);
@@ -2351,39 +2120,21 @@ public void showPathList(WebContext ctx, String xpath, String lastElement) {
                 ee = oldPod.getExampleEntry(e);
             }
             if(ee != null) {
-                ctx.println("<form method=POST action='" + ctx.base() + "'>");
-                ctx.printUrlAsHiddenFields();   
                 String cls = shortClassName(ee.status.getCause());
                 ctx.printHelpLink("/"+cls+"-example","Help with this "+cls+" example", true);
                 ctx.addQuery(QUERY_EXAMPLE,e);
                 ctx.println("<input type='hidden' name='"+QUERY_EXAMPLE+"' value='"+e+"'>");
-                ctx.println(ee.status.toString());
-                ctx.println("<hr width='10%'>");
                 ctx.println(ee.status.getHTMLMessage());
-                ctx.println("<hr width='10%'>");
                 CheckCLDR.SimpleDemo d = ee.status.getDemo();
                 Map m = new TreeMap();
-                m.putAll(ctx.getParameterMap());
-
                 if(d != null) {
-                    d.processPost(m);
-                
-                    try {
-                        String path = ee.pod.xpath(ee.pea);
-                        String fullPath = cf.getFullXPath(path);
-                        String value = ee.item.value;
-                        String html = d.getHTML(path, fullPath, value);
-                        ctx.println(html);
-                    } catch (Exception ex) {
-                        ctx.println("<br><b>Error: </b> " + ex.toString() +"<br>");
-                    }
+                    ctx.println("<i>Note: interaction with this demo is not working yet.</i><br>");
 //                    if(d.processPost(m)) {
 //                        ctx.println("<hr>"+m);
 //                    }
                 }
-                ctx.println("</form>");
             } else {
-                ctx.println("<P><P><P><blockquote><i>That example seems to have expired. Perhaps the underlying data has changed? Try reloading the parent page, and clicking the Example link again.</i></blockquote>");
+                ctx.println("<P><P><P><blockquote><i>Sorry.. we couldn't find that example.  Perhaps the underlying data has changed? Try reloading the parent page, and clicking the Example link again.</i></blockquote>");
             }
         } else {
             // first, do submissions.
@@ -2401,21 +2152,6 @@ public void showPathList(WebContext ctx, String xpath, String lastElement) {
     }
 }
 
-String getSortMode(WebContext ctx, DataPod pod) {
-    return getSortMode(ctx, pod.xpathPrefix);
-}
-
-String getSortMode(WebContext ctx, String prefix) {
-    String sortMode = null;
-    if(prefix.indexOf("timeZone")!=-1 ||
-        prefix.indexOf("localeDisplayName")!=-1) {
-        sortMode = ctx.pref(PREF_SORTMODE, PREF_SORTMODE_DEFAULT);
-    } else {
-        sortMode = ctx.pref(PREF_SORTMODE, PREF_SORTMODE_CODE); // all the rest get Code Mode
-    }
-    return sortMode;
-}
-
 void showPeas(WebContext ctx, DataPod pod, boolean canModify) {
     int count = 0;
     int dispCount = 0;
@@ -2427,12 +2163,12 @@ void showPeas(WebContext ctx, DataPod pod, boolean canModify) {
     CLDRFile cf = getUserFile(ctx, ctx.session.user, ctx.locale);
     //    CLDRFile engf = getEnglishFile();
     CLDRDBSource ourSrc = (CLDRDBSource)ctx.getByLocale(USER_FILE + CLDRDBSRC); // TODO: remove. debuggin'
-    CheckCLDR checkCldr = (CheckCLDR)ctx.getByLocale(USER_FILE + CHECKCLDR+":"+ctx.defaultPtype());
+    CheckCLDR checkCldr = (CheckCLDR)ctx.getByLocale(USER_FILE + CHECKCLDR);
     XPathParts pathParts = new XPathParts(null, null);
     XPathParts fullPathParts = new XPathParts(null, null);
     List checkCldrResult = new ArrayList();
     Iterator theIterator = null;
-    String sortMode = getSortMode(ctx, pod);
+    String sortMode = ctx.pref(PREF_SORTMODE, PREF_SORTMODE_DEFAULT);
     List peas = pod.getList(sortMode);
     String refs[] = new String[0];
     String ourDir = getDirectionFor(ctx.locale);
@@ -2459,7 +2195,7 @@ void showPeas(WebContext ctx, DataPod pod, boolean canModify) {
     DataPod.DisplaySet dSet = pod.getDisplaySet(sortMode);  // contains 'peas' and display list
     boolean checkPartitions = dSet.partitions.length > 1; // only check if more than one partition    
     // -----
-    skip = showSkipBox(ctx, peas.size(), pod.getDisplaySet(sortMode), true, sortMode);
+    skip = showSkipBox(ctx, peas.size(), pod.getDisplaySet(sortMode));
     
     ctx.printUrlAsHiddenFields();   
     ctx.println("<input type='hidden' name='skip' value='"+ctx.field("skip")+"'>");
@@ -2488,7 +2224,7 @@ void showPeas(WebContext ctx, DataPod pod, boolean canModify) {
         }
         
         try {
-            showPea(ctx, pod, p, ourDir, cf, ourSrc, canModify,showFullXpaths,refs,checkCldr);
+            showPea(ctx, pod, p, ourDir, cf, ourSrc, canModify,showFullXpaths,refs);
         } catch(Throwable t) {
             ctx.println("<tr class='topbar'><td colspan='8'><b>"+pod.xpath(p)+"</b><br>");
             ctx.print(t);
@@ -2498,7 +2234,7 @@ void showPeas(WebContext ctx, DataPod pod, boolean canModify) {
             for(Iterator e = p.subPeas.values().iterator();e.hasNext();) {
                 DataPod.Pea subPea = (DataPod.Pea)e.next();
                 try {
-                    showPea(ctx, pod, subPea, ourDir, cf, ourSrc, canModify, showFullXpaths,refs,checkCldr);
+                    showPea(ctx, pod, subPea, ourDir, cf, ourSrc, canModify, showFullXpaths,refs);
                 } catch(Throwable t) {
                     ctx.println("<tr class='topbar'><td colspan='8'>sub pea: <b>"+pod.xpath(subPea)+"."+subPea.altType+"</b><br>");
                     ctx.print(t);
@@ -2521,7 +2257,7 @@ void showPeas(WebContext ctx, DataPod pod, boolean canModify) {
     }
     
     
-    /*skip = */ showSkipBox(ctx, peas.size(), pod.getDisplaySet(sortMode), false, sortMode);
+    /*skip = */ showSkipBox(ctx, peas.size(), pod.getDisplaySet(sortMode), false);
     
     if(!canModify) {
         ctx.println("<hr> <i>You are not authorized to make changes to this locale.</i>");
@@ -2630,25 +2366,15 @@ boolean processPeaChanges(WebContext ctx, DataPod pod, DataPod.Pea p, String our
         }
         String altPrefix = null;
         // handle FFT
-                
         if(p.type.equals(DataPod.FAKE_FLEX_THING)) {
-               DateTimePatternGenerator dateTimePatternGenerator = new DateTimePatternGenerator();
-               //String id = (String) attributes.get("id");
-               String id = null;
-               //String oldID = id;
-               try {
-                    id = dateTimePatternGenerator.getSkeleton(choice_v);
-               } catch (RuntimeException e) {
-                    ctx.println("<i>Sorry, had an error when trying to process flex data <tt><b>"+choice_v+"</b></tt>.. Could be a bad pattern. Try again<br>Error was: ");
-                    printShortened(ctx,e.toString());
-                    ctx.println("<br>");
-                    return false;
-               }
-               
-                altPrefix =         XPathTable.altProposedPrefix(ctx.session.user.id);
-                String idStr="[@id=\""+id+"\"]";
+            if(UserRegistry.userIsTC(ctx.session.user)) {
+                String idStr="[@id=\"u"+ctx.session.user.id+"-"+CookieSession.newId(false).substring(0,6)+"\"]";
                 fullPathMinusAlt=DataPod.FAKE_FLEX_XPATH+idStr;
                 ctx.println("<tt>"+fullPathMinusAlt+"</tt><br>");
+            } else {
+                ctx.println("<i>Sorry.. this feature ("+DataPod.FAKE_FLEX_THING+") is not available yet.</i><br>");
+                return false;
+            }
             // no alt prefix
         } else {
             altPrefix =         XPathTable.altProposedPrefix(ctx.session.user.id);
@@ -2672,12 +2398,11 @@ boolean processPeaChanges(WebContext ctx, DataPod pod, DataPod.Pea p, String our
 
 // TODO: trim unused params
 void showPea(WebContext ctx, DataPod pod, DataPod.Pea p, String ourDir, CLDRFile cf, 
-    CLDRDBSource ourSrc, boolean canModify, boolean showFullXpaths, String refs[], CheckCLDR checkCldr) {
-    //if(p.type.equals(DataPod.FAKE_FLEX_THING) && !UserRegistry.userIsTC(ctx.session.user)) {
-    //    return;
-    //}
+    CLDRDBSource ourSrc, boolean canModify, boolean showFullXpaths, String refs[]) {
+    if(p.type.equals(DataPod.FAKE_FLEX_THING) && !UserRegistry.userIsTC(ctx.session.user)) {
+        return;
+    }
 
-    boolean showedRemoveButton = false; 
     String fullPathFull = pod.xpath(p); 
     String boxClass = canModify?"actionbox":"disabledbox";
     boolean isAlias = (fullPathFull.indexOf("/alias")!=-1);
@@ -2688,20 +2413,18 @@ void showPea(WebContext ctx, DataPod pod, DataPod.Pea p, String ourDir, CLDRFile
     String fieldHash = pod.fieldHash(p);
     /*  TOP BAR */
     ctx.println("<tr class='topbar'>");
-    if(p.displayName != null) { // have a display name - code gets its own box
-        ctx.println("<th nowrap class='botgray' colspan='1' valign='top' align='left'>");
+    ctx.println("<th nowrap class='botgray' colspan='1' valign='top' align='left'>");
+    if(p.displayName != null) {
         ctx.println("<tt class='codebox'>"
                     + p.type + 
                     "</tt>");
-    } else { // no display name - same box for code+alt
-        ctx.println("<th nowrap class='botgray' colspan='5' valign='top' align='left'>");
     }
     if(p.altType != null) {
         ctx.println(" ("+p.altType+")");
     }
+    ctx.println("</th>");
+    ctx.println("<th nowrap colspan='4' valign='top' align='left' class='botgray'>");
     if(p.displayName != null) {
-        ctx.println("</th>");
-        ctx.println("<th nowrap style='padding-left: 4px;' colspan='4' valign='top' align='left' class='botgray'>");
         ctx.println(p.displayName);
     } else {
         ctx.println("<tt>"+p.type+"</tt>");
@@ -2771,10 +2494,8 @@ void showPea(WebContext ctx, DataPod pod, DataPod.Pea p, String ourDir, CLDRFile
             pClass = "class='missing'";
         } 
         ctx.print("<tr><td colspan='1' align='right' valign='top'>");
-//ctx.println("<div style='border: 2px dashed red'>altProposed="+item.altProposed+", inheritFrom="+item.inheritFrom+", confirmOnly="+new Boolean(p.confirmOnly)+"</div><br>");
-        if(((item.altProposed==null)&&(item.inheritFrom==null)&&!p.confirmOnly)
-            || (!j.hasNext()&&!showedRemoveButton)) {
-            showedRemoveButton = true;
+        if((item.altProposed==null)&&(item.inheritFrom==null)&&!p.confirmOnly) {
+
             ctx.print("<span class='"+boxClass+"'>"+REMOVE+"</span>");
             if(canModify) {
                 ctx.print("<input name='"+fieldHash+"' value='"+REMOVE+"' type='radio'>");
@@ -2844,37 +2565,23 @@ void showPea(WebContext ctx, DataPod pod, DataPod.Pea p, String ourDir, CLDRFile
             ctx.print("<i>(empty)</i>");
         }
         ctx.print("</td>");
-        if((item.tests != null) || (item.examples != null)) {
-            if(item.tests != null) {
-                ctx.println("<td class='warncell'>");
-                for (Iterator it3 = item.tests.iterator(); it3.hasNext();) {
-                    CheckCLDR.CheckStatus status = (CheckCLDR.CheckStatus) it3.next();
-                    if (!status.getType().equals(status.exampleType)) {
-                        
-                        ctx.println("<span class='warning'>");
-                        String cls = shortClassName(status.getCause());
-                        printShortened(ctx,status.toString());
-                        ctx.println("</span>");
-                        if(cls != null) {
-                            ctx.printHelpLink("/"+cls+"","Help");
-                        }
-                        ctx.print("<br>");
+        if(item.tests != null) {
+            ctx.println("<td class='warncell'>");
+            for (Iterator it3 = item.tests.iterator(); it3.hasNext();) {
+                CheckCLDR.CheckStatus status = (CheckCLDR.CheckStatus) it3.next();
+                if (!status.getType().equals(status.exampleType)) {
+                    
+                    ctx.println("<span class='warning'>");
+                    String cls = shortClassName(status.getCause());
+                    printShortened(ctx,status.toString());
+                    ctx.println("</span>");
+                    if(cls != null) {
+                        ctx.printHelpLink("/"+cls+"","Help");
                     }
+                    ctx.print("<br>");
                 }
-            } else {
-                ctx.println("<td class='examplecell'>");
             }
-            
             if(item.examples != null) {
-            /*
-                if(true) { throw new InternalError("had Old examples?  Not supposed to happen.."); }
-            }
-
-            List examples = new ArrayList();
-	public final CheckCLDR getExamples(String path, String fullPath, String value, Map options, List result) {
-
-            {       
-            */         
                 ctx.println("Examples: ");
                 boolean first = true;
                 for(Iterator it4 = item.examples.iterator(); it4.hasNext();) {
@@ -2882,18 +2589,10 @@ void showPea(WebContext ctx, DataPod pod, DataPod.Pea p, String ourDir, CLDRFile
                     if(first==false) {
                         ctx.print(", ");
                     }
+                    ctx.print("<a target='_blank' href='"+ctx.url()+ctx.urlConnector()+"e="+e.hash+"'>");
                     String cls = shortClassName(e.status.getCause());
-                    if(e.status.getType().equals(e.status.exampleType)) {
-                        printShortened(ctx,e.status.toString());
-                        if(cls != null) {
-                            ctx.printHelpLink("/"+cls+"","Help");
-                        }
-                        ctx.println("<br>");
-                    } else {                        
-                        ctx.print("<a target='_blank' href='"+ctx.url()+ctx.urlConnector()+ QUERY_EXAMPLE+"="+e.hash+"'>");
-                        ctx.print(cls);
-                        ctx.print("</a>");
-                    }
+                    ctx.print(cls);
+                    ctx.print("</a>");
                     first = false;
                 }
 //                    ctx.println(status.getHTMLMessage()+"<br>");
@@ -2936,14 +2635,14 @@ void showPea(WebContext ctx, DataPod pod, DataPod.Pea p, String ourDir, CLDRFile
         if(!p.confirmOnly) {
             ctx.print("<span class='"+boxClass+"'>" + CHANGETO + "</span>");
             if(canModify) {
-                ctx.print("<input name='"+fieldHash+"' id='"+fieldHash+"_ch' value='"+CHANGETO+"' type='radio' >");
+                ctx.print("<input name='"+fieldHash+"' value='"+CHANGETO+"' type='radio' >");
             } else {
                 ctx.print("<input type='radio' disabled>");
             }
         }
         ctx.println("</td>");
         if(canModify && !p.confirmOnly) {
-            ctx.println("<td colspan='2'><input onfocus=\"document.getElementById('"+fieldHash+"_ch').click()\" name='"+fieldHash+"_v'  class='inputbox'></td>");
+            ctx.println("<td colspan='2'><input name='"+fieldHash+"_v'  class='inputbox'></td>");
             if(refs.length>0) {
                 ctx.print("<td nowrap><label>");
                 ctx.print("<a target='ref_"+ctx.locale+"' href='"+refCtx.url()+"'>Ref:</a>");
@@ -2977,7 +2676,10 @@ void showSkipBox_menu(WebContext ctx, String sortMode, String aMode, String aDes
     nuCtx.println(" ");
 }
 // TODO: remove this. 
-int showSkipBox(WebContext ctx, int total, DataPod.DisplaySet displaySet, boolean showSearchMode, String sortMode) {
+int showSkipBox(WebContext ctx, int total, DataPod.DisplaySet displaySet) {
+    return showSkipBox(ctx, total, displaySet, true);
+}
+int showSkipBox(WebContext ctx, int total, DataPod.DisplaySet displaySet, boolean showSearchMode) {
 showSearchMode = true;// all
     List displayList = null;
     if(displaySet != null) {
@@ -2995,6 +2697,7 @@ showSearchMode = true;// all
         ctx.println(/*"<p style='float: right; margin-left: 3em;'> " + */
             "<b>Sorted:</b>  ");
         {
+            String sortMode = ctx.pref(PREF_SORTMODE, PREF_SORTMODE_DEFAULT);
             boolean sortAlpha = (sortMode.equals(PREF_SORTMODE_ALPHA));
             
             //          showSkipBox_menu(ctx, sortMode, PREF_SORTMODE_ALPHA, "Alphabetically");
@@ -3165,7 +2868,6 @@ showSearchMode = true;// all
 }
 
 public static int pages=0;
-public static int xpages=0;
 /**
 * Main setup
  */
@@ -3424,7 +3126,7 @@ static int usedK() {
 
 
 private void busted(String what) {
-    System.err.println("SurveyTool busted: " + what + " ( after " +pages +"html+"+xpages+"xml pages served, uptime " + uptime.toString()  + ")");
+    System.err.println("SurveyTool busted: " + what + " ( after " +pages +" pages served, uptime " + uptime.toString()  + ")");
     isBusted = what;
     logger.severe(what);
 }
@@ -3655,7 +3357,6 @@ private Connection getU_DBConnection(String options)
 
 File dbDir = null;
 File dbDir_u = null;
-static String dbInfo = null;
 
 private void doStartupDB()
 {
@@ -3666,16 +3367,8 @@ private void doStartupDB()
     
     logger.info("SurveyTool setting up database.. " + dbDir.getAbsolutePath());
     try
-    { 
-        Object o = Class.forName(db_driver).newInstance();
-        try {
-            java.sql.Driver drv = (java.sql.Driver)o;
-            dbInfo = "v"+drv.getMajorVersion()+"."+drv.getMinorVersion();
-         //   dbInfo = dbInfo + " " +org.apache.derby.tools.sysinfo.getProductName()+" " +org.apache.derby.tools.sysinfo.getVersionString();
-        } catch(Throwable t) {
-            dbInfo = "unknown";
-        }
-        logger.info("loaded driver " + o + " - " + dbInfo);
+    {
+        Class.forName(db_driver).newInstance();
         Connection conn = getDBConnection(";create=true");
         logger.info("Connected to database " + cldrdb);
         Connection conn_u = getU_DBConnection(";create=true");
@@ -3731,15 +3424,7 @@ public static final String unchainSqlException(SQLException e) {
         echain = echain + " -\n " + e.toString();
         e = e.getNextException();
     }
-    String stackStr = "\n unknown Stack";
-    try {
-        StringWriter asString = new StringWriter();
-        e.printStackTrace(new PrintWriter(asString));
-        stackStr = "\n Stack: \n " + asString.toString();
-    } catch ( Throwable tt ) {
-        // ...
-    }
-    return echain + stackStr;
+    return echain;
 }
 
     void doShutdownDB() {
@@ -3798,8 +3483,10 @@ public static final String unchainSqlException(SQLException e) {
                 CheckCLDR check = CheckCLDR.getCheckAll("(?!.*Collision.*).*");
                 System.out.println("check created");
                 List result = new ArrayList();
-                Map options = null;
-                check.setCldrFileToCheck(my, options, result); 
+                Map options = new TreeMap();
+//        options.put("CheckCoverage.requiredLevel","modern"); // TODO: fix
+
+                check.setCldrFileToCheck(my, options, result); // TODO: when does this get updated?
                 System.out.println("file set");
             }
             

@@ -10,9 +10,7 @@ package org.unicode.cldr.web;
 import org.w3c.dom.Document;
 import java.io.*;
 import java.util.*;
-import org.unicode.cldr.util.*;
 import com.ibm.icu.util.ULocale;
-import java.lang.ref.SoftReference;
 
 // servlet imports
 import javax.servlet.*;
@@ -46,9 +44,6 @@ public class WebContext {
     HttpServletRequest request;
     HttpServletResponse response;
     
-    public Map getParameterMap() { 
-        return request.getParameterMap();
-    }
     // New constructor
     public WebContext(HttpServletRequest irq, HttpServletResponse irs) throws IOException {
          request = irq;
@@ -386,69 +381,10 @@ public class WebContext {
         Hashtable subHash = (Hashtable)staticStuff.get(locale);
         if(subHash == null) {
             subHash = new Hashtable();
+            
             staticStuff.put(locale, subHash);
         }
         subHash.put(key,value);
-    }
-    static private StandardCodes sc = null;
-    static private synchronized StandardCodes getSC() {
-        if(sc == null) {
-            sc = StandardCodes.make();
-        }
-        return sc;
-    }
-    
-    public String defaultPtype() {
-        String def = pref(SurveyMain.PREF_COVLEV,"default");
-        if(!def.equals("default")) {
-            return def;
-        } else {
-            String org = getChosenLocaleType();
-            String ltype = getEffectiveLocaleType(org);
-            return ltype;
-        }
-    }
-    
-    static synchronized String getEffectiveLocaleType(String org) {
-            try {
-                return  getSC().getEffectiveLocaleType(org);
-            } catch (java.io.IOException ioe) {
-                return org;
-            }
-    }
-    
-   static synchronized String[] getLocaleTypes() {
-    try {
-       return (String[])getSC().getLocaleTypes().keySet().toArray(new String[0]);
-    } catch (IOException ioe) {
-        return new String[0];
-    }
-   }
-    
-    private String getChosenLocaleType() {
-        String org = pref(SurveyMain.PREF_COVTYP, "default");
-        if(org.equals("default")) {
-            org = null;
-        }
-        if((org==null) && 
-           (session.user != null)) {
-            org = session.user.org;
-        }
-        return org;
-    }
-    
-    public Map getOptionsMap() {
-        String def = pref(SurveyMain.PREF_COVLEV,"default");
-        Map options = new HashMap();
-        if(!def.equals("default")) {
-            options.put("CheckCoverage.requiredLevel",def);
-        } else {
-            String org = getChosenLocaleType();
-            if(org!=null) {
-                options.put("CoverageLevel.localeType",session.user.org);
-            }
-        }
-        return options;
     }
     
 // DataPod functions
@@ -459,35 +395,20 @@ public class WebContext {
      * May be null.
      */
     DataPod getExistingPod(String prefix) {
-        return getExistingPod(prefix, defaultPtype());
-    }
-    
-    DataPod getExistingPod(String prefix, String ptype) {
         synchronized(this) {
-            SoftReference sr = (SoftReference)getByLocaleStatic(DATA_POD+prefix+":"+ptype);  // GET******
-            if(sr == null) {
-                return null; // wasn't never there
-            }
-            DataPod dp = (DataPod)sr.get();
-            if(dp == null) {
-                System.err.println("SR expired: " + locale + ":"+ prefix+":"+ptype);
-            }
-            return dp;
+            return (DataPod)getByLocaleStatic(DATA_POD+prefix);
         }
     }
     
     /** 
      * Get a currently valid pod.. creating it if need be.
      * UI: does write informative notes to the ctx in case of a long delay.
+     
      */
     DataPod getPod(String prefix) {
-        return getPod(prefix, defaultPtype());
-    }
-    
-    DataPod getPod(String prefix, String ptype) {
         String loadString = "data was loaded.";
         synchronized(this) {
-            DataPod pod = getExistingPod(prefix, ptype);
+            DataPod pod = getExistingPod(prefix);
             if((pod != null) && (!pod.isValid(sm.lcr))) {
                 pod = null;
                 loadString = "data was re-loaded due to a new user submission.";
@@ -501,9 +422,7 @@ public class WebContext {
                 }
                 synchronized (staticStuff) {
                     pod.register(sm.lcr);
-//                    SoftReference sr = (SoftReference)getByLocaleStatic(DATA_POD+prefix+":"+ptype);  // GET******
-                      putByLocaleStatic(DATA_POD+prefix+":"+ptype, new SoftReference(pod)); // PUT******
-                      putByLocale("__keeper:"+prefix+":"+ptype, pod); // put into user's hash so it wont go out of scope
+                    putByLocaleStatic(DATA_POD+prefix, pod);
                 }
             }
             pod.touch();

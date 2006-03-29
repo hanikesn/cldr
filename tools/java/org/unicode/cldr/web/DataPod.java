@@ -156,8 +156,8 @@ public class DataPod {
             public int id = -1; // id of CLDR_DATA table row
             public List tests = null;
             public Vector examples = null; 
-            //public List examplesList = null;
             String references = null;
+            // anything else? userID? 
         }
         
         public Set items = new TreeSet(new Comparator() {
@@ -527,18 +527,18 @@ public class DataPod {
 		if(simple==true) {
 //            pod.loadStandard(ctx.sm.getEnglishFile()); //load standardcodes + english        
             CLDRDBSource ourSrc = (CLDRDBSource)ctx.getByLocale(SurveyMain.USER_FILE + SurveyMain.CLDRDBSRC, locale);
-            CheckCLDR checkCldr = (CheckCLDR)ctx.getByLocale(SurveyMain.USER_FILE + SurveyMain.CHECKCLDR+":"+ctx.defaultPtype());
+            CheckCLDR checkCldr = (CheckCLDR)ctx.getByLocale(SurveyMain.USER_FILE + SurveyMain.CHECKCLDR);
             if(checkCldr == null) {
                 throw new InternalError("checkCldr == null");
             }
             com.ibm.icu.dev.test.util.ElapsedTimer et;
             if(SHOW_TIME) {
                 et= new com.ibm.icu.dev.test.util.ElapsedTimer();
-                System.err.println("DP: Starting populate of " + locale + " // " + prefix+":"+ctx.defaultPtype());
+                System.err.println("DP: Starting populate of " + locale + " // " + prefix);
             }
-            pod.populateFrom(ourSrc, checkCldr, ctx.sm.getEnglishFile(),ctx.getOptionsMap());
+            pod.populateFrom(ourSrc, checkCldr, ctx.sm.getEnglishFile());
             if(SHOW_TIME) {
-                System.err.println("DP: Time taken to populate " + locale + " // " + prefix +":"+ctx.defaultPtype()+ " = " + et);
+                System.err.println("DP: Time taken to populate " + locale + " // " + prefix + " = " + et);
             }
 		} else {
 			throw new InternalError("non-simple pods not supported");
@@ -571,8 +571,7 @@ public class DataPod {
                               "^([^/]*)/([^/]*)/time$", "$1/time/$2",
                               "^([^/]*)/([^/]*)/date", "$1/date/$2",
                               "/alias$", "",
-                              "dateTimes/date/availablesItem", "available date formats:",
-                             /* "/date/availablesItem.*@_q=\"[0-9]*\"\\]\\[@id=\"([0-9]*)\"\\]","/availableDateFormats/$1" */
+                              "/date/availablesItem.*@_q=\"[0-9]*\"\\]\\[@id=\"([0-9]*)\"\\]","/availableDateFormats/$1"
 //                              "/date/availablesItem.*@_q=\"[0-9]*\"\\]","/availableDateFormats"
                             };
     private static Pattern fromto_p[] = new Pattern[fromto.length/2];
@@ -590,31 +589,24 @@ public class DataPod {
                                                     "Formats/decimalFormatLength/decimalFormat|"+
                                                     "Formats/scientificFormatLength/scientificFormat|"+
                                                     "dateTimes/dateTimeLength/|"+
-                                                    "Formats/timeFormatLength|"+
                                                     "/timeFormats/timeFormatLength|"+
-                                                    "/timeFormat|"+
                                                     "s/quarterContext|"+
                                                     "/dateFormats/dateFormatLength|"+
                                                     "/pattern|"+
                                                     "/monthContext|"+
-                                                    "/monthWidth|"+
-                                                    "/timeLength|"+
-                                                    "/quarterWidth|"+
                                                     "/dayContext|"+
                                                     "/dayWidth|"+
                                                     "day/|"+
-                                                    "date/|"+
                                                     "Format|"+
                                                     "s/field|"+
                                                     "\\[@draft=\"true\"\\]|"+ // ???
                                                     "\\[@alt=\"[^\"]*\"\\]|"+ // ???
-                                                    "/displayName$|"+  // for currency
-                                                    "/standard/standard$"     );
+                                                    "/displayName$|" + // for currency
+                                                    "/standard"    );
          mostPattern = Pattern.compile("^//ldml/localeDisplayNames.*|"+
                                               "^//ldml/characters/exemplarCharacters.*|"+
                                               "^//ldml/numbers.*|"+
-                                              "^//ldml/dates/timeZoneNames/zone.*|"+
-                                              "^//ldml/dates/calendar.*|"+
+                                              "^//ldml/dates.*|"+
                                               "^//ldml/identity.*");
         // what to exclude under 'misc' and calendars
          excludeAlways = Pattern.compile("^//ldml/segmentations.*|"+
@@ -623,7 +615,6 @@ public class DataPod {
                                                 ".*week/firstDay.*|"+
                                                 ".*week/weekendEnd.*|"+
                                                 ".*week/weekendStart.*|" +
-//                                                "^//ldml/dates/.*localizedPatternChars.*|" +
                                                 "^//ldml/posix/messages/.*expr$|" +
                                                 "^//ldml/dates/timeZoneNames/.*/GMT.*exemplarCity$|" +
                                                 "^//ldml/dates/.*default");// no defaults
@@ -641,18 +632,19 @@ public class DataPod {
     }
     
     private static final boolean SHOW_TIME=false;
-    public static final String FAKE_FLEX_THING = "available date formats: add NEW";
-    public static final String FAKE_FLEX_SUFFIX = "dateTimes/availableDateFormats/dateFormatItem[@id=\"NEW\"]";
+    public static final String FAKE_FLEX_THING = "dateTimes/availableDateFormats/NEW";
     public static final String FAKE_FLEX_XPATH = "//ldml/dates/calendars/calendar[@type=\"gregorian\"]/dateTimeFormats/availableFormats/dateFormatItem";
     
-    private void populateFrom(CLDRDBSource src, CheckCLDR checkCldr, CLDRFile engFile, Map options) {
+    private void populateFrom(CLDRDBSource src, CheckCLDR checkCldr, CLDRFile engFile) {
         init();
         XPathParts xpp = new XPathParts(null,null);
 //        System.out.println("[] initting from pod " + locale + " with prefix " + xpathPrefix);
         CLDRFile aFile = new CLDRFile(src, true);
+        Map options = new TreeMap();
+//        options.put("CheckCoverage.requiredLevel","modern"); // TODO: fix
         XPathParts pathParts = new XPathParts(null, null);
         XPathParts fullPathParts = new XPathParts(null, null);
-        List examplesResult = new ArrayList();
+        
         /*srl*/
         boolean ndebug = false;
         long lastTime = -1;
@@ -712,11 +704,8 @@ public class DataPod {
                     
                     // Add the fake 'dateTimes/availableDateFormats/new'
                     Pea myp = getPea(FAKE_FLEX_THING);
-                    String spiel = "<i>Use this item to add a new availableDateFormat</i>";
-                    myp.xpathSuffix = FAKE_FLEX_SUFFIX;
                     canName=false;
-                    myp.displayName = spiel;
-//                    myp.addItem(spiel, null, null);
+                    myp.addItem("<i>Use this item to add a new availableDateFormat</i>", null, null);
                 }
             }
         } else if(xpathPrefix.startsWith("//ldml/localeDisplayNames/types")) {
@@ -752,7 +741,7 @@ public class DataPod {
             } else if(excludeCalendars && (xpath.startsWith("//ldml/dates/calendars"))) {
 //if(ndebug)     System.err.println("ns1  "+(System.currentTimeMillis()-nextTime) + " " + xpath);
                 continue;
-            } else if(excludeTimeZones && (xpath.startsWith("//ldml/dates/timeZoneNames/zone"))) {
+            } else if(excludeTimeZones && (xpath.startsWith("//ldml/dates/timeZoneNames"))) {
 //if(ndebug)     System.err.println("ns1  "+(System.currentTimeMillis()-nextTime) + " " + xpath);
                 continue;
             } else if(!excludeCalendars && excludeGrego && (xpath.startsWith(SurveyMain.GREGO_XPATH))) {
@@ -761,11 +750,6 @@ public class DataPod {
             }
 
             String fullPath = aFile.getFullXPath(xpath);
-            
-            if(fullPath == null) {
-                System.err.println("DP:P Error: fullPath of " + xpath + " for locale " + locale + " returned null.");
-                fullPath = xpath;
-            }
 
             if(needFullPathPattern.matcher(xpath).matches()) {
                 xpath = fullPath; // draft and alt will be removed by the noisePattern .. 
@@ -894,10 +878,7 @@ public class DataPod {
             if(altProposed == null) {
                 // just work on the supers
                 if(superP.displayName == null) {
-                    if(xpathPrefix.startsWith("//ldml/localeDisplayNames/")||
-                       xpathPrefix.startsWith("//ldml/dates/timeZoneNames/zone")||
-                       (xpathPrefix.startsWith("//ldml/dates") && (-1==peaSuffixXpath.indexOf("/pattern"))
-                                                               && (-1==peaSuffixXpath.indexOf("availableFormats")))) {
+                    if(xpathPrefix.startsWith("//ldml/localeDisplayNames/")) {
                         superP.displayName = engFile.getStringValue(xpath(superP)); // isn't this what it's for?
                         /*
                         if(mixedType == false) {
@@ -971,7 +952,6 @@ public class DataPod {
                 (setInheritFrom.equals(XMLSource.CODE_FALLBACK_ID)); // don't flag errors from code fallback.
             if((checkCldr != null)&&(altProposed == null)) {
                 checkCldr.check(xpath, fullPath, value, options, checkCldrResult);
-                checkCldr.getExamples(xpath, fullPath, value, options, examplesResult);
             }
             DataPod.Pea.Item myItem;
  //if(ndebug)   System.err.println("n08  "+(System.currentTimeMillis()-nextTime));
@@ -984,13 +964,10 @@ public class DataPod {
                 for (Iterator it3 = checkCldrResult.iterator(); it3.hasNext();) {
                     CheckCLDR.CheckStatus status = (CheckCLDR.CheckStatus) it3.next();
                     if(status.getType().equals(status.exampleType)) {
-                        throw new InternalError("Not supposed to be any examples here.");
-                    /*
                         if(myItem.examples == null) {
                             myItem.examples = new Vector();
                         }
                         myItem.examples.add(addExampleEntry(new ExampleEntry(this,p,myItem,status)));
-                        */
                     } else if (!(isCodeFallback &&
                         (status.getCause() instanceof org.unicode.cldr.test.CheckForExemplars))) { 
                         // skip codefallback exemplar complaints (i.e. 'JPY' isn't in exemplars).. they'll show up in missing
@@ -1004,19 +981,6 @@ public class DataPod {
                 // set the parent
                 checkCldrResult = new ArrayList(); // can't reuse it if nonempty
             }
-            if(!examplesResult.isEmpty()) {
-                // reuse the same ArrayList  unless it contains something                
-                if(myItem.examples == null) {
-                    myItem.examples = new Vector();
-                }
-                for (Iterator it3 = examplesResult.iterator(); it3.hasNext();) {
-                    CheckCLDR.CheckStatus status = (CheckCLDR.CheckStatus) it3.next();                
-                    myItem.examples.add(addExampleEntry(new ExampleEntry(this,p,myItem,status)));
-                }
- //               myItem.examplesList = examplesResult;
-   //             examplesResult = new ArrayList(); // getExamples will clear it.
-            }
-
             myItem.inheritFrom=setInheritFrom;
             if((eRefs != null) && (!isInherited)) {
                 myItem.references = eRefs;

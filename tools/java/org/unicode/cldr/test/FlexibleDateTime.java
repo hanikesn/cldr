@@ -48,10 +48,10 @@ import com.ibm.icu.util.ULocale;
  */
 public class FlexibleDateTime {
     static final boolean DEBUG = false;
-    static final boolean SHOW_MATCHING = false;
-    static final boolean SHOW2 = false;
-    static final boolean SHOW_OO = false;
-    static final String SEPARATOR = "\r\n\t";
+    static boolean SHOW_MATCHING = false;
+    static boolean SHOW2 = false;
+    static boolean SHOW_OO = false;
+    static String SEPARATOR = "\r\n\t";
     
     /**
      * Test different ways of doing flexible date/times.
@@ -230,10 +230,10 @@ public class FlexibleDateTime {
 	    	Factory cldrFactory = Factory.make(Utility.MAIN_DIRECTORY, ".*");
 	    	CLDRFile supp = cldrFactory.make(CLDRFile.SUPPLEMENTAL_NAME, false);
 	    	XPathParts parts = new XPathParts(null, null);
-	    	for (Iterator it = supp.iterator("//supplementalData/metadata/alias/"); it.hasNext();) {
+	    	for (Iterator it = supp.iterator(); it.hasNext();) {
 	    		String path = (String) it.next();
 	    		//System.out.println(path);
-	    		//if (!path.startsWith("//supplementalData/metadata/alias/")) continue;
+	    		if (!path.startsWith("//supplementalData/metadata/alias/")) continue;
 	    		parts.set(supp.getFullXPath(path));
 	    		Map attributes = parts.getAttributes(3);
 	    		String type = (String) attributes.get("type");
