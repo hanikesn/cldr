@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.3/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
@@ -828,8 +828,8 @@
 		</types>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[a á ä b-e é ë f-i í ï ĳ j-o ó ö p-u ú ü v-z]</exemplarCharacters>
-		<exemplarCharacters alt="proposed" draft="true">[a á ä b-e é ë f-i í ï {ij} j-o ó ö p-u ú ü v-y ÿ z]</exemplarCharacters>
+		<exemplarCharacters>[a-záéíóúäëïöüĳ]</exemplarCharacters>
+		<exemplarCharacters alt="proposed" draft="true">[a-záéíóúäëïöüÿ{ij}]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -915,22 +915,6 @@
 						</dayWidth>
 					</dayContext>
 				</days>
-				<quarters>
-					<quarterContext type="format">
-						<quarterWidth type="abbreviated">
-							<quarter type="1" draft="true">K1</quarter>
-							<quarter type="2" draft="true">K2</quarter>
-							<quarter type="3" draft="true">K3</quarter>
-							<quarter type="4" draft="true">K4</quarter>
-						</quarterWidth>
-						<quarterWidth type="wide">
-							<quarter type="1" draft="true">1ste kwartaal</quarter>
-							<quarter type="2" draft="true">2de kwartaal</quarter>
-							<quarter type="3" draft="true">3de kwartaal</quarter>
-							<quarter type="4" draft="true">4de kwartaal</quarter>
-						</quarterWidth>
-					</quarterContext>
-				</quarters>
 				<eras>
 					<eraAbbr>
 						<era type="0">v. Chr.</era>
@@ -981,41 +965,13 @@
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
-				<dateTimeFormats>
-					<availableFormats>
-						<dateFormatItem id="HHmm" alt="proposed" draft="true">HH:mm</dateFormatItem>
-						<dateFormatItem id="HHmmss" alt="proposed" draft="true">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="KKmm" alt="proposed" draft="true">KK:mm a</dateFormatItem>
-						<dateFormatItem id="KKmmss" alt="proposed" draft="true">KK:mm:ss a</dateFormatItem>
-						<dateFormatItem id="MMMM" alt="proposed" draft="true">MMMM</dateFormatItem>
-						<dateFormatItem id="MMMdd" alt="proposed" draft="true">dd-MMM</dateFormatItem>
-						<dateFormatItem id="MMdd" alt="proposed" draft="true">MM-dd</dateFormatItem>
-						<dateFormatItem id="mmssSS" alt="proposed" draft="true">mm:ss,SS</dateFormatItem>
-						<dateFormatItem id="ww" alt="proposed" draft="true">ww</dateFormatItem>
-						<dateFormatItem id="yyMM" alt="proposed" draft="true">MM-yy</dateFormatItem>
-						<dateFormatItem id="yyMMMEEEd" alt="proposed" draft="true">EEE d MMM yy</dateFormatItem>
-						<dateFormatItem id="yyMMMEEEdd" alt="proposed" draft="true">EEE dd-MMM yy</dateFormatItem>
-						<dateFormatItem id="yyMMMd" alt="proposed" draft="true">d MMM yy</dateFormatItem>
-						<dateFormatItem id="yyMMd" alt="proposed" draft="true">d-MM-yy</dateFormatItem>
-						<dateFormatItem id="yyMMdd" alt="proposed" draft="true">dd-MM-yy</dateFormatItem>
-						<dateFormatItem id="yyMMdd" alt="proposed-1" draft="true">yy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyMMddHHmm" alt="proposed" draft="true">dd-MM-yy HH:mm</dateFormatItem>
-						<dateFormatItem id="yyQQQQ" alt="proposed" draft="true">QQQQ yy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMEEEEd" alt="proposed" draft="true">EEEE,d MMMM yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMEEEd" alt="proposed" draft="true">EEE d MMMM yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMd" alt="proposed" draft="true">d. MMMM yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMd" alt="proposed-1" draft="true">d MMMM yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd" alt="proposed" draft="true">d MMM yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd" alt="proposed-1" draft="true">d. MMM. yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMdd" alt="proposed" draft="true">dd-MM-yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMdd" alt="proposed-1" draft="true">yyyy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyyyMMddHHmmss" alt="proposed" draft="true">dd-MM-yyyy HH:mm:ss</dateFormatItem>
-					</availableFormats>
-				</dateTimeFormats>
 			</calendar>
 			<calendar type="hebrew">
 				<months>
 					<monthContext type="format">
+						<monthWidth type="abbreviated">
+							<alias source="locale" path="../monthWidth[@type='wide']"/>
+						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">Tisjrie</month>
 							<month type="2">Chesjwan</month>
@@ -1032,6 +988,9 @@
 			<calendar type="islamic">
 				<months>
 					<monthContext type="format">
+						<monthWidth type="abbreviated">
+							<alias source="locale" path="../monthWidth[@type='wide']"/>
+						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">Moeharram</month>
 							<month type="3">Rabiʻa al awal</month>
@@ -1051,15 +1010,11 @@
 					</eraAbbr>
 				</eras>
 			</calendar>
+			<calendar type="islamic-civil">
+				<alias source="locale" path="../calendar[@type='islamic']"/>
+			</calendar>
 		</calendars>
 		<timeZoneNames>
-			<!-- Mali -->
-			<zone type="Africa/Timbuktu">
-				<exemplarCity>Timboektoe</exemplarCity>
-			</zone>
-			<zone type="America/Argentina/ComodRivadavia">
-				<exemplarCity>Comodora Rivadavia</exemplarCity>
-			</zone>
 			<zone type="Antarctica/South_Pole">
 				<exemplarCity>Zuidpool</exemplarCity>
 			</zone>
@@ -1071,6 +1026,9 @@
 			-->
 			<zone type="America/Argentina/Rio_Gallegos">
 				<exemplarCity>Río Gallegos</exemplarCity>
+			</zone>
+			<zone type="America/Argentina/ComodRivadavia">
+				<exemplarCity>Comodora Rivadavia</exemplarCity>
 			</zone>
 			<zone type="America/Cordoba">
 				<exemplarCity>Córdoba</exemplarCity>
@@ -1182,6 +1140,10 @@
 					<daylight>GMT</daylight>
 				</short>
 				<exemplarCity>Casablanca</exemplarCity>
+			</zone>
+			<!-- Mali -->
+			<zone type="Africa/Timbuktu">
+				<exemplarCity>Timboektoe</exemplarCity>
 			</zone>
 			<!-- Mongolia -->
 			<zone type="Asia/Ulaanbaatar">
@@ -2167,7 +2129,7 @@
 		<messages>
 			<yesstr>ja:j</yesstr>
 			<nostr>nee:n</nostr>
-			<yesexpr draft="true">^(([yY]([eE][sS])?)|([jJ][aA]?))</yesexpr>
+			<yesexpr draft="true">^([yY]([eE][sS])?)|([jJ][aA]?)</yesexpr>
 			<noexpr draft="true">^[nN]([oO]|[eE][eE])?</noexpr>
 		</messages>
 	</posix>

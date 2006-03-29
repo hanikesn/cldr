@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.3/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
@@ -20,7 +20,9 @@
 					<t>Đ</t>
 					<reset>H</reset>
 					<p>ch</p>
+<!-- remove cH - it is not a valid combination
 					<t>cH</t>
+-->
 					<t>Ch</t>
 					<t>CH</t>
 					<reset>L</reset>
@@ -40,30 +42,6 @@
 					<t>Ž</t>
 					<p>ż</p>
 					<t>Ż</t>
-				</rules>
-			</collation  >
-			<collation type="standard" draft="true" alt="proposed">
-				<rules>
-					<reset>A</reset>
-					<p>ä</p>
-					<t>Ä</t>
-					<reset>C</reset>
-					<p>č</p>
-					<t>Č</t>
-					<reset>H</reset>
-					<p>ch</p>
-					<t>cH</t>
-					<t>Ch</t>
-					<t>CH</t>
-					<reset>O</reset>
-					<p>ô</p>
-					<t>Ô</t>
-					<reset>S</reset>
-					<p>š</p>
-					<t>Š</t>
-					<reset>Z</reset>
-					<p>ž</p>
-					<t>Ž</t>
 				</rules>
 			</collation  >
 		</collations>

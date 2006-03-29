@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.3/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
@@ -8,13 +8,6 @@
 	</identity>
 	<localeDisplayNames>
 		<languages>
-			<language type="anp">Angika</language>
-			<language type="frr">Northern Frisian</language>
-			<language type="frs">Eastern Frisian</language>
-			<language type="gsw">Swiss German</language>
-			<language type="krl">Karelian</language>
-			<language type="zxx">No linguistic content</language>
-
 			<language type="aa">Afar</language>
 			<language type="ab">Abkhazian</language>
 			<language type="ace">Achinese</language>
@@ -25,7 +18,6 @@
 			<language type="af">Afrikaans</language>
 			<language type="afa">Afro-Asiatic (Other)</language>
 			<language type="afh">Afrihili</language>
-			<language type="ain">Ainu</language>
 			<language type="ak">Akan</language>
 			<language type="akk">Akkadian</language>
 			<language type="ale">Aleut</language>
@@ -83,7 +75,6 @@
 			<language type="cai">Central American Indian (Other)</language>
 			<language type="car">Carib</language>
 			<language type="cau">Caucasian (Other)</language>
-			<language type="cch" draft="true">Atsam</language>
 			<language type="ce">Chechen</language>
 			<language type="ceb">Cebuano</language>
 			<language type="cel">Celtic (Other)</language>
@@ -119,7 +110,6 @@
 			<language type="de">German</language>
 			<language type="del">Delaware</language>
 			<language type="den">Slave</language>
-			<language type="den" alt="proposed" draft="true">Slavey</language>
 			<language type="dgr">Dogrib</language>
 			<language type="din">Dinka</language>
 			<language type="doi">Dogri</language>
@@ -157,7 +147,7 @@
 			<language type="frm">Middle French</language>
 			<language type="fro">Old French</language>
 			<language type="fur">Friulian</language>
-			<language type="fy">Western Frisian</language>
+			<language type="fy">Frisian</language>
 			<language type="ga">Irish</language>
 			<language type="gaa">Ga</language>
 			<language type="gay">Gayo</language>
@@ -166,7 +156,7 @@
 			<language type="gem">Germanic (Other)</language>
 			<language type="gez">Geez</language>
 			<language type="gil">Gilbertese</language>
-			<language type="gl">Galician</language>
+			<language type="gl">Gallegan</language>
 			<language type="gmh">Middle High German</language>
 			<language type="gn">Guarani</language>
 			<language type="goh">Old High German</language>
@@ -222,13 +212,10 @@
 			<language type="kaa">Kara-Kalpak</language>
 			<language type="kab">Kabyle</language>
 			<language type="kac">Kachin</language>
-			<language type="kaj" draft="true">Jju</language>
 			<language type="kam">Kamba</language>
 			<language type="kar">Karen</language>
 			<language type="kaw">Kawi</language>
 			<language type="kbd">Kabardian</language>
-			<language type="kcg" draft="true">Tyap</language>
-			<language type="kfo" draft="true">Koro</language>
 			<language type="kg">Kongo</language>
 			<language type="kha">Khasi</language>
 			<language type="khi">Khoisan (Other)</language>
@@ -311,7 +298,7 @@
 			<language type="mwl">Mirandese</language>
 			<language type="mwr">Marwari</language>
 			<language type="my">Burmese</language>
-			<language type="myn">Mayan languages</language>
+			<language type="myn">Mayan</language>
 			<language type="myv">Erzya</language>
 			<language type="na">Nauru</language>
 			<language type="nah">Nahuatl</language>
@@ -377,7 +364,6 @@
 			<language type="rom">Romany</language>
 			<language type="root">Root</language>
 			<language type="ru">Russian</language>
-			<language type="rup">Aromanian</language>
 			<language type="rw">Kinyarwanda</language>
 			<language type="sa">Sanskrit</language>
 			<language type="sad">Sandawe</language>
@@ -511,7 +497,6 @@
 			<script type="Bugi">Buginese</script>
 			<script type="Buhd">Buhid</script>
 			<script type="Cans">Unified Canadian Aboriginal Symbols</script>
-			<script type="Cham" references="R1">Cham</script>
 			<script type="Cher">Cherokee</script>
 			<script type="Cirt">Cirth</script>
 			<script type="Copt">Coptic</script>
@@ -592,7 +577,6 @@
 			<script type="Tfng">Tifinagh (Berber)</script>
 			<script type="Tglg">Tagalog</script>
 			<script type="Thaa">Thaana</script>
-			<script type="Thai" references="R1">Thai</script>
 			<script type="Tibt">Tibetan</script>
 			<script type="Ugar">Ugaritic</script>
 			<script type="Vaii">Vai</script>
@@ -621,15 +605,14 @@
 			<territory type="021">Northern America</territory>
 			<territory type="029">Caribbean</territory>
 			<territory type="030">Eastern Asia</territory>
-			<territory type="034">Southern Asia</territory>
 			<territory type="035">South-eastern Asia</territory>
 			<territory type="039">Southern Europe</territory>
 			<territory type="053">Australia and New Zealand</territory>
 			<territory type="054">Melanesia</territory>
 			<territory type="057">Micronesian Region</territory>
 			<territory type="061">Polynesia</territory>
+			<territory type="062">South-central Asia</territory>
 			<territory type="142">Asia</territory>
-			<territory type="143">Central Asia</territory>
 			<territory type="145">Western Asia</territory>
 			<territory type="150">Europe</territory>
 			<territory type="151">Eastern Europe</territory>
@@ -834,7 +817,6 @@
 			<territory type="PZ">Panama Canal Zone</territory>
 			<territory type="QA">Qatar</territory>
 			<territory type="QO">Outlying Oceania</territory>
-			<territory type="QU">European Union</territory>
 			<territory type="RE">Reunion</territory>
 			<territory type="RO">Romania</territory>
 			<territory type="RU">Russia</territory>
@@ -902,17 +884,15 @@
 		<variants>
 			<variant type="1901">Traditional German orthography</variant>
 			<variant type="1996">German orthography of 1996</variant>
+			<variant type="POSIX">Computer</variant>
+			<variant type="REVISED">Revised Orthography</variant>
 			<variant type="BOONT">Boontling</variant>
 			<variant type="GAULISH">Gaulish</variant>
 			<variant type="GUOYU">Mandarin or Standard Chinese</variant>
 			<variant type="HAKKA">Hakka</variant>
 			<variant type="LOJBAN">Lojban</variant>
 			<variant type="NEDIS">Natisone dialect</variant>
-			<variant type="POLYTONI">Polytonic</variant>
-			<variant type="POSIX">Computer</variant>
-			<variant type="REVISED">Revised Orthography</variant>
 			<variant type="ROZAJ">Resian</variant>
-			<variant type="SAAHO">Saho</variant>
 			<variant type="SCOUSE">Scouse</variant>
 			<variant type="XIANG">Xiang or Hunanese</variant>
 		</variants>
@@ -940,7 +920,7 @@
 	</localeDisplayNames>
 	<characters>
 		<exemplarCharacters>[a-z]</exemplarCharacters>
-		<exemplarCharacters type="auxiliary">[á à ă â å ä ā æ ç é è ĕ ê ë ē í ì ĭ î ï ī ñ ó ò ŏ ô ö ø ō œ ß ú ù ŭ û ü ū ÿ]</exemplarCharacters>
+		<exemplarCharacters type="auxiliary">[áà éè íì óò úù âêîôû æœ äëïöüÿ āēīōū ăĕĭŏŭ åø çñß]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>‘</quotationStart>
@@ -1032,22 +1012,6 @@
 						</dayWidth>
 					</dayContext>
 				</days>
-				<quarters>
-					<quarterContext type="format">
-						<quarterWidth type="abbreviated">
-							<quarter type="1">Q1</quarter>
-							<quarter type="2">Q2</quarter>
-							<quarter type="3">Q3</quarter>
-							<quarter type="4">Q4</quarter>
-						</quarterWidth>
-						<quarterWidth type="wide">
-							<quarter type="1">1st quarter</quarter>
-							<quarter type="2">2nd quarter</quarter>
-							<quarter type="3">3rd quarter</quarter>
-							<quarter type="4">4th quarter</quarter>
-						</quarterWidth>
-					</quarterContext>
-				</quarters>
 				<eras>
 					<eraNames>
 						<era type="0">Before Christ</era>
@@ -1083,7 +1047,7 @@
 				<timeFormats>
 					<timeFormatLength type="full">
 						<timeFormat>
-							<pattern>h:mm:ss a v</pattern>
+							<pattern>h:mm:ss a z</pattern>
 						</timeFormat>
 					</timeFormatLength>
 					<timeFormatLength type="long">
@@ -1102,38 +1066,6 @@
 						</timeFormat>
 					</timeFormatLength>
 				</timeFormats>
-				<dateTimeFormats>
-					<availableFormats>
-						<dateFormatItem id="HHmm" alt="proposed" draft="true">HH:mm</dateFormatItem>
-						<dateFormatItem id="HHmmss" alt="proposed" draft="true">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="KKmm" alt="proposed" draft="true">KK:mm a</dateFormatItem>
-						<dateFormatItem id="KKmmss" alt="proposed" draft="true">KK:mm:ss a</dateFormatItem>
-						<dateFormatItem id="MMMM" alt="proposed" draft="true">MMMM</dateFormatItem>
-						<dateFormatItem id="MMMdd" alt="proposed" draft="true">MMM dd</dateFormatItem>
-						<dateFormatItem id="MMdd" alt="proposed" draft="true">MM-dd</dateFormatItem>
-						<dateFormatItem id="mmssSS" alt="proposed" draft="true">mm:ss.SS</dateFormatItem>
-						<dateFormatItem id="ww" alt="proposed" draft="true">ww</dateFormatItem>
-						<dateFormatItem id="yyMM" alt="proposed" draft="true">MM/yy</dateFormatItem>
-						<dateFormatItem id="yyMMMEEEd" alt="proposed" draft="true">EEE, MMM d, yy</dateFormatItem>
-						<dateFormatItem id="yyMMMEEEdd" alt="proposed" draft="true">EEE dd/MMM yy</dateFormatItem>
-						<dateFormatItem id="yyMMMd" alt="proposed" draft="true">MMM d, yy</dateFormatItem>
-						<dateFormatItem id="yyMMdd" alt="proposed" draft="true">MM/dd/yy</dateFormatItem>
-						<dateFormatItem id="yyMMdd" alt="proposed-1" draft="true">yy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyMMddKKmm" alt="proposed" draft="true">MM/dd/yy KK:mm a</dateFormatItem>
-						<dateFormatItem id="yyMd" alt="proposed" draft="true">M/d/yy</dateFormatItem>
-						<dateFormatItem id="yyQQQQ" alt="proposed" draft="true">QQQQ yy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMEEEEd" alt="proposed" draft="true">EEEE,MMMM d, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMEEEEdd" alt="proposed" draft="true">EEEE,MMMM dd, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMEEEd" alt="proposed" draft="true">EEE, MMMM d, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMd" alt="proposed" draft="true">d. MMMM yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMd" alt="proposed-1" draft="true">MMMM d, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd" alt="proposed" draft="true">MMM d, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd" alt="proposed-1" draft="true">d. MMM. yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMdd" alt="proposed" draft="true">MM/dd/yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMdd" alt="proposed-1" draft="true">yyyy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyyyMMddHHmmss" alt="proposed" draft="true">MM/dd/yyyy HH:mm:ss</dateFormatItem>
-					</availableFormats>
-				</dateTimeFormats>
 				<fields>
 					<field type="day">
 						<relative type="0">Today</relative>
@@ -1225,6 +1157,21 @@
 					<standard>China Standard Time</standard>
 					<daylight>China Daylight Time</daylight>
 				</long>
+				<short>
+					<standard>CST</standard>
+					<daylight>CDT</daylight>
+				</short>
+			</zone>
+			<zone type="Europe/Dublin">
+				<long>              
+					<standard>Greenwich Mean Time</standard>
+					<daylight>Irish Summer Time</daylight>
+				</long>
+				<short>
+					<standard>GMT</standard>
+					<daylight>IST</daylight>
+				</short>
+				<exemplarCity>Dublin</exemplarCity>
 			</zone>
 			<zone type="Europe/Paris">
 				<long>
@@ -1249,23 +1196,16 @@
 					<daylight>BST</daylight>
 				</short>
 			</zone>
-			<zone type="Europe/Dublin">
-				<long>
-					<standard>Greenwich Mean Time</standard>
-					<daylight>Irish Summer Time</daylight>
-				</long>
-				<short>
-					<standard>GMT</standard>
-					<daylight>IST</daylight>
-				</short>
-				<exemplarCity>Dublin</exemplarCity>
-			</zone>
 			<!-- Note: the following is known to be sparse, and needs to be improved in the future -->
 			<zone type="Asia/Jerusalem">
 				<long>
 					<standard>Israel Standard Time</standard>
 					<daylight>Israel Daylight Time</daylight>
 				</long>
+				<short>
+					<standard>IST</standard>
+					<daylight>IDT</daylight>
+				</short>
 				<exemplarCity>Jerusalem</exemplarCity>
 			</zone>
 			<zone type="Asia/Tokyo">
@@ -1327,6 +1267,18 @@
 					<daylight>PDT</daylight>
 				</short>
 			</zone>
+			<zone type="America/Phoenix">
+				<long>
+					<generic>Mountain Time</generic>
+					<standard>Mountain Standard Time</standard>
+					<daylight>Mountain Daylight Time</daylight>
+				</long>
+				<short>
+					<generic>MT</generic>
+					<standard>MST</standard>
+					<daylight>MDT</daylight>
+				</short>
+			</zone>
 			<zone type="America/Denver">
 				<long>
 					<generic>Mountain Time</generic>
@@ -1349,6 +1301,18 @@
 					<generic>CT</generic>
 					<standard>CST</standard>
 					<daylight>CDT</daylight>
+				</short>
+			</zone>
+			<zone type="America/Indianapolis">
+				<long>
+					<generic>Eastern Time</generic>
+					<standard>Eastern Standard Time</standard>
+					<daylight>Eastern Daylight Time</daylight>
+				</long>
+				<short>
+					<generic>ET</generic>
+					<standard>EST</standard>
+					<daylight>EDT</daylight>
 				</short>
 			</zone>
 			<zone type="America/New_York">
@@ -1974,7 +1938,6 @@
 			</currency>
 			<currency type="PHP">
 				<displayName>Philippine Peso</displayName>
-                <symbol draft="true">Php</symbol>
 			</currency>
 			<currency type="PKR">
 				<displayName>Pakistan Rupee</displayName>
@@ -2001,14 +1964,9 @@
 				<displayName>Rhodesian Dollar</displayName>
 			</currency>
 			<currency type="ROL">
-				<displayName>Old Romanian Leu</displayName>
-				<!-- FYI Lei is the plural form of Leu. The currency symbol should be considered for change too. -->
-				<symbol>=0#Old lei|1#Old leu|1&lt;Old lei</symbol>
-			</currency>
-			<currency type="RON">
-				<!-- See the National Bank of Romania for details http://www.bnro.ro/def_en.htm -->
-				<displayName alt="proposed" draft="true">Romanian Leu</displayName>
-				<symbol alt="proposed" draft="true">=0#lei|1#leu|1&lt;lei</symbol>
+				<displayName>Romanian Leu</displayName>
+				<displayName alt="proposed" draft="true">Romanian Lei</displayName>
+				<symbol>leu</symbol>
 			</currency>
 			<currency type="RUB">
 				<displayName>Russian Ruble</displayName>
@@ -2272,9 +2230,6 @@
 			</currency>
 		</currencies>
 	</numbers>
-	<references>
-		<reference type="R1">Reference used only to prevent minimalization.</reference>
-	</references>
 </ldml>
 <!-- Old Comments. See root.xml for more info.
 URL: http://oss.software.ibm.com/cvs/icu/icu/source/data/locales/en.txt?only_with_tag=final-update-LDML

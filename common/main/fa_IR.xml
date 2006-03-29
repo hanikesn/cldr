@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.3/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
@@ -16,13 +16,11 @@
 			</calendar>
 			<calendar type="islamic">
 				<week>
-					<minDays count="1"/>
 					<firstDay day="sat" draft="true"/>
 				</week>
 			</calendar>
 			<calendar type="persian">
 				<week>
-					<minDays count="1"/>
 					<firstDay day="sat" draft="true"/>
 				</week>
 			</calendar>
@@ -38,7 +36,7 @@
 		<decimalFormats>
 			<decimalFormatLength>
 				<decimalFormat>
-					<pattern>#,##0.###;−#,##0.###</pattern>
+					<pattern>#,##0.###;-#,##0.###</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
@@ -52,7 +50,7 @@
 		<currencyFormats>
 			<currencyFormatLength>
 				<currencyFormat>
-					<pattern>#,##0.00 ¤;−#,##0.00 ¤</pattern>
+					<pattern>#,##0.00 ¤;-#,##0.00 ¤</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>

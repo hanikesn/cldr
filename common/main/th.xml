@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.3/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
@@ -426,7 +426,7 @@
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[​ ฯ ๆ ๎ ็-ํ ก-ฮ ะ-ฺ เ-ๅ]</exemplarCharacters>
+		<exemplarCharacters>[ก-ฺเ-๎​]</exemplarCharacters>
 	</characters>
 	<dates>
 		<localizedPatternChars>GanjkHmsSEDFwWxhKzAeugXZvcL</localizedPatternChars>
@@ -572,16 +572,6 @@
 						</dayWidth>
 					</dayContext>
 				</days>
-				<quarters>
-					<quarterContext type="format">
-						<quarterWidth type="wide">
-							<quarter type="1" draft="true">ไตรมาส 1</quarter>
-							<quarter type="2" draft="true">ไตรมาส 2</quarter>
-							<quarter type="3" draft="true">ไตรมาส 3</quarter>
-							<quarter type="4" draft="true">ไตรมาส 4</quarter>
-						</quarterWidth>
-					</quarterContext>
-				</quarters>
 				<am>ก่อนเที่ยง</am>
 				<pm>หลังเที่ยง</pm>
 				<eras>
@@ -645,41 +635,11 @@
 							<pattern>{1}, {0}</pattern>
 						</dateTimeFormat>
 					</dateTimeFormatLength>
-					<availableFormats>
-						<dateFormatItem id="HHmm" alt="proposed" draft="true">HH:mm</dateFormatItem>
-						<dateFormatItem id="HHmmss" alt="proposed" draft="true">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="KKmm" alt="proposed" draft="true">KK:mm a</dateFormatItem>
-						<dateFormatItem id="KKmmss" alt="proposed" draft="true">KK:mm:ss a</dateFormatItem>
-						<dateFormatItem id="MMMM" alt="proposed" draft="true">MMMM</dateFormatItem>
-						<dateFormatItem id="MMMdd" alt="proposed" draft="true">dd MMM</dateFormatItem>
-						<dateFormatItem id="MMdd" alt="proposed" draft="true">MM-dd</dateFormatItem>
-						<dateFormatItem id="mmssSS" alt="proposed" draft="true">mm:ss.SS</dateFormatItem>
-						<dateFormatItem id="ww" alt="proposed" draft="true">ww</dateFormatItem>
-						<dateFormatItem id="yyMMMd" alt="proposed" draft="true">d MMM yy</dateFormatItem>
-						<dateFormatItem id="yyMMdd" alt="proposed" draft="true">yy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyMMdd" alt="proposed-1" draft="true">dd/MM/yy</dateFormatItem>
-						<dateFormatItem id="yyMMddHHmm" alt="proposed" draft="true">dd/MM/yy HH:mm</dateFormatItem>
-						<dateFormatItem id="yyMd" alt="proposed" draft="true">d/M/yy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMd" alt="proposed" draft="true">d MMMM yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd" alt="proposed" draft="true">d MMM yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMdd" alt="proposed" draft="true">yyyy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyyyMMdd" alt="proposed-1" draft="true">dd/MM/yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMddHHmmss" alt="proposed" draft="true">dd/MM/yyyy HH:mm:ss</dateFormatItem>
-					</availableFormats>
 				</dateTimeFormats>
 			</calendar>
 		</calendars>
 		<timeZoneNames>
 			<hourFormat>+HHmm;-HHmm</hourFormat>
-			<zone type="America/Argentina/ComodRivadavia">
-				<exemplarCity>โคมอดริวาดาเวีย</exemplarCity>
-			</zone>
-			<!-- Micronesia
-				 United Kingdom
-			-->
-			<zone type="Europe/Belfast">
-				<exemplarCity>เบลฟัสต์</exemplarCity>
-			</zone>
 			<!-- Antarctica -->
 			<zone type="Antarctica/South_Pole">
 				<exemplarCity>ขั่วโลกใต้</exemplarCity>
@@ -696,6 +656,9 @@
 			</zone>
 			<zone type="America/Argentina/San_Juan">
 				<exemplarCity>ซานจวน</exemplarCity>
+			</zone>
+			<zone type="America/Argentina/ComodRivadavia">
+				<exemplarCity>โคมอดริวาดาเวีย</exemplarCity>
 			</zone>
 			<zone type="America/Argentina/La_Rioja">
 				<exemplarCity>ลาริโอจา</exemplarCity>
@@ -832,6 +795,12 @@
 			-->
 			<zone type="Europe/Madrid">
 				<exemplarCity draft="true">มาดริด</exemplarCity>
+			</zone>
+			<!-- Micronesia
+				 United Kingdom
+			-->
+			<zone type="Europe/Belfast">
+				<exemplarCity>เบลฟัสต์</exemplarCity>
 			</zone>
 			<zone type="Europe/London">
 				<exemplarCity draft="true">ลอนดอน</exemplarCity>
@@ -1045,8 +1014,8 @@
 		<messages>
 			<yesstr draft="true">ใช่</yesstr>
 			<nostr draft="true">ไม่</nostr>
-			<yesexpr draft="true">^(([yY]([eE][sS])?)|ใช่)</yesexpr>
-			<noexpr draft="true">^(([nN][oO]?)|ไม่)</noexpr>
+			<yesexpr draft="true">^([yY]([eE][sS])?)|ใช่</yesexpr>
+			<noexpr draft="true">^([nN][oO]?)|ไม่</noexpr>
 		</messages>
 	</posix>
 </ldml>

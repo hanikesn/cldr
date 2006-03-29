@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.3/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
@@ -121,7 +121,7 @@
 		</territories>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[‌ ‍ ় ঁ-ঃ ৺ ৸ ৹ ৲ ৳ ০ ১ ৴ ২ ৵ ৩ ৶ ৪ ৷ ৫-৯ অ-ঋ ৠ ঌ ৡ এ ঐ ও-ড ড় ঢ ঢ় ণ ত ৎ থ-ন প-য য় র ৰ ল ৱ শ-হ ঽ-ৄ ৢ ৣ ে ৈ ো-্ ৗ]</exemplarCharacters>
+		<exemplarCharacters>[ঁ-ঃঅ-ঌএঐও-নপ-রলশ-হ়-ৄেৈো-ৎৗড়ঢ়য়-ৣ০-৺‌‍]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -182,14 +182,6 @@
 				</days>
 				<am>পূর্বাহ্ণ</am>
 				<pm>অপরাহ্ণ</pm>
-				<dateTimeFormats>
-					<availableFormats>
-						<dateFormatItem id="MMMM" alt="proposed" draft="true">MMMM</dateFormatItem>
-						<dateFormatItem id="ww" alt="proposed" draft="true">ww</dateFormatItem>
-						<dateFormatItem id="yyMMdd" alt="proposed" draft="true">yy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyyyMMdd" alt="proposed" draft="true">yyyy-MM-dd</dateFormatItem>
-					</availableFormats>
-				</dateTimeFormats>
 			</calendar>
 		</calendars>
 	</dates>
@@ -207,8 +199,8 @@
 		<messages>
 			<yesstr draft="true">হ্য়াঁ</yesstr>
 			<nostr draft="true">না</nostr>
-			<yesexpr draft="true">^(([yY]([eE][sS])?)|হ্য়াঁ)</yesexpr>
-			<noexpr draft="true">^(([nN][oO]?)|না)</noexpr>
+			<yesexpr draft="true">^([yY]([eE][sS])?)|হ্য়াঁ</yesexpr>
+			<noexpr draft="true">^([nN][oO]?)|না</noexpr>
 		</messages>
 	</posix>
 </ldml>

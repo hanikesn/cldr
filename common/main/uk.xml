@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.3/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
@@ -493,7 +493,7 @@
 		</types>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[ʼ а-г ґ д е є ж-и і ї й-щ ь ю я]</exemplarCharacters>
+		<exemplarCharacters>[а-щюьяєіїґ ʼ]</exemplarCharacters>
 	</characters>
 	<dates>
 		<localizedPatternChars>GanjkHmsSEDFwWxhKzAeugXZvcL</localizedPatternChars>
@@ -659,56 +659,10 @@
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
-				<dateTimeFormats>
-					<availableFormats>
-						<dateFormatItem id="HHmm" alt="proposed" draft="true">HH:mm</dateFormatItem>
-						<dateFormatItem id="HHmmss" alt="proposed" draft="true">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="KKmm" alt="proposed" draft="true">KK:mm a</dateFormatItem>
-						<dateFormatItem id="KKmmss" alt="proposed" draft="true">KK:mm:ss a</dateFormatItem>
-						<dateFormatItem id="MMMM" alt="proposed" draft="true">MMMM</dateFormatItem>
-						<dateFormatItem id="MMMdd" alt="proposed" draft="true">MMM dd</dateFormatItem>
-						<dateFormatItem id="MMdd" alt="proposed" draft="true">MM-dd</dateFormatItem>
-						<dateFormatItem id="mmssSS" alt="proposed" draft="true">mm:ss,SS</dateFormatItem>
-						<dateFormatItem id="ww" alt="proposed" draft="true">ww</dateFormatItem>
-						<dateFormatItem id="yyMM" alt="proposed" draft="true">MM/yy</dateFormatItem>
-						<dateFormatItem id="yyMMMEEEd" alt="proposed" draft="true">EEE, MMM d, yy</dateFormatItem>
-						<dateFormatItem id="yyMMMEEEdd" alt="proposed" draft="true">EEE dd/MMM yy</dateFormatItem>
-						<dateFormatItem id="yyMMMd" alt="proposed" draft="true">MMM d, yy</dateFormatItem>
-						<dateFormatItem id="yyMMdd" alt="proposed" draft="true">dd/MM/yy</dateFormatItem>
-						<dateFormatItem id="yyMMdd" alt="proposed-1" draft="true">yy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyMMddHHmm" alt="proposed" draft="true">dd/MM/yy HH:mm</dateFormatItem>
-						<dateFormatItem id="yyMd" alt="proposed" draft="true">d/M/yy</dateFormatItem>
-						<dateFormatItem id="yyQQQQ" alt="proposed" draft="true">QQQQ yy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMEEEEd" alt="proposed" draft="true">EEEE,MMMM d, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMEEEEdd" alt="proposed" draft="true">EEEE,MMMM dd, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMEEEd" alt="proposed" draft="true">EEE, MMMM d, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMd" alt="proposed" draft="true">d. MMMM yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMMd" alt="proposed-1" draft="true">MMMM d, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd" alt="proposed" draft="true">MMM d, yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd" alt="proposed-1" draft="true">d. MMM. yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMdd" alt="proposed" draft="true">dd/MM/yyyy</dateFormatItem>
-						<dateFormatItem id="yyyyMMdd" alt="proposed-1" draft="true">yyyy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyyyMMddHHmmss" alt="proposed" draft="true">dd/MM/yyyy HH:mm:ss</dateFormatItem>
-					</availableFormats>
-				</dateTimeFormats>
 			</calendar>
 		</calendars>
 		<timeZoneNames>
 			<hourFormat>+HHmm;-HHmm</hourFormat>
-			<zone type="Africa/Timbuktu">
-				<exemplarCity>Тимбукту</exemplarCity>
-			</zone>
-			<zone type="America/Argentina/ComodRivadavia">
-				<exemplarCity>Комодоро-Ривадавія</exemplarCity>
-			</zone>
-			<!-- United Kingdom -->
-			<zone type="Europe/Belfast">
-				<exemplarCity draft="true">Белфаст</exemplarCity>
-			</zone>
-			<!-- Micronesia -->
-			<zone type="Pacific/Yap">
-				<exemplarCity>Яп</exemplarCity>
-			</zone>
 			<!-- Antarctica -->
 			<zone type="Antarctica/Rothera">
 				<exemplarCity draft="true">Ротера</exemplarCity>
@@ -752,6 +706,9 @@
 			</zone>
 			<zone type="America/Argentina/Ushuaia">
 				<exemplarCity draft="true">Ушуая</exemplarCity>
+			</zone>
+			<zone type="America/Argentina/ComodRivadavia">
+				<exemplarCity>Комодоро-Ривадавія</exemplarCity>
 			</zone>
 			<zone type="America/Argentina/La_Rioja">
 				<exemplarCity draft="true">Ла-Ріоха</exemplarCity>
@@ -965,6 +922,10 @@
 			<zone type="Europe/Madrid">
 				<exemplarCity draft="true">Мадрид</exemplarCity>
 			</zone>
+			<!-- Micronesia -->
+			<zone type="Pacific/Yap">
+				<exemplarCity>Яп</exemplarCity>
+			</zone>
 			<zone type="Pacific/Truk">
 				<exemplarCity draft="true">Трук</exemplarCity>
 			</zone>
@@ -973,6 +934,10 @@
 			</zone>
 			<zone type="Pacific/Kosrae">
 				<exemplarCity draft="true">Косрае</exemplarCity>
+			</zone>
+			<!-- United Kingdom -->
+			<zone type="Europe/Belfast">
+				<exemplarCity draft="true">Белфаст</exemplarCity>
 			</zone>
 			<zone type="Europe/London">
 				<exemplarCity draft="true">Лондон</exemplarCity>
@@ -1039,6 +1004,9 @@
 			<!-- Mali -->
 			<zone type="Africa/Bamako">
 				<exemplarCity draft="true">Бамако</exemplarCity>
+			</zone>
+			<zone type="Africa/Timbuktu">
+				<exemplarCity>Тимбукту</exemplarCity>
 			</zone>
 			<!-- Mongolia -->
 			<zone type="Asia/Hovd">
@@ -1969,7 +1937,9 @@
 			<currency type="UAH">
 				<displayName>Українська гривня</displayName>
 				<symbol>грн.</symbol>
-				<symbol alt="proposed" draft="true">UAH</symbol>
+			</currency>
+			<currency type="UAH" alt="proposed">
+				<symbol draft="true">UAH</symbol>
 			</currency>
 			<currency type="UAK">
 				<displayName>Український карбованець</displayName>
@@ -2088,8 +2058,8 @@
 		<messages>
 			<yesstr>так:т</yesstr>
 			<nostr>ні:н</nostr>
-			<yesexpr>^(([yY]([eE][sS])?)|([тТ]([аА][кК])?))</yesexpr>
-			<noexpr>^(([nN][oO]?)|([нН][іІ]?))</noexpr>
+			<yesexpr>^([yY]([eE][sS])?)|([тТ]([аА][кК])?)</yesexpr>
+			<noexpr>^([nN][oO]?)|([нН][іІ]?)</noexpr>
 		</messages>
 	</posix>
 </ldml>
