@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/data/dtd/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
@@ -352,12 +352,6 @@
 		<exemplarCharacters>[່-ໍ ໆ ກ ຂ ຄ ງ ຈ ຊ ຍ ດ-ທ ນ-ຟ ມ-ຣ ລ ວ ສ ຫ ໜ ໝ ອ-ູ ົ-ຽ ເ-ໄ]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u200B ໐-໙]</exemplarCharacters>
 	</characters>
-	<delimiters>
-		<quotationStart draft="unconfirmed">'</quotationStart>
-		<quotationEnd draft="unconfirmed">'</quotationEnd>
-		<alternateQuotationStart draft="unconfirmed">&quot;</alternateQuotationStart>
-		<alternateQuotationEnd draft="unconfirmed">&quot;</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<localizedPatternChars draft="unconfirmed">GanjkHmsSEDFwWxhKzAeugXZvcL</localizedPatternChars>
 		<calendars>

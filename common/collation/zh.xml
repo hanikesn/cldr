@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/data/dtd/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
 		<generation date="$Date$"/>
 		<language type="zh" /> 
 	</identity>
-		<collations validSubLocales="zh_Hans_CN zh_Hans_SG">
+		<collations validSubLocales="zh_CN zh_SG">
 			<default type="pinyin"/>
 			<collation type="standard" >
 				<rules>

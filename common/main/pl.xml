@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/data/dtd/ldml.dtd">
+<!DOCTYPE ldml SYSTEM "http://www.unicode.org/cldr/dtd/1.4/ldml.dtd">
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
@@ -384,12 +384,6 @@
 		<exemplarCharacters>[a ą b c ć d e ę f-l ł m n ń o ó p r s ś t u w-z ź ż]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[q v x]</exemplarCharacters>
 	</characters>
-	<delimiters>
-		<quotationStart>‘</quotationStart>
-		<quotationEnd>’</quotationEnd>
-		<alternateQuotationStart>„</alternateQuotationStart>
-		<alternateQuotationEnd>”</alternateQuotationEnd>
-	</delimiters>
 	<dates>
 		<calendars>
 			<calendar type="gregorian">
