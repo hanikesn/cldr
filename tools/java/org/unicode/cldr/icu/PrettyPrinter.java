@@ -18,7 +18,7 @@ import com.ibm.icu.impl.Utility;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.RuleBasedCollator;
-import com.ibm.icu.text.StringTransform;
+import com.ibm.icu.text.Transliterator;
 import com.ibm.icu.text.UTF16;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.text.UnicodeSetIterator;
@@ -37,7 +37,7 @@ public class PrettyPrinter {
     private boolean compressRanges = true;
     private String lastString = "";
     private UnicodeSet toQuote = new UnicodeSet(patternWhitespace);
-    private StringTransform quoter = null;
+    private Transliterator quoter = null;
     
     private Comparator ordering;
     private Comparator spaceComp = Collator.getInstance(ULocale.ROOT);
@@ -46,11 +46,11 @@ public class PrettyPrinter {
         ((RuleBasedCollator)spaceComp).setStrength(RuleBasedCollator.PRIMARY);
     }
     
-    public StringTransform getQuoter() {
+    public Transliterator getQuoter() {
         return quoter;
     }
 
-    public PrettyPrinter setQuoter(StringTransform quoter) {
+    public PrettyPrinter setQuoter(Transliterator quoter) {
         this.quoter = quoter;
         return this; // for chaining
     }
@@ -212,11 +212,10 @@ public class PrettyPrinter {
             firstCodePoint = lastCodePoint = -2;
         }
     }
-    
     PrettyPrinter appendQuoted(int codePoint) {
         if (toQuote.contains(codePoint)) {
             if (quoter != null) {
-                target.append(quoter.transform(UTF16.valueOf(codePoint)));
+                target.append(quoter.transliterate(UTF16.valueOf(codePoint)));
                 return this;
             }
             if (codePoint > 0xFFFF) {

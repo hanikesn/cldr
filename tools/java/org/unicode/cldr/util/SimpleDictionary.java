@@ -1,14 +1,4 @@
-/*
- **********************************************************************
- * Copyright (c) 2006-2007, Google and others.  All Rights Reserved.
- **********************************************************************
- * Author: Mark Davis
- **********************************************************************
- */
 package org.unicode.cldr.util;
-
-import org.unicode.cldr.util.Dictionary.DictionaryBuilder;
-import org.unicode.cldr.util.Dictionary.Matcher.Status;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -16,10 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
 /**
- * This is a simple dictionary class used for testing. Should be in the package usertest, but it's a pain to rename files in CVS.
+ * This is a simple dictionary class used for testing.
  * @author markdavis
  */
 public class SimpleDictionary<T> extends Dictionary<T> {
@@ -30,16 +19,9 @@ public class SimpleDictionary<T> extends Dictionary<T> {
   boolean done;
   private int matchCount;
   private CharSequence lastEntry = "";
-  
-  public static class SimpleDictionaryBuilder<T> implements DictionaryBuilder<T>{
-
-    public SimpleDictionary<T> make(Map<CharSequence, T> source) {
-      return new SimpleDictionary(source);
-    }
-    
-  }
+  private T matchValue;
  
-  private SimpleDictionary(Map<CharSequence,T> source) {
+  public SimpleDictionary(Map<CharSequence,T> source) {
     for (CharSequence text : source.keySet()) {
      addMapping(text, source.get(text));
     }
@@ -77,24 +59,23 @@ public class SimpleDictionary<T> extends Dictionary<T> {
     data.put(text, result);
   }
 
-  public Iterator<Entry<CharSequence, T>> getMapping() {
-    return Collections.unmodifiableMap(data).entrySet().iterator();
+  public Map<CharSequence, T> getMapping() {
+    return Collections.unmodifiableMap(data);
   }
 
-
   @Override
-  public Matcher<T> getMatcher() {
-    return new SimpleMatcher();
-  }
-  
-  private class SimpleMatcher extends Matcher<T> {
-
-  @Override
-  public Matcher<T> setOffset(int offset) {
+  public Dictionary setOffset(int offset) {
     possibleMatchesBefore = data.keySet();
     done = false;
     matchValue = null;
     return super.setOffset(offset);
+  }
+  
+  /**
+   * return the matchValue, or null if there is none.
+   */
+  public T getMatchValue() {
+    return matchValue;
   }
 
   /**
@@ -194,6 +175,18 @@ public class SimpleDictionary<T> extends Dictionary<T> {
     }
     return result;
   }
+  
+  public static boolean startsWith(CharSequence first, CharSequence possiblePrefix) {
+    if (first.length() < possiblePrefix.length()) {
+      return false;
+    }
+    for (int i = 0; i < possiblePrefix.length(); ++i) {
+      if (first.charAt(i) != possiblePrefix.charAt(i)) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   public boolean contains(CharSequence text) {
     return data.containsKey(text);
@@ -259,18 +252,4 @@ public class SimpleDictionary<T> extends Dictionary<T> {
 //    }
 //    
 //  }
-  }
-  
-  public static boolean startsWith(CharSequence first, CharSequence possiblePrefix) {
-    if (first.length() < possiblePrefix.length()) {
-      return false;
-    }
-    for (int i = 0; i < possiblePrefix.length(); ++i) {
-      if (first.charAt(i) != possiblePrefix.charAt(i)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
 }
