@@ -66,15 +66,18 @@ public class GenerateTransformCharts {
   static Map<String,UnicodeSet> scriptExtras = new HashMap<String,UnicodeSet>();
   static {
     scriptExtras.put("Arab", new UnicodeSet("[\u0660-\u0669]"));
-    scriptExtras.put("Hang", TestTransformsSimple.getRepresentativeHangul());
+    scriptExtras.put("Hang", new UnicodeSet("[{가가}{각아}{갂아}{갘카}{가까}{물엿}{굳이}{없었습}{무렷}{구디}{업섯씁}" +
+    "{아따}{아빠}{아짜}{아까}{아싸}{아차}{악사}{안자}{안하}{알가}{알마}{알바}{알사}{알타}{알파}{알하}{압사}{안가}{악싸}{안짜}{알싸}{압싸}{앆카}{았사}{알따}{알빠}]")
+    .addAll(TestTransformsSimple.getRepresentativeHangul()));
   }
+  static CLDRTransforms transforms;
 
   public static void main(String[] args) throws IOException {
     useICU = Utility.getProperty("USEICU", false);
     String filter = Utility.getProperty("filter", null);
     System.out.println("Start");
     //PrintWriter out = new PrintWriter(System.out);
-    CLDRTransforms.registerCldrTransforms(null, filter, verbose ? new PrintWriter(System.out) : null);
+    transforms = CLDRTransforms.getinstance(verbose ? new PrintWriter(System.out) : null, filter);
     try {
       showAllLatin();
       //doIndic();
@@ -310,7 +313,10 @@ public class GenerateTransformCharts {
       id = "NFD; " + id + "; NFC";
       return Transliterator.getInstance(id);
     }
-    return Transliterator.getInstance(id);
+    if (useICU) {
+      return Transliterator.getInstance(id);
+    }
+    return transforms.getInstance(id);
   }
 
   static PrintWriter index;
@@ -669,7 +675,7 @@ public class GenerateTransformCharts {
     // add extras
     extras = (UnicodeSet) scriptExtras.get(scriptName);
     if (extras != null) {
-      System.out.println(script + "\tAdding1: " + extras + "\n" + extras.toPattern(false));
+      System.out.println(script + "\tAdding1: " + extras);
       nonLatinUnicodeSet.addAll(extras);
     }
 
@@ -818,11 +824,16 @@ public class GenerateTransformCharts {
   }
 
   private static Set getAvailableTransliterators() {
-    Set results = new HashSet();
-    for (Enumeration e = Transliterator.getAvailableIDs(); e.hasMoreElements();) {
-      results.add(e.nextElement());
+    if (useICU ) {
+      Set results = new HashSet();
+      for (Enumeration e = Transliterator.getAvailableIDs(); e.hasMoreElements();) {
+        results.add(e.nextElement());
+      }
+      return results;
     }
-    return results;
+    else {
+      return transforms.getAvailableTransforms();
+    }
   }
 
   private static UnicodeSet BIDI_R = (UnicodeSet) new UnicodeSet("[[:Bidi_Class=R:][:Bidi_Class=AL:]]").freeze();
