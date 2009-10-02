@@ -441,7 +441,6 @@
 			<language type="srr">Serer</language>
 			<language type="ss">Swati</language>
 			<language type="ssa">Nilo-Saharan Language</language>
-			<language type="ssy">Saho</language>
 			<language type="st">Southern Sotho</language>
 			<language type="su">Sundanese</language>
 			<language type="suk">Sukuma</language>
@@ -1190,16 +1189,10 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-                                <dayPeriods>
-                                    <dayPeriodContext type="format">
-                                        <dayPeriodWidth type="wide">
-                                            <dayPeriod type ="am">AM</dayPeriod>
-                                            <dayPeriod type = "am" alt="variant">a.m.</dayPeriod>
-                                            <dayPeriod type ="pm">PM</dayPeriod>
-                                            <dayPeriod type = "pm" alt="variant">p.m.</dayPeriod>
-                                        </dayPeriodWidth>
-                                    </dayPeriodContext>
-                                </dayPeriods>
+				<am>AM</am>
+				<am alt="variant">a.m.</am>
+				<pm>PM</pm>
+				<pm alt="variant">p.m.</pm>
 				<eras>
 					<eraNames>
 						<era type="0">Before Christ</era>
