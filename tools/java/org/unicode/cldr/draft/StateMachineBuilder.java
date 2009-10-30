@@ -10,7 +10,7 @@ import java.util.Set;
 
 import org.unicode.cldr.draft.StateMachine.StateAction;
 import org.unicode.cldr.draft.StateMachine.StateObjectBuilderFactory;
-import com.ibm.icu.dev.test.util.UnicodeMap;
+import org.unicode.cldr.util.UnicodeMap;
 
 import com.ibm.icu.text.UTF16;
 import com.ibm.icu.text.UnicodeSet;
@@ -207,7 +207,7 @@ start:
     if (defaultAction == null) {
       throw new IllegalArgumentException("Missing default action for: " + numberToState.get(currentState));
     } else {
-      currentMap.putAll(currentMap.keySet(null), defaultAction);
+      currentMap.putAll(currentMap.getSet(null), defaultAction);
       defaultAction = null;
     }
   }

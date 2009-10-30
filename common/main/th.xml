@@ -988,7 +988,6 @@
 		<exemplarCharacters>[ฯ ๆ \u0E4E \u0E47-\u0E4D ก-ฮ ะ-\u0E3A เ-ๅ]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u200B a e g m n p q t]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[ฯ ก ข ฃ ค ฅ ฆ ง จ ฉ ช ซ ฌ ญ ฎ ฏ ฐ ฑ ฒ ณ ด ต ถ ท ธ น บ ป ผ ฝ พ ฟ ภ ม ย ร ฤ ล ฦ ว ศ ษ ส ห ฬ อ ฮ ะ า ำ เ แ โ ใ ไ ๅ]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>“</quotationStart>
@@ -1000,14 +999,8 @@
 		<calendars>
 			<default choice="buddhist"/>
 			<calendar type="buddhist">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraNames>
 						<era type="0">พุทธศักราช</era>
@@ -1091,24 +1084,12 @@
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="chinese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 			</calendar>
 			<calendar type="coptic">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
@@ -1216,14 +1197,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraNames>
 						<era type="0">ปีก่อนคริสต์ศักราช</era>
@@ -1336,40 +1311,22 @@
 							<greatestDifference id="d">d-d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a - h a</greatestDifference>
-							<greatestDifference id="h">h-h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
 							<greatestDifference id="a">H-H</greatestDifference>
-							<greatestDifference id="H">H-H</greatestDifference>
+							<greatestDifference id="h">H-H</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h:mm a - h:mm a</greatestDifference>
-							<greatestDifference id="h">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
 							<greatestDifference id="a">H:mm-H:mm</greatestDifference>
-							<greatestDifference id="H">H:mm-H:mm</greatestDifference>
+							<greatestDifference id="h">H:mm-H:mm</greatestDifference>
 							<greatestDifference id="m">H:mm-H:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h:mm a - h:mm a v</greatestDifference>
-							<greatestDifference id="h">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
 							<greatestDifference id="a">H:mm-H:mm v</greatestDifference>
-							<greatestDifference id="H">H:mm-H:mm v</greatestDifference>
+							<greatestDifference id="h">H:mm-H:mm v</greatestDifference>
 							<greatestDifference id="m">H:mm-H:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a - h a v</greatestDifference>
-							<greatestDifference id="h">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
 							<greatestDifference id="a">H-H v</greatestDifference>
-							<greatestDifference id="H">H-H v</greatestDifference>
+							<greatestDifference id="h">H-H v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">M-M</greatestDifference>
@@ -1486,7 +1443,6 @@
 							<month type="5">เชวัต</month>
 							<month type="6">อาดาร์  I</month>
 							<month type="7">อาดาร์</month>
-							<month type="7" yeartype="leap">อาดาร์  II</month>
 							<month type="8">นิสซาน</month>
 							<month type="9">อิยาร์</month>
 							<month type="10">สีวัน</month>
@@ -1496,14 +1452,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">ย.ศ.</era>
@@ -1529,14 +1479,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraNames>
 						<era type="0">ฮิจเราะห์ศักราช</era>
@@ -1547,14 +1491,8 @@
 				</eras>
 			</calendar>
 			<calendar type="japanese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraNames>
 						<era type="0">ทะอิกะ</era>
@@ -2071,14 +2009,8 @@
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="persian">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 			</calendar>
 		</calendars>
 		<timeZoneNames>

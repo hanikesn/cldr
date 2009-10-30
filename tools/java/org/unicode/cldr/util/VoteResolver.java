@@ -17,7 +17,6 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.ibm.icu.dev.test.util.Relation;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.util.ULocale;
 
@@ -73,8 +72,8 @@ public class VoteResolver<T> {
    * so that we know when new ones show up.
    */
   public enum Organization {
-    //apple, adobe, breton, google, ibm, gnome, pakistan, india, guest, iran_hci, kotoistus, lisa, openoffice_org, sil, sun, surveytool, utilika
-    adobe, apple, breton, gnome, google, guest, ibm, india, iran_hci, kotoistus, lisa, openoffice_org, pakistan, sil, sun, surveytool, utilika, yahoo;
+    //apple, adobe, google, ibm, gnome, pakistan, india, guest, iran_hci, kotoistus, lisa, openoffice_org, sun, surveytool, utilika
+    adobe, apple, gnome, google, guest, ibm, india, iran_hci, kotoistus, lisa, openoffice_org, pakistan, sun, surveytool, utilika, yahoo;
     
     public static Organization fromString(String name) {
     	name = name.toLowerCase().replace('-', '_').replace('.', '_');
@@ -705,7 +704,7 @@ public class VoteResolver<T> {
         }
       }
     }
-    CldrUtility.protectCollection(localeToOrganizationToMaxVote);
+    Utility.protectCollection(localeToOrganizationToMaxVote);
   }
 
   /**

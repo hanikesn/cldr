@@ -554,7 +554,6 @@
 		<exemplarCharacters>[𐐨-𐑏]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[a-z]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[𐐀 𐐁 𐐂 𐐃 𐐄 𐐅 𐐆 𐐇 𐐈 𐐉 𐐊 𐐋 𐐌 𐐍 𐐎 𐐏 𐐐 𐐑 𐐒 𐐓 𐐔 𐐕 𐐖 𐐗 𐐘 𐐙 𐐚 𐐛 𐐜 𐐝 𐐞 𐐟 𐐠 𐐡 𐐢 𐐣 𐐤 𐐥 𐐦 𐐧]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -696,16 +695,10 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">𐐈𐐣</dayPeriod>
-							<dayPeriod type="am" alt="variant">𐐰.𐑋.</dayPeriod>
-							<dayPeriod type="pm">𐐑𐐣</dayPeriod>
-							<dayPeriod type="pm" alt="variant">𐐹.𐑋.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>𐐈𐐣</am>
+				<am alt="variant">𐐰.𐑋.</am>
+				<pm>𐐑𐐣</pm>
+				<pm alt="variant">𐐹.𐑋.</pm>
 				<eras>
 					<eraNames>
 						<era type="0">𐐒𐐲𐑁𐐬𐑉 𐐗𐑉𐐴𐑅𐐻</era>

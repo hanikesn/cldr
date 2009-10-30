@@ -23,17 +23,16 @@ import org.unicode.cldr.unittest.TestAll.TestInfo;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CharacterFallbacks;
 import org.unicode.cldr.util.PrettyPath;
-import com.ibm.icu.dev.test.util.Relation;
-import com.ibm.icu.impl.Row;
-import com.ibm.icu.impl.Row.R2;
-
+import org.unicode.cldr.util.Relation;
+import org.unicode.cldr.util.Row;
 import org.unicode.cldr.util.StandardCodes;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.XMLFileReader;
 import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.util.CLDRFile.Factory;
 import org.unicode.cldr.util.CLDRFile.Status;
 import org.unicode.cldr.util.CLDRFile.WinningChoice;
+import org.unicode.cldr.util.Row.R2;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -73,21 +72,21 @@ public class TestBasic extends TestFmwk {
   .matcher("");
 
 
-  private final String           localeRegex = CldrUtility.getProperty("locale", ".*");
+  private final String           localeRegex = Utility.getProperty("locale", ".*");
 
-  private final boolean          showInfo          = CldrUtility.getProperty("showinfo", false);
+  private final boolean          showInfo          = Utility.getProperty("showinfo", false);
 
-  private final String           commonDirectory  = CldrUtility.COMMON_DIRECTORY;
+  private final String           commonDirectory  = Utility.COMMON_DIRECTORY;
 
-  private final String           mainDirectory = CldrUtility.MAIN_DIRECTORY;
+  private final String           mainDirectory = Utility.MAIN_DIRECTORY;
 
   //private final boolean          showForceZoom = Utility.getProperty("forcezoom", false);
 
-  private final boolean          resolved = CldrUtility.getProperty("resolved", false);
+  private final boolean          resolved = Utility.getProperty("resolved", false);
 
   private final Exception[]      internalException = new Exception[1];
 
-  private boolean pretty = CldrUtility.getProperty("pretty", true);
+  private boolean pretty = Utility.getProperty("pretty", true);
 
   public void TestDtds() throws IOException {
     checkDtds(commonDirectory + "/collation");
@@ -331,18 +330,18 @@ public class TestBasic extends TestFmwk {
 
     if (isVerbose()) {
 
-      System.out.format("Distinguishing Elements: %s" + CldrUtility.LINE_SEPARATOR, distinguishing);
-      System.out.format("Nondistinguishing Elements: %s" + CldrUtility.LINE_SEPARATOR, nonDistinguishing);
-      System.out.format("Skipped %s" + CldrUtility.LINE_SEPARATOR, skipAttributes);
+      System.out.format("Distinguishing Elements: %s" + Utility.LINE_SEPARATOR, distinguishing);
+      System.out.format("Nondistinguishing Elements: %s" + Utility.LINE_SEPARATOR, nonDistinguishing);
+      System.out.format("Skipped %s" + Utility.LINE_SEPARATOR, skipAttributes);
 
-      logln(CldrUtility.LINE_SEPARATOR + "Paths to skip in Survey Tool");
+      logln(Utility.LINE_SEPARATOR + "Paths to skip in Survey Tool");
       for (String path : pathToLocale.keySet()) {
         if (CheckCLDR.skipShowingInSurvey.matcher(path).matches()) {
           logln("Skipping: " + path);
         }
       }
 
-      logln(CldrUtility.LINE_SEPARATOR + "Paths to force zoom in Survey Tool");
+      logln(Utility.LINE_SEPARATOR + "Paths to force zoom in Survey Tool");
       for (String path : pathToLocale.keySet()) {
         if (CheckCLDR.FORCE_ZOOMED_EDIT.matcher(path).matches()) {
           logln("Forced Zoom Edit: " + path);
@@ -352,7 +351,7 @@ public class TestBasic extends TestFmwk {
 
     if (pretty) {
       if (showInfo) {
-        logln(CldrUtility.LINE_SEPARATOR + "Showing Path to PrettyPath mapping" + CldrUtility.LINE_SEPARATOR);
+        logln(Utility.LINE_SEPARATOR + "Showing Path to PrettyPath mapping" + Utility.LINE_SEPARATOR);
       }
       PrettyPath prettyPath = new PrettyPath().setShowErrors(true);
       Set<String> badPaths = new TreeSet();
@@ -367,7 +366,7 @@ public class TestBasic extends TestFmwk {
       // now remove root
 
       if (showInfo) {
-        logln(CldrUtility.LINE_SEPARATOR + "Showing Paths not in root" + CldrUtility.LINE_SEPARATOR);
+        logln(Utility.LINE_SEPARATOR + "Showing Paths not in root" + Utility.LINE_SEPARATOR);
       }
 
       CLDRFile root = cldrFactory.make("root", true);
@@ -469,7 +468,7 @@ public class TestBasic extends TestFmwk {
           if (set == null) {
             results.put(formatted, set = new TreeSet<R2>());
           }
-          set.add(Row.of(locale.toString(), i));
+          set.add(Row.make(locale.toString(), i));
         }
       }
     }

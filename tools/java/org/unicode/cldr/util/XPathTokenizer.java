@@ -80,31 +80,6 @@ public class XPathTokenizer{
         }
         return xpath;
     }
-    
-    public static StringBuilder deleteToken(StringBuilder xpath){
-      int length = xpath.length(); 
-      int current =  length - 1;
-      while(current > 0 ){
-          boolean inquote = false;
-          switch(xpath.charAt(current)){
-              case '\'':
-                  inquote = (inquote==true)? false:true;
-                  current--;
-                  break;
-              case '/':
-                  if(inquote==false){
-                      if(current < length){
-                          xpath.delete(current, length);
-                      }
-                      return xpath;
-                  }
-                  //fall through
-              default:
-                  current--;
-          }
-      }
-      return xpath;
-  }
     /**
      * This method will try to convert a relative xpath to absolute
      * xpath. 
@@ -113,9 +88,7 @@ public class XPathTokenizer{
      * @param xpath
      * @param fullPath
      * @return
-     * @deprecated - use version that takes StringBuilder instead
      */
-    @Deprecated
     public static StringBuffer relativeToAbsolute(String xpath, StringBuffer fullPath){
         if(!xpath.startsWith("..")){
             fullPath.setLength(0);
@@ -138,26 +111,5 @@ public class XPathTokenizer{
         return retVal;
     }
     
-    public static StringBuilder relativeToAbsolute(String xpath, StringBuilder fullPath){
-      if(!xpath.startsWith("..")){
-          fullPath.setLength(0);
-          fullPath.append(xpath);
-          return fullPath;
-      }
-      XPathTokenizer tokenizer = new XPathTokenizer(xpath);
-      String token=tokenizer.nextToken();
-      StringBuilder retVal = new StringBuilder();
-      retVal.append(fullPath);
-      while(token.equals("..")){
-          deleteToken(retVal);
-          token = tokenizer.nextToken();
-      }
-      while(token!=null){
-          retVal.append("/");
-          retVal.append(token);
-          token = tokenizer.nextToken();
-      }
-      return retVal;
-  }
 }
 

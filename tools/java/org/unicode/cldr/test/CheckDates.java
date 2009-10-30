@@ -2,6 +2,7 @@ package org.unicode.cldr.test;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -10,20 +11,32 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
+import org.unicode.cldr.test.CheckCLDR.CheckStatus;
+import org.unicode.cldr.test.CheckCLDR.SimpleDemo;
 import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
+import org.unicode.cldr.test.CheckNumbers.MyCheckStatus;
+import org.unicode.cldr.test.CheckNumbers.MyDemo;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.ICUServiceBuilder;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.XPathParts;
 
+import com.ibm.icu.dev.test.util.TransliteratorUtilities;
 import com.ibm.icu.dev.test.util.UnicodeProperty.PatternMatcher;
 import com.ibm.icu.text.BreakIterator;
-import com.ibm.icu.text.DateTimePatternGenerator;
+import com.ibm.icu.text.DateFormat;
+import org.unicode.cldr.test.DateTimePatternGenerator;
+import com.ibm.icu.text.DecimalFormat;
 import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.text.UTF16;
 import com.ibm.icu.text.UnicodeSet;
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.TimeZone;
 import com.ibm.icu.util.ULocale;
 
 public class CheckDates extends CheckCLDR {
@@ -124,7 +137,7 @@ public class CheckDates extends CheckCLDR {
           result.add(item);
       	}
       }
-      if (path.indexOf("[@type=\"narrow\"]") >= 0 && !path.contains("dayPeriod")) {
+      if (path.indexOf("[@type=\"narrow\"]") >= 0) {
         int end = isNarrowEnough(value, bi);
         String locale = getCldrFileToCheck().getLocaleID();
         // Per cldrbug 1456, skip the following test for Thai (or should we instead just change errorType to warningType in this case?)
@@ -364,7 +377,7 @@ public class CheckDates extends CheckCLDR {
     if (value.length() <= 1) return value.length();
     int current = 0;
     // skip any leading digits, for CJK
-    current = DIGIT.findIn(value, current, true);
+    current = Utility.scan(DIGIT, value, current);
     
     bi.setText(value);
     if (current != 0) bi.preceding(current+1); // get safe spot, possibly before
@@ -377,7 +390,7 @@ public class CheckDates extends CheckCLDR {
       return value.length();
     }
     // continue collecting any additional characters that are M or grapheme extend
-    current = XGRAPHEME.findIn(value, current, true);
+    current = Utility.scan(XGRAPHEME, value, current);
     // special case: allow 11 or 12
     //current = Utility.scan(DIGIT, value, current);		
 //  if (current != value.length() && DIGIT.containsAll(value) && value.length() == 2) {

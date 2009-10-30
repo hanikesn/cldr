@@ -1002,7 +1002,6 @@
 	</layout>
 	<characters>
 		<exemplarCharacters>[α ά β-ε έ ζ η ή θ ι ί ϊ ΐ κ-ο ό π ρ σ ς τ υ ύ ϋ ΰ φ-ω ώ]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>«</quotationStart>
@@ -1013,14 +1012,8 @@
 	<dates>
 		<calendars>
 			<calendar type="buddhist">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
@@ -1058,34 +1051,16 @@
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="chinese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 			</calendar>
 			<calendar type="coptic">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 			</calendar>
 			<calendar type="ethiopic">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
@@ -1213,14 +1188,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 				<eras>
 					<eraNames>
 						<era type="0">π.Χ.</era>
@@ -1441,14 +1410,8 @@
 				</fields>
 			</calendar>
 			<calendar type="hebrew">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">π.μ.</era>
@@ -1456,34 +1419,16 @@
 				</eras>
 			</calendar>
 			<calendar type="indian">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 			</calendar>
 			<calendar type="islamic">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 			</calendar>
 			<calendar type="japanese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
@@ -1518,24 +1463,12 @@
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="persian">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 			</calendar>
 			<calendar type="roc">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">π.μ.</dayPeriod>
-							<dayPeriod type="pm">μ.μ.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>π.μ.</am>
+				<pm>μ.μ.</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">Πριν R.O.C.</era>

@@ -966,7 +966,6 @@
 	</layout>
 	<characters>
 		<exemplarCharacters>[a á b c č d ď e é ě f-h {ch} i í j-n ň o ó p-r ř s š t ť u ú ů v-y ý z ž]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B C Č D E F G H {CH} I J K L M N O P Q R Ř S Š T U V W X Y Z Ž]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>„</quotationStart>
@@ -1134,14 +1133,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">dop.</dayPeriod>
-							<dayPeriod type="pm">odp.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>dop.</am>
+				<pm>odp.</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">př.Kr.</era>
@@ -1211,32 +1204,18 @@
 							<greatestDifference id="d" draft="unconfirmed">d.-d.</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="h" draft="unconfirmed">h-h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="H" draft="unconfirmed">H-H</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">H-H</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="h" draft="unconfirmed">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="H" draft="unconfirmed">H:mm-H:mm</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">H:mm-H:mm</greatestDifference>
 							<greatestDifference id="m" draft="unconfirmed">H:mm-H:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="h" draft="unconfirmed">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="H" draft="unconfirmed">H:mm-H:mm v</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">H:mm-H:mm v</greatestDifference>
 							<greatestDifference id="m" draft="unconfirmed">H:mm-H:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="h" draft="unconfirmed">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
-							<greatestDifference id="H" draft="unconfirmed">H-H v</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">H-H v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M" draft="unconfirmed">M.-M.</greatestDifference>

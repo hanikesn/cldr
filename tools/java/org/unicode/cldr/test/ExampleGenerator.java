@@ -1,10 +1,35 @@
 package org.unicode.cldr.test;
 
+import org.unicode.cldr.util.CLDRFile;
+import org.unicode.cldr.util.ICUServiceBuilder;
+import org.unicode.cldr.util.SimpleHtmlParser;
+import org.unicode.cldr.util.SupplementalData;
+import org.unicode.cldr.util.SupplementalDataInfo;
+import org.unicode.cldr.util.TimezoneFormatter;
+import org.unicode.cldr.util.Utility;
+import org.unicode.cldr.util.XPathParts;
+import org.unicode.cldr.util.SimpleHtmlParser.Type;
+import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo;
+import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo.Count;
+
+import com.ibm.icu.dev.test.util.TransliteratorUtilities;
+import org.unicode.cldr.icu.CollectionUtilities;
+import com.ibm.icu.text.Collator;
+import com.ibm.icu.text.DateFormat;
+import com.ibm.icu.text.DecimalFormat;
+import com.ibm.icu.text.MessageFormat;
+import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.text.UnicodeSet;
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.TimeZone;
+import com.ibm.icu.util.ULocale;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.IOException;
 import java.text.ChoiceFormat;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -16,32 +41,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.ibm.icu.dev.test.util.CollectionUtilities;
-import com.ibm.icu.dev.test.util.PrettyPrinter;
-
-import org.unicode.cldr.util.CLDRFile;
-import org.unicode.cldr.util.ICUServiceBuilder;
-import org.unicode.cldr.util.SimpleHtmlParser;
-import org.unicode.cldr.util.SupplementalData;
-import org.unicode.cldr.util.SupplementalDataInfo;
-import org.unicode.cldr.util.TimezoneFormatter;
-import org.unicode.cldr.util.CldrUtility;
-import org.unicode.cldr.util.XPathParts;
-import org.unicode.cldr.util.SimpleHtmlParser.Type;
-import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo;
-import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo.Count;
-
-import com.ibm.icu.dev.test.util.TransliteratorUtilities;
-import com.ibm.icu.text.Collator;
-import com.ibm.icu.text.DateTimePatternGenerator;
-import com.ibm.icu.text.DecimalFormat;
-import com.ibm.icu.text.MessageFormat;
-import com.ibm.icu.text.SimpleDateFormat;
-import com.ibm.icu.text.UnicodeSet;
-import com.ibm.icu.util.Calendar;
-import com.ibm.icu.util.TimeZone;
-import com.ibm.icu.util.ULocale;
 
 /**
  * Class to generate examples and help messages for the Survey tool (or console version).
@@ -304,7 +303,7 @@ public class ExampleGenerator {
   }
 
   static Date FIRST_INTERVAL = getDate(2008,1,13,5,7,9, GMT_ZONE_SAMPLE);
-  static Map<String,Date> SECOND_INTERVAL = CldrUtility.asMap(new Object[][]{
+  static Map<String,Date> SECOND_INTERVAL = Utility.asMap(new Object[][]{
           {"y", getDate(2009,2,14,17,8,10, GMT_ZONE_SAMPLE)},
           {"M", getDate(2008,2,14,17,8,10, GMT_ZONE_SAMPLE)},
           {"d", getDate(2008,1,14,17,8,10, GMT_ZONE_SAMPLE)},
@@ -708,12 +707,7 @@ public class ExampleGenerator {
       if (zoomed == Zoomed.IN) {
         UnicodeSet unicodeSet = new UnicodeSet(value);
         if (unicodeSet.size() < 500) {
-          result = new PrettyPrinter()
-        .setOrdering(col != null ? col : Collator.getInstance(ULocale.ROOT))
-        .setSpaceComparator(col != null ? col : Collator.getInstance(ULocale.ROOT)
-                .setStrength2(Collator.PRIMARY))
-                .setCompressRanges(false)
-                .format(unicodeSet);
+          result = CollectionUtilities.prettyPrint(unicodeSet, false, null, null, col, col);
         }
       }
     }
@@ -854,7 +848,7 @@ public class ExampleGenerator {
   public static class HelpMessages {
     private static final Matcher CLEANUP_BOOKMARK = Pattern.compile("[^a-zA-Z0-9]").matcher("");
 
-    private static final MessageFormat DEFAULT_HEADER_PATTERN = new MessageFormat("<p>{0}</p>" + CldrUtility.LINE_SEPARATOR);
+    private static final MessageFormat DEFAULT_HEADER_PATTERN = new MessageFormat("<p>{0}</p>" + Utility.LINE_SEPARATOR);
 
     private static final Matcher HEADER_HTML = Pattern.compile("<h[0-9]>(.*)</h[0-9]>").matcher("");
 
@@ -885,7 +879,7 @@ public class ExampleGenerator {
       currentColumn[1] = new StringBuilder();
       BufferedReader in;
       try {
-        in = CldrUtility.getUTF8Data(filename);
+        in = Utility.getUTF8Data(filename);
         Status status = Status.BASE;
         int count = 0;
         int tableCount = 0;
@@ -981,7 +975,7 @@ public class ExampleGenerator {
       for (int i = 0; i < keys.size(); ++i) {
         if (keys.get(i).reset(key).matches()) {
           if (result.length() != 0) {
-            result.append(CldrUtility.LINE_SEPARATOR);
+            result.append(Utility.LINE_SEPARATOR);
           }
           String value = values.get(i);
           if (headerPattern != null) {

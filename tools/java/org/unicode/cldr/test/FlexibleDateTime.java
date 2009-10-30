@@ -11,27 +11,34 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
+import org.unicode.cldr.test.DateTimePatternGenerator;
+import org.unicode.cldr.test.DateTimePatternGenerator.FormatParser;
+import org.unicode.cldr.test.DateTimePatternGenerator.VariableField;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.LocaleIDParser;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Log;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.util.CLDRFile.Factory;
 
+import com.ibm.icu.dev.test.util.BagFormatter;
+import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.DateFormat;
-import com.ibm.icu.text.DateTimePatternGenerator;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.text.UnicodeSet;
-import com.ibm.icu.text.DateTimePatternGenerator.FormatParser;
-import com.ibm.icu.text.DateTimePatternGenerator.VariableField;
 import com.ibm.icu.util.ULocale;
 
 /**
@@ -45,7 +52,7 @@ public class FlexibleDateTime {
     static final boolean SHOW_MATCHING = false;
     static final boolean SHOW2 = false;
     static final boolean SHOW_OO = false;
-    static final String SEPARATOR = CldrUtility.LINE_SEPARATOR + "\t";
+    static final String SEPARATOR = Utility.LINE_SEPARATOR + "\t";
     
     /**
      * Test different ways of doing flexible date/times.
@@ -221,7 +228,7 @@ public class FlexibleDateTime {
 	    Map languageAlias = new HashMap();
 	    Map territoryAlias = new HashMap();
 	    {
-	    	Factory cldrFactory = Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
+	    	Factory cldrFactory = Factory.make(Utility.MAIN_DIRECTORY, ".*");
 	    	CLDRFile supp = cldrFactory.make(CLDRFile.SUPPLEMENTAL_NAME, false);
 	    	XPathParts parts = new XPathParts(null, null);
 	    	for (Iterator it = supp.iterator("//supplementalData/metadata/alias/"); it.hasNext();) {
@@ -276,7 +283,7 @@ public class FlexibleDateTime {
         if (args.length > 0)
             filter = args[0];
         
-        Factory cldrFactory = Factory.make(CldrUtility.BASE_DIRECTORY
+        Factory cldrFactory = Factory.make(Utility.BASE_DIRECTORY
                 + "open_office/main/", filter);
         for (Iterator it = cldrFactory.getAvailable().iterator(); it.hasNext();) {
             String locale = (String) it.next();

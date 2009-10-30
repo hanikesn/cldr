@@ -32,11 +32,6 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.ibm.icu.dev.test.util.CollectionUtilities;
-import com.ibm.icu.dev.test.util.Relation;
-import com.ibm.icu.impl.Utility;
-
-import org.unicode.cldr.util.DayPeriodInfo.DayPeriod;
 import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo.Count;
 import org.unicode.cldr.util.XPathParts.Comments;
 import org.xml.sax.Attributes;
@@ -51,8 +46,12 @@ import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import com.ibm.icu.text.DateTimePatternGenerator;
+import org.unicode.cldr.icu.CollectionUtilities;
+
+import org.unicode.cldr.test.DateTimePatternGenerator;
+
 import com.ibm.icu.text.MessageFormat;
+import com.ibm.icu.text.PluralRules;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.Freezable;
 
@@ -130,7 +129,7 @@ public class CLDRFile implements Freezable, Iterable<String> {
       if (result.isDirectory()) {
         return result;
       }
-      return new File(CldrUtility.DEFAULT_SUPPLEMENTAL_DIRECTORY);
+      return new File(Utility.DEFAULT_SUPPLEMENTAL_DIRECTORY);
     }
     public String getFullPathAtDPath(String xpath) {
       String result = (String) xpath_fullXPath.get(xpath);
@@ -354,8 +353,7 @@ public class CLDRFile implements Freezable, Iterable<String> {
   }
 
   /**
-   * Clone the object. Produces unlocked version
-   * @see com.ibm.icu.dev.test.util.Freezeble
+   * Clone the object. Produces unlocked version (see Lockable).
    */
   public Object cloneAsThawed() {
     try {
@@ -594,7 +592,7 @@ public class CLDRFile implements Freezable, Iterable<String> {
     Log.logln(LOG_PROGRESS, "ADDING Comment: \t" + type + "\t" + xpath + " \t" + comment);
     if (xpath == null || xpath.length() == 0) {
       dataSource.getXpathComments().setFinalComment(
-              CldrUtility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(), XPathParts.NEWLINE, comment));
+              Utility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(), XPathParts.NEWLINE, comment));
     } else {
       xpath = getDistinguishingXPath(xpath, null, false);
       dataSource.getXpathComments().addComment(type, xpath, comment);
@@ -652,8 +650,8 @@ public class CLDRFile implements Freezable, Iterable<String> {
           if (cpath.startsWith("//ldml/identity/")) continue; // skip, since the error msg is not needed.
           String myVersion = getStringValue(cpath);
           if (myVersion == null || !newValue.equals(myVersion)) {
-            Log.logln(getLocaleID() + "\tDenied attempt to replace non-draft" + CldrUtility.LINE_SEPARATOR + "\tcurr: [" + cpath + ",\t"
-                    + myVersion + "]" + CldrUtility.LINE_SEPARATOR + "\twith: [" + newValue + "]");
+            Log.logln(getLocaleID() + "\tDenied attempt to replace non-draft" + Utility.LINE_SEPARATOR + "\tcurr: [" + cpath + ",\t"
+                    + myVersion + "]" + Utility.LINE_SEPARATOR + "\twith: [" + newValue + "]");
             continue;
           }
         }
@@ -683,11 +681,11 @@ public class CLDRFile implements Freezable, Iterable<String> {
     } else throw new IllegalArgumentException("Illegal operand: " + conflict_resolution);
 
     dataSource.getXpathComments().setInitialComment(
-            CldrUtility.joinWithSeparation(dataSource.getXpathComments().getInitialComment(),
+            Utility.joinWithSeparation(dataSource.getXpathComments().getInitialComment(),
                     XPathParts.NEWLINE, 
                     other.dataSource.getXpathComments().getInitialComment()));
     dataSource.getXpathComments().setFinalComment(
-            CldrUtility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(), 
+            Utility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(), 
                     XPathParts.NEWLINE, 
                     other.dataSource.getXpathComments().getFinalComment()));
     dataSource.getXpathComments().joinAll(other.dataSource.getXpathComments());
@@ -938,7 +936,7 @@ public class CLDRFile implements Freezable, Iterable<String> {
    */
   public CLDRFile appendFinalComment(String comment) {
     if (locked) throw new UnsupportedOperationException("Attempt to modify locked object");
-    dataSource.getXpathComments().setFinalComment(CldrUtility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(), XPathParts.NEWLINE, comment));
+    dataSource.getXpathComments().setFinalComment(Utility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(), XPathParts.NEWLINE, comment));
     return this;
   }
 
@@ -1072,7 +1070,6 @@ public class CLDRFile implements Freezable, Iterable<String> {
   public static boolean isDistinguishing(String elementName, String attribute) {
     boolean result =
       attribute.equals("key") 
-      || attribute.equals("indexSource") 
       || attribute.equals("request") 
       || attribute.equals("count") 
       || attribute.equals("id") 
@@ -1085,8 +1082,6 @@ public class CLDRFile implements Freezable, Iterable<String> {
       || attribute.equals("from")
       || attribute.equals("to")
       || attribute.equals("value")
-      || attribute.equals("yeartype")
-      || attribute.equals("numberSystem")
       || (attribute.equals("type") 
               && !elementName.equals("default") 
               && !elementName.equals("measurementSystem") 
@@ -1169,11 +1164,7 @@ public class CLDRFile implements Freezable, Iterable<String> {
      * @return
      */
     public static Factory make(String path, String string) {
-      try {
-        return SimpleFactory.make(path,string);
-      } catch (Exception e) {
-        throw new IllegalArgumentException("path: " + path + "; string: " + string, e);
-      }
+      return SimpleFactory.make(path,string);
     }
 
     /**
@@ -1603,7 +1594,7 @@ public class CLDRFile implements Freezable, Iterable<String> {
 
     private void warnOnOverride(String former, String formerPath) {
       System.out.println("\tWARNING: overriding " + target.getLocaleID() + "\t<" + former + ">\t\t" + formerPath + 
-              CldrUtility.LINE_SEPARATOR + "\twith " + target.getLocaleID() + "\t<" + lastChars + ">\t" + (currentFullXPath.equals(formerPath) ? "" : currentFullXPath));
+              Utility.LINE_SEPARATOR + "\twith " + target.getLocaleID() + "\t<" + lastChars + ">\t" + (currentFullXPath.equals(formerPath) ? "" : currentFullXPath));
     }
 
     private static String stripAfter(String input, String qName) {
@@ -1923,7 +1914,7 @@ public class CLDRFile implements Freezable, Iterable<String> {
         String newPath = fullTemp.toString();
         String value = dataSource.getValueAtPath(path);
         //value = value.changePath(fullTemp.toString());
-        if (SHOW_ALIAS_FIXES) System.out.println("Adding*: " + path + ";" + CldrUtility.LINE_SEPARATOR + "\t" + newPath + ";" + CldrUtility.LINE_SEPARATOR + "\t" 
+        if (SHOW_ALIAS_FIXES) System.out.println("Adding*: " + path + ";" + Utility.LINE_SEPARATOR + "\t" + newPath + ";" + Utility.LINE_SEPARATOR + "\t" 
                 + dataSource.getValueAtPath(path));
         stuffToAdd.put(newPath, value);
         // to do, fix path
@@ -2228,25 +2219,19 @@ public class CLDRFile implements Freezable, Iterable<String> {
   // note: run FindDTDOrder to get this list
   // TODO, convert to use SupplementalInfo
 
+  static MapComparator elementOrdering = (MapComparator) new MapComparator()
+  .add(
+          "ldml alternate attributeOrder attributes blockingItems calendarPreference calendarSystem character character-fallback codePattern codesByTerritory comment context cp deprecatedItems distinguishingItems elementOrder first_variable fractions identity info keyMap languageAlias languageCodes languageCoverage languagePopulation last_variable first_tertiary_ignorable last_tertiary_ignorable first_secondary_ignorable last_secondary_ignorable first_primary_ignorable last_primary_ignorable first_non_ignorable last_non_ignorable first_trailing last_trailing likelySubtag mapKeys mapTimezones mapTypes mapZone numberingSystem pluralRule pluralRules postCodeRegex reference region scriptAlias scriptCoverage serialElements substitute suppress tRule telephoneCountryCode territoryAlias territoryCodes territoryCoverage currencyCoverage timezone timezoneCoverage transform typeMap usesMetazone validity alias appendItem base beforeCurrency afterCurrency currencyMatch dateFormatItem day defaultNumberingSystem deprecated distinguishing blocking coverageAdditions era eraNames eraAbbr eraNarrow exemplarCharacters fallback field generic greatestDifference height hourFormat hoursFormat gmtFormat gmtZeroFormat intervalFormatFallback intervalFormatItem key localeDisplayNames layout localeDisplayPattern languages localePattern localeSeparator localizedPatternChars dateRangePattern calendars long mapping measurementSystem measurementSystemName messages minDays firstDay month months monthNames monthAbbr days dayNames dayAbbr orientation inList inText paperSize pattern displayName quarter quarters quotationStart quotationEnd alternateQuotationStart alternateQuotationEnd rbnfrule regionFormat fallbackFormat abbreviationFallback preferenceOrdering relative reset p pc rule ruleset rulesetGrouping s sc scripts segmentation settings short commonlyUsed exemplarCity singleCountries default calendar collation currency currencyFormat currencySpacing currencyFormatLength dateFormat dateFormatLength dateTimeFormat dateTimeFormatLength availableFormats appendItems dayContext dayWidth decimalFormat decimalFormatLength intervalFormats monthContext monthWidth percentFormat percentFormatLength quarterContext quarterWidth scientificFormat scientificFormatLength skipDefaultLocale defaultContent standard daylight suppress_contractions optimize rules surroundingMatch insertBetween symbol decimal group list percentSign nativeZeroDigit patternDigit plusSign minusSign exponential perMille infinity nan currencyDecimal currencyGroup symbols decimalFormats scientificFormats percentFormats currencyFormats currencies t tc q qc i ic extend territories timeFormat timeFormatLength timeZoneNames type unit unitPattern variable attributeValues variables segmentRules variantAlias variants keys types measurementSystemNames codePatterns version generation cldrVersion currencyData language script territory territoryContainment languageData territoryInfo postalCodeData calendarData calendarPreferenceData variant week am pm eras dateFormats timeFormats dateTimeFormats fields weekData measurementData timezoneData characters delimiters measurement dates numbers transforms metadata codeMappings likelySubtags metazoneInfo plurals telephoneCodeData numberingSystems bcp47KeywordMappings units collations posix segmentations rbnf references weekendStart weekendEnd width x yesstr nostr yesexpr noexpr zone metazone special zoneAlias zoneFormatting zoneItem supplementalData"
+          .split("\\s+"))
+          .setErrorOnMissing(false)
+          .freeze();
 
   static MapComparator attributeOrdering = (MapComparator) new MapComparator()
   .add(
-          // START MECHANICALLY attributeOrdering GENERATED BY FindDTDOrder
           "_q type id choice key registry source target path day date version count lines characters before from to iso4217 mzone number time casing list uri digits rounding iso3166 hex request direction alternate backwards caseFirst caseLevel hiraganaQuarternary hiraganaQuaternary variableTop normalization numeric strength elements element attributes attribute attributeValue contains multizone order other replacement scripts services territories territory aliases tzidVersion value values variant variants visibility alpha3 code end exclude fips10 gdp internet literacyPercent locales population writingPercent populationPercent officialStatus start used validSubLocales standard references alt draft"
-          // END MECHANICALLY attributeOrdering GENERATED BY FindDTDOrder
           .split("\\s+"))
           .setErrorOnMissing(false)
           .freeze();
-
-  static MapComparator elementOrdering = (MapComparator) new MapComparator()
-  .add(
-          // START MECHANICALLY elementOrdering GENERATED BY FindDTDOrder
-					"ldml alternate attributeOrder attributes blockingItems calendarPreference calendarSystem character character-fallback codePattern codesByTerritory comment context cp dayPeriod dayPeriodRule dayPeriodRules dayPeriodWidth deprecatedItems distinguishingItems elementOrder first_variable fractions identity indexSeparator compressedIndexSeparator indexRangePattern indexLabelBefore indexLabelAfter indexLabel info keyMap languageAlias languageCodes languageCoverage languageMatch languageMatches languagePopulation last_variable first_tertiary_ignorable last_tertiary_ignorable first_secondary_ignorable last_secondary_ignorable first_primary_ignorable last_primary_ignorable first_non_ignorable last_non_ignorable first_trailing last_trailing likelySubtag mapKeys mapTimezones mapTypes mapZone numberingSystem pluralRule pluralRules postCodeRegex reference region scriptAlias scriptCoverage serialElements substitute suppress tRule telephoneCountryCode territoryAlias territoryCodes territoryCoverage currencyCoverage timezone timezoneCoverage transform typeMap usesMetazone validity alias appendItem base beforeCurrency afterCurrency currencyMatch dateFormatItem day dayPeriodContext defaultNumberingSystem deprecated distinguishing blocking coverageAdditions era eraNames eraAbbr eraNarrow exemplarCharacters fallback field generic greatestDifference height hourFormat hoursFormat gmtFormat gmtZeroFormat indexLabels intervalFormatFallback intervalFormatItem key listPattern listPatternPart localeDisplayNames layout localeDisplayPattern languages localePattern localeSeparator localizedPatternChars dateRangePattern calendars long mapping measurementSystem measurementSystemName messages minDays firstDay month months monthNames monthAbbr days dayNames dayAbbr orientation inList inText paperSize pattern displayName quarter quarters quotationStart quotationEnd alternateQuotationStart alternateQuotationEnd rbnfrule regionFormat fallbackFormat abbreviationFallback preferenceOrdering relative reset p pc rule ruleset rulesetGrouping s sc scripts segmentation settings short commonlyUsed exemplarCity singleCountries default calendar collation currency currencyFormat currencySpacing currencyFormatLength dateFormat dateFormatLength dateTimeFormat dateTimeFormatLength availableFormats appendItems dayContext dayWidth decimalFormat decimalFormatLength intervalFormats monthContext monthWidth percentFormat percentFormatLength quarterContext quarterWidth scientificFormat scientificFormatLength skipDefaultLocale defaultContent standard daylight suppress_contractions optimize rules surroundingMatch insertBetween symbol decimal group list percentSign nativeZeroDigit patternDigit plusSign minusSign exponential perMille infinity nan currencyDecimal currencyGroup symbols decimalFormats scientificFormats percentFormats currencyFormats currencies t tc q qc i ic extend territories timeFormat timeFormatLength timeZoneNames type unit unitPattern variable attributeValues variables segmentRules variantAlias variants keys types measurementSystemNames codePatterns version generation cldrVersion currencyData language script territory territoryContainment languageData territoryInfo postalCodeData calendarData calendarPreferenceData variant week am pm dayPeriods eras dateFormats timeFormats dateTimeFormats fields weekData measurementData timezoneData characters delimiters measurement dates numbers transforms metadata codeMappings likelySubtags metazoneInfo plurals telephoneCodeData numberingSystems bcp47KeywordMappings units listPatterns collations posix segmentations rbnf references languageMatching dayPeriodRuleSet weekendStart weekendEnd width x yesstr nostr yesexpr noexpr zone metazone special zoneAlias zoneFormatting zoneItem supplementalData"
-					// END MECHANICALLY elementOrdering GENERATED BY FindDTDOrder
-          .split("\\s+"))
-          .setErrorOnMissing(false)
-          .freeze();
-
   static MapComparator valueOrdering = (MapComparator) new MapComparator().setErrorOnMissing(false).freeze();
   /*
 
@@ -2434,7 +2419,6 @@ public class CLDRFile implements Freezable, Iterable<String> {
     {"*", "alt"},
     {"*", "iso4217"},
     {"*", "iso3166"},
-    {"*", "indexSource"},
     {"default", "type"},
     {"measurementSystem", "type"},
     {"mapping", "type"},
@@ -2988,22 +2972,6 @@ public class CLDRFile implements Freezable, Iterable<String> {
         toAddTo.add(currencyPattern);
         for (String unit : codes) {
           toAddTo.add("//ldml/numbers/currencies/currency[@type=\"" + unit + "\"]/displayName[@count=\"" + count + "\"]");
-        }
-      }
-    }
-    // dayPeriods
-    String locale = getLocaleID();
-    DayPeriodInfo dayPeriods = supplementalData.getDayPeriods(locale);
-
-    for (String context : new String[] {"format", "stand-alone"}) {
-      for (String width : new String[] {"narrow", "abbreviated", "wide"}) {
-        LinkedHashSet<DayPeriod> items = new LinkedHashSet(dayPeriods.getPeriods());
-        for (DayPeriod dayPeriod : items) {
-          //ldml/dates/calendars/calendar[@type="gregorian"]/dayPeriods/dayPeriodContext[@type="format"]/dayPeriodWidth[@type="wide"]/dayPeriod[@type="am"]
-          toAddTo.add("//ldml/dates/calendars/calendar[@type=\"gregorian\"]/dayPeriods/" +
-                  "dayPeriodContext[@type=\""  + context 
-                  + "\"]/dayPeriodWidth[@type=\"" + width
-                  + "\"]/dayPeriod[@type=\"" + dayPeriod + "\"]");
         }
       }
     }

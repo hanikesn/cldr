@@ -24,8 +24,8 @@ import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.Counter;
 import org.unicode.cldr.util.DelegatingIterator;
 import org.unicode.cldr.util.EscapingUtilities;
-import com.ibm.icu.dev.test.util.Relation;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Relation;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.VoteResolver;
 import org.unicode.cldr.util.CLDRFile.Factory;
 import org.unicode.cldr.util.VoteResolver.CandidateInfo;
@@ -105,12 +105,7 @@ public class TestUtilities extends TestFmwk {
 
   public void TestCounter() {
     Counter<String> counter = new Counter<String>(true);
-    Comparator<String> uca = new Comparator<String>() {
-        Collator col = Collator.getInstance(ULocale.ENGLISH);
-        public int compare(String o1, String o2) {
-            return col.compare(o1, o2);
-        }
-    };
+    Comparator<String> uca = Collator.getInstance(ULocale.ENGLISH);
     InverseComparator ucaDown = new InverseComparator(uca);
     
     counter.add("c", 95);
@@ -124,7 +119,7 @@ public class TestUtilities extends TestFmwk {
     assertEquals("getCount(a)", counter.getTotal(), 338);
     assertEquals("getItemCount", counter.getItemCount(), 4);
 
-    assertEquals("getMap", "{a=95, b=151, c=95, d=-3}",counter.toString());
+    assertEquals("getMap", "{a=95, b=151, c=95, d=-3}",counter.getMap().toString());
 
     assertEquals("getKeysetSortedByKey", Arrays.asList("a", "b", "c", "d"), new ArrayList(counter
             .getKeysetSortedByKey()));
@@ -157,9 +152,9 @@ public class TestUtilities extends TestFmwk {
   public void TestVoteResolverData() {
     final PrintWriter errorLogPrintWriter = this.getErrorLogPrintWriter();
     final PrintWriter logPrintWriter = this.getLogPrintWriter();
-    String userFile = CldrUtility.getProperty("usersxml", CldrUtility.BASE_DIRECTORY + "/incoming/vetted/usersa/usersa.xml");
-    String votesDirectory = CldrUtility.getProperty("votesxml", CldrUtility.BASE_DIRECTORY + "/incoming/vetted/votes/");
-    String vettedDirectory = CldrUtility.getProperty("vetted", CldrUtility.BASE_DIRECTORY + "/incoming/vetted/main/");
+    String userFile = Utility.getProperty("usersxml", Utility.BASE_DIRECTORY + "/incoming/vetted/usersa/usersa.xml");
+    String votesDirectory = Utility.getProperty("votesxml", Utility.BASE_DIRECTORY + "/incoming/vetted/votes/");
+    String vettedDirectory = Utility.getProperty("vetted", Utility.BASE_DIRECTORY + "/incoming/vetted/main/");
     
     PathValueInfo.voteInfo = VoteResolver.getIdToPath(votesDirectory + "xpathTable.xml");
     Factory factory = CLDRFile.Factory.make(vettedDirectory, ".*");
@@ -209,7 +204,7 @@ public class TestUtilities extends TestFmwk {
     return String.valueOf(item);
   }
   
-  static final boolean SHOW_DETAILS = CldrUtility.getProperty("showdetails", false);
+  static final boolean SHOW_DETAILS = Utility.getProperty("showdetails", false);
 
   private void checkLocaleVotes(Factory factory, final String locale, String votesDirectory, PrintWriter errorLog, PrintWriter warningLog) {
     //logln("*** Locale " + locale + ": \t***");
@@ -423,7 +418,7 @@ public class TestUtilities extends TestFmwk {
 
   public void TestVoteResolver() {
     // to make it easier to debug failures, the first digit is an org, second is the individual in that org, and third is the voting weight.
-    Map<Integer, VoterInfo> testdata = (Map<Integer, VoterInfo>) CldrUtility.asMap(new Object[][] {
+    Map<Integer, VoterInfo> testdata = (Map<Integer, VoterInfo>) Utility.asMap(new Object[][] {
       { 801, new VoterInfo(Organization.guest, Level.street, "O. Henry") }, 
       { 701, new VoterInfo(Organization.gnome, Level.street, "S. Henry") }, 
       { 404, new VoterInfo(Organization.google, Level.vetter, "J. Smith") },

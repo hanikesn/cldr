@@ -18,8 +18,7 @@ import org.unicode.cldr.util.InternalCldrException;
 import org.unicode.cldr.util.XMLSource;
 import org.unicode.cldr.util.CLDRFile.Status;
 
-import com.ibm.icu.dev.test.util.CollectionUtilities;
-import com.ibm.icu.dev.test.util.PrettyPrinter;
+import org.unicode.cldr.icu.CollectionUtilities;
 
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.Collator;
@@ -57,7 +56,6 @@ public class CheckForExemplars extends CheckCLDR {
           "|fallbackFormat" +
           "|unitPattern" +
           "|localePattern" +
-          "|listPatternPart" +
   ")");
   private Matcher supposedToBeMessageFormat = SUPPOSED_TO_BE_MESSAGE_FORMAT_PATTERN.matcher("");
 
@@ -188,12 +186,7 @@ public class CheckForExemplars extends CheckCLDR {
     if (path.contains("/currency") && path.endsWith("/symbol")) {
       if (!currencySymbolExemplars.containsAll(value)) {
         UnicodeSet missing = new UnicodeSet().addAll(value).removeAll(currencySymbolExemplars);
-        String fixedMissing = new PrettyPrinter()
-        .setOrdering(col != null ? col : Collator.getInstance(ULocale.ROOT))
-        .setSpaceComparator(col != null ? col : Collator.getInstance(ULocale.ROOT)
-                .setStrength2(Collator.PRIMARY))
-                .setCompressRanges(true)
-                .format(missing);
+        String fixedMissing = CollectionUtilities.prettyPrint(missing, true, null, null, col, col);
         String ascii = "";
         Subtype subtype = Subtype.charactersNotInCurrencyExemplars;
         if (ASCII.containsAll(missing)) {
@@ -206,11 +199,7 @@ public class CheckForExemplars extends CheckCLDR {
       }
     } else if (!exemplars.containsAll(value)) {
       UnicodeSet missing = new UnicodeSet().addAll(value).removeAll(exemplars);
-      String fixedMissing = new PrettyPrinter()
-    .setOrdering(col != null ? col : Collator.getInstance(ULocale.ROOT))
-    .setSpaceComparator(col != null ? col : Collator.getInstance(ULocale.ROOT)
-            .setStrength2(Collator.PRIMARY))
-            .setCompressRanges(true).format(missing);
+      String fixedMissing = CollectionUtilities.prettyPrint(missing, true, null, null, col, col);
       String ascii = "";
       Subtype subtype = Subtype.charactersNotInMainOrAuxiliaryExemplars;
       if (ASCII.containsAll(missing)) {
@@ -225,13 +214,7 @@ public class CheckForExemplars extends CheckCLDR {
       UnicodeSet appropriateExemplars = path.contains("_") ? scriptRegionExemplarsWithParens : scriptRegionExemplars;
       if (!appropriateExemplars.containsAll(value)) {
         UnicodeSet missing = new UnicodeSet().addAll(value).removeAll(appropriateExemplars);
-        String fixedMissing = new PrettyPrinter()
-        .setOrdering(col != null ? col : Collator.getInstance(ULocale.ROOT))
-        .setSpaceComparator(col != null ? col : Collator.getInstance(ULocale.ROOT)
-                .setStrength2(Collator.PRIMARY))
-                .setCompressRanges(true)
-                .setToQuote(null)
-                .setQuoter(null).format(missing);
+        String fixedMissing = CollectionUtilities.prettyPrint(missing, true, null, null, col, col);
         result.add(new CheckStatus().setCause(this).setMainType(CheckStatus.warningType).setSubtype(Subtype.discouragedCharactersInTranslation)
                 .setMessage("The characters \u200E{1}\u200E are discouraged in display names. Please choose the best single name.", new Object[]{null,fixedMissing}));
         // note: we are using {1} so that we don't include these in the console summary of bad characters.

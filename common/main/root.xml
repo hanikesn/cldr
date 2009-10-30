@@ -43,7 +43,6 @@
 		<exemplarCharacters>[]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-c č d-l ł m-o º p-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>“</quotationStart>
@@ -65,9 +64,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -208,9 +206,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<!-- chinese eras are computed, and don't fall back to gregorian -->
 				<dateFormats>
 					<default choice="medium"/>
@@ -299,9 +296,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -381,9 +377,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -416,9 +411,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -557,19 +551,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-                        <dayPeriodWidth type="narrow">
-                            <alias source="locale" path="../dayPeriodWidth[@type='abbreviated']"/>
-                        </dayPeriodWidth>
-                        <dayPeriodWidth type="abbreviated">
-                            <alias source="locale" path="../dayPeriodWidth[@type='wide']"/>
-                        </dayPeriodWidth>
-					</dayPeriodContext>
-					<dayPeriodContext type="stand-alone">
-                        <alias source="locale" path="../dayPeriodContext[@type='format']"/>
-					</dayPeriodContext>					
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -691,46 +674,28 @@
 					<intervalFormats>
 						<intervalFormatFallback>{0} – {1}</intervalFormatFallback>
 						<intervalFormatItem id="d">
-							<greatestDifference id="d">d–d</greatestDifference>
+							<greatestDifference id="d">d-d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a – h a</greatestDifference>
-							<greatestDifference id="h">h–h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="a">HH–HH</greatestDifference>
-							<greatestDifference id="H">HH–HH</greatestDifference>
+							<greatestDifference id="a">HH-HH</greatestDifference>
+							<greatestDifference id="h">HH-HH</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h:mm a – h:mm a</greatestDifference>
-							<greatestDifference id="h">h:mm–h:mm a</greatestDifference>
-							<greatestDifference id="m">h:mm–h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="a">HH:mm–HH:mm</greatestDifference>
-							<greatestDifference id="H">HH:mm–HH:mm</greatestDifference>
-							<greatestDifference id="m">HH:mm–HH:mm</greatestDifference>
+							<greatestDifference id="a">HH:mm-HH:mm</greatestDifference>
+							<greatestDifference id="h">HH:mm-HH:mm</greatestDifference>
+							<greatestDifference id="m">HH:mm-HH:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h:mm a – h:mm a v</greatestDifference>
-							<greatestDifference id="h">h:mm–h:mm a v</greatestDifference>
-							<greatestDifference id="m">h:mm–h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="a">HH:mm–HH:mm v</greatestDifference>
-							<greatestDifference id="H">HH:mm–HH:mm v</greatestDifference>
-							<greatestDifference id="m">HH:mm–HH:mm v</greatestDifference>
+							<greatestDifference id="a">HH:mm-HH:mm v</greatestDifference>
+							<greatestDifference id="h">HH:mm-HH:mm v</greatestDifference>
+							<greatestDifference id="m">HH:mm-HH:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a – h a v</greatestDifference>
-							<greatestDifference id="h">h–h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
-							<greatestDifference id="a">HH–HH v</greatestDifference>
-							<greatestDifference id="H">HH–HH v</greatestDifference>
+							<greatestDifference id="a">HH-HH v</greatestDifference>
+							<greatestDifference id="h">HH-HH v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
-							<greatestDifference id="M">M–M</greatestDifference>
+							<greatestDifference id="M">M-M</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="Md">
 							<greatestDifference id="d">MM-dd – dd</greatestDifference>
@@ -741,7 +706,7 @@
 							<greatestDifference id="M">E, MM-dd – E, MM-dd</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MMM">
-							<greatestDifference id="M">LLL–LLL</greatestDifference>
+							<greatestDifference id="M">LLL-LLL</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MMMd">
 							<greatestDifference id="d">MM-d – d</greatestDifference>
@@ -752,10 +717,10 @@
 							<greatestDifference id="M">E, MM-d – E, MM-d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="MMMM">
-							<greatestDifference id="M">LLLL–LLLL</greatestDifference>
+							<greatestDifference id="M">LLLL-LLLL</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="y">
-							<greatestDifference id="y">y–y</greatestDifference>
+							<greatestDifference id="y">y-y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yM">
 							<greatestDifference id="M">yyyy-MM – MM</greatestDifference>
@@ -839,7 +804,7 @@
 							<alias source="locale" path="../monthWidth[@type='wide']"/>
 						</monthWidth>
 						<monthWidth type="narrow">
-							<alias source="locale" path="../monthWidth[@type='wide']"/>
+							<alias source="locale" path="../../monthContext[@type='stand-alone']/monthWidth[@type='narrow']"/>
 						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">Tishri</month>
@@ -849,7 +814,6 @@
 							<month type="5">Shevat</month>
 							<month type="6">Adar I</month>
 							<month type="7">Adar</month>
-							<month type="7" yeartype="leap">Adar II</month>
 							<month type="8">Nisan</month>
 							<month type="9">Iyar</month>
 							<month type="10">Sivan</month>
@@ -863,7 +827,19 @@
 							<alias source="locale" path="../../monthContext[@type='format']/monthWidth[@type='abbreviated']"/>
 						</monthWidth>
 						<monthWidth type="narrow">
-							<alias source="locale" path="../../monthContext[@type='format']/monthWidth[@type='narrow']"/>
+							<month type="1">1</month>
+							<month type="2">2</month>
+							<month type="3">3</month>
+							<month type="4">4</month>
+							<month type="5">5</month>
+							<month type="6">6</month>
+							<month type="7">7</month>
+							<month type="8">8</month>
+							<month type="9">9</month>
+							<month type="10">10</month>
+							<month type="11">11</month>
+							<month type="12">12</month>
+							<month type="13">13</month>
 						</monthWidth>
 						<monthWidth type="wide">
 							<alias source="locale" path="../../monthContext[@type='format']/monthWidth[@type='wide']"/>
@@ -876,9 +852,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -958,9 +933,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -988,18 +962,7 @@
 					<monthContext type="format">
 						<default choice="wide"/>
 						<monthWidth type="abbreviated">
-							<month type="1">Muh.</month>
-							<month type="2">Saf.</month>
-							<month type="3">Rab. I</month>
-							<month type="4">Rab. II</month>
-							<month type="5">Jum. I</month>
-							<month type="6">Jum. II</month>
-							<month type="7">Raj.</month>
-							<month type="8">Sha.</month>
-							<month type="9">Ram.</month>
-							<month type="10">Shaw.</month>
-							<month type="11">Dhuʻl-Q.</month>
-							<month type="12">Dhuʻl-H.</month>
+							<alias source="locale" path="../monthWidth[@type='wide']"/>
 						</monthWidth>
 						<monthWidth type="narrow">
 							<alias source="locale" path="../../monthContext[@type='stand-alone']/monthWidth[@type='narrow']"/>
@@ -1048,9 +1011,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -1088,9 +1050,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -1480,9 +1441,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -1514,9 +1474,8 @@
 				<quarters>
 					<alias source="locale" path="../../calendar[@type='gregorian']/quarters"/>
 				</quarters>
-				<dayPeriods>
-					<alias source="locale" path="../../calendar[@type='gregorian']/dayPeriods"/>
-				</dayPeriods>
+				<am>AM</am>
+				<pm>PM</pm>
 				<eras>
 					<eraNames>
 						<alias source="locale" path="../eraAbbr"/>
@@ -3224,14 +3183,6 @@
 			<unitPattern count="other">{0} y</unitPattern>
 		</unit>
 	</units>
-	<listPatterns>
-		<listPattern>
-			<listPatternPart type="2">{0}, {0}</listPatternPart>
-			<listPatternPart type="end">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle">{0}, {1}</listPatternPart>
-			<listPatternPart type="start">{0}, {1}</listPatternPart>
-		</listPattern>
-	</listPatterns>
 	<posix>
 		<messages>
 			<yesstr>yes:y</yesstr>

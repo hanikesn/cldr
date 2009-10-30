@@ -51,6 +51,8 @@ public class TestUCharacterIterator {
 
     @Override
     public void setIndex(int index) {
+      // TODO Auto-generated method stub
+      
     }
 
     @Override

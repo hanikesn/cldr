@@ -2,9 +2,6 @@
 <%!
 // list of the 'report' templates
 static final String reports[] = { 
-    "new",
-    "list_patterns",
-    "day_periods",
     "characters",
     "numbering_system",
     "decimal_separator",
@@ -17,6 +14,7 @@ static final String reports[] = {
     "wide_days",
     "abbreviated_days",
     "narrow_days",
+    "am_pm",
     "eras",
     "date_formats",
     "time_formats",
@@ -29,15 +27,13 @@ static final String reports[] = {
 static final String report_name[] = reports;  // TODO: replace with human readable name?
 
 static final String base_xpaths[] = {
-        "//ldml/localeDisplayNames",
-        "//ldml/listPatterns/listPattern",
-        "//ldml/dates/calendars/calendar[@type=\"gregorian\"]/dayPeriods",
 		"//ldml/characters/exemplarCharacters", // an example xpath is fine
 		"//ldml/numbers", //ldml/numbers/defaultNumberingSystem",
 		"//ldml/numbers", //ldml/numbers/symbols/decimal",
 		"//ldml/numbers", //ldml/numbers/symbols/group",
 		"//ldml/numbers", //ldml/numbers/decimalFormats/decimalFormatLength",
 		"//ldml/numbers", //ldml/numbers/currencyFormats/currencyFormatLength",
+		"//ldml/dates/calendars/calendar[@type=\"gregorian\"]",
 		"//ldml/dates/calendars/calendar[@type=\"gregorian\"]",
 		"//ldml/dates/calendars/calendar[@type=\"gregorian\"]",
 		"//ldml/dates/calendars/calendar[@type=\"gregorian\"]",
@@ -58,7 +54,7 @@ static final String base_xpaths[] = {
 // names?
 String section = ctx.field(SurveyMain.QUERY_SECTION);
 
-JspWebContext subCtx = new JspWebContext(ctx);
+WebContext subCtx = new WebContext(ctx);
 subCtx.setQuery(SurveyMain.QUERY_LOCALE,ctx.localeString());
 
 // which report are we on?
@@ -70,45 +66,4 @@ for(int i=0;i<reports.length;i++) {
     }
 }
 
-%><%!
-	/**
-	 * convert a stage to a base xpath
-	 */
-		String stageToBaseXpath(int step) {
-			try {
-				return base_xpaths[step-1];
-			} catch(Throwable t) {
-				return null;
-			}
-		}
-
-	public static String COMPLETE="_complete";
-
-	/**
-	 * Lookup a step by name. Defaults to returning -1 if error
-	 */
-	int stepNameToNumber(String name) {
-		if(COMPLETE.equals(name)) {
-			return reports.length+2;
-		}
-		for(int i=0;i<reports.length;i++) {
-			if(reports[i].equals(name)) {
-				return i+1; /* 0 based */
-			}
-		}
-		return -1;
-	}
-	
-	/**
-	 * Convert a step number to name.
-	 */
-	String stepNumberToName(int step) {
-		if(step==reports.length+1) {
-			return COMPLETE;
-		} else if(step<1 || step>reports.length) {
-			return "(invalid)";
-		} else {
-			return reports[step-1];
-		}
-	}
 %>

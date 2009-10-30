@@ -548,7 +548,6 @@
 	<characters>
 		<exemplarCharacters>[ँ-ः ०-९ अ-ऋ ए ऐ ओ-न प-र ल व-ह ा-ृ े ै ो ्]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u200C \u200D]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[अ आ इ ई उ ऊ ऋ ए ऐ ओ औ क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म य र ल व श ष स ह]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart draft="contributed">'</quotationStart>
@@ -559,14 +558,8 @@
 	<dates>
 		<calendars>
 			<calendar type="buddhist">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="contributed">पूर्व मध्यान्ह</dayPeriod>
-							<dayPeriod type="pm" draft="contributed">पूर्व अपरान्ह</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="contributed">पूर्व मध्यान्ह</am>
+				<pm draft="contributed">पूर्व अपरान्ह</pm>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
@@ -674,14 +667,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="contributed">पूर्व मध्यान्ह</dayPeriod>
-							<dayPeriod type="pm" draft="contributed">उत्तर मध्यान्ह</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="contributed">पूर्व मध्यान्ह</am>
+				<pm draft="contributed">उत्तर मध्यान्ह</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="contributed">ईसा पूर्व</era>
@@ -1318,7 +1305,7 @@
 			<group draft="contributed">,</group>
 			<list draft="contributed">;</list>
 			<nativeZeroDigit>0</nativeZeroDigit>
-			<nativeZeroDigit numberSystem="deva">०</nativeZeroDigit>
+			<nativeZeroDigit alt="deva">०</nativeZeroDigit>
 			<minusSign draft="contributed">-</minusSign>
 		</symbols>
 		<currencies>

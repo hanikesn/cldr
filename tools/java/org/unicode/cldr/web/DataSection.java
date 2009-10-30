@@ -415,17 +415,17 @@ public class DataSection extends Registerable {
         	return /*section.*/fieldHash + fieldHash();
         }
         
-        Hashtable<String,DataRow> subRows = null;
+        Hashtable subRows = null;
 
         public DataRow getSubDataRow(String altType) {
             if(altType == null) {
                 return this;
             }
             if(subRows == null) {
-                subRows = new Hashtable<String,DataRow>();
+                subRows = new Hashtable();
             }
 
-            DataRow p = subRows.get(altType);
+            DataRow p = (DataRow)subRows.get(altType);
             if(p==null) {
                 p = new DataRow();
                 p.type = type;
@@ -1582,7 +1582,7 @@ public class DataSection extends Registerable {
             } else if(!excludeCalendars && excludeGrego && (xpath.startsWith(SurveyMain.GREGO_XPATH))) {
 //if(ndebug)     System.err.println("ns1 7 "+(System.currentTimeMillis()-nextTime) + " " + xpath);
                 continue;
-            } else if( continent != null && !continent.equals(sm.getMetazoneContinent(xpath))) {
+            } else if( continent != null && !sm.getMetazoneContinent(xpath).equals(continent)) {
                 continue;
             }
             
@@ -1792,13 +1792,6 @@ public class DataSection extends Registerable {
             // Some special cases.. a popup menu of values
             if(p.type.startsWith("layout/inText")) {
                 p.valuesList = LAYOUT_INTEXT_VALUES;
-                superP.valuesList = p.valuesList;
-            } else if(p.type.startsWith("defaultNumberingSystem")) { 
-                // Not all available numbering systems are good candidates for default numbering system.
-                // Things like "roman" shouldn't really be an option.  So, in the interest of simplicity,
-                // we are hard-coding the choices here.
-                String [] values = { "latn", "arab", "arabext", "armn", "beng", "deva", "ethi", "geor", "gujr", "guru", "hans", "hant", "hebr", "jpan", "khmr", "knda", "laoo", "mlym", "mong", "orya", "taml", "telu", "thai", "tibt" };
-                p.valuesList = values;
                 superP.valuesList = p.valuesList;
             } else if(p.type.indexOf("commonlyUsed")!=-1) { 
                 p.valuesList = METAZONE_COMMONLYUSED_VALUES;
@@ -2092,15 +2085,6 @@ public class DataSection extends Registerable {
 //                       if(SurveyMain.isUnofficial) System.err.println("@@ synthesized+excluded:" + base_xpath_string);
                        continue;
                     }
-
-                    // Only display metazone data for which an English value exists
-                    if (isMetazones && suff != "/commonlyUsed") {
-                        String engValue = baselineFile.getStringValue(base_xpath_string);
-                        if ( engValue == null || engValue.length() == 0 ) {
-                            continue;
-                        }
-                    }
-
                     DataSection.DataRow myp = getDataRow(rowXpath);
                     
                     // set it up..
@@ -2170,17 +2154,7 @@ public class DataSection extends Registerable {
     		if(dr.base_xpath == xpath) {
     			return dr;
     		}
-    		// search subrows
-    		if(dr.subRows!=null) {
-    			for(DataRow subRow : dr.subRows.values()) {
-    				if(subRow.base_xpath == xpath) {
-    					return subRow;
-    				}
-    			}
-    		}
     	}
-    	// look for sub-row
-    	
     	return null;
     }
     

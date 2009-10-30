@@ -12,7 +12,6 @@
 	</layout>
 	<characters>
 		<exemplarCharacters draft="unconfirmed">[ا ب ت-غ ف ڢ ك-ن]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ڢ ك ل م ن]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -71,14 +70,8 @@
 						</dayWidth>
 					</dayContext>
 				</days>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">A.M.</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">P.M.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">A.M.</am>
+				<pm draft="unconfirmed">P.M.</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">غَبَنِنْ مِلَدِ</era>
@@ -100,4 +93,3 @@
 		</currencies>
 	</numbers>
 </ldml>
-
