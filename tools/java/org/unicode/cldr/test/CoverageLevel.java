@@ -30,10 +30,10 @@ import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.InternalCldrException;
 import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.LocaleIDParser;
-import com.ibm.icu.dev.test.util.Relation;
+import org.unicode.cldr.util.Relation;
 import org.unicode.cldr.util.StandardCodes;
 import org.unicode.cldr.util.SupplementalDataInfo;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.XMLSource;
 import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.util.SupplementalDataInfo.OfficialStatus;
@@ -245,12 +245,12 @@ public class CoverageLevel {
         throw new InternalCldrException("'"+file.getLocaleID()+"'.getExemplarSet() returned null.");
     }
     
-    UnicodeSet auxexemplars = file.getResolved().getExemplarSet("auxiliary", CLDRFile.WinningChoice.WINNING);
+    UnicodeSet auxexemplars = file.getExemplarSet("auxiliary", CLDRFile.WinningChoice.WINNING);
     if (auxexemplars != null) exemplars.addAll(auxexemplars);
     exemplarsContainA_Z = exemplars.contains('A','Z');
     
     boolean currencyExemplarsContainA_Z = false;
-    auxexemplars = file.getResolved().getExemplarSet("currencySymbol", CLDRFile.WinningChoice.WINNING);
+    auxexemplars = file.getExemplarSet("currencySymbol", CLDRFile.WinningChoice.WINNING);
     if (auxexemplars != null) currencyExemplarsContainA_Z = auxexemplars.contains('A','Z');
 
     setFile(file.getLocaleID(), exemplarsContainA_Z, currencyExemplarsContainA_Z, options, cause, possibleErrors);
@@ -593,16 +593,16 @@ public class CoverageLevel {
       // put into an easier form to use
       
       Map type_languages = (Map) coverageData.get("languageCoverage");
-      CldrUtility.putAllTransposed(type_languages, base_language_level);
+      Utility.putAllTransposed(type_languages, base_language_level);
       Map type_scripts = (Map) coverageData.get("scriptCoverage");
-      CldrUtility.putAllTransposed(type_scripts, base_script_level);
+      Utility.putAllTransposed(type_scripts, base_script_level);
       Map type_territories = (Map) coverageData.get("territoryCoverage");
-      CldrUtility.putAllTransposed(type_territories, base_territory_level);
+      Utility.putAllTransposed(type_territories, base_territory_level);
       
       Map type_currencies = (Map) coverageData.get("currencyCoverage");
-      CldrUtility.putAllTransposed(type_territories, base_currency_level);
+      Utility.putAllTransposed(type_territories, base_currency_level);
       Map type_timezones = (Map) coverageData.get("timezoneCoverage");
-      CldrUtility.putAllTransposed(type_territories, base_timezone_level);
+      Utility.putAllTransposed(type_territories, base_timezone_level);
 
       minimalCurrencies = (Set) type_currencies.get(CoverageLevel.Level.MINIMAL);
       minimalTimezones = (Set) type_timezones.get(CoverageLevel.Level.MINIMAL);
@@ -1032,7 +1032,7 @@ public class CoverageLevel {
         // pt ru zh"/>
         CoverageLevel.Level level = CoverageLevel.Level.get(type);
         String values = parts.getAttributeValue(-1, "values");
-        CldrUtility.addTreeMapChain(coverageData, 
+        Utility.addTreeMapChain(coverageData, 
             lastElement, level,
             new TreeSet(Arrays.asList(values.split("\\s+"))));
       }
@@ -1154,7 +1154,7 @@ public class CoverageLevel {
                 Arrays.asList((parts.getAttributeValue(-1, "ordering").trim()).split("\\s+")));
         
         for (String calendar : calendars) {
-          CldrUtility.addTreeMapChain(coverageData, "calendar", calendar, values);
+          Utility.addTreeMapChain(coverageData, "calendar", calendar, values);
           addAllToCollectionValue(territory_calendar, values, calendar, TreeSet.class);
         }
       } else if (parts.containsElement("languageData")) {

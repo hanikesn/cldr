@@ -1164,7 +1164,6 @@
 		<exemplarCharacters type="auxiliary">[á â ã ā ç ë í-ï ī ñ ó ú ÿ ü æ ø]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary" alt="proposed-x1001" draft="unconfirmed">[á à â ã ā ç é ë í ï ī ñ ó š ú ÿ ü ž æ ø ô]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-c č d-l ł m-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z Å Ä Ö]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>”</quotationStart>
@@ -1176,16 +1175,10 @@
 		<dateRangePattern>{0} till {1}</dateRangePattern>
 		<calendars>
 			<calendar type="buddhist">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="provisional">fm</dayPeriod>
-							<dayPeriod type="am" alt="proposed-x1001" draft="unconfirmed">f.m.</dayPeriod>
-							<dayPeriod type="pm" draft="provisional">em</dayPeriod>
-							<dayPeriod type="pm" alt="proposed-x1001" draft="unconfirmed">e.m.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="provisional">fm</am>
+				<am alt="proposed-x1001" draft="unconfirmed">f.m.</am>
+				<pm draft="provisional">em</pm>
+				<pm alt="proposed-x1001" draft="unconfirmed">e.m.</pm>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
@@ -1365,16 +1358,10 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">fm</dayPeriod>
-							<dayPeriod type="am" alt="proposed-x1001" draft="unconfirmed">f.m.</dayPeriod>
-							<dayPeriod type="pm">em</dayPeriod>
-							<dayPeriod type="pm" alt="proposed-x1001" draft="unconfirmed">e.m.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>fm</am>
+				<am alt="proposed-x1001" draft="unconfirmed">f.m.</am>
+				<pm>em</pm>
+				<pm alt="proposed-x1001" draft="unconfirmed">e.m.</pm>
 				<eras>
 					<eraNames>
 						<era type="0">före Kristus</era>
@@ -1483,49 +1470,29 @@
 							<greatestDifference id="d">d–d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a – h a</greatestDifference>
-							<greatestDifference id="h">h-h a</greatestDifference>
-							<greatestDifference id="h" alt="proposed-x1001" draft="unconfirmed">h–h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="H">HH-HH</greatestDifference>
-							<greatestDifference id="H" alt="proposed-x1001" draft="unconfirmed">HH–HH</greatestDifference>
+							<greatestDifference id="a">HH–HH</greatestDifference>
+							<greatestDifference id="h">HH-HH</greatestDifference>
+							<greatestDifference id="h" alt="proposed-x1001" draft="unconfirmed">HH–HH</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h.mm a – h.mm a</greatestDifference>
-							<greatestDifference id="a" alt="proposed-x1001" draft="unconfirmed">h:mm a – h:mm a</greatestDifference>
-							<greatestDifference id="h">h.mm–h.mm a</greatestDifference>
-							<greatestDifference id="h" alt="proposed-x1001" draft="unconfirmed">h:mm–h:mm a</greatestDifference>
-							<greatestDifference id="m">h.mm–h.mm a</greatestDifference>
-							<greatestDifference id="m" alt="proposed-x1001" draft="unconfirmed">h:mm–h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
 							<greatestDifference id="a">HH.mm–HH.mm</greatestDifference>
 							<greatestDifference id="a" alt="proposed-x1001" draft="unconfirmed">HH:mm–HH:mm</greatestDifference>
-							<greatestDifference id="H">HH.mm–HH.mm</greatestDifference>
-							<greatestDifference id="H" alt="proposed-x1001" draft="unconfirmed">HH:mm–HH:mm</greatestDifference>
+							<greatestDifference id="h">HH.mm–HH.mm</greatestDifference>
+							<greatestDifference id="h" alt="proposed-x1001" draft="unconfirmed">HH:mm–HH:mm</greatestDifference>
 							<greatestDifference id="m">HH.mm–HH.mm</greatestDifference>
 							<greatestDifference id="m" alt="proposed-x1001" draft="unconfirmed">HH:mm–HH:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h.mm a – h.mm a v</greatestDifference>
-							<greatestDifference id="a" alt="proposed-x1001" draft="unconfirmed">h:mm a – h:mm a v</greatestDifference>
-							<greatestDifference id="h">h.mm–h.mm a v</greatestDifference>
-							<greatestDifference id="h" alt="proposed-x1001" draft="unconfirmed">h:mm–h:mm a v</greatestDifference>
-							<greatestDifference id="m">h.mm-h.mm a v</greatestDifference>
-							<greatestDifference id="m" alt="proposed-x1001" draft="unconfirmed">h:mm–h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
 							<greatestDifference id="a">HH.mm–HH.mm v</greatestDifference>
 							<greatestDifference id="a" alt="proposed-x1001" draft="unconfirmed">HH:mm–HH:mm v</greatestDifference>
-							<greatestDifference id="H">HH.mm–HH.mm v</greatestDifference>
-							<greatestDifference id="H" alt="proposed-x1001" draft="unconfirmed">HH:mm–HH:mm v</greatestDifference>
+							<greatestDifference id="h">HH.mm–HH.mm v</greatestDifference>
+							<greatestDifference id="h" alt="proposed-x1001" draft="unconfirmed">HH:mm–HH:mm v</greatestDifference>
 							<greatestDifference id="m">HH.mm-HH.mm v</greatestDifference>
 							<greatestDifference id="m" alt="proposed-x1001" draft="unconfirmed">HH:mm–HH:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a – h a v</greatestDifference>
-							<greatestDifference id="h">h–h a v</greatestDifference>
+							<greatestDifference id="a">HH–HH v</greatestDifference>
+							<greatestDifference id="h">HH–HH v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">M–M</greatestDifference>
@@ -1647,9 +1614,8 @@
 							<month type="3">kislév</month>
 							<month type="4">tevét</month>
 							<month type="5">shevát</month>
-							<month type="6">adár I</month>
-							<month type="7">adár</month>
-							<month type="7" yeartype="leap">adár II</month>
+							<month type="6">adár</month>
+							<month type="7">adár II</month>
 							<month type="8">nisán</month>
 							<month type="9">ijjár</month>
 							<month type="10">siván</month>
@@ -4182,6 +4148,7 @@
 				<displayName>nordkoreansk won</displayName>
 				<displayName count="one">nordkoreansk won</displayName>
 				<displayName count="other">nordkoreanska won</displayName>
+				<symbol>KPW</symbol>
 			</currency>
 			<currency type="KRW">
 				<displayName>sydkoreansk won</displayName>
@@ -4365,11 +4332,13 @@
 				<displayName>maldivisk rufiyaa</displayName>
 				<displayName count="one">maldivisk rufiyaa</displayName>
 				<displayName count="other" draft="contributed">maldiviska rufiyer</displayName>
+				<symbol>MVR</symbol>
 			</currency>
 			<currency type="MWK">
 				<displayName>malawisk kwacha</displayName>
 				<displayName count="one">malawisk kwacha</displayName>
 				<displayName count="other" draft="contributed">malawiska kwacha</displayName>
+				<symbol>MWK</symbol>
 			</currency>
 			<currency type="MXN">
 				<displayName>mexikansk peso</displayName>
@@ -4579,6 +4548,7 @@
 				<displayName>rwandisk franc</displayName>
 				<displayName count="one">rwandisk franc</displayName>
 				<displayName count="other" draft="contributed">rwandiska franc</displayName>
+				<symbol>RWF</symbol>
 			</currency>
 			<currency type="SAR">
 				<displayName>saudisk riyal</displayName>

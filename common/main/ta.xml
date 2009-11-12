@@ -928,7 +928,6 @@
 		<exemplarCharacters references="R224">[ஃ அ-ஊ எ-ஐ ஒ-க ங ச ஜ ஞ ட ண த ந-ப ம-வ ஷ-ஹ ா-ூ ெ-ை ொ-்]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[a g i m t]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[ஃ அ ஆ இ ஈ உ ஊ எ ஏ ஐ ஒ ஓ ஔ க ங ச ஜ ஞ ட ண த ந ன ப ம ய ர ற ல ள ழ வ ஷ ஸ ஹ]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>“</quotationStart>
@@ -1036,14 +1035,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">am</dayPeriod>
-							<dayPeriod type="pm">pm</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>am</am>
+				<pm>pm</pm>
 				<eras>
 					<eraNames>
 						<era type="0">கிறிஸ்துவுக்கு முன்</era>

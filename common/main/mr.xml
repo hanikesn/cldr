@@ -940,7 +940,6 @@
 	<characters>
 		<exemplarCharacters>[़ ँ-ः ०-९ ॐ अ-ऍ ए-ऑ ओ-न प-र ल ळ व-ह ऽ-ॅ े-ॉ ो-्]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u200C \u200D]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[ॐ अ आ इ ई उ ऊ ऋ ऌ ऍ ए ऐ ऑ ओ औ क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म य र ल ळ व श ष स ह ऽ]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>'</quotationStart>
@@ -1034,14 +1033,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">am</dayPeriod>
-							<dayPeriod type="pm">pm</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>am</am>
+				<pm>pm</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">ईसवीसनपूर्व</era>
@@ -1164,7 +1157,7 @@
 		<defaultNumberingSystem>deva</defaultNumberingSystem>
 		<symbols>
 			<nativeZeroDigit>0</nativeZeroDigit>
-			<nativeZeroDigit numberSystem="deva">०</nativeZeroDigit>
+			<nativeZeroDigit alt="deva">०</nativeZeroDigit>
 		</symbols>
 		<decimalFormats>
 			<decimalFormatLength>

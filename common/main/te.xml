@@ -930,7 +930,6 @@
 	<characters>
 		<exemplarCharacters>[అ-ఋ ౠ ఌ ౡ ఎ-ఐ ఒ-న ప-ళ వ-హ ఁ-ః ్ ా-ౄ ె-ై ొ-ౌ ౕ ౖ]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u200C \u200D ౦-౯ b c e g m q t]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఎ ఏ ఐ ఒ ఓ ఔ క ఖ గ ఘ ఙ చ ఛ జ ఝ ఞ ట ఠ డ ఢ ణ త థ ద ధ న ప ఫ బ భ మ య ర ఱ ల ళ వ శ ష స హ]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart draft="unconfirmed">'</quotationStart>
@@ -1024,14 +1023,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">am</dayPeriod>
-							<dayPeriod type="pm">pm</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>am</am>
+				<pm>pm</pm>
 				<eras>
 					<eraNames>
 						<era type="0">ఈసాపూర్వ.</era>

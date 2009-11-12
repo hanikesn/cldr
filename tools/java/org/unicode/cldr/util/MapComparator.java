@@ -139,7 +139,7 @@ public class MapComparator<K> implements Comparator<K>, Freezable {
     
     if (a instanceof CharSequence) {
       if (b instanceof CharSequence) {
-        int result = uca.compare(a.toString(), b.toString());
+        int result = uca.compare(a, b);
         if (result != 0) {
           return result;
         }
@@ -166,20 +166,20 @@ public class MapComparator<K> implements Comparator<K>, Freezable {
     return buffer.toString();
   }
   /* (non-Javadoc)
-   * @see com.ibm.icu.dev.test.util.Freezeble
+   * @see org.unicode.cldr.util.Lockable#isLocked()
    */
   public boolean isFrozen() {
     return locked;
   }
   /* (non-Javadoc)
-   * @see com.ibm.icu.dev.test.util.Freezeble
+   * @see org.unicode.cldr.util.Lockable#lock()
    */
   public Object freeze() {
     locked = true;	
     return this;
   }
   /* (non-Javadoc)
-   * @see com.ibm.icu.dev.test.util.Freezeble
+   * @see org.unicode.cldr.util.Lockable#clone()
    */
   @SuppressWarnings("unchecked")
   public Object cloneAsThawed() {

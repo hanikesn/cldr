@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.StandardCodes;
 import org.unicode.cldr.util.TimezoneFormatter;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.ZoneParser;
@@ -42,7 +42,6 @@ import org.unicode.cldr.util.ZoneParser.ZoneLine;
 import com.ibm.icu.dev.test.util.BagFormatter;
 import com.ibm.icu.dev.test.util.TransliteratorUtilities;
 import com.ibm.icu.dev.tool.UOption;
-import com.ibm.icu.impl.Utility;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.DateFormat;
@@ -86,8 +85,8 @@ public class Misc {
 	private static final UOption[] options = {
 	    UOption.HELP_H(),
 	    UOption.HELP_QUESTION_MARK(),
-	    UOption.SOURCEDIR().setDefault(CldrUtility.COMMON_DIRECTORY),
-	    UOption.DESTDIR().setDefault(CldrUtility.GEN_DIRECTORY + "timezones/"),
+	    UOption.SOURCEDIR().setDefault(Utility.COMMON_DIRECTORY),
+	    UOption.DESTDIR().setDefault(Utility.GEN_DIRECTORY + "timezones/"),
 	    UOption.create("match", 'm', UOption.REQUIRES_ARG).setDefault(".*"),
 	    UOption.create("to_localize", 't', UOption.NO_ARG),
 	    UOption.create("current", 'c', UOption.NO_ARG),
@@ -103,9 +102,9 @@ public class Misc {
 	private static final String HELP_TEXT = "Use the following options" + XPathParts.NEWLINE
 	+ "-h or -?\tfor this message" + XPathParts.NEWLINE
 	+ "-"+options[SOURCEDIR].shortName + "\tsource directory. Default = " 
-	+ CldrUtility.getCanonicalName(CldrUtility.MAIN_DIRECTORY) + XPathParts.NEWLINE
+	+ Utility.getCanonicalName(Utility.MAIN_DIRECTORY) + XPathParts.NEWLINE
 	+ "-"+options[DESTDIR].shortName + "\tdestination directory. Default = "
-	+ CldrUtility.getCanonicalName(CldrUtility.GEN_DIRECTORY + "main/") + XPathParts.NEWLINE
+	+ Utility.getCanonicalName(Utility.GEN_DIRECTORY + "main/") + XPathParts.NEWLINE
 	+ "-m<regex>\tto restrict the locales to what matches <regex>" + XPathParts.NEWLINE
 	+ "-t\tgenerates files that contain items missing localizations" + XPathParts.NEWLINE
 	+ "-c\tgenerates missing timezone localizations" + XPathParts.NEWLINE
@@ -141,7 +140,7 @@ public class Misc {
 	        UOption.parseArgs(args, options);
 	        if (options[HELP1].doesOccur || options[HELP1].doesOccur) {
 	        	System.out.println(HELP_TEXT);
-            CldrUtility.showMethods(Misc.class);
+            Utility.showMethods(Misc.class);
 	        	return;
 	        }
 			cldrFactory = Factory.make(options[SOURCEDIR].value + "/main/", options[MATCH].value);
@@ -172,7 +171,7 @@ public class Misc {
 			}
 			
 			if (options[INFO].doesOccur) {
-				PrintWriter pw = BagFormatter.openUTF8Writer(CldrUtility.CHART_DIRECTORY, "attributesAndValues.html");
+				PrintWriter pw = BagFormatter.openUTF8Writer(Utility.CHART_DIRECTORY, "attributesAndValues.html");
 				new GenerateAttributeList(cldrFactory).show(pw);
 				pw.close();
 			}
@@ -192,7 +191,7 @@ public class Misc {
       if (options[FUNCTION].doesOccur) {
         String function = options[FUNCTION].value;
         
-        CldrUtility.callMethod(function, Misc.class);
+        Utility.callMethod(function, Misc.class);
       }
 
 			//getZoneData();
@@ -699,7 +698,7 @@ public class Misc {
 		String world = sc.getData("territory", "001");
 	}
 	
-	static CldrUtility.VariableReplacer langTag = new CldrUtility.VariableReplacer()
+	static Utility.VariableReplacer langTag = new Utility.VariableReplacer()
 		.add("$alpha", "[a-zA-Z]")
 		.add("$digit", "[0-9]")
 		.add("$alphanum", "[a-zA-Z0-9]")
@@ -719,14 +718,14 @@ public class Misc {
 		.add("$privateuse2", "(?:-$privateuse)");
 	static String langTagPattern = langTag.replace(			
 			"($lang)"
-				+ CldrUtility.LINE_SEPARATOR + "\t($extlang{0,3})"
-				+ CldrUtility.LINE_SEPARATOR + "\t($script?)"
-				+ CldrUtility.LINE_SEPARATOR + "\t($region?)"
-				+ CldrUtility.LINE_SEPARATOR + "\t($variant*)"
-				+ CldrUtility.LINE_SEPARATOR + "\t($extension*)"
-				+ CldrUtility.LINE_SEPARATOR + "\t($privateuse2?)"
-			+ CldrUtility.LINE_SEPARATOR + "|($grandfathered)"
-			+ CldrUtility.LINE_SEPARATOR + "|($privateuse)"
+				+ Utility.LINE_SEPARATOR + "\t($extlang{0,3})"
+				+ Utility.LINE_SEPARATOR + "\t($script?)"
+				+ Utility.LINE_SEPARATOR + "\t($region?)"
+				+ Utility.LINE_SEPARATOR + "\t($variant*)"
+				+ Utility.LINE_SEPARATOR + "\t($extension*)"
+				+ Utility.LINE_SEPARATOR + "\t($privateuse2?)"
+			+ Utility.LINE_SEPARATOR + "|($grandfathered)"
+			+ Utility.LINE_SEPARATOR + "|($privateuse)"
 			);
 	static String cleanedLangTagPattern = langTagPattern.replaceAll("[\\r\\t\\n\\s]","");
 	static Matcher regexLanguageTagOld = Pattern.compile(cleanedLangTagPattern).matcher("");
@@ -837,7 +836,7 @@ public class Misc {
           Set abb = getAbbreviations(ruleID_Rules, lastZoneLine, zoneLine);
           if (abb.size() == 0) {
             System.out.println("??? Didn't find %s values for " + format + " under " + key 
-                + ";" + CldrUtility.LINE_SEPARATOR + "\tLast:" + lastZoneLine + ";" + CldrUtility.LINE_SEPARATOR + "\tCurrent: " + zoneLine);
+                + ";" + Utility.LINE_SEPARATOR + "\tLast:" + lastZoneLine + ";" + Utility.LINE_SEPARATOR + "\tCurrent: " + zoneLine);
             abb = getAbbreviations(ruleID_Rules, lastZoneLine, zoneLine);
           }
 
@@ -886,7 +885,7 @@ public class Misc {
   private static void add(Set abbreviations, String format, String zone, ZoneLine lastZoneLine, ZoneLine zoneLine) {
     if (format.length() < 3) {
     System.out.println("??? Format too short: '" + format + "' under " + zone 
-        + ";" + CldrUtility.LINE_SEPARATOR + "\tLast:" + lastZoneLine + ";" + CldrUtility.LINE_SEPARATOR + "\tCurrent: " + zoneLine);
+        + ";" + Utility.LINE_SEPARATOR + "\tLast:" + lastZoneLine + ";" + Utility.LINE_SEPARATOR + "\tCurrent: " + zoneLine);
     return;
     }
     abbreviations.add(format);
@@ -957,7 +956,7 @@ public class Misc {
 			String line = br.readLine();
 			if (line == null) break;
 			if (line.startsWith("place name")) continue;
-			List list = CldrUtility.splitList(line, '\t', true);
+			List list = Utility.splitList(line, '\t', true);
 			String place = (String)list.get(0);
 			place = t.transliterate(place);
 			String place2 = t2.transliterate(place);
@@ -1000,7 +999,7 @@ public class Misc {
 				continue;
 			}
 			
-			List pieces = CldrUtility.splitList(zone, '/', true);
+			List pieces = Utility.splitList(zone, '/', true);
 			String city = (String) pieces.get(pieces.size() - 1);
 			city = city.replace('_', ' ');
 			String data = (String) city_data.get(city);
@@ -1094,7 +1093,7 @@ public class Misc {
 			if (m == null) continue;
 			Map attributes = parts.getAttributes(2);
 			String type = (String) attributes.get("type");
-			Collection contents = CldrUtility.splitList((String)attributes.get("contains"), ' ', true, new ArrayList());
+			Collection contents = Utility.splitList((String)attributes.get("contains"), ' ', true, new ArrayList());
 			groups.put(type, contents);
 			if (false) {
 				System.out.print("\t\t<group type=\"" + fixNumericKey(type)
@@ -1338,7 +1337,7 @@ public class Misc {
 				count++;
 				outFile.add("//supplementalData/transforms/transform/line[@_q=\"" + count + "\"]", line);
 			}
-			PrintWriter pw = BagFormatter.openUTF8Writer(CldrUtility.GEN_DIRECTORY + "/translit/", fixedName + ".xml");
+			PrintWriter pw = BagFormatter.openUTF8Writer(Utility.GEN_DIRECTORY + "/translit/", fixedName + ".xml");
 			outFile.write(pw);
 			pw.close();
 		}

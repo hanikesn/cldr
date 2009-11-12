@@ -131,7 +131,6 @@
 	<characters>
 		<exemplarCharacters references="R197">[а-е ё ж-о ө п-у ү ф-я]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary" references="R197">[ә җ ӊ һ]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[А Б В Г Д Е Ж З И Й К Л М Н О Ө П Р С Т У Ү Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart draft="unconfirmed">‘</quotationStart>
@@ -239,14 +238,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AM</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">PM</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AM</am>
+				<pm draft="unconfirmed">PM</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">манай эриний өмнөх</era>
@@ -325,4 +318,3 @@
 		<reference type="R198" uri="http://www.omniglot.com/writing/mongolian.htm">Omniglot on Mongolian</reference>
 	</references>
 </ldml>
-

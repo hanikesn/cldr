@@ -1,18 +1,25 @@
 package org.unicode.cldr.test;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import org.unicode.cldr.util.CLDRTransforms;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 
 import com.ibm.icu.dev.test.TestFmwk;
+import com.ibm.icu.dev.test.translit.TransliteratorTest;
 import com.ibm.icu.dev.test.util.BagFormatter;
+import com.ibm.icu.lang.UCharacter;
+import com.ibm.icu.lang.UProperty;
 import com.ibm.icu.text.Normalizer;
 import com.ibm.icu.text.StringTransform;
 import com.ibm.icu.text.Transliterator;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.text.UnicodeSetIterator;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TestTransformsSimple extends TestFmwk {
 
@@ -21,7 +28,7 @@ public class TestTransformsSimple extends TestFmwk {
     new TestTransformsSimple().run(args);
   }
 
-  private static final boolean verbose = CldrUtility.getProperty("verbose", false);
+  private static final boolean verbose = Utility.getProperty("verbose", false);
   private static PrintWriter out = verbose ? new PrintWriter(System.out, true) : null;
 
   public void TestChinese() {
@@ -153,7 +160,7 @@ public class TestTransformsSimple extends TestFmwk {
   private int writeFile(String title, UnicodeSet sourceSet, Transliterator nfd, Transliterator toLatin, 
           Transliterator fromLatin, boolean doLatin, UnicodeSet nativeSpecials, UnicodeSet latinSpecials) throws IOException {
     int errorCount = 0;
-    PrintWriter out = BagFormatter.openUTF8Writer(org.unicode.cldr.util.CldrUtility.GEN_DIRECTORY + "transTest/", title + ".html");
+    PrintWriter out = BagFormatter.openUTF8Writer(org.unicode.cldr.util.Utility.GEN_DIRECTORY + "transTest/", title + ".html");
     out.println("<html><head>");
     out.println("<meta http-equiv='Content-Type' content='text/html; charset=utf-8'></head><body>");
     if (nativeSpecials != null) {
@@ -211,7 +218,7 @@ public class TestTransformsSimple extends TestFmwk {
     errorCount = showMappings(out, sourceSet, "-", nfd, fromLatin, toLatin);
     out.println("</table><p>Separator failures:\t" + errorCount + "</p>");
     if (errorCount != 0) {
-      logln("Unneeded Separators:\t" + errorCount);
+      warnln("Unneeded Separators:\t" + errorCount);
       errorCount = 0;
     }
 

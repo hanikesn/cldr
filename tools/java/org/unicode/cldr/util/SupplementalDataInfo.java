@@ -1,5 +1,17 @@
 package org.unicode.cldr.util;
 
+import org.omg.CORBA.TRANSIENT;
+import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo.Count;
+
+import com.ibm.icu.text.DateFormat;
+import com.ibm.icu.text.MessageFormat;
+import com.ibm.icu.text.PluralRules;
+import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.text.UnicodeSet;
+import com.ibm.icu.text.UnicodeSetIterator;
+import com.ibm.icu.util.Freezable;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -18,23 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.unicode.cldr.util.DayPeriodInfo.DayPeriod;
-import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo.Count;
-
-import com.ibm.icu.dev.test.util.Relation;
-import com.ibm.icu.impl.IterableComparator;
-import com.ibm.icu.impl.Row;
-import com.ibm.icu.impl.Row.R4;
-import com.ibm.icu.text.DateFormat;
-import com.ibm.icu.text.MessageFormat;
-import com.ibm.icu.text.PluralRules;
-import com.ibm.icu.text.SimpleDateFormat;
-import com.ibm.icu.text.UnicodeSet;
-import com.ibm.icu.util.Freezable;
-import com.ibm.icu.util.ULocale;
 
 /**
  * Singleton class to provide API access to supplemental data -- in all the supplemental data files.
@@ -49,9 +45,8 @@ import com.ibm.icu.util.ULocale;
  */
 
 public class SupplementalDataInfo {
-  private static final boolean DEBUG = false;
 
-  //TODO add structure for items shown by TestSupplementalData to be missing
+//TODO add structure for items shown by TestSupplementalData to be missing
   /*[calendarData/calendar, 
    * characters/character-fallback, 
    * measurementData/measurementSystem, measurementData/paperSize, 
@@ -59,8 +54,8 @@ public class SupplementalDataInfo {
    * timezoneData/mapTimezones, 
    * weekData/firstDay, weekData/minDays, weekData/weekendEnd, weekData/weekendStart]
    */
-  // TODO: verify that we get everything by writing the files solely from the API, and verifying identity.
-
+// TODO: verify that we get everything by writing the files solely from the API, and verifying identity.
+  
   /**
    * Official status of languages
    */
@@ -69,20 +64,20 @@ public class SupplementalDataInfo {
 
     public String toShortString() {
       switch (this) {
-      case unknown: return "U";
-      case de_facto_official: return "DO";
-      case official: return "O";
-      case official_regional: return "OR";
-      case official_minority: return "OM";
+        case unknown: return "U";
+        case de_facto_official: return "DO";
+        case official: return "O";
+        case official_regional: return "OR";
+        case official_minority: return "OM";
       }
       throw new IllegalArgumentException("Missing value");
     }
 
     public boolean isMajor() {
       switch (this) {
-      case de_facto_official:
-      case official: return true;
-      default: return false;
+        case de_facto_official:
+        case official: return true;
+        default: return false;
       }
     }
   };
@@ -114,7 +109,7 @@ public class SupplementalDataInfo {
     public PopulationData setGdp(double gdp) {
       if (frozen) {
         throw new UnsupportedOperationException(
-        "Attempt to modify frozen object");
+                "Attempt to modify frozen object");
       }
       this.gdp = gdp;
       return this;
@@ -196,7 +191,6 @@ public class SupplementalDataInfo {
   }
 
   static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
-
 
   /**
    * Simple language/script/region information
@@ -280,9 +274,9 @@ public class SupplementalDataInfo {
       + languageSubtag
       + "\""
       + (scripts.size() == 0 ? "" : " scripts=\""
-        + CldrUtility.join(scripts, " ") + "\"")
+        + Utility.join(scripts, " ") + "\"")
         + (territories.size() == 0 ? "" : " territories=\""
-          + CldrUtility.join(territories, " ") + "\"")
+          + Utility.join(territories, " ") + "\"")
           + (type == Type.primary ? "" : " alt=\"" + type + "\"") + "/>";
     }
 
@@ -290,9 +284,9 @@ public class SupplementalDataInfo {
       int result;
       if (0 != (result = type.compareTo(o.type)))
         return result;
-      if (0 != (result = IterableComparator.compareIterables(scripts, o.scripts)))
+      if (0 != (result = Utility.compare(scripts, o.scripts)))
         return result;
-      if (0 != (result = IterableComparator.compareIterables(territories, o.territories)))
+      if (0 != (result = Utility.compare(territories, o.territories)))
         return result;
       return 0;
     }
@@ -468,7 +462,7 @@ public class SupplementalDataInfo {
     private String alt;
     private String errors = "";
 
-    // code must not be null, the others can be
+	// code must not be null, the others can be
     public TelephoneCodeInfo(String code, String startDate, String endDate, String alt) {
       if (code == null)
         throw new NullPointerException();
@@ -523,7 +517,7 @@ public class SupplementalDataInfo {
     public String getErrors() {
       return errors;
     }
-
+    
     public boolean equals(Object o) {
       if (!(o instanceof TelephoneCodeInfo))
         return false;
@@ -532,7 +526,7 @@ public class SupplementalDataInfo {
     }
 
     public int hashCode() {
-      return 31*code.hashCode() + start.hashCode() + end.hashCode() + alt.hashCode();
+       return 31*code.hashCode() + start.hashCode() + end.hashCode() + alt.hashCode();
     }
 
     public int compareTo(TelephoneCodeInfo o) {
@@ -608,7 +602,6 @@ public class SupplementalDataInfo {
 
   public Map<String, Map<String,List<String>>> typeToTagToReplacement = new TreeMap<String, Map<String,List<String>>>();
 
-  Map<String,List<Row.R4<String,String,Integer,Boolean>>> languageMatch = new HashMap();
 
   public Relation<String, String> getAlpha3TerritoryMapping() {
     return alpha3TerritoryMapping;
@@ -664,11 +657,6 @@ public class SupplementalDataInfo {
         throw new InternalError("Could not list XML Files from " + canonicalpath);
       }
       for (File file : files) {
-        if (DEBUG) {
-          try {
-            System.out.println(file.getCanonicalPath());
-          } catch (IOException e) {}
-        }
         String name = file.toString();
         if (!name.endsWith(".xml")) continue;
         xfr.read(name, -1, true);
@@ -707,8 +695,8 @@ public class SupplementalDataInfo {
     //territoryToTelephoneCodeInfo.freeze();
     territoryToTelephoneCodeInfo = Collections.unmodifiableMap(territoryToTelephoneCodeInfo);
 
-    metazoneToRegionToZone = CldrUtility.protectCollection(metazoneToRegionToZone);
-    typeToTagToReplacement = CldrUtility.protectCollection(typeToTagToReplacement);
+    metazoneToRegionToZone = Utility.protectCollection(metazoneToRegionToZone);
+    typeToTagToReplacement = Utility.protectCollection(typeToTagToReplacement);
 
     containment.freeze();
     languageToBasicLanguageData.freeze();
@@ -744,19 +732,15 @@ public class SupplementalDataInfo {
     }
     addPluralInfo();
     localeToPluralInfo = Collections.unmodifiableMap(localeToPluralInfo);
-
-    addDayPeriodInfo();
-    localeToDayPeriodInfo = Collections.unmodifiableMap(localeToDayPeriodInfo);
-    languageMatch = CldrUtility.protectCollection(languageMatch);
   }
 
-  //private Map<String, Map<String, String>> makeUnmodifiable(Map<String, Map<String, String>> metazoneToRegionToZone) {
-  //Map<String, Map<String, String>> temp = metazoneToRegionToZone;
-  //for (String mzone : metazoneToRegionToZone.keySet()) {
-  //temp.put(mzone, Collections.unmodifiableMap(metazoneToRegionToZone.get(mzone)));
-  //}
-  //return Collections.unmodifiableMap(temp);
-  //}
+//private Map<String, Map<String, String>> makeUnmodifiable(Map<String, Map<String, String>> metazoneToRegionToZone) {
+//Map<String, Map<String, String>> temp = metazoneToRegionToZone;
+//for (String mzone : metazoneToRegionToZone.keySet()) {
+//temp.put(mzone, Collections.unmodifiableMap(metazoneToRegionToZone.get(mzone)));
+//}
+//return Collections.unmodifiableMap(temp);
+//}
 
   /**
    * Core function used to process each of the paths, and add the data to the appropriate data member.
@@ -807,11 +791,6 @@ public class SupplementalDataInfo {
           addPluralPath(parts, value);
           return;
         }
-        
-        if (level1.equals("dayPeriodRuleSet")) {
-          addDayPeriodPath(parts, value);
-          return;
-        }
 
         if (level1.equals("telephoneCodeData")) {
           handleTelephoneCodeData(parts);
@@ -842,12 +821,6 @@ public class SupplementalDataInfo {
           }
         }
 
-        if (level1.equals("languageMatching")) {
-          if (handleLanguageMatcher(level2)) {
-            return;
-          }
-        }
-
         // capture elements we didn't look at, since we should cover everything.
         // this helps for updates
 
@@ -861,19 +834,6 @@ public class SupplementalDataInfo {
                 + path + ",\tvalue: " + value).initCause(e);
       }
     }
-
-    private boolean handleLanguageMatcher(String level2) {
-      String type = parts.getAttributeValue(2, "type");
-      List<R4<String, String, Integer, Boolean>> matches = languageMatch.get(type);
-      if (matches == null) {
-        languageMatch.put(type, matches = new ArrayList());
-      }
-      matches.add(Row.of(parts.getAttributeValue(3,"desired"), parts.getAttributeValue(3,"supported"),
-              Integer.parseInt(parts.getAttributeValue(3,"percent")), 
-              "true".equals(parts.getAttributeValue(3, "oneway"))));
-      return true;
-    }
-
 
     private boolean handleCodeMappings(String level2) {
       if (level2.equals("territoryCodes")) {
@@ -926,9 +886,9 @@ public class SupplementalDataInfo {
         return true;
       }
       if (level2.equals("alias")) {
-        //      <alias>
-        //      <!-- grandfathered 3066 codes -->
-        //      <languageAlias type="art-lojban" replacement="jbo"/> <!-- Lojban -->
+//      <alias>
+//      <!-- grandfathered 3066 codes -->
+//      <languageAlias type="art-lojban" replacement="jbo"/> <!-- Lojban -->
         String level3 = parts.getElement(3);
         if (!level3.endsWith("Alias")) {
           throw new IllegalArgumentException();
@@ -1071,20 +1031,20 @@ public class SupplementalDataInfo {
     }
 
     private void handleTelephoneCodeData(XPathParts parts) {
-      // element 2: codesByTerritory territory [draft] [references]
-      String terr = parts.getAttributeValue(2, "territory");
-      // element 3: telephoneCountryCode code [from] [to] [draft] [references] [alt]
-      TelephoneCodeInfo tcInfo = new TelephoneCodeInfo( parts.getAttributeValue(3, "code"),
-              parts.getAttributeValue(3, "from"),
-              parts.getAttributeValue(3, "to"),
-              parts.getAttributeValue(3, "alt") );
-
-      Set<TelephoneCodeInfo> tcSet = territoryToTelephoneCodeInfo.get(terr);
-      if (tcSet == null) {
-        tcSet = new LinkedHashSet<TelephoneCodeInfo>();
-        territoryToTelephoneCodeInfo.put( terr, tcSet );
-      }
-      tcSet.add(tcInfo);
+    	// element 2: codesByTerritory territory [draft] [references]
+    	String terr = parts.getAttributeValue(2, "territory");
+    	// element 3: telephoneCountryCode code [from] [to] [draft] [references] [alt]
+    	TelephoneCodeInfo tcInfo = new TelephoneCodeInfo( parts.getAttributeValue(3, "code"),
+    	                                                  parts.getAttributeValue(3, "from"),
+    	                                                  parts.getAttributeValue(3, "to"),
+    	                                                  parts.getAttributeValue(3, "alt") );
+     	
+     	Set<TelephoneCodeInfo> tcSet = territoryToTelephoneCodeInfo.get(terr);
+     	if (tcSet == null) {
+     		tcSet = new LinkedHashSet<TelephoneCodeInfo>();
+     		territoryToTelephoneCodeInfo.put( terr, tcSet );
+     	}
+     	tcSet.add(tcInfo);
     }
 
     private void handleZoneFormatting() {
@@ -1221,7 +1181,7 @@ public class SupplementalDataInfo {
   public Set<String> getContainers() {
     return containment.keySet();
   }
-
+  
   public Relation<String, String> getTerritoryToContained() {
     return containment;
   }
@@ -1344,7 +1304,7 @@ public class SupplementalDataInfo {
       }
       PopulationData territoryPopulationData = getPopulationDataForTerritory(territory);
       final double gdp = territoryPopulationData.getGdp();
-      final double scaledGdp = gdp * targetLiteratePopulation / totalLiteratePopulation;
+        final double scaledGdp = gdp * targetLiteratePopulation / totalLiteratePopulation;
       if (scaledGdp > 0) {
         weight += scaledGdp;
       } else {
@@ -1375,69 +1335,8 @@ public class SupplementalDataInfo {
   }
 
   private Map<String,PluralInfo> localeToPluralInfo = new LinkedHashMap<String,PluralInfo>();
-  private Map<String,DayPeriodInfo> localeToDayPeriodInfo = new LinkedHashMap<String,DayPeriodInfo>();
   private transient String lastPluralLocales = "root";
   private transient Map<Count,String> lastPluralMap = new LinkedHashMap<Count,String>();
-  private transient String lastDayPeriodLocales = null;
-  private transient DayPeriodInfo.Builder dayPeriodBuilder = new DayPeriodInfo.Builder();
-
-  private void addDayPeriodPath(XPathParts path, String value) {
-    //ldml/dates/calendars/calendar[@type="gregorian"]/dayPeriods/dayPeriodContext[@type="format"]/dayPeriodWidth[@type="wide"]/dayPeriod[@type="am"]
-    /*
-     <supplementalData>
-     <version number="$Revision$"/>
-     <generation date="$Date$"/>
-     <dayPeriodRuleSet>
-         <dayPeriodRules locales = "en">  <!--  default for any locales not listed under other dayPeriods -->
-            <dayPeriodRule type = "am" from = "0:00" before="12:00"/>
-            <dayPeriodRule type = "pm" from = "12:00" to="24:00"/>
-     */
-    String locales = path.getAttributeValue(2, "locales").trim();
-    if (!locales.equals(lastDayPeriodLocales)) {
-      if (lastDayPeriodLocales != null) {
-        addDayPeriodInfo();
-      }
-      lastDayPeriodLocales = locales;
-    }
-    DayPeriod dayPeriod = DayPeriod.valueOf(path.getAttributeValue(-1, "type"));
-    String at = path.getAttributeValue(-1, "at");
-    String from = path.getAttributeValue(-1, "from");
-    String after = path.getAttributeValue(-1, "after");
-    String to = path.getAttributeValue(-1, "to");
-    String before = path.getAttributeValue(-1, "before");
-    if (at != null) {
-      if (from != null || after != null || to != null || before != null) {
-        throw new IllegalArgumentException();
-      }
-      from = at;
-      to = at;
-    } else if ((from == null) == (after == null) || (to == null) == (before == null)) {
-      throw new IllegalArgumentException();
-    }
-    boolean includesStart = from != null;
-    boolean includesEnd = to != null;
-    int start = parseTime(includesStart ? from : after);
-    int end = parseTime(includesEnd ? to : before);
-    dayPeriodBuilder.add(dayPeriod, start, includesStart, end, includesEnd);
-  }
-
-  static Pattern PARSE_TIME = Pattern.compile("(\\d\\d?):(\\d\\d)");
-  private int parseTime(String string) {
-    // TODO Auto-generated method stub
-      Matcher matcher = PARSE_TIME.matcher(string);
-      if (!matcher.matches()) {
-        throw new IllegalArgumentException();
-      }
-      return (Integer.parseInt(matcher.group(1)) * 60 + Integer.parseInt(matcher.group(2))) * 60 * 1000;
-  }
-
-  private void addDayPeriodInfo() {
-    DayPeriodInfo temp = dayPeriodBuilder.finish();
-    String[] locales = lastDayPeriodLocales.split("\\s+");
-    for (String locale : locales) {
-      localeToDayPeriodInfo.put(locale, temp);
-    }
-  }
 
   private void addPluralPath(XPathParts path, String value) {
     String locales = path.getAttributeValue(2, "locales");
@@ -1507,9 +1406,9 @@ public class SupplementalDataInfo {
         uset.add(i);       
       }
       // double check
-      //    if (!targetKeywords.equals(typeToExamples2.keySet())) {
-      //    throw new IllegalArgumentException ("Problem in plurals " + targetKeywords + ", " + this);
-      //    }
+//    if (!targetKeywords.equals(typeToExamples2.keySet())) {
+//    throw new IllegalArgumentException ("Problem in plurals " + targetKeywords + ", " + this);
+//    }
       // now fix the longer examples
       String otherFractionalExamples = "";
       List<Double> otherFractions = new ArrayList(0);
@@ -1534,7 +1433,7 @@ public class SupplementalDataInfo {
         final double fraction = (sample + 0.31d);
         Count fracType = Count.valueOf(pluralRules.select(fraction));
         boolean addCurrentFractionalExample = false;
-
+        
         if (fracType == Count.other) {
           otherFractions.add(fraction);
           if (otherFractionalExamples.length() != 0) {
@@ -1595,9 +1494,9 @@ public class SupplementalDataInfo {
 
       for (Count type : countToExampleListRaw.keySet()) {
         List<Double> list = countToExampleListRaw.get(type);
-        //        if (type.equals(Count.other)) {
-        //          list.addAll(otherFractions);
-        //        }
+//        if (type.equals(Count.other)) {
+//          list.addAll(otherFractions);
+//        }
         list = Collections.unmodifiableList(list);
       }
 
@@ -1649,19 +1548,6 @@ public class SupplementalDataInfo {
     return null;
   }
 
-  public DayPeriodInfo getDayPeriods(String locale) {
-    while (locale != null) {
-      DayPeriodInfo result = localeToDayPeriodInfo.get(locale);
-      if (result != null) return result;
-      locale = LanguageTagParser.getParent(locale);
-    }
-    return null;
-  }
-  
-  public Set<String> getDayPeriodLocales() {
-    return localeToDayPeriodInfo.keySet();
-  }
-
   private static CurrencyNumberInfo DEFAULT_NUMBER_INFO = new CurrencyNumberInfo(2,0);
 
   public CurrencyNumberInfo getCurrencyNumberInfo(String currency) {
@@ -1682,7 +1568,7 @@ public class SupplementalDataInfo {
   }
 
   public Map<String, Set<TelephoneCodeInfo>> getTerritoryToTelephoneCodeInfo() {
-    return territoryToTelephoneCodeInfo;
+  	return territoryToTelephoneCodeInfo;
   }
 
   public Set<TelephoneCodeInfo> getTelephoneCodeInfoForTerritory(String territory) {
@@ -1707,10 +1593,6 @@ public class SupplementalDataInfo {
 
   public List<String> getSerialElements() {
     return serialElements;
-  }
-
-  public List<R4<String, String, Integer, Boolean>> getLanguageMatcherData(String string) {
-    return languageMatch.get(string);
   }
 }
 

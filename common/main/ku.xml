@@ -120,7 +120,6 @@
 	<characters>
 		<exemplarCharacters>[ئ-ب پ ت ج چ ح-د ر ز ڕ ژ س ش ع غ ف ڤ ق ک گ ل ڵ م-ه ھ و ۆ ی ێ]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u064B-\u0652 ء-ة ث ذ ص-ظ ك ى ي]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[ئ ا ب پ ت ج چ ح خ د ر ز ڕ ژ س ش ع غ ف ڤ ق ک گ ل ڵ م ن ه ھ و ۆ ی ێ]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>

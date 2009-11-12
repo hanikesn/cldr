@@ -39,6 +39,9 @@
 	</dates>
 	<numbers>
 		<defaultNumberingSystem>latn</defaultNumberingSystem>
+		<symbols>
+			<nativeZeroDigit>0</nativeZeroDigit>
+		</symbols>
 	</numbers>
 </ldml>
 

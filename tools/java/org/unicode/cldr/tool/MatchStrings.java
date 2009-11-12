@@ -1,7 +1,7 @@
 package org.unicode.cldr.tool;
 
 import org.unicode.cldr.util.Pair;
-import com.ibm.icu.dev.test.util.Relation;
+import org.unicode.cldr.util.Relation;
 
 import com.ibm.icu.dev.test.util.BagFormatter;
 

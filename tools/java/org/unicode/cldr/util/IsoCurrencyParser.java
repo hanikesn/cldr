@@ -16,8 +16,6 @@ import java.util.regex.Pattern;
 
 import org.unicode.cldr.util.SimpleHtmlParser.Type;
 
-import com.ibm.icu.dev.test.util.Relation;
-
 public class IsoCurrencyParser {
   static Map<String,String> iso4217CountryToCountryCode = new TreeMap();
   static Set<String> exceptionList = new LinkedHashSet<String>();
@@ -77,7 +75,7 @@ public class IsoCurrencyParser {
       }
       String name = iso4217CountryToCountryCode.get(iso4217Country);
       if (name != null) return name;
-      exceptionList.add(String.format("\t\t{\"%s\", \"XXX\"}, // fix XXX and add to extras" + CldrUtility.LINE_SEPARATOR, iso4217Country));
+      exceptionList.add(String.format("\t\t{\"%s\", \"XXX\"}, // fix XXX and add to extras" + Utility.LINE_SEPARATOR, iso4217Country));
       return "???" + iso4217Country;
     }
 
@@ -158,7 +156,7 @@ public class IsoCurrencyParser {
     String lastCountry = "";
     String line;
     String version = null;
-    BufferedReader in = CldrUtility.getUTF8Data("currencycodeslist.txt");
+    BufferedReader in = Utility.getUTF8Data("currencycodeslist.txt");
     while (true) {
       line = in.readLine();
       if (line == null) break;

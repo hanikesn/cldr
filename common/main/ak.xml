@@ -9,7 +9,6 @@
 	<characters>
 		<exemplarCharacters draft="unconfirmed">[a b d e ɛ f-i k-o ɔ p r-u w y]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary" draft="unconfirmed">[c j q v z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B C D E Ɛ F G H I J K L M N O Ɔ P Q R S T U V W X Y Z]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -111,14 +110,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AN</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">EW</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AN</am>
+				<pm draft="unconfirmed">EW</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">Ansa Kristo</era>

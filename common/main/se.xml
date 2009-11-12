@@ -382,7 +382,6 @@
 		<exemplarCharacters>[a á b c č d đ e-n ŋ o p r s š t ŧ u v z ž]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary" draft="unconfirmed">[à å ä ã æ ç é è í ń ñ ó ò ö ø q ú ü w-y]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol" draft="unconfirmed">[a á à å ä æ b c č d đ e é è f-n ń ŋ o ó ò ö ø p-s š t ŧ u ú v x-z ž]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B C D E F G H I J K L M N Ŋ O P Q R S T Ŧ U V W X Y Z]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart draft="unconfirmed">”</quotationStart>
@@ -491,14 +490,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AM</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">PM</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AM</am>
+				<pm draft="unconfirmed">PM</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">ovdal Kristtusa</era>
