@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="en"/>
 		<script type="Shaw"/>
 	</identity>
@@ -113,16 +113,10 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">𐑨𐑥</dayPeriod>
-							<dayPeriod type="am" alt="variant">𐑨.𐑥.</dayPeriod>
-							<dayPeriod type="pm">𐑐𐑥</dayPeriod>
-							<dayPeriod type="pm" alt="variant">𐑐.𐑥.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>𐑨𐑥</am>
+				<am alt="variant">𐑨.𐑥.</am>
+				<pm>𐑐𐑥</pm>
+				<pm alt="variant">𐑐.𐑥.</pm>
 				<eras>
 					<eraNames>
 						<era type="0">𐑚𐑰𐑓𐑪𐑮 ·𐑒𐑮𐑲𐑕𐑑</era>

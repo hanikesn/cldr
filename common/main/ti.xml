@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="ti"/>
 	</identity>
 	<localeDisplayNames>
@@ -216,14 +216,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ንጉሆ ሰዓተ</dayPeriod>
-							<dayPeriod type="pm">ድሕር ሰዓት</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ንጉሆ ሰዓተ</am>
+				<pm>ድሕር ሰዓት</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">ዓ/ዓ</era>

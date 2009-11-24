@@ -33,7 +33,6 @@ import com.ibm.icu.dev.test.util.XEquivalenceClass;
 import com.ibm.icu.dev.test.util.Tabber.HTMLTabber;
 import com.ibm.icu.impl.Punycode;
 import com.ibm.icu.impl.Row;
-import com.ibm.icu.impl.UnicodeRegex;
 import com.ibm.icu.impl.Utility;
 import com.ibm.icu.impl.Row.R2;
 import com.ibm.icu.impl.Row.R5;
@@ -83,10 +82,10 @@ public class IdnaLabelTester {
                 before = variables.replace(before.trim());
             }
             this.before = before == null || before == "" ? null 
-                    : Pattern.compile(".*" + UnicodeRegex.fix(before), Pattern.COMMENTS).matcher(""); // hack, because Java doesn't have lookingBefore
+                    : Pattern.compile(".*" + before, Pattern.COMMENTS).matcher(""); // hack, because Java doesn't have lookingBefore
             atString = at;
             at = variables.replace(at.trim());
-            this.at = Pattern.compile(UnicodeRegex.fix(at), Pattern.COMMENTS).matcher("");
+            this.at = Pattern.compile(at, Pattern.COMMENTS).matcher("");
             this.result = Result.valueOf(result.toLowerCase().trim());
             this.title = title;
             this.lineNumber = lineNumber;
@@ -170,7 +169,7 @@ public class IdnaLabelTester {
                         UnicodeSet s = value.equals("[:^nfkc_casefolded:]")
                         ? NOT_NFKC_CASE_FOLD
                                 : new UnicodeSet(value).complement().complement();
-                        System.out.println(variable + "\tcontains 20000\t" + s.contains(0x20000));
+                        System.out.println(variable + "\tcontains 10000\t" + s.contains(0x10000));
                         if (VERBOSE) {
                             System.out.println("{Variable: " + variable + ", value: " + toPattern(s, true) + "}");
                         }
@@ -912,10 +911,6 @@ public class IdnaLabelTester {
         String hex = Utility.hex(item, 4, " ");
         if (fixHex && item.length() != 0) hex = "U+"+hex.replace(" ", " U+");
         return hex;
-    }
-    
-    public String getVariable(String variableName) {
-     return variables.replace(variableName);
     }
 
     private void showMapping() {

@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="th"/>
 	</identity>
 	<localeDisplayNames>
@@ -1000,14 +1000,8 @@
 		<calendars>
 			<default choice="buddhist"/>
 			<calendar type="buddhist">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraNames>
 						<era type="0">พุทธศักราช</era>
@@ -1091,24 +1085,12 @@
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="chinese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 			</calendar>
 			<calendar type="coptic">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
@@ -1216,14 +1198,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraNames>
 						<era type="0">ปีก่อนคริสต์ศักราช</era>
@@ -1336,40 +1312,22 @@
 							<greatestDifference id="d">d-d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a - h a</greatestDifference>
-							<greatestDifference id="h">h-h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
 							<greatestDifference id="a">H-H</greatestDifference>
-							<greatestDifference id="H">H-H</greatestDifference>
+							<greatestDifference id="h">H-H</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h:mm a - h:mm a</greatestDifference>
-							<greatestDifference id="h">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
 							<greatestDifference id="a">H:mm-H:mm</greatestDifference>
-							<greatestDifference id="H">H:mm-H:mm</greatestDifference>
+							<greatestDifference id="h">H:mm-H:mm</greatestDifference>
 							<greatestDifference id="m">H:mm-H:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h:mm a - h:mm a v</greatestDifference>
-							<greatestDifference id="h">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
 							<greatestDifference id="a">H:mm-H:mm v</greatestDifference>
-							<greatestDifference id="H">H:mm-H:mm v</greatestDifference>
+							<greatestDifference id="h">H:mm-H:mm v</greatestDifference>
 							<greatestDifference id="m">H:mm-H:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a - h a v</greatestDifference>
-							<greatestDifference id="h">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
 							<greatestDifference id="a">H-H v</greatestDifference>
-							<greatestDifference id="H">H-H v</greatestDifference>
+							<greatestDifference id="h">H-H v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">M-M</greatestDifference>
@@ -1496,14 +1454,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">ย.ศ.</era>
@@ -1529,14 +1481,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraNames>
 						<era type="0">ฮิจเราะห์ศักราช</era>
@@ -1547,14 +1493,8 @@
 				</eras>
 			</calendar>
 			<calendar type="japanese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 				<eras>
 					<eraNames>
 						<era type="0">ทะอิกะ</era>
@@ -2071,14 +2011,8 @@
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="persian">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ก่อนเที่ยง</dayPeriod>
-							<dayPeriod type="pm">หลังเที่ยง</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ก่อนเที่ยง</am>
+				<pm>หลังเที่ยง</pm>
 			</calendar>
 		</calendars>
 		<timeZoneNames>

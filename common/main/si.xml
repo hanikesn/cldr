@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="si"/>
 	</identity>
 	<localeDisplayNames>
@@ -131,14 +131,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">පෙ.ව.</dayPeriod>
-							<dayPeriod type="pm">ප.ව.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>පෙ.ව.</am>
+				<pm>ප.ව.</pm>
 				<eras>
 					<eraNames>
 						<era type="0">ක්‍රිස්තු පූර්‍ව</era>

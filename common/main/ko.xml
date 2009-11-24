@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="ko"/>
 	</identity>
 	<localeDisplayNames>
@@ -980,14 +980,8 @@
 	<dates>
 		<calendars>
 			<calendar type="buddhist">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">오전</dayPeriod>
-							<dayPeriod type="pm">오후</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>오전</am>
+				<pm>오후</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">불기</era>
@@ -1010,24 +1004,12 @@
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="coptic">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">오전</dayPeriod>
-							<dayPeriod type="pm">오후</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>오전</am>
+				<pm>오후</pm>
 			</calendar>
 			<calendar type="ethiopic">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">오전</dayPeriod>
-							<dayPeriod type="pm">오후</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>오전</am>
+				<pm>오후</pm>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
@@ -1121,14 +1103,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">오전</dayPeriod>
-							<dayPeriod type="pm">오후</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>오전</am>
+				<pm>오후</pm>
 				<eras>
 					<eraNames>
 						<era type="0">서력기원전</era>
@@ -1366,44 +1342,20 @@
 				</fields>
 			</calendar>
 			<calendar type="islamic">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">오전</dayPeriod>
-							<dayPeriod type="pm">오후</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>오전</am>
+				<pm>오후</pm>
 			</calendar>
 			<calendar type="japanese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">오전</dayPeriod>
-							<dayPeriod type="pm">오후</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>오전</am>
+				<pm>오후</pm>
 			</calendar>
 			<calendar type="persian">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">오전</dayPeriod>
-							<dayPeriod type="pm">오후</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>오전</am>
+				<pm>오후</pm>
 			</calendar>
 			<calendar type="roc">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">오전</dayPeriod>
-							<dayPeriod type="pm">오후</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>오전</am>
+				<pm>오후</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">중화민국전</era>

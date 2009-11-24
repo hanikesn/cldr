@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="ar"/>
 	</identity>
 	<localeDisplayNames>
@@ -1202,14 +1202,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ص</dayPeriod>
-							<dayPeriod type="pm">م</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ص</am>
+				<pm>م</pm>
 				<eras>
 					<eraNames>
 						<era type="0">قبل الميلاد</era>
@@ -1487,14 +1481,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">ص</dayPeriod>
-							<dayPeriod type="pm">م</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>ص</am>
+				<pm>م</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">هـ</era>

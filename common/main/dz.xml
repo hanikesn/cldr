@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="dz"/>
 	</identity>
 	<localeDisplayNames>
@@ -282,14 +282,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">སྔ་ཆ་</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">ཕྱི་ཆ་</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">སྔ་ཆ་</am>
+				<pm draft="unconfirmed">ཕྱི་ཆ་</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0" draft="unconfirmed">BCE</era>
@@ -371,15 +365,15 @@
 	<numbers>
 		<symbols>
 			<list draft="unconfirmed">;</list>
-			<list draft="unconfirmed" numberSystem="tibt">དང་</list>
+			<list numberSystem="tibt" draft="unconfirmed">དང་</list>
 			<percentSign draft="unconfirmed">%</percentSign>
-			<percentSign draft="unconfirmed" numberSystem="tibt">བརྒ་ཆཱ</percentSign>
+			<percentSign numberSystem="tibt" draft="unconfirmed">བརྒ་ཆཱ</percentSign>
 			<nativeZeroDigit draft="unconfirmed">0</nativeZeroDigit>
-			<nativeZeroDigit draft="unconfirmed" numberSystem="tibt">༠</nativeZeroDigit>
+			<nativeZeroDigit numberSystem="tibt" draft="unconfirmed">༠</nativeZeroDigit>
 			<infinity draft="unconfirmed">∞</infinity>
-			<infinity draft="unconfirmed" numberSystem="tibt">གྲངས་མེད</infinity>
+			<infinity numberSystem="tibt" draft="unconfirmed">གྲངས་མེད</infinity>
 			<nan draft="unconfirmed">NaN</nan>
-			<nan draft="unconfirmed" numberSystem="tibt">ཨང་མད</nan>
+			<nan numberSystem="tibt" draft="unconfirmed">ཨང་མད</nan>
 		</symbols>
 		<decimalFormats>
 			<decimalFormatLength>

@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="tig"/>
 	</identity>
 	<localeDisplayNames>
@@ -391,14 +391,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">ቀደም ሰርምዕል</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">ሓቆ ስርምዕል</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">ቀደም ሰርምዕል</am>
+				<pm draft="unconfirmed">ሓቆ ስርምዕል</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0" draft="unconfirmed">ዓ/ዓ</era>

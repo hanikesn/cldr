@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="ig"/>
 	</identity>
 	<characters>
@@ -110,14 +110,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">A.M.</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">P.M.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">A.M.</am>
+				<pm draft="unconfirmed">P.M.</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">Tupu Kristi</era>

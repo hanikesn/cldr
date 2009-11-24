@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="lv"/>
 	</identity>
 	<localeDisplayNames>
@@ -1087,14 +1087,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AM</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">PM</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AM</am>
+				<pm draft="unconfirmed">PM</pm>
 				<eras>
 					<eraNames>
 						<era type="0">pirms mūsu ēras</era>
@@ -1189,36 +1183,22 @@
 							<greatestDifference id="d">d.–d.</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a – h a</greatestDifference>
-							<greatestDifference id="h">h-h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="H">HH-HH</greatestDifference>
+							<greatestDifference id="a">HH–HH</greatestDifference>
+							<greatestDifference id="h">HH-HH</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h:mm a – h:mm a</greatestDifference>
-							<greatestDifference id="h">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="H">HH:mm-HH:mm</greatestDifference>
+							<greatestDifference id="a">HH:mm–HH:mm</greatestDifference>
+							<greatestDifference id="h">HH:mm-HH:mm</greatestDifference>
 							<greatestDifference id="m">HH:mm-HH:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h:mm a – h:mm a v</greatestDifference>
-							<greatestDifference id="h">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="H">HH:mm-HH:mm v</greatestDifference>
+							<greatestDifference id="a">HH:mm–HH:mm v</greatestDifference>
+							<greatestDifference id="h">HH:mm-HH:mm v</greatestDifference>
 							<greatestDifference id="m">HH:mm-HH:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a – h a v</greatestDifference>
-							<greatestDifference id="h">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
-							<greatestDifference id="H">HH-HH v</greatestDifference>
+							<greatestDifference id="a">HH–HH v</greatestDifference>
+							<greatestDifference id="h">HH-HH v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">mm.–mm.</greatestDifference>

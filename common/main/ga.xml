@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="ga"/>
 	</identity>
 	<fallback draft="unconfirmed">en_IE</fallback>
@@ -599,14 +599,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">a.m.</dayPeriod>
-							<dayPeriod type="pm">p.m.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>a.m.</am>
+				<pm>p.m.</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">Roimh Chríost</era>

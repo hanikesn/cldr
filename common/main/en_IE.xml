@@ -10,14 +10,8 @@
 	<dates>
 		<calendars>
 			<calendar type="gregorian">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">a.m.</dayPeriod>
-							<dayPeriod type="pm">p.m.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>a.m.</am>
+				<pm>p.m.</pm>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
@@ -78,19 +72,11 @@
 							<greatestDifference id="d" draft="contributed">d-d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="h" draft="unconfirmed">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m" draft="contributed">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="H" draft="unconfirmed">HH:mm-HH:mm</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">HH:mm-HH:mm</greatestDifference>
 							<greatestDifference id="m" draft="contributed">HH:mm-HH:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="h" draft="contributed">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m" draft="contributed">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="H" draft="contributed">HH:mm-HH:mm v</greatestDifference>
+							<greatestDifference id="h" draft="contributed">HH:mm-HH:mm v</greatestDifference>
 							<greatestDifference id="m" draft="contributed">HH:mm-HH:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">

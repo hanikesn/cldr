@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="hy"/>
 	</identity>
 	<localeDisplayNames>
@@ -325,13 +325,13 @@
 				<months>
 					<monthContext type="format">
 						<monthWidth type="abbreviated">
-							<month type="1">Հնվ</month>
-							<month type="2">Փտվ</month>
+							<month type="1">Յնր</month>
+							<month type="2">Փտր</month>
 							<month type="3">Մրտ</month>
 							<month type="4">Ապր</month>
 							<month type="5">Մյս</month>
-							<month type="6">Հնս</month>
-							<month type="7">Հլս</month>
+							<month type="6">Յնս</month>
+							<month type="7">Յլս</month>
 							<month type="8">Օգս</month>
 							<month type="9">Սեպ</month>
 							<month type="10">Հոկ</month>
@@ -339,13 +339,13 @@
 							<month type="12">Դեկ</month>
 						</monthWidth>
 						<monthWidth type="wide">
-							<month type="1">Հունվար</month>
-							<month type="2">Փետրվար</month>
+							<month type="1">Յունուար</month>
+							<month type="2">Փետրուար</month>
 							<month type="3">Մարտ</month>
 							<month type="4">Ապրիլ</month>
 							<month type="5">Մայիս</month>
-							<month type="6">Հունիս</month>
-							<month type="7">Հուլիս</month>
+							<month type="6">Յունիս</month>
+							<month type="7">Յուլիս</month>
 							<month type="8">Օգոստոս</month>
 							<month type="9">Սեպտեմբեր</month>
 							<month type="10">Հոկտեմբեր</month>
@@ -419,18 +419,12 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">Առ․</dayPeriod>
-							<dayPeriod type="pm">Կե․</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>Առ․</am>
+				<pm>Եր․</pm>
 				<eras>
 					<eraAbbr>
-						<era type="0">Մ․Թ․Ա․</era>
-						<era type="1">Մ․Թ․</era>
+						<era type="0">Ք․Ա․</era>
+						<era type="1">Ք․Ե․</era>
 					</eraAbbr>
 				</eras>
 				<dateFormats>
@@ -489,32 +483,18 @@
 							<greatestDifference id="d" draft="unconfirmed">d-d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="h" draft="unconfirmed">h-h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="H" draft="unconfirmed">HH-HH</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">HH-HH</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="h" draft="unconfirmed">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="H" draft="unconfirmed">HH:mm-HH:mm</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">HH:mm-HH:mm</greatestDifference>
 							<greatestDifference id="m" draft="unconfirmed">HH:mm-HH:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="h" draft="unconfirmed">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m" draft="unconfirmed">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="H" draft="unconfirmed">HH:mm-HH:mm v</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">HH:mm-HH:mm v</greatestDifference>
 							<greatestDifference id="m" draft="unconfirmed">HH:mm-HH:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="h" draft="unconfirmed">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
-							<greatestDifference id="H" draft="unconfirmed">HH-HH v</greatestDifference>
+							<greatestDifference id="h" draft="unconfirmed">HH-HH v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M" draft="unconfirmed">M-M</greatestDifference>

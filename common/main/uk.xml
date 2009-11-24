@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="uk"/>
 	</identity>
 	<localeDisplayNames>
@@ -1174,14 +1174,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">дп</dayPeriod>
-							<dayPeriod type="pm">пп</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>дп</am>
+				<pm>пп</pm>
 				<eras>
 					<eraNames>
 						<era type="0">до нашої ери</era>
@@ -1266,18 +1260,18 @@
 							<greatestDifference id="d" draft="contributed">d–d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="h" draft="contributed">h–h a</greatestDifference>
+							<greatestDifference id="h" draft="contributed">HH–HH</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="h" draft="contributed">h:mm–h:mm a</greatestDifference>
-							<greatestDifference id="m" draft="contributed">h:mm–h:mm a</greatestDifference>
+							<greatestDifference id="h" draft="contributed">HH:mm–HH:mm</greatestDifference>
+							<greatestDifference id="m" draft="contributed">HH:mm–HH:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="h" draft="contributed">h:mm–h:mm a v</greatestDifference>
-							<greatestDifference id="m" draft="contributed">h:mm–h:mm a v</greatestDifference>
+							<greatestDifference id="h" draft="contributed">HH:mm–HH:mm v</greatestDifference>
+							<greatestDifference id="m" draft="contributed">HH:mm–HH:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="h" draft="contributed">h–h a v</greatestDifference>
+							<greatestDifference id="h" draft="contributed">HH–HH v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M" draft="contributed">M–M</greatestDifference>

@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="yo"/>
 	</identity>
 	<localeDisplayNames>
@@ -185,14 +185,8 @@
 						</dayWidth>
 					</dayContext>
 				</days>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">àárọ̀</dayPeriod>
-							<dayPeriod type="pm">ọ̀sán</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>àárọ̀</am>
+				<pm>ọ̀sán</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">Saju Kristi</era>

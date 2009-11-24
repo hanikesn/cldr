@@ -4,7 +4,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="ur"/>
 	</identity>
 	<localeDisplayNames>
@@ -441,14 +441,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">قبل دوپہر</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">بعد دوپہر</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">قبل دوپہر</am>
+				<pm draft="unconfirmed">بعد دوپہر</pm>
 				<eras>
 					<eraNames>
 						<era type="0">قبل مسيح</era>

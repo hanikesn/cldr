@@ -3,7 +3,7 @@
 <ldml>
 	<identity>
 		<version number="$Revision$"/>
-		<generation date="$Date$"/>
+		<generation date="$Date: 2009/03/27 00:39:03 $"/>
 		<language type="pa"/>
 		<script type="Arab"/>
 	</identity>
@@ -109,6 +109,7 @@
 	<numbers>
 		<defaultNumberingSystem>arab</defaultNumberingSystem>
 		<symbols>
+			<nativeZeroDigit>0</nativeZeroDigit>
 			<nativeZeroDigit numberSystem="arab">٠</nativeZeroDigit>
 		</symbols>
 		<currencies>
