@@ -333,13 +333,13 @@ public class SurveyForum {
         }
         boolean nopopups = ctx.prefBool(SurveyMain.PREF_NOPOPUPS);
         String returnText = returnText(ctx, base_xpath);
-        //if(nopopups) {
+        if(nopopups) {
             ctx.println(returnText+"<hr>");
-        //}
+        }
         showXpath(ctx, xpath, base_xpath, ctx.getLocale());
-        //if(nopopups) {
+        if(nopopups) {
             ctx.println("<hr>"+returnText+"<br/>");
-        //}
+        }
         sm.printFooter(ctx);
     }
     
@@ -547,7 +547,7 @@ public class SurveyForum {
         }
      }
     
-    public static String showXpath(WebContext baseCtx, String section_xpath, int item_xpath) {
+    public static void showXpath(WebContext baseCtx, String section_xpath, int item_xpath) {
         String base_xpath = section_xpath;
         CLDRLocale loc = baseCtx.getLocale();
         WebContext ctx = new WebContext(baseCtx);
@@ -575,7 +575,6 @@ public class SurveyForum {
         baseCtx.sm.printPathListClose(ctx);
         
 //        ctx.printHelpHtml(section, item_xpath);
-        return podBase;
     }
 
     /**
@@ -585,19 +584,7 @@ public class SurveyForum {
      * @return true if no errors were detected, otherwise false.
      */
     public static SummarizingSubmissionResultHandler processDataSubmission(WebContext ctx, String baseXpath) {
-    	return processDataSubmission(ctx,baseXpath,null);
-    }
-    /**
-     * 
-     * @param ctx
-     * @param baseXpath
-     * @param ssrh ResultHandler, if null one will be created.
-     * @return true if no errors were detected, otherwise false.
-     */
-    public static SummarizingSubmissionResultHandler processDataSubmission(WebContext ctx, String baseXpath, SummarizingSubmissionResultHandler ssrh) {
-    	if(ssrh == null) {
-    		ssrh = new SummarizingSubmissionResultHandler();
-    	}
+    	SummarizingSubmissionResultHandler ssrh = new SummarizingSubmissionResultHandler();
         ctx.sm.vet.processPodChanges(ctx, DataSection.xpathToSectionBase(baseXpath), ssrh);
         return ssrh;
     }
@@ -625,30 +612,18 @@ public class SurveyForum {
     }
     
     public static void printSectionTableOpenShort(WebContext ctx, String base_xpath) {
-    	DataSection section = null;
-    	if(base_xpath != null) {
-	        String podBase = DataSection.xpathToSectionBase(base_xpath);
-	        section = ctx.getSection(podBase);   
-    	}
-    	SurveyMain.printSectionTableOpenShort(ctx, section);
+        String podBase = DataSection.xpathToSectionBase(base_xpath);
+        DataSection section = ctx.getSection(podBase);   
+        SurveyMain.printSectionTableOpenShort(ctx, section);
     }
     
     public static void printSectionTableCloseShort(WebContext ctx,String base_xpath) {
-    	DataSection section = null;
-    	if(base_xpath != null) {
-	        String podBase = DataSection.xpathToSectionBase(base_xpath);
-	        section = ctx.getSection(podBase);   
-    	}
+        String podBase = DataSection.xpathToSectionBase(base_xpath);        
+        DataSection section = ctx.getSection(podBase);
         ctx.sm.printSectionTableClose(ctx, section);
     }
     
-    /**
-     * @param baseCtx
-     * @param section_xpath
-     * @param item_xpath
-     * @return pod base used 
-     */
-    public static String showXpathShort(WebContext baseCtx, String section_xpath, int item_xpath) {
+    public static void showXpathShort(WebContext baseCtx, String section_xpath, int item_xpath) {
         String base_xpath = section_xpath;
         CLDRLocale loc = baseCtx.getLocale();
         WebContext ctx = new WebContext(baseCtx);
@@ -660,20 +635,19 @@ public class SurveyForum {
         String podBase = DataSection.xpathToSectionBase(base_xpath);        
         DataSection section = ctx.getSection(podBase);
         baseCtx.sm.showPeasShort(ctx, section, item_xpath);
-        return podBase;
     }
 
-    public static String showXpathShort(WebContext baseCtx, String section_xpath, String item_xpath) {
-        return showXpathShort(baseCtx, section_xpath, baseCtx.sm.xpt.getByXpath(item_xpath));
+    public static void showXpathShort(WebContext baseCtx, String section_xpath, String item_xpath) {
+        showXpathShort(baseCtx, section_xpath, baseCtx.sm.xpt.getByXpath(item_xpath));
     }
 
-    public static String showXpathShort(WebContext baseCtx, String item_xpath) {
+    public static void showXpathShort(WebContext baseCtx, String item_xpath) {
         String section_xpath = DataSection.xpathToSectionBase(item_xpath);
-        return showXpathShort(baseCtx, section_xpath, baseCtx.sm.xpt.getByXpath(item_xpath));
+        showXpathShort(baseCtx, section_xpath, baseCtx.sm.xpt.getByXpath(item_xpath));
     }
 
-    public static String showXpath(WebContext baseCtx, String section_xpath, String item_xpath) {
-    	return showXpath(baseCtx, section_xpath, baseCtx.sm.xpt.getByXpath(item_xpath));
+    public static void showXpath(WebContext baseCtx, String section_xpath, String item_xpath) {
+        showXpath(baseCtx, section_xpath, baseCtx.sm.xpt.getByXpath(item_xpath));
     }
     
     /**

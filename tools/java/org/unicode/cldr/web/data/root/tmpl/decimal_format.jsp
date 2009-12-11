@@ -4,11 +4,12 @@
 
 <%
 //  Copy "x=___"  from input to output URL
-subCtx.openTable(); 
+subCtx.setQuery(SurveyMain.QUERY_SECTION,subCtx.field(SurveyMain.QUERY_SECTION));
 
-subCtx.showXpath( "//ldml/numbers/decimalFormats/decimalFormatLength/decimalFormat[@type=\"standard\"]/pattern[@type=\"standard\"]");
+SurveyForum.printSectionTableOpenShort(subCtx, "//ldml/numbers/decimalFormats/decimalFormatLength/decimalFormat/pattern");
 
-subCtx.closeTable();
-subCtx.doneWithXpaths(); // print hidden field notifying which bases to accept submission for. 
+SurveyForum.showXpathShort(subCtx, "//ldml/numbers/decimalFormats/decimalFormatLength/decimalFormat[@type=\"standard\"]/pattern[@type=\"standard\"]");
+
+SurveyForum.printSectionTableCloseShort(subCtx, "//ldml/numbers/decimalFormats/decimalFormatLength/decimalFormat/pattern");
 
 %>

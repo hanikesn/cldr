@@ -8,10 +8,40 @@
  */
 package org.unicode.cldr.tool;
 
+import org.unicode.cldr.icu.CollectionUtilities;
+import org.unicode.cldr.tool.ShowData.DataShower;
+import org.unicode.cldr.util.CLDRFile;
+import org.unicode.cldr.util.LanguageTagParser;
+import org.unicode.cldr.util.UnicodeMap;
+import org.unicode.cldr.util.UnicodeMapIterator;
+import org.unicode.cldr.util.Utility;
+import org.unicode.cldr.util.XPathParts;
+import org.unicode.cldr.util.CLDRFile.Factory;
+import org.unicode.cldr.util.CLDRFile.Status;
+import org.unicode.cldr.util.LanguageTagParser.Fields;
+import org.xml.sax.SAXException;
+
+import com.ibm.icu.dev.test.util.ArrayComparator;
+import com.ibm.icu.dev.test.util.BagFormatter;
+import com.ibm.icu.dev.test.util.TransliteratorUtilities;
+import com.ibm.icu.dev.tool.UOption;
+import com.ibm.icu.lang.UCharacter;
+import com.ibm.icu.lang.UScript;
+import com.ibm.icu.text.Collator;
+import com.ibm.icu.text.RuleBasedCollator;
+import com.ibm.icu.text.RuleBasedNumberFormat;
+import com.ibm.icu.text.StringTransform;
+import com.ibm.icu.text.Transliterator;
+import com.ibm.icu.text.UTF16;
+import com.ibm.icu.text.UnicodeSet;
+import com.ibm.icu.text.UnicodeSetIterator;
+import com.ibm.icu.util.ULocale;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,35 +55,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.unicode.cldr.tool.ShowData.DataShower;
-import org.unicode.cldr.util.CLDRFile;
-import org.unicode.cldr.util.LanguageTagParser;
-import org.unicode.cldr.util.CldrUtility;
-import org.unicode.cldr.util.XPathParts;
-import org.unicode.cldr.util.CLDRFile.Factory;
-import org.unicode.cldr.util.CLDRFile.Status;
-import org.unicode.cldr.util.LanguageTagParser.Fields;
-import org.xml.sax.SAXException;
-
-import com.ibm.icu.dev.test.util.BagFormatter;
-import com.ibm.icu.dev.test.util.CollectionUtilities;
-import com.ibm.icu.dev.test.util.PrettyPrinter;
-import com.ibm.icu.dev.test.util.TransliteratorUtilities;
-import com.ibm.icu.dev.test.util.UnicodeMap;
-import com.ibm.icu.dev.tool.UOption;
-import com.ibm.icu.impl.MultiComparator;
-import com.ibm.icu.lang.UCharacter;
-import com.ibm.icu.lang.UScript;
-import com.ibm.icu.text.Collator;
-import com.ibm.icu.text.RuleBasedCollator;
-import com.ibm.icu.text.RuleBasedNumberFormat;
-import com.ibm.icu.text.StringTransform;
-import com.ibm.icu.text.Transliterator;
-import com.ibm.icu.text.UTF16;
-import com.ibm.icu.text.UnicodeSet;
-import com.ibm.icu.text.UnicodeSetIterator;
-import com.ibm.icu.util.ULocale;
 
 /**
  * This is a simple class that walks through the CLDR hierarchy.
@@ -99,8 +100,8 @@ public class GenerateSidewaysView {
   private static final UOption[] options = {
     UOption.HELP_H(),
     UOption.HELP_QUESTION_MARK(),
-    UOption.SOURCEDIR().setDefault(CldrUtility.MAIN_DIRECTORY),
-    UOption.DESTDIR().setDefault(CldrUtility.CHART_DIRECTORY + File.separatorChar+  "by_type/"), // C:/cvsdata/unicode/cldr/diff/by_type/
+    UOption.SOURCEDIR().setDefault(Utility.MAIN_DIRECTORY),
+    UOption.DESTDIR().setDefault(Utility.CHART_DIRECTORY + File.separatorChar+  "by_type/"), // C:/cvsdata/unicode/cldr/diff/by_type/
     UOption.create("match", 'm', UOption.REQUIRES_ARG).setDefault(".*"),
     UOption.create("skip", 'z', UOption.REQUIRES_ARG).setDefault("zh_(C|S|HK|M).*"),
     UOption.create("tzadir", 't', UOption.REQUIRES_ARG).setDefault("C:\\ICU4J\\icu4j\\src\\com\\ibm\\icu\\dev\\tool\\cldr\\"),
@@ -131,7 +132,7 @@ public class GenerateSidewaysView {
     RuleBasedCollator UCA2 = (RuleBasedCollator) Collator.getInstance(ULocale.ROOT);
     UCA2.setNumericCollation(true);
     UCA2.setStrength(UCA2.IDENTICAL);
-    UCA = new com.ibm.icu.impl.MultiComparator(UCA2, new UTF16.StringComparator(true, false, 0) );
+    UCA = new CollectionUtilities.MultiComparator(UCA2, new UTF16.StringComparator(true, false, 0) );
   }
   
   private static String timeZoneAliasDir = null;
@@ -151,7 +152,7 @@ public class GenerateSidewaysView {
   
   public static void main(String[] args) throws SAXException, IOException {
     startTime = System.currentTimeMillis();
-    CldrUtility.registerExtraTransliterators();
+    Utility.registerExtraTransliterators();
     UOption.parseArgs(args, options);
     
     pathMatcher = options[PATH].value == null ? null : Pattern.compile(options[PATH].value).matcher("");
@@ -281,7 +282,7 @@ public class GenerateSidewaysView {
     Set<String> allChars = new TreeSet(UCA);
     for (Object locales : mapping.getAvailableValues()) {
       allLocales.addAll((Collection) locales);
-      UnicodeSet unicodeSet = mapping.keySet(locales);
+      UnicodeSet unicodeSet = mapping.getSet(locales);
       for (UnicodeSetIterator it = new UnicodeSetIterator(unicodeSet); it.next();) {
         allChars.add(it.getString());
       }
@@ -376,14 +377,7 @@ public class GenerateSidewaysView {
   };
 
   private static String displayExemplars(UnicodeSet lastChars) {
-    String exemplarsWithoutBrackets = new PrettyPrinter()
-    .setOrdering(UCA != null ? UCA : Collator.getInstance(ULocale.ROOT))
-    .setSpaceComparator(UCA != null ? UCA : Collator.getInstance(ULocale.ROOT)
-            .setStrength2(Collator.PRIMARY))
-            .setCompressRanges(true)
-            .setToQuote(ALL_CHARS)
-            .setQuoter(MyTransform)
-            .format(lastChars);
+    String exemplarsWithoutBrackets = CollectionUtilities.prettyPrint(lastChars,true,ALL_CHARS, MyTransform,UCA,UCA);
     exemplarsWithoutBrackets = exemplarsWithoutBrackets.substring(1, exemplarsWithoutBrackets.length() - 1);
     return exemplarsWithoutBrackets;
   }
@@ -397,7 +391,7 @@ public class GenerateSidewaysView {
 //  }
 
   static UnicodeMap.Composer setComposer = new UnicodeMap.Composer() {
-    public Object compose(int codepoint, String string, Object a, Object b) {
+    public Object compose(Object a, Object b) {
       if (a == null) {
         return b;
       } else if (b == null) {

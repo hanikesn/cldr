@@ -1009,7 +1009,6 @@
 		<exemplarCharacters>[ʼ а-г ґ д е є ж-и і ї й-щ ь ю я]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[i v x]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[ʼ А Б В Г Ґ Д Е Є Ж З И І Ї Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ь Ю Я]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>«</quotationStart>
@@ -1174,14 +1173,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">дп</dayPeriod>
-							<dayPeriod type="pm">пп</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>дп</am>
+				<pm>пп</pm>
 				<eras>
 					<eraNames>
 						<era type="0">до нашої ери</era>
@@ -1266,18 +1259,18 @@
 							<greatestDifference id="d" draft="contributed">d–d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="h" draft="contributed">h–h a</greatestDifference>
+							<greatestDifference id="h" draft="contributed">HH–HH</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="h" draft="contributed">h:mm–h:mm a</greatestDifference>
-							<greatestDifference id="m" draft="contributed">h:mm–h:mm a</greatestDifference>
+							<greatestDifference id="h" draft="contributed">HH:mm–HH:mm</greatestDifference>
+							<greatestDifference id="m" draft="contributed">HH:mm–HH:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="h" draft="contributed">h:mm–h:mm a v</greatestDifference>
-							<greatestDifference id="m" draft="contributed">h:mm–h:mm a v</greatestDifference>
+							<greatestDifference id="h" draft="contributed">HH:mm–HH:mm v</greatestDifference>
+							<greatestDifference id="m" draft="contributed">HH:mm–HH:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="h" draft="contributed">h–h a v</greatestDifference>
+							<greatestDifference id="h" draft="contributed">HH–HH v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M" draft="contributed">M–M</greatestDifference>
@@ -1386,15 +1379,19 @@
 							<month type="3" references="R235">Числьов</month>
 							<month type="4" references="R235">Тебет</month>
 							<month type="5" references="R235">Шеват</month>
-							<month type="6" references="R235">Адар I</month>
+							<month type="6" references="R235">Адар Ⅰ</month>
 							<month type="7" references="R235">Адар</month>
-							<month type="7" references="R235" yeartype="leap">Адар II</month>
 							<month type="8" references="R235">Нісан</month>
 							<month type="9" references="R235">Іар</month>
 							<month type="10" references="R235">Сиван</month>
 							<month type="11" references="R235">Таммуз</month>
 							<month type="12" references="R235">Аб</month>
 							<month type="13" references="R235">Елул</month>
+						</monthWidth>
+					</monthContext>
+					<monthContext type="stand-alone">
+						<monthWidth type="wide">
+							<month type="6">Адар I</month>
 						</monthWidth>
 					</monthContext>
 				</months>

@@ -56,11 +56,6 @@ public class Log {
 		if (log != null) log.close();
 	}
 	
-	public static void setLog(String dir, String file) throws IOException {
-		log = BagFormatter.openUTF8Writer(dir, file);
-		log.print('\uFEFF');
-	}
-
 	public static void setLog(String file) throws IOException {
 		log = BagFormatter.openUTF8Writer("", file);
 		log.print('\uFEFF');

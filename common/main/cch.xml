@@ -8,7 +8,6 @@
 	</identity>
 	<characters>
 		<exemplarCharacters draft="unconfirmed">[a {a\u0331} b c {ch} d {dy} e-g {g\u0331} {gb} {gw} {gy} h {hy} i-k ḵ {kp} {kw} l {ly} m n ṉ {ny} o p {ph} {py} r {ry} s {sh} t-w {wh} y {y\u0331} z ʼ]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ʼ]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -110,14 +109,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AM</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">PM</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AM</am>
+				<pm draft="unconfirmed">PM</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">Gabanin Miladi</era>

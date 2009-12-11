@@ -10,7 +10,7 @@ package org.unicode.cldr.test;
 import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.InternalCldrException;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 
 import com.ibm.icu.dev.test.util.ElapsedTimer;
 import com.ibm.icu.dev.test.util.TransliteratorUtilities;
@@ -89,12 +89,11 @@ abstract public class CheckCLDR {
     .add(new CheckForExemplars())
     .add(new CheckNumbers())
     // .add(new CheckZones()) this doesn't work; many spurious errors that user can't correct
-    .add(new CheckMetazones())
     .add(new CheckAlt())
    .add(new CheckCurrencies())
     .add(new CheckCasing())
-    //.add(new CheckConsistentCasing())
-    //.add(new CheckNew()) // this is at the end; it will check for other certain other errors and warnings and not add a message if there are any.
+    .add(new CheckConsistentCasing())
+    .add(new CheckNew()) // this is at the end; it will check for other certain other errors and warnings and not add a message if there are any.
     ;
   }
   
@@ -209,7 +208,7 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
       narrowDateFieldTooWide, illegalCharactersInExemplars, orientationDisagreesWithExemplars,
       illegalDatePattern, missingMainExemplars, discouragedCharactersInTranslation, mustNotStartOrEndWithSpace,
       illegalCharactersInNumberPattern, numberPatternNotCanonical, currencyPatternMissingCurrencySymbol,
-      percentPatternMissingPercentSymbol, illegalNumberFormat, unexpectedAttributeValue, metazoneContainsDigit;
+      percentPatternMissingPercentSymbol, illegalNumberFormat, unexpectedAttributeValue;
         public String toString() {
           return TO_STRING.matcher(name()).replaceAll(" $1").toLowerCase();
         }
@@ -575,7 +574,7 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
   
   public static Transliterator getTransliteratorFromFile(String ID, String file) {
     try {
-      BufferedReader br = CldrUtility.getUTF8Data(file);
+      BufferedReader br = Utility.getUTF8Data(file);
       StringBuffer input = new StringBuffer();
       while (true) {
         String line = br.readLine();

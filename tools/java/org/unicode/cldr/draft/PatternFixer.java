@@ -134,15 +134,14 @@ public class PatternFixer {
 
   private int parseUnicodeSet(String regexPattern, UnicodeSetBuilder builder,
           ParsePosition parsePosition, StringBuffer result, int i) throws ParseException {
-      return 0;
-//    UnicodeSet set;
-//    parsePosition.setIndex(i);
-//    set = builder.parseObject(regexPattern, parsePosition);
-//    if (parsePosition.getIndex() == i) {
-//      throw new ParseException(regexPattern, i);
-//    }
-//    builder.format(set,result,null);
-//    return parsePosition.getIndex();
+    UnicodeSet set;
+    parsePosition.setIndex(i);
+    set = builder.parseObject(regexPattern, parsePosition);
+    if (parsePosition.getIndex() == i) {
+      throw new ParseException(regexPattern, i);
+    }
+    builder.format(set,result,null);
+    return parsePosition.getIndex();
   }
 
 }

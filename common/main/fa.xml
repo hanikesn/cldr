@@ -948,7 +948,6 @@
 		<exemplarCharacters>[\u064B \u064D \u064C \u0651 \u0654 آ ا ء أ ؤ ئ ب پ ت-ج چ ح-ز ژ س-غ ف ق ک گ ل-ن و ه ة ی]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u064E-\u0650 \u0652 \u0656 \u0670 ۰-۹ \u200C-\u200F]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-z ﷼]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[آ ا ء ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart references="R046">«</quotationStart>
@@ -1070,14 +1069,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">قبل از ظهر</dayPeriod>
-							<dayPeriod type="pm">بعد از ظهر</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>قبل از ظهر</am>
+				<pm>بعد از ظهر</pm>
 				<eras>
 					<eraNames>
 						<era type="0">قبل از میلاد</era>
@@ -1196,40 +1189,22 @@
 							<greatestDifference id="d">d تا d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a تا h a</greatestDifference>
-							<greatestDifference id="h">h تا h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
 							<greatestDifference id="a">H تا H</greatestDifference>
-							<greatestDifference id="H">H تا H</greatestDifference>
+							<greatestDifference id="h">H تا H</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h:mm a تا h:mm a</greatestDifference>
-							<greatestDifference id="h">h:mm تا h:mm a</greatestDifference>
-							<greatestDifference id="m">h:mm تا h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
 							<greatestDifference id="a">H:mm تا H:mm</greatestDifference>
-							<greatestDifference id="H">H:mm تا H:mm</greatestDifference>
+							<greatestDifference id="h">H:mm تا H:mm</greatestDifference>
 							<greatestDifference id="m">H:mm تا H:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h:mm a تا h:mm a (v)</greatestDifference>
-							<greatestDifference id="h">h:mm تا h:mm a (v)</greatestDifference>
-							<greatestDifference id="m">h:mm تا h:mm a (v)</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
 							<greatestDifference id="a">H:mm تا H:mm (v)</greatestDifference>
-							<greatestDifference id="H">H:mm تا H:mm (v)</greatestDifference>
+							<greatestDifference id="h">H:mm تا H:mm (v)</greatestDifference>
 							<greatestDifference id="m">H:mm تا H:mm (v)</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a تا h a (v)</greatestDifference>
-							<greatestDifference id="h">h تا h a (v)</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
 							<greatestDifference id="a">H تا H (v)</greatestDifference>
-							<greatestDifference id="H">H تا H (v)</greatestDifference>
+							<greatestDifference id="h">H تا H (v)</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">M تا M</greatestDifference>
@@ -1347,7 +1322,6 @@
 							<month type="5">شباط</month>
 							<month type="6">آذار</month>
 							<month type="7">واذار</month>
-							<month type="7" yeartype="leap">واذار الثانی</month>
 							<month type="8">نیسان</month>
 							<month type="9">ایار</month>
 							<month type="10">سیوان</month>
@@ -1365,7 +1339,6 @@
 							<month type="5">ش</month>
 							<month type="6">آ</month>
 							<month type="7">و</month>
-							<month type="7" yeartype="leap">و</month>
 							<month type="8">ن</month>
 							<month type="9">ا</month>
 							<month type="10">س</month>
@@ -1411,14 +1384,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">قبل از ظهر</dayPeriod>
-							<dayPeriod type="pm">بعد از ظهر</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>قبل از ظهر</am>
+				<pm>بعد از ظهر</pm>
 				<eras>
 					<eraNames>
 						<era type="0" references="R046">هجری قمری</era>
@@ -1486,14 +1453,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">قبل از ظهر</dayPeriod>
-							<dayPeriod type="pm">بعد از ظهر</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>قبل از ظهر</am>
+				<pm>بعد از ظهر</pm>
 				<eras>
 					<eraNames>
 						<era type="0" references="R046">هجری شمسی</era>
@@ -2834,22 +2795,22 @@
 		<defaultNumberingSystem>arabext</defaultNumberingSystem>
 		<symbols>
 			<decimal>,</decimal>
-			<decimal references="R048" numberSystem="arabext">٫</decimal>
+			<decimal references="R048" alt="arabext">٫</decimal>
 			<group>.</group>
-			<group references="R048" numberSystem="arabext">٬</group>
+			<group references="R048" alt="arabext">٬</group>
 			<list>;</list>
-			<list numberSystem="arabext">؛</list>
+			<list alt="arabext">؛</list>
 			<percentSign>%</percentSign>
-			<percentSign references="R048" numberSystem="arabext">٪</percentSign>
+			<percentSign references="R048" alt="arabext">٪</percentSign>
 			<nativeZeroDigit>0</nativeZeroDigit>
-			<nativeZeroDigit references="R048" numberSystem="arabext">۰</nativeZeroDigit>
+			<nativeZeroDigit references="R048" alt="arabext">۰</nativeZeroDigit>
 			<patternDigit>#</patternDigit>
 			<plusSign>+</plusSign>
 			<minusSign references="R048">−</minusSign>
 			<exponential>E</exponential>
-			<exponential numberSystem="arabext">×۱۰^</exponential>
+			<exponential alt="arabext">×۱۰^</exponential>
 			<perMille>‰</perMille>
-			<perMille numberSystem="arabext">؉</perMille>
+			<perMille alt="arabext">؉</perMille>
 			<infinity>∞</infinity>
 			<nan draft="contributed">NaN</nan>
 		</symbols>

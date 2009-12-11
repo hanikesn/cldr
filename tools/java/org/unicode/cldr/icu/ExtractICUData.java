@@ -15,6 +15,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -26,16 +27,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.unicode.cldr.util.CLDRFile;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 
+import com.ibm.icu.dev.test.util.CaseIterator;
 import com.ibm.icu.dev.test.util.BagFormatter;
+import com.ibm.icu.dev.test.util.UnicodeMap;
 import com.ibm.icu.impl.ICUResourceBundle;
+import org.unicode.cldr.icu.PrettyPrinter;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.lang.UProperty;
 import com.ibm.icu.lang.UScript;
+import com.ibm.icu.text.CanonicalIterator;
 import com.ibm.icu.text.Collator;
+import com.ibm.icu.text.Normalizer;
 import com.ibm.icu.text.RuleBasedCollator;
 import com.ibm.icu.text.Transliterator;
+import com.ibm.icu.text.UTF16;
+import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.ULocale;
 import com.ibm.icu.util.UResourceBundle;
 
@@ -49,9 +57,9 @@ import com.ibm.icu.util.UResourceBundle;
  */
 public class ExtractICUData {
 	public static void main(String[] args) throws Exception {
-    String file = CldrUtility.getProperty("file", null);
+    String file = Utility.getProperty("file", null);
     if (file != null) {
-      String targetDirectory = CldrUtility.getProperty("target", CldrUtility.GEN_DIRECTORY + "/translit/gen/");
+      String targetDirectory = Utility.getProperty("target", Utility.GEN_DIRECTORY + "/translit/gen/");
       convertFile(file, targetDirectory);
     } else {
       generateTransliterators();
@@ -123,7 +131,7 @@ public class ExtractICUData {
 				//if (true) continue;
 				input = BagFormatter.openUTF8Reader(((File)file).getParent() + File.separator, fileName);
 			} else {
-				input = CldrUtility.getUTF8Data(fileName);
+				input = Utility.getUTF8Data(fileName);
 			}
 			CLDRFile outFile = CLDRFile.makeSupplemental(fileName);
 			int count = 0;
@@ -147,12 +155,12 @@ public class ExtractICUData {
 				addInTwo(outFile, accumulatedItems, prefix + (++count) + "\"]", fixedLine);
 			}
 			
-			PrintWriter pw = BagFormatter.openUTF8Writer(CldrUtility.GEN_DIRECTORY + "/translit/gen/", outName + ".xml");
+			PrintWriter pw = BagFormatter.openUTF8Writer(Utility.GEN_DIRECTORY + "/translit/gen/", outName + ".xml");
 			outFile.write(pw);
 			pw.close();
 			
 		}
-		PrintWriter pw = BagFormatter.openUTF8Writer(CldrUtility.GEN_DIRECTORY + "/translit/gen/", "All" + ".xml");
+		PrintWriter pw = BagFormatter.openUTF8Writer(Utility.GEN_DIRECTORY + "/translit/gen/", "All" + ".xml");
 		accumulatedItems.write(pw);
 		pw.close();
 	}
@@ -300,7 +308,7 @@ public class ExtractICUData {
 						accumulatedItems.add(prefix + (++count) + "\"]", "::" + piece + ";");
 					}
 				}
-				PrintWriter pw = BagFormatter.openUTF8Writer(CldrUtility.GEN_DIRECTORY + "/translit/gen/", outName + ".xml");
+				PrintWriter pw = BagFormatter.openUTF8Writer(Utility.GEN_DIRECTORY + "/translit/gen/", outName + ".xml");
 				outFile.write(pw);
 				pw.close();				
 			} else {

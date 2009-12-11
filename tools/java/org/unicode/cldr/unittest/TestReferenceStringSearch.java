@@ -9,14 +9,13 @@ import org.unicode.cldr.util.StateDictionary;
 import org.unicode.cldr.util.StateDictionaryBuilder;
 import org.unicode.cldr.util.Utf8StringByteConverter;
 import org.unicode.cldr.util.Timer;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.Dictionary.DictionaryCharList;
 import org.unicode.cldr.util.Dictionary.Matcher;
 import org.unicode.cldr.util.Dictionary.Matcher.Status;
 import org.unicode.cldr.util.ReferenceStringSearch.ExtendedRange;
 import org.unicode.cldr.util.ReferenceStringSearch.Range;
 
-import com.ibm.icu.impl.Utility;
 import com.ibm.icu.text.BreakIterator;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.NumberFormat;

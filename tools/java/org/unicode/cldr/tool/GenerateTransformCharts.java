@@ -6,14 +6,13 @@
  */
 package org.unicode.cldr.tool;
 
-import com.ibm.icu.dev.test.util.CollectionUtilities;
+import org.unicode.cldr.icu.CollectionUtilities;
 import org.unicode.cldr.test.TestTransformsSimple;
 import org.unicode.cldr.util.CLDRTransforms;
 import org.unicode.cldr.util.SimpleEquivalenceClass;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.CLDRTransforms.ParsedTransformID;
 
-import com.ibm.icu.impl.MultiComparator;
 import com.ibm.icu.lang.UProperty;
 import com.ibm.icu.lang.UScript;
 import com.ibm.icu.lang.UCharacter;
@@ -38,9 +37,9 @@ import java.io.*;
 
 public class GenerateTransformCharts {
 
-  private static final String TRANSFORM_DIRECTORY = CldrUtility.CHART_DIRECTORY + File.separatorChar + "transforms/";
+  private static final String TRANSFORM_DIRECTORY = Utility.CHART_DIRECTORY + File.separatorChar + "transforms/";
   private static final UnicodeSet NON_LATIN = new UnicodeSet("[^[:latin:][:common:][:inherited:]]");
-  private static final boolean verbose = CldrUtility.getProperty("verbose", false);
+  private static final boolean verbose = Utility.getProperty("verbose", false);
 
   static int[] indicScripts = { UScript.LATIN, UScript.COMMON, UScript.DEVANAGARI,
     UScript.BENGALI, UScript.GURMUKHI, UScript.GUJARATI,
@@ -71,8 +70,8 @@ public class GenerateTransformCharts {
   }
 
   public static void main(String[] args) throws IOException {
-    useICU = CldrUtility.getProperty("USEICU", false);
-    String filter = CldrUtility.getProperty("filter", null);
+    useICU = Utility.getProperty("USEICU", false);
+    String filter = Utility.getProperty("filter", null);
     System.out.println("Start");
     //PrintWriter out = new PrintWriter(System.out);
     CLDRTransforms.registerCldrTransforms(null, filter, verbose ? new PrintWriter(System.out) : null);
@@ -423,7 +422,7 @@ public class GenerateTransformCharts {
     RuleBasedCollator UCA2 = (RuleBasedCollator) Collator.getInstance(ULocale.ROOT);
     UCA2.setNumericCollation(true);
     UCA2.setStrength(UCA2.IDENTICAL);
-    UCA = new com.ibm.icu.impl.MultiComparator(UCA2, new UTF16.StringComparator(true, false, 0) );
+    UCA = new CollectionUtilities.MultiComparator(UCA2, new UTF16.StringComparator(true, false, 0) );
   }
 
   private static void showLatin(String scriptChoice, Set<String> targetVariant) throws IOException {
@@ -518,10 +517,10 @@ public class GenerateTransformCharts {
           totalLatin.add(latin);
         }
 
-        CldrUtility.addTreeMapChain(nonLatinToLatinTagged, nonLatin, nonLatinId, latin, areSame(nonLatin, backToNonLatin));
+        Utility.addTreeMapChain(nonLatinToLatinTagged, nonLatin, nonLatinId, latin, areSame(nonLatin, backToNonLatin));
         if (convertsLatin) {
           String backToLatin = nonLatin_latin.transliterate(backToNonLatin);
-          CldrUtility.addTreeMapChain(latinToTaggedNonLatin, latin, nonLatinId, backToNonLatin, areSame(latin, backToLatin));
+          Utility.addTreeMapChain(latinToTaggedNonLatin, latin, nonLatinId, backToNonLatin, areSame(latin, backToLatin));
         }
       }
       for (int c = 'a'; c <= 'z'; ++c) {
@@ -641,9 +640,9 @@ public class GenerateTransformCharts {
     String nonLatin = latin_nonLatin.transliterate(latin);
     if (!nonLatin.equals(latin)) {
       String backLatin = nonLatin_latin.transliterate(nonLatin);
-      CldrUtility.addTreeMapChain(latinToTaggedNonLatin, latin, nonLatinId, nonLatin, areSame(latin, backLatin));
+      Utility.addTreeMapChain(latinToTaggedNonLatin, latin, nonLatinId, nonLatin, areSame(latin, backLatin));
       String backNonLatin = latin_nonLatin.transliterate(backLatin);
-      CldrUtility.addTreeMapChain(nonLatinToLatinTagged, nonLatin, nonLatinId, backLatin, areSame(nonLatin, backNonLatin));
+      Utility.addTreeMapChain(nonLatinToLatinTagged, nonLatin, nonLatinId, backLatin, areSame(nonLatin, backNonLatin));
     }
   }
 
@@ -677,7 +676,7 @@ public class GenerateTransformCharts {
     return nonLatinUnicodeSet;
   }
 
-  static Map<String,String> language_to_script = CldrUtility.asMap(new String[][]{
+  static Map<String,String> language_to_script = Utility.asMap(new String[][]{
           {"Jamo", "Hangul"},
           {"Amharic", "Ethiopic"},
           {"Azerbaijani", "Cyrillic"},

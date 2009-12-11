@@ -6,13 +6,11 @@
 
 <%
 //  Copy "x=___"  from input to output URL
-subCtx.openTable(); 
-
+subCtx.setQuery(SurveyMain.QUERY_SECTION,subCtx.field(SurveyMain.QUERY_SECTION));
+SurveyForum.printSectionTableOpenShort(subCtx, thisBaseXpath);
    for(int i=1;i<=12;i++) {
-       subCtx.showXpath( "//ldml/dates/calendars/calendar[@type=\"gregorian\"]/months/monthContext[@type=\"format\"]/monthWidth[@type=\"abbreviated\"]/month[@type=\""+String.valueOf(i)+"\"]");
+       SurveyForum.showXpathShort(subCtx, "//ldml/dates/calendars/calendar[@type=\"gregorian\"]/months/monthContext[@type=\"format\"]/monthWidth[@type=\"abbreviated\"]/month[@type=\""+String.valueOf(i)+"\"]");
 
    }
-   
-subCtx.closeTable();
-subCtx.doneWithXpaths(); // print hidden field notifying which bases to accept submission for. 
+SurveyForum.printSectionTableCloseShort(subCtx, thisBaseXpath);
 %>

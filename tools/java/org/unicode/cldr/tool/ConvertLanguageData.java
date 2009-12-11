@@ -7,17 +7,19 @@ import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.LocaleIDParser;
 import org.unicode.cldr.util.Log;
 import org.unicode.cldr.util.Pair;
-import com.ibm.icu.dev.test.util.Relation;
+import org.unicode.cldr.util.Relation;
+import org.unicode.cldr.util.Row;
 import org.unicode.cldr.util.SpreadSheet;
 import org.unicode.cldr.util.StandardCodes;
 import org.unicode.cldr.util.SupplementalDataInfo;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.util.CLDRFile.Factory;
 import org.unicode.cldr.util.Iso639Data.Scope;
 import org.unicode.cldr.util.Iso639Data.Source;
 import org.unicode.cldr.util.Iso639Data.Type;
 import org.unicode.cldr.util.LocaleIDParser.Level;
+import org.unicode.cldr.util.Row.R2;
 import org.unicode.cldr.util.SupplementalDataInfo.BasicLanguageData;
 import org.unicode.cldr.util.SupplementalDataInfo.OfficialStatus;
 import org.unicode.cldr.util.SupplementalDataInfo.PopulationData;
@@ -25,7 +27,6 @@ import org.unicode.cldr.util.XPathParts.Comments;
 
 import com.ibm.icu.dev.test.util.BagFormatter;
 import com.ibm.icu.dev.test.util.TransliteratorUtilities;
-import com.ibm.icu.impl.Row;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.text.RuleBasedCollator;
@@ -90,21 +91,21 @@ public class ConvertLanguageData {
   static Factory cldrFactory;
   static Set skipLocales = new HashSet(Arrays.asList("sh sh_BA sh_CS sh_YU characters supplementalData supplementalData-old supplementalData-old2 supplementalData-old3 supplementalMetadata root".split("\\s")));
 
-  static SupplementalDataInfo supplementalData = SupplementalDataInfo.getInstance(CldrUtility.SUPPLEMENTAL_DIRECTORY);
+  static SupplementalDataInfo supplementalData = SupplementalDataInfo.getInstance(Utility.SUPPLEMENTAL_DIRECTORY);
 
   public static void main(String[] args) throws IOException, ParseException {
     BufferedReader oldFile = null;
     try {
       // load elements we care about
-      Log.setLogNoBOM(CldrUtility.GEN_DIRECTORY + "/supplemental/supplementalData.xml");
+      Log.setLogNoBOM(Utility.GEN_DIRECTORY + "/supplemental/supplementalData.xml");
       //Log.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
       //Log.println("<!DOCTYPE supplementalData SYSTEM \"http://www.unicode.org/cldr/data/dtd/ldmlSupplemental.dtd\">");
       //Log.println("<supplementalData version=\"1.5\">");
 
-      oldFile = BagFormatter.openUTF8Reader(CldrUtility.SUPPLEMENTAL_DIRECTORY, "supplementalData.xml");
-      CldrUtility.copyUpTo(oldFile, Pattern.compile("\\s*<languageData>\\s*"), Log.getLog(), false);
+      oldFile = BagFormatter.openUTF8Reader(Utility.SUPPLEMENTAL_DIRECTORY, "supplementalData.xml");
+      Utility.copyUpTo(oldFile, Pattern.compile("\\s*<languageData>\\s*"), Log.getLog(), false);
 
-      cldrFactory = Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
+      cldrFactory = Factory.make(Utility.MAIN_DIRECTORY, ".*");
       Set<String> available = cldrFactory.getAvailable();
       english = cldrFactory.make("en",true);
 
@@ -182,12 +183,12 @@ public class ConvertLanguageData {
 
       showFailures(failures);
 
-      CldrUtility.copyUpTo(oldFile, Pattern.compile("\\s*</territoryInfo>\\s*"), null, false);
-      CldrUtility.copyUpTo(oldFile, Pattern.compile("\\s*<references>\\s*"), Log.getLog(), false);
+      Utility.copyUpTo(oldFile, Pattern.compile("\\s*</territoryInfo>\\s*"), null, false);
+      Utility.copyUpTo(oldFile, Pattern.compile("\\s*<references>\\s*"), Log.getLog(), false);
       //generateIso639_2Data();
       references.printReferences();
-      CldrUtility.copyUpTo(oldFile, Pattern.compile("\\s*</references>\\s*"), null, false);
-      CldrUtility.copyUpTo(oldFile, null, Log.getLog(), false);
+      Utility.copyUpTo(oldFile, Pattern.compile("\\s*</references>\\s*"), null, false);
+      Utility.copyUpTo(oldFile, null, Log.getLog(), false);
       //Log.println("</supplementalData>");
       Log.close();
       oldFile.close();
@@ -207,7 +208,7 @@ public class ConvertLanguageData {
       //      Log.close();
       //      oldFile.close();
 
-      Log.setLog(CldrUtility.GEN_DIRECTORY + "/supplemental/language_script_raw.txt");
+      Log.setLog(Utility.GEN_DIRECTORY + "/supplemental/language_script_raw.txt");
       getLanguageScriptSpreadsheet(Log.getLog());
       Log.close();
     } catch (Exception e) {
@@ -406,8 +407,8 @@ public class ConvertLanguageData {
         Set<String> territories = status_territories == null ? null : status_territories.getAll(status);
         if (scripts == null && territories == null) continue;
         Log.println("\t\t<language type=\"" + languageSubtag + "\""
-                + (scripts == null ? "" : " scripts=\"" + CldrUtility.join(scripts, " ") + "\"")
-                + (territories == null ? "" : " territories=\"" + CldrUtility.join(territories, " ") + "\"")
+                + (scripts == null ? "" : " scripts=\"" + Utility.join(scripts, " ") + "\"")
+                + (territories == null ? "" : " territories=\"" + Utility.join(territories, " ") + "\"")
                 + (status == BasicLanguageData.Type.primary ? "" :  " alt=\"secondary\"")
                 + "/>");
       }
@@ -524,7 +525,7 @@ public class ConvertLanguageData {
     Map<String,Comments> languageToCommentsAlt = new TreeMap<String,Comments>();
 
     private LanguageInfo() {
-      cldrFactory = Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
+      cldrFactory = Factory.make(Utility.MAIN_DIRECTORY, ".*");
       Set available = cldrFactory.getAvailable();
       CLDRFile supplemental = cldrFactory.make("supplementalData", true);
       XPathParts parts = new XPathParts();
@@ -975,7 +976,7 @@ public class ConvertLanguageData {
               + "countryPopulation: " + countryPopulation + "\t"
               + "countryGDP: " + countryGDP + "\t"
               + "languageCode: " + languageCode + "\t"
-              + "languagePopulation: " + languagePopulation + CldrUtility.LINE_SEPARATOR
+              + "languagePopulation: " + languagePopulation + Utility.LINE_SEPARATOR
       );
       //}
     }
@@ -1098,9 +1099,9 @@ public class ConvertLanguageData {
 
     LanguageTagParser ltp = new LanguageTagParser();
 
-    String dir = CldrUtility.GEN_DIRECTORY + "supplemental/";
+    String dir = Utility.GEN_DIRECTORY + "supplemental/";
     final String ricksFile = "country_language_population_raw.txt";
-    List<List<String>> input = SpreadSheet.convert(CldrUtility.getUTF8Data(ricksFile));
+    List<List<String>> input = SpreadSheet.convert(Utility.getUTF8Data(ricksFile));
 
     Set<String> languages = languagesNeeded; // sc.getGoodAvailableCodes("language");
 
@@ -1128,9 +1129,9 @@ public class ConvertLanguageData {
       try {
         RowData x = new RowData(row);
         if (x.officialStatus != OfficialStatus.unknown) {
-          Row.R2<String, Double> largestOffical = countryToLargestOfficialLanguage.get(x.countryCode);
+          R2<String, Double> largestOffical = countryToLargestOfficialLanguage.get(x.countryCode);
           if (largestOffical == null) {
-            countryToLargestOfficialLanguage.put(x.countryCode, Row.of(x.languageCode, x.languagePopulation));
+            countryToLargestOfficialLanguage.put(x.countryCode, Row.make(x.languageCode, x.languagePopulation));
           } else if (largestOffical.get1() < x.languagePopulation) {
             largestOffical.set0(x.languageCode);
             largestOffical.set1(x.languagePopulation);
@@ -1161,7 +1162,7 @@ public class ConvertLanguageData {
         throw (RuntimeException) new IllegalArgumentException("Failure on line " + count + ")\t" + row).initCause(e);
       }
     }
-    System.out.println("Status found: " + CldrUtility.join(statusFound, " | "));
+    System.out.println("Status found: " + Utility.join(statusFound, " | "));
 
     // make sure we have something
     for (String country : countriesNotFound) {
@@ -1178,7 +1179,7 @@ public class ConvertLanguageData {
 
       if (row.officialStatus == OfficialStatus.unknown) {
         String country = row.countryCode;
-        Row.R2<String, Double> largestOffical = countryToLargestOfficialLanguage.get(row.countryCode);
+        R2<String, Double> largestOffical = countryToLargestOfficialLanguage.get(row.countryCode);
         if (largestOffical != null && largestOffical.get1() < row.languagePopulation) {
           System.out.println("*WARNING* language population greater than any official language: "
                   + getLanguageCodeAndName(largestOffical.get0()) + "; " + row.toString(true));
@@ -1405,7 +1406,7 @@ public class ConvertLanguageData {
       System.out.println();
     }
 
-    Factory cldrFactory = Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
+    Factory cldrFactory = Factory.make(Utility.MAIN_DIRECTORY, ".*");
     Set<String> locales = new TreeSet(cldrFactory.getAvailable());
     LocaleIDParser lidp = new LocaleIDParser();
 
@@ -1546,7 +1547,7 @@ public class ConvertLanguageData {
       }
       // show it
       for (Pair<Double,String> datum : data) {
-        if (SHOW_OLD_DEFAULT_CONTENTS) System.out.format("\tContenders: %s %f (based on literate population)" + CldrUtility.LINE_SEPARATOR, datum.getSecond(), datum.getFirst());
+        if (SHOW_OLD_DEFAULT_CONTENTS) System.out.format("\tContenders: %s %f (based on literate population)" + Utility.LINE_SEPARATOR, datum.getSecond(), datum.getFirst());
       }
       //System.out.format("\tPicking default content: %s %f (based on literate population)" + Utility.LINE_SEPARATOR, bestLocale, best);
       // Hack to fix English
@@ -1559,10 +1560,10 @@ public class ConvertLanguageData {
     }
 
     if (skippingSingletons.size() != 0) {
-      System.out.format("*WARNING* Skipping Singletons %s" + CldrUtility.LINE_SEPARATOR, skippingSingletons);
+      System.out.format("*WARNING* Skipping Singletons %s" + Utility.LINE_SEPARATOR, skippingSingletons);
     }
     if (missingData.size() != 0) {
-      System.out.format("*WARNING* Missing Data %s" + CldrUtility.LINE_SEPARATOR, missingData);
+      System.out.format("*WARNING* Missing Data %s" + Utility.LINE_SEPARATOR, missingData);
     }
 
     //  LanguageTagParser ltp = new LanguageTagParser();
@@ -1767,9 +1768,9 @@ public class ConvertLanguageData {
     //    System.out.println("Language 2 scripts: " + language_status_scripts);
 
     // #Lcode LanguageName  Status  Scode ScriptName  References
-    List<List<String>> input = SpreadSheet.convert(CldrUtility.getUTF8Data("language_script_raw.txt"));
+    List<List<String>> input = SpreadSheet.convert(Utility.getUTF8Data("language_script_raw.txt"));
     // /Users/markdavis/Documents/workspace/cldr-code/java/org/unicode/cldr/util/data/language_script_raw.txt
-    System.out.println(CldrUtility.LINE_SEPARATOR + "Problems in language_script_raw.txt" + CldrUtility.LINE_SEPARATOR);
+    System.out.println(Utility.LINE_SEPARATOR + "Problems in language_script_raw.txt" + Utility.LINE_SEPARATOR);
     int count = -1;
     for (List<String> row : input) {
       try {
@@ -1920,7 +1921,7 @@ public class ConvertLanguageData {
     BasicLanguageData languageData = new BasicLanguageData();
 
 
-    BufferedReader in = CldrUtility.getUTF8Data("extraLanguagesAndScripts.txt");
+    BufferedReader in = Utility.getUTF8Data("extraLanguagesAndScripts.txt");
     while (true) {
       String line = in.readLine();
       if (line == null) break;
@@ -2071,8 +2072,8 @@ public class ConvertLanguageData {
     }
     if (scripts.size() == 0 && territories.size() == 0) return;
     Log.println("\t\t<language type=\"" + languageSubtag + "\"" +
-            (scripts.size() == 0 ? "" : " scripts=\"" + CldrUtility.join(scripts, " ") + "\"") +
-            (territories.size() == 0 ? "" : " territories=\"" + CldrUtility.join(territories, " ") + "\"") + 
+            (scripts.size() == 0 ? "" : " scripts=\"" + Utility.join(scripts, " ") + "\"") +
+            (territories.size() == 0 ? "" : " territories=\"" + Utility.join(territories, " ") + "\"") + 
             (type == BasicLanguageData.Type.primary ? "" : " alt=\"" + type + "\"") + 
     "/>");
   }
@@ -2103,7 +2104,7 @@ public class ConvertLanguageData {
 
   public static String formatNumber(double d, int roundDigits, boolean xml) {
     if (roundDigits != 0) {
-      d = CldrUtility.roundToDecimals(d, roundDigits);
+      d = Utility.roundToDecimals(d, roundDigits);
     }    
     if (xml) {
       return nf_no_comma.format(d);
@@ -2113,7 +2114,7 @@ public class ConvertLanguageData {
 
   public static String formatPercent(double d, int roundDigits, boolean xml) {
     if (roundDigits != 0) {
-      d = CldrUtility.roundToDecimals(d, roundDigits);
+      d = Utility.roundToDecimals(d, roundDigits);
     }
     if (xml) {
       nf_no_comma.setMaximumFractionDigits(roundDigits+2);

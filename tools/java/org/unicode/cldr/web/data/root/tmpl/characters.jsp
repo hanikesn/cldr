@@ -4,17 +4,11 @@
 
 <%
 //  Copy "x=___"  from input to output URL
-subCtx.openTable(); 
+subCtx.setQuery(SurveyMain.QUERY_SECTION,subCtx.field(SurveyMain.QUERY_SECTION));
 
+SurveyForum.printSectionTableOpenShort(subCtx, "//ldml/characters/exemplarCharacters");
 // Display a limited range of data
-subCtx.showXpath( "//ldml/characters/exemplarCharacters");
-subCtx.showXpath( "//ldml/characters/exemplarCharacters[@type=\"auxiliary\"]");
-subCtx.showXpath( "//ldml/characters/exemplarCharacters[@type=\"index\"]");
+SurveyForum.showXpathShort(subCtx, "//ldml/characters/exemplarCharacters");
 
-subCtx.closeTable();
-subCtx.doneWithXpaths(); // print hidden field notifying which bases to accept submission for. 
-
+SurveyForum.printSectionTableCloseShort(subCtx, "//ldml/characters/exemplarCharacters");
 %>
-<p>The main exemplar characters are the ones most people would recognize as being the ones "in your language".
-The Index characters are the ones that you would see as the index in a contact list, for example. 
-For more information, see <a target="_blank" href='http://kwanyin.unicode.org:8080/cldr-apps/survey?_=hi&xpath=//ldml/characters/exemplarCharacters[@type=%22index%22]'>Exemplar Details</a></p>

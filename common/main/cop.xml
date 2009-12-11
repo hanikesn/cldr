@@ -8,7 +8,6 @@
 	</identity>
 	<characters>
 		<exemplarCharacters>[α-ρ σ ϲ τ-ω ϣ ϥ ϧ ϩ ϫ ϭ ϯ]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[Α Β Γ Δ Ε Ζ Η Θ Ι Κ Λ Μ Ν Ξ Ο Π Ρ Σ Τ Υ Φ Χ Ψ Ω Ϣ Ϥ Ϧ Ϩ Ϫ Ϭ Ϯ]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -131,14 +130,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AM</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">PM</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AM</am>
+				<pm draft="unconfirmed">PM</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0" draft="unconfirmed">BCE</era>
@@ -206,4 +199,3 @@
 		<reference type="RP1" uri="http://www.copticchurch.net/coptic_fonts/alphabet.html">The Coptic Alphabet</reference>
 	</references>
 </ldml>
-
