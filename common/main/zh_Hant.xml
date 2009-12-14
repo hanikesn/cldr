@@ -822,14 +822,8 @@
 	<dates>
 		<calendars>
 			<calendar type="chinese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">上午</dayPeriod>
-							<dayPeriod type="pm">下午</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>上午</am>
+				<pm>下午</pm>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
@@ -841,6 +835,20 @@
 			<calendar type="gregorian">
 				<months>
 					<monthContext type="stand-alone">
+						<monthWidth type="abbreviated">
+							<month type="1">1月</month>
+							<month type="2">2月</month>
+							<month type="3">3月</month>
+							<month type="4">4月</month>
+							<month type="5">5月</month>
+							<month type="6">6月</month>
+							<month type="7">7月</month>
+							<month type="8">8月</month>
+							<month type="9">9月</month>
+							<month type="10">10月</month>
+							<month type="11">11月</month>
+							<month type="12">12月</month>
+						</monthWidth>
 						<monthWidth type="narrow">
 							<month type="1">1</month>
 							<month type="2">2</month>
@@ -880,23 +888,11 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">上午</dayPeriod>
-							<dayPeriod type="pm">下午</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
 				<eras>
 					<eraNames>
 						<era type="0">西元前</era>
 						<era type="1">西元</era>
 					</eraNames>
-					<eraAbbr>
-						<era type="0">西元前</era>
-						<era type="1">西元</era>
-					</eraAbbr>
 				</eras>
 				<dateFormats>
 					<dateFormatLength type="medium">
@@ -931,18 +927,20 @@
 					<availableFormats>
 						<dateFormatItem id="Ed">d日(E)</dateFormatItem>
 						<dateFormatItem id="H">H時</dateFormatItem>
+						<dateFormatItem id="HHmm">H:mm</dateFormatItem>
 						<dateFormatItem id="HHmmss">H:mm:ss</dateFormatItem>
 						<dateFormatItem id="Md">M/d</dateFormatItem>
 						<dateFormatItem id="MEd">M-d（E）</dateFormatItem>
 						<dateFormatItem id="MEd" alt="proposed-x1001" draft="unconfirmed">M/d（E）</dateFormatItem>
 						<dateFormatItem id="MEd" alt="proposed-x1002" draft="unconfirmed">M-dE</dateFormatItem>
 						<dateFormatItem id="MMdd">MM/dd</dateFormatItem>
-						<dateFormatItem id="MMMMEd" alt="proposed" draft="unconfirmed">MMMMd日(E)</dateFormatItem>
+						<dateFormatItem id="MMMMEd" draft="unconfirmed">MMMMd日(E)</dateFormatItem>
 						<dateFormatItem id="yM">yyyy/M</dateFormatItem>
 						<dateFormatItem id="yMEd">yyyy/M/d（EEE）</dateFormatItem>
 						<dateFormatItem id="yMMM">y年M月</dateFormatItem>
-						<dateFormatItem id="yMMMEd">y年M月d日EEE</dateFormatItem>
+						<dateFormatItem id="yMMMEd" draft="unconfirmed">y年M月d日EEE</dateFormatItem>
 						<dateFormatItem id="yMMMM">y年M月</dateFormatItem>
+						<dateFormatItem id="yyMM" draft="contributed">yyyy/MM</dateFormatItem>
 					</availableFormats>
 					<intervalFormats>
 						<intervalFormatFallback>{0}至{1}</intervalFormatFallback>
@@ -1018,14 +1016,8 @@
 				</fields>
 			</calendar>
 			<calendar type="roc">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">上午</dayPeriod>
-							<dayPeriod type="pm">下午</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="contributed">上午</am>
+				<pm>下午</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">民國前</era>
@@ -2438,6 +2430,11 @@
 					<daylight draft="contributed">巴西利亞夏令時間</daylight>
 				</long>
 			</metazone>
+			<metazone type="Brunei">
+				<long>
+					<standard>汶萊時間</standard>
+				</long>
+			</metazone>
 			<metazone type="Chamorro">
 				<long>
 					<standard draft="contributed">關島-北馬里亞納群島時間</standard>
@@ -2793,7 +2790,7 @@
 				<long>
 					<generic>紐芬蘭時間</generic>
 					<standard>紐芬蘭標準時間</standard>
-					<daylight>紐芬蘭夏令時間</daylight>
+					<daylight >紐芬蘭夏令時間</daylight>
 				</long>
 			</metazone>
 			<metazone type="Noronha">
@@ -3782,8 +3779,7 @@
 			<unitPattern count="other" alt="short">{0}小時</unitPattern>
 		</unit>
 		<unit type="week">
-			<unitPattern count="other">{0}週</unitPattern>
-			<unitPattern count="other" alt="short">{0}週</unitPattern>
+			<unitPattern count="other">{0} 週</unitPattern>
 		</unit>
 	</units>
 	<posix>

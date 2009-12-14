@@ -3,15 +3,15 @@ package org.unicode.cldr.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
-
-import com.ibm.icu.dev.test.util.Relation;
 
 public class Iso639Data {
 
@@ -261,11 +261,11 @@ public class Iso639Data {
 
   private static void getData() {
     try {
-      BufferedReader in = CldrUtility.getUTF8Data("iso-639-3.tab");
+      BufferedReader in = Utility.getUTF8Data("iso-639-3.tab");
       version = in.readLine().trim();
       in.close();
       
-      in = CldrUtility.getUTF8Data("iso-639-3.tab");
+      in = Utility.getUTF8Data("iso-639-3.tab");
       Pattern tabs = Pattern.compile("\\t");
       toAlpha3 = new HashMap();
       fromAlpha3 = new HashMap();
@@ -320,7 +320,7 @@ public class Iso639Data {
       in.close();
 
       // Id Print_Name Inverted_Name
-      in = CldrUtility.getUTF8Data("iso-639-3-macrolanguages.tab");
+      in = Utility.getUTF8Data("iso-639-3-macrolanguages.tab");
       while (true) {
         String line = in.readLine();
         if (line == null)
@@ -341,7 +341,7 @@ public class Iso639Data {
       in.close();
 
       // Id Print_Name Inverted_Name
-      in = CldrUtility.getUTF8Data("iso-639-3_Name_Index.tab");
+      in = Utility.getUTF8Data("iso-639-3_Name_Index.tab");
       while (true) {
         String line = in.readLine();
         if (line == null)
@@ -359,7 +359,7 @@ public class Iso639Data {
       //System.out.println("Size:\t" + toNames.size());
       in.close();
 
-      in = CldrUtility.getUTF8Data("ISO-639-2_values_8bits.txt");
+      in = Utility.getUTF8Data("ISO-639-2_values_8bits.txt");
       // An alpha-3 (bibliographic) code,
       // an alpha-3 (terminologic) code (when given),
       // an alpha-2 code (when given),

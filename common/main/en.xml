@@ -296,8 +296,8 @@
 			<language type="mas">Masai</language>
 			<language type="mdf">Moksha</language>
 			<language type="mdr">Mandar</language>
-			<language type="men">Mende</language>
-			<language type="mfe">Morisyen</language>
+            <language type="men">Mende</language>
+            <language type="mfe">Morisyen</language>
 			<language type="mg">Malagasy</language>
 			<language type="mga">Middle Irish</language>
 			<language type="mh">Marshallese</language>
@@ -441,15 +441,13 @@
 			<language type="srr">Serer</language>
 			<language type="ss">Swati</language>
 			<language type="ssa">Nilo-Saharan Language</language>
-			<language type="ssy">Saho</language>
 			<language type="st">Southern Sotho</language>
 			<language type="su">Sundanese</language>
 			<language type="suk">Sukuma</language>
 			<language type="sus">Susu</language>
 			<language type="sux">Sumerian</language>
 			<language type="sv">Swedish</language>
-            <language type="sw">Swahili</language>
-            <language type="swb" draft="unconfirmed">Comorian</language>
+			<language type="sw">Swahili</language>
 			<language type="syc">Classical Syriac</language>
 			<language type="syr">Syriac</language>
 			<language type="ta">Tamil</language>
@@ -512,8 +510,7 @@
 			<language type="yap">Yapese</language>
 			<language type="yi">Yiddish</language>
 			<language type="yo">Yoruba</language>
-            <language type="ypk">Yupik Language</language>
-            <language type="yue">Cantonese</language>
+			<language type="ypk">Yupik Language</language>
 			<language type="za">Zhuang</language>
 			<language type="zap">Zapotec</language>
 			<language type="zbl">Blissymbols</language>
@@ -696,8 +693,7 @@
 			<territory type="200">Czechoslovakia</territory>
 			<territory type="419">Latin America and the Caribbean</territory>
 			<territory type="830">Channel Islands</territory>
-            <territory type="AD">Andorra</territory>
-            <territory type="AC">Ascension Island</territory>
+			<territory type="AD">Andorra</territory>
 			<territory type="AE">United Arab Emirates</territory>
 			<territory type="AF">Afghanistan</territory>
 			<territory type="AG">Antigua and Barbuda</territory>
@@ -750,8 +746,7 @@
 			<territory type="CM">Cameroon</territory>
 			<territory type="CN">China</territory>
 			<territory type="CO">Colombia</territory>
-            <territory type="CP">Clipperton Island</territory>
-            <territory type="CR">Costa Rica</territory>
+			<territory type="CR">Costa Rica</territory>
 			<territory type="CS">Serbia and Montenegro</territory>
 			<territory type="CT">Canton and Enderbury Islands</territory>
 			<territory type="CU">Cuba</territory>
@@ -760,16 +755,14 @@
 			<territory type="CY">Cyprus</territory>
 			<territory type="CZ">Czech Republic</territory>
 			<territory type="DD">East Germany</territory>
-            <territory type="DE">Germany</territory>
-            <territory type="DG">Diego Garcia</territory>
+			<territory type="DE">Germany</territory>
 			<territory type="DJ">Djibouti</territory>
 			<territory type="DK">Denmark</territory>
 			<territory type="DM">Dominica</territory>
 			<territory type="DO">Dominican Republic</territory>
 			<territory type="DZ">Algeria</territory>
-            <territory type="EA">Ceuta and Melilla</territory>
-            <territory type="EC">Ecuador</territory>
-            <territory type="EE">Estonia</territory>
+			<territory type="EC">Ecuador</territory>
+			<territory type="EE">Estonia</territory>
 			<territory type="EG">Egypt</territory>
 			<territory type="EH">Western Sahara</territory>
 			<territory type="ER">Eritrea</territory>
@@ -810,8 +803,7 @@
 			<territory type="HR">Croatia</territory>
 			<territory type="HT">Haiti</territory>
 			<territory type="HU">Hungary</territory>
-            <territory type="IC">Canary Islands</territory>
-            <territory type="ID">Indonesia</territory>
+			<territory type="ID">Indonesia</territory>
 			<territory type="IE">Ireland</territory>
 			<territory type="IL">Israel</territory>
 			<territory type="IM">Isle of Man</territory>
@@ -934,8 +926,7 @@
 			<territory type="SV">El Salvador</territory>
 			<territory type="SY">Syria</territory>
 			<territory type="SZ">Swaziland</territory>
-            <territory type="TA">Tristan da Cunha</territory>
-            <territory type="TC">Turks and Caicos Islands</territory>
+			<territory type="TC">Turks and Caicos Islands</territory>
 			<territory type="TD">Chad</territory>
 			<territory type="TF">French Southern Territories</territory>
 			<territory type="TG">Togo</territory>
@@ -1082,7 +1073,6 @@
 		<exemplarCharacters>[a-z]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[á à ă â å ä ã ā æ ç é è ĕ ê ë ē í ì ĭ î ï ī ñ ó ò ŏ ô ö ø ō œ ß ú ù ŭ û ü ū ÿ]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-c č d-l ł m-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>“</quotationStart>
@@ -1198,16 +1188,10 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">AM</dayPeriod>
-							<dayPeriod type="am" alt="variant">a.m.</dayPeriod>
-							<dayPeriod type="pm">PM</dayPeriod>
-							<dayPeriod type="pm" alt="variant">p.m.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>AM</am>
+				<am alt="variant">a.m.</am>
+				<pm>PM</pm>
+				<pm alt="variant">p.m.</pm>
 				<eras>
 					<eraNames>
 						<era type="0">Before Christ</era>
@@ -2667,11 +2651,6 @@
 				<displayName count="one">Afghan Afghani</displayName>
 				<displayName count="other">Afghan Afghanis</displayName>
 			</currency>
-			<currency type="ALK">
-				<displayName>Old Albanian Lek</displayName>
-				<displayName count="one">Old Albanian lek</displayName>
-				<displayName count="other">Old Albanian lekë</displayName>
-			</currency>
 			<currency type="ALL">
 				<displayName>Albanian Lek</displayName>
 				<displayName count="one">Albanian lek</displayName>
@@ -2966,11 +2945,6 @@
 				<displayName>Chilean Peso</displayName>
 				<displayName count="one">Chilean peso</displayName>
 				<displayName count="other">Chilean pesos</displayName>
-			</currency>
-			<currency type="CNX">
-				<displayName>Chinese People's Bank Dollar</displayName>
-				<displayName count="one">Chinese People's Bank dollar</displayName>
-				<displayName count="other">Chinese People's Bank dollars</displayName>
 			</currency>
 			<currency type="CNY">
 				<displayName>Chinese Yuan Renminbi</displayName>
@@ -4153,12 +4127,6 @@
 			<unitPattern count="other" alt="short">{0} yrs</unitPattern>
 		</unit>
 	</units>
-	<listPatterns>
-		<listPattern>
-			<listPatternPart type="2">{0} and {1}</listPatternPart>
-			<listPatternPart type="end">{0}, and {1}</listPatternPart>
-		</listPattern>
-	</listPatterns>
 	<posix>
 		<messages>
 			<yesstr>yes:y</yesstr>

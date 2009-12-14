@@ -1,17 +1,18 @@
 package org.unicode.cldr.unittest;
 
+import org.unicode.cldr.util.CLDRFile;
+import org.unicode.cldr.util.Utility;
+import org.unicode.cldr.util.CLDRFile.DraftStatus;
+import org.unicode.cldr.util.CLDRFile.Factory;
+
+import org.unicode.cldr.icu.CollectionUtilities;
+import com.ibm.icu.text.UTF16;
+
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.unicode.cldr.util.CLDRFile;
-import org.unicode.cldr.util.CldrUtility;
-import org.unicode.cldr.util.CLDRFile.DraftStatus;
-import org.unicode.cldr.util.CLDRFile.Factory;
-
-import com.ibm.icu.text.UTF16;
 
 public class TestCLDRFile {
   public static void main(String[] args) {
@@ -22,7 +23,7 @@ public class TestCLDRFile {
   }
 
   private static void testExtraPaths() {
-    Factory cldrFactory = CLDRFile.Factory.make(CldrUtility.MAIN_DIRECTORY, ".*", DraftStatus.approved);
+    Factory cldrFactory = CLDRFile.Factory.make(Utility.MAIN_DIRECTORY, ".*", DraftStatus.approved);
     for (String locale : new String[]{"en", "ar", "ja"}) {
       CLDRFile cldrFile = cldrFactory.make(locale, true);
       Set<String> s = (Set<String>) cldrFile.getExtraPaths(new TreeSet<String>());
@@ -39,7 +40,7 @@ public class TestCLDRFile {
   }
 
   private static void testDraftFilter() {
-    Factory cldrFactory = CLDRFile.Factory.make(CldrUtility.MAIN_DIRECTORY, ".*", DraftStatus.approved);
+    Factory cldrFactory = CLDRFile.Factory.make(Utility.MAIN_DIRECTORY, ".*", DraftStatus.approved);
     checkLocale(cldrFactory.make("root", true));
     checkLocale(cldrFactory.make("ee", true));
   }
@@ -62,7 +63,7 @@ public class TestCLDRFile {
   }
   
   public static void TestTimeZonePath() {
-    Factory cldrFactory = CLDRFile.Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
+    Factory cldrFactory = CLDRFile.Factory.make(Utility.MAIN_DIRECTORY, ".*");
     String tz = "Pacific/Midway";
     CLDRFile cldrFile = cldrFactory.make("lv",true);
     String retVal = cldrFile.getStringValue(
@@ -72,7 +73,7 @@ public class TestCLDRFile {
   }
 
   private static void simpleTest() {
-    double deltaTime = System.currentTimeMillis();    Factory cldrFactory = CLDRFile.Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
+    double deltaTime = System.currentTimeMillis();    Factory cldrFactory = CLDRFile.Factory.make(Utility.MAIN_DIRECTORY, ".*");
     CLDRFile english = cldrFactory.make("en", true);
     deltaTime = System.currentTimeMillis() - deltaTime;
     System.out.println("Creation: Elapsed: " + deltaTime/1000.0 + " seconds");

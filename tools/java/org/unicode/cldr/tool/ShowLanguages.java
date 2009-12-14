@@ -38,10 +38,10 @@ import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.Log;
 import org.unicode.cldr.util.MapComparator;
 import org.unicode.cldr.util.Pair;
-import com.ibm.icu.dev.test.util.Relation;
+import org.unicode.cldr.util.Relation;
 import org.unicode.cldr.util.StandardCodes;
 import org.unicode.cldr.util.SupplementalDataInfo;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.util.CLDRFile.Factory;
 import org.unicode.cldr.util.CLDRFile.WinningChoice;
@@ -57,8 +57,7 @@ import com.ibm.icu.dev.test.util.ArrayComparator;
 import com.ibm.icu.dev.test.util.BagFormatter;
 import com.ibm.icu.dev.test.util.FileUtilities;
 import com.ibm.icu.dev.test.util.TransliteratorUtilities;
-import com.ibm.icu.dev.test.util.CollectionUtilities;
-import com.ibm.icu.impl.MultiComparator;
+import org.unicode.cldr.icu.CollectionUtilities;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.lang.UScript;
 import com.ibm.icu.text.Collator;
@@ -79,17 +78,14 @@ public class ShowLanguages {
   
   static CLDRFile english;
   
-  static Comparator col = new com.ibm.icu.impl.MultiComparator(
-          Collator.getInstance(new ULocale("en")),
-          new UTF16.StringComparator(true, false, 0)
-  );
+  static Comparator col = new CollectionUtilities.MultiComparator(new Comparator[] { Collator.getInstance(new ULocale("en")), new UTF16.StringComparator(true, false, 0) });
   
   static StandardCodes sc = StandardCodes.make();
   
   static Factory cldrFactory;
   
   public static void main(String[] args) throws IOException {
-    cldrFactory = Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
+    cldrFactory = Factory.make(Utility.MAIN_DIRECTORY, ".*");
     english = cldrFactory.make("en", true);
     printLanguageData(cldrFactory, "index.html");
     //cldrFactory = Factory.make(Utility.COMMON_DIRECTORY + "../dropbox/extra2/", ".*");
@@ -102,7 +98,7 @@ public class ShowLanguages {
    */
   private static List anchors = new ArrayList();
   
-  static SupplementalDataInfo supplementalDataInfo = SupplementalDataInfo.getInstance(CldrUtility.SUPPLEMENTAL_DIRECTORY);
+  static SupplementalDataInfo supplementalDataInfo = SupplementalDataInfo.getInstance(Utility.SUPPLEMENTAL_DIRECTORY);
   
   private static void printLanguageData(Factory cldrFactory, String filename) throws IOException {
     LanguageInfo linfo = new LanguageInfo(cldrFactory);
@@ -170,8 +166,8 @@ public class ShowLanguages {
     }
     contents += "</ul>";
     String[] replacements = { "%date%", df.format(new Date()), "%contents%", contents, "%data%", sw.toString() };
-    PrintWriter pw2 = BagFormatter.openUTF8Writer(CldrUtility.COMMON_DIRECTORY + "../diff/supplemental/", filename);
-    FileUtilities.appendFile(CldrUtility.BASE_DIRECTORY + java.io.File.separatorChar  + "tools/java/org/unicode/cldr/tool/supplemental.html", "utf-8", pw2, replacements);
+    PrintWriter pw2 = BagFormatter.openUTF8Writer(Utility.COMMON_DIRECTORY + "../diff/supplemental/", filename);
+    FileUtilities.appendFile(Utility.BASE_DIRECTORY + java.io.File.separatorChar  + "tools/java/org/unicode/cldr/tool/supplemental.html", "utf-8", pw2, replacements);
     pw2.close();
   }
   
@@ -196,9 +192,9 @@ public class ShowLanguages {
     .addColumn("P", "class='target' title='primary'", null, "class='target'", true).setSortPriority(3);
     
     // get the codes so we can show the remainder
-    Set<String> remainingScripts = new TreeSet(getScriptsToShow()); // StandardCodes.MODERN_SCRIPTS);
+    Set<String> remainingScripts = new TreeSet(sc.getGoodAvailableCodes("script")); // StandardCodes.MODERN_SCRIPTS);
     UnicodeSet temp = new UnicodeSet();
-    for (String script : getScriptsToShow()) {
+    for (String script : sc.getGoodAvailableCodes("script")) {
       temp.clear();
       try {
         temp.applyPropertyAlias("script", script);
@@ -218,8 +214,8 @@ public class ShowLanguages {
     remainingScripts.remove("Zyyy");
     
     
-    Set<String> remainingLanguages = new TreeSet(getLanguagesToShow());
-    for (String language : getLanguagesToShow()) {
+    Set<String> remainingLanguages = new TreeSet(sc.getGoodAvailableCodes("language"));
+    for (String language : sc.getGoodAvailableCodes("language")) {
       Scope s = Iso639Data.getScope(language);
       Type t = Iso639Data.getType(language);
       if (s != Scope.Individual && s != Scope.Macrolanguage || t != Type.Living) {
@@ -255,27 +251,6 @@ public class ShowLanguages {
     pw1.close();
     
   }
-
-  private static Set<String> getLanguagesToShow() {
-    return getEnglishTypes("language", CLDRFile.LANGUAGE_NAME);
-  }
-
-  private static Set<String> getEnglishTypes(String type, int code) {
-    Set<String> result = new HashSet<String>(sc.getSurveyToolDisplayCodes(type));
-    XPathParts parts = new XPathParts();
-    for (Iterator<String> it = english.getAvailableIterator(code); it.hasNext();) {
-      parts.set(it.next());
-      String newType = parts.getAttributeValue(-1, "type");
-      if (!result.contains(newType)) {
-        result.add(newType);
-      }
-    }
-    return result;
-  }
-
-  private static Set<String> getScriptsToShow() {
-    return getEnglishTypes("script", CLDRFile.SCRIPT_NAME);
-  }
   
   private static void printScriptLanguageTerritory(LanguageInfo linfo, PrintWriter pw) throws IOException {
     PrintWriter pw1;
@@ -294,10 +269,10 @@ public class ShowLanguages {
     ;
     
     // get the codes so we can show the remainder
-    Set<String> remainingScripts = new TreeSet(getScriptsToShow()); 
+    Set<String> remainingScripts = new TreeSet(sc.getGoodAvailableCodes("script")); 
     Set<String> remainingTerritories = new TreeSet(sc.getGoodAvailableCodes("territory"));
     UnicodeSet temp = new UnicodeSet();
-    for (String script : getScriptsToShow()) {
+    for (String script : sc.getGoodAvailableCodes("script")) {
       temp.clear();
       try {
         temp.applyPropertyAlias("script", script);
@@ -317,8 +292,8 @@ public class ShowLanguages {
     remainingScripts.remove("Zyyy");
     
     
-    Set<String> remainingLanguages = new TreeSet(getLanguagesToShow());
-    for (String language : getLanguagesToShow()) {
+    Set<String> remainingLanguages = new TreeSet(sc.getGoodAvailableCodes("language"));
+    for (String language : sc.getGoodAvailableCodes("language")) {
       Scope s = Iso639Data.getScope(language);
       Type t = Iso639Data.getType(language);
       if (s != Scope.Individual && s != Scope.Macrolanguage || t != Type.Living) {
@@ -515,49 +490,38 @@ public class ShowLanguages {
   private static Set<Type> oldLanguage = Collections.unmodifiableSet(EnumSet.of(Type.Ancient,Type.Extinct,Type.Historical,Type.Constructed));
   
   private static void addLanguageScriptCells(TablePrinter tablePrinter, TablePrinter tablePrinter2, String language, String script, String secondary) {
-    try {
-      String languageName = english.getName(CLDRFile.LANGUAGE_NAME, language);
-      if (languageName == null) {
-        languageName = "¿"+language+"?";
-        System.err.println("No English Language Name for:" + language);
-      }
-      String scriptName = english.getName(CLDRFile.SCRIPT_NAME, script);
-      if (scriptName == null) {
-        scriptName = "¿"+script+"?";
-        System.err.println("No English Language Name for:" + script);
-      }
-      String scriptModern = StandardCodes.isScriptModern(script) ? "" : script.equals("Zzzz")  ? "?" : "N";
-      Scope s = Iso639Data.getScope(language);
-      Type t = Iso639Data.getType(language);
+    String languageName = english.getName(CLDRFile.LANGUAGE_NAME,language);
+    if (languageName == null) languageName = "???";
+    String scriptName = english.getName(CLDRFile.SCRIPT_NAME,script);
+    String scriptModern = StandardCodes.isScriptModern(script) ? "" : script.equals("Zzzz")  ? "?" : "N";
+    Scope s = Iso639Data.getScope(language);
+    Type t = Iso639Data.getType(language);
 //  if ((s == Scope.Individual || s == Scope.Macrolanguage || s == Scope.Collection) && t == Type.Living) {
 //  // ok
 //  } else if (!language.equals("und")){
 //  scriptModern = "N";
 //  }
-      String languageModern = oldLanguage.contains(t) ? "O" : language.equals("und") ? "?" : "";
-      
-      tablePrinter.addRow()
-      .addCell(languageName)
-      .addCell(language)
-      .addCell(languageModern)
-      .addCell(secondary)
-      .addCell(scriptName)
-      .addCell(script)
-      .addCell(scriptModern)
-      .finishRow();
-      
-      tablePrinter2.addRow()
-      .addCell(scriptName)
-      .addCell(script)
-      .addCell(scriptModern)
-      .addCell(languageName)
-      .addCell(language)
-      .addCell(languageModern)
-      .addCell(secondary)
-      .finishRow();
-    } catch (RuntimeException e) {
-      throw e;
-    }
+    String languageModern = oldLanguage.contains(t) ? "O" : language.equals("und") ? "?" : "";
+    
+    tablePrinter.addRow()
+    .addCell(languageName)
+    .addCell(language)
+    .addCell(languageModern)
+    .addCell(secondary)
+    .addCell(scriptName)
+    .addCell(script)
+    .addCell(scriptModern)
+    .finishRow();
+    
+    tablePrinter2.addRow()
+    .addCell(scriptName)
+    .addCell(script)
+    .addCell(scriptModern)
+    .addCell(languageName)
+    .addCell(language)
+    .addCell(languageModern)
+    .addCell(secondary)
+    .finishRow();
   }
   
   static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm 'GMT'");
@@ -598,10 +562,10 @@ public class ShowLanguages {
     
     public void close() throws IOException {
       out.write("</div>");
-      PrintWriter pw2 = BagFormatter.openUTF8Writer(CldrUtility.CHART_DIRECTORY + "/supplemental/", filename);
+      PrintWriter pw2 = BagFormatter.openUTF8Writer(Utility.CHART_DIRECTORY + "/supplemental/", filename);
       String[] replacements = { "%header%", "", "%title%", title, "%version%", CHART_DISPLAY_VERSION, "%date%", df.format(new Date()), "%body%", out.toString() };
       final String templateFileName = "../../tool/chart-template.html";
-      FileUtilities.appendBufferedReader(CldrUtility.getUTF8Data(templateFileName), pw2, replacements);
+      FileUtilities.appendBufferedReader(Utility.getUTF8Data(templateFileName), pw2, replacements);
       pw2.close();
     }
     
@@ -906,7 +870,7 @@ public class ShowLanguages {
           continue;
         System.out.println("Skipped Element: " + path);
       }
-      Log.setLog(new File(CldrUtility.CHART_DIRECTORY + "/supplemental/", "characterLog.txt").getAbsolutePath());
+      Log.setLog(new File(Utility.CHART_DIRECTORY + "/supplemental/", "characterLog.txt").getAbsolutePath());
       CLDRFile chars = cldrFactory.make("characters", false);
       int count = 0;
       for (Iterator it = chars.iterator("", CLDRFile.ldmlComparator); it.hasNext();) {
@@ -2171,7 +2135,7 @@ public class ShowLanguages {
         for (int i = 0; i < result.length; ++i) {
           result[i] = getName(type, result[i], codeFirst);
         }
-        return CldrUtility.join(Arrays.asList(result), ", ");
+        return Utility.join(Arrays.asList(result), ", ");
       } else {
         int pos = oldcode.indexOf('*');
         String code = pos < 0 ? oldcode : oldcode.substring(0, pos);

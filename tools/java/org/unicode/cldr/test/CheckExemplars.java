@@ -9,8 +9,7 @@ import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.XPathParts;
 
-import com.ibm.icu.dev.test.util.CollectionUtilities;
-import com.ibm.icu.dev.test.util.PrettyPrinter;
+import org.unicode.cldr.icu.CollectionUtilities;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.RuleBasedCollator;
 import com.ibm.icu.text.UnicodeSet;
@@ -70,12 +69,7 @@ public class CheckExemplars extends CheckCLDR {
 	      if (false && auxiliarySet.containsSome(mainSet)) {
 	        UnicodeSet overlap = new UnicodeSet(mainSet).retainAll(auxiliarySet).removeAll(HangulSyllables);
 	        if (overlap.size() != 0) {
-	          String fixedExemplar1 = new PrettyPrinter()
-            .setOrdering(col != null ? col : Collator.getInstance(ULocale.ROOT))
-            .setSpaceComparator(col != null ? col : Collator.getInstance(ULocale.ROOT)
-                    .setStrength2(Collator.PRIMARY))
-                    .setCompressRanges(true)
-                    .format(overlap);
+	          String fixedExemplar1 = CollectionUtilities.prettyPrint(overlap, true, null, null, col, col);
 	          result.add(new CheckStatus().setCause(this).setMainType(CheckStatus.warningType).setSubtype(Subtype.auxiliaryExemplarsOverlap)
 	                  .setMessage("Auxiliary overlaps with main \u200E{0}\u200E", new Object[]{fixedExemplar1}));   			
 	        }
@@ -117,12 +111,7 @@ public class CheckExemplars extends CheckCLDR {
 	    	    	.setMessage("This field must be a set of the form [a b c-d ...]: ", new Object[]{e.getMessage()}));
     		return;
     	}
-    	String fixedExemplar1 = new PrettyPrinter()
-        .setOrdering(col != null ? col : Collator.getInstance(ULocale.ROOT))
-        .setSpaceComparator(col != null ? col : Collator.getInstance(ULocale.ROOT)
-                .setStrength2(Collator.PRIMARY))
-                .setCompressRanges(true)
-                .format(exemplar1);
+    	String fixedExemplar1 = CollectionUtilities.prettyPrint(exemplar1, true, null, null, col, col);
     	UnicodeSet doubleCheck = new UnicodeSet(fixedExemplar1);
     	if (!doubleCheck.equals(exemplar1)) {
 	    	result.add(new CheckStatus().setCause(this).setMainType(CheckStatus.errorType).setSubtype(Subtype.internalUnicodeSetFormattingError)
@@ -136,12 +125,7 @@ public class CheckExemplars extends CheckCLDR {
     	if (false && !AllowedInExemplars.containsAll(exemplar1)) {
     		exemplar1 = CollectionUtilities.flatten(exemplar1).removeAll(AllowedInExemplars);
     		if (exemplar1.size() != 0) {
-    		fixedExemplar1 = new PrettyPrinter()
-            .setOrdering(col != null ? col : Collator.getInstance(ULocale.ROOT))
-            .setSpaceComparator(col != null ? col : Collator.getInstance(ULocale.ROOT)
-                    .setStrength2(Collator.PRIMARY))
-                    .setCompressRanges(true)
-                    .format(exemplar1);
+    		fixedExemplar1 = CollectionUtilities.prettyPrint(exemplar1, true, null, null, col, col);
 	    	result.add(new CheckStatus().setCause(this).setMainType(CheckStatus.warningType).setSubtype(Subtype.illegalCharactersInExemplars)
 	    	.setMessage("Should be limited to (specific-script - uppercase - invisibles + \u0130); thus not contain: \u200E{0}\u200E",
 	    			new Object[]{fixedExemplar1}));

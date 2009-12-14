@@ -5,9 +5,12 @@
 <p>Most locales use the "Latn" system, which uses the ASCII digits 0 through 9 to represent numbers.</p>
 
 <%
-subCtx.openTable(); 
+//  Copy "x=___"  from input to output URL
+subCtx.setQuery(SurveyMain.QUERY_SECTION,subCtx.field(SurveyMain.QUERY_SECTION));
 
-subCtx.showXpath( "//ldml/numbers/defaultNumberingSystem");
+SurveyForum.printSectionTableOpenShort(subCtx, "//ldml/numbers/defaultNumberingSystem");
+
+SurveyForum.showXpathShort(subCtx, "//ldml/numbers/defaultNumberingSystem");
 
 SurveyForum.printSectionTableCloseShort(subCtx, "//ldml/numbers/defaultNumberingSystem");
 

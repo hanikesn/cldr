@@ -9,7 +9,6 @@
 
 package org.unicode.cldr.util;
 
-import com.ibm.icu.impl.Utility;
 import com.ibm.icu.util.Freezable;
 
 public final class Pair<T extends Comparable, U extends Comparable> implements java.lang.Comparable, Cloneable, Freezable {
@@ -71,7 +70,7 @@ public final class Pair<T extends Comparable, U extends Comparable> implements j
   public boolean equals(Object other) {
     try {
       Pair that = (Pair)other;
-      return Utility.objectEquals(first, that.first) && Utility.objectEquals(second, that.second);
+      return Utility.checkEquals(first, that.first) && Utility.checkEquals(second, that.second);
     } catch (Exception e) {
       return false;
     }

@@ -1004,7 +1004,6 @@
 		<exemplarCharacters type="auxiliary">[a á à ă â å ä ā æ b c ç d e é è ĕ ê ë ē f-i í ì ĭ î ï ī j-n ñ o ó ò ŏ ô ö ø ō œ p-s ß t u ú ù ŭ û ü ū v-y ÿ z]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-c č d-l ł m-o º p-z]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol" alt="proposed-x1001" draft="unconfirmed">[a-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[А Б В Г Д Ђ Е Ж З И Ј К Л Љ М Н Њ О П Р С Т Ћ У Ф Х Ц Ч Џ Ш]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>“</quotationStart>
@@ -1015,14 +1014,8 @@
 	<dates>
 		<calendars>
 			<calendar type="buddhist">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">БЕ</era>
@@ -1030,14 +1023,8 @@
 				</eras>
 			</calendar>
 			<calendar type="chinese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 			</calendar>
 			<calendar type="coptic">
 				<months>
@@ -1059,14 +1046,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 			</calendar>
 			<calendar type="ethiopic">
 				<months>
@@ -1088,14 +1069,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
@@ -1203,14 +1178,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 				<eras>
 					<eraNames>
 						<era type="0">Пре нове ере</era>
@@ -1312,40 +1281,22 @@
 							<greatestDifference id="d">d-d</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a - h a</greatestDifference>
-							<greatestDifference id="h">h-h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
 							<greatestDifference id="a">HH-HH</greatestDifference>
-							<greatestDifference id="H">HH-HH</greatestDifference>
+							<greatestDifference id="h">HH-HH</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h.mm a - h.mm a</greatestDifference>
-							<greatestDifference id="h">h.mm-h.mm a</greatestDifference>
-							<greatestDifference id="m">h.mm-h.mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
 							<greatestDifference id="a">HH.mm-HH.mm</greatestDifference>
-							<greatestDifference id="H">HH.mm-HH.mm</greatestDifference>
+							<greatestDifference id="h">HH.mm-HH.mm</greatestDifference>
 							<greatestDifference id="m">HH.mm-HH.mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h.mm a - h.mm a v</greatestDifference>
-							<greatestDifference id="h">h.mm-h.mm a v</greatestDifference>
-							<greatestDifference id="m">h.mm-h.mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
 							<greatestDifference id="a">HH.mm-HH.mm v</greatestDifference>
-							<greatestDifference id="H">HH.mm-HH.mm v</greatestDifference>
+							<greatestDifference id="h">HH.mm-HH.mm v</greatestDifference>
 							<greatestDifference id="m">HH.mm-HH.mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a - h a v</greatestDifference>
-							<greatestDifference id="h">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
 							<greatestDifference id="a">HH-HH v</greatestDifference>
-							<greatestDifference id="H">HH-HH v</greatestDifference>
+							<greatestDifference id="h">HH-HH v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">M-M</greatestDifference>
@@ -1463,7 +1414,6 @@
 							<month type="5">Шеват</month>
 							<month type="6">Адар I</month>
 							<month type="7">Адар</month>
-							<month type="7" yeartype="leap">Адар II</month>
 							<month type="8">Нисан</month>
 							<month type="9">Ијар</month>
 							<month type="10">Сиван</month>
@@ -1473,14 +1423,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 			</calendar>
 			<calendar type="indian">
 				<months>
@@ -1501,14 +1445,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">САКА</era>
@@ -1534,14 +1472,8 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">АХ</era>
@@ -1549,14 +1481,8 @@
 				</eras>
 			</calendar>
 			<calendar type="japanese">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">Таика</era>
@@ -1839,24 +1765,12 @@
 						</monthWidth>
 					</monthContext>
 				</months>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 			</calendar>
 			<calendar type="roc">
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">пре подне</dayPeriod>
-							<dayPeriod type="pm">поподне</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>пре подне</am>
+				<pm>поподне</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">Пре РК</era>

@@ -8,11 +8,11 @@
 
 <%
 //  Copy "x=___"  from input to output URL
-subCtx.openTable(); 
+subCtx.setQuery(SurveyMain.QUERY_SECTION,subCtx.field(SurveyMain.QUERY_SECTION));
+SurveyForum.printSectionTableOpenShort(subCtx, thisBaseXpath);
 
-subCtx.showXpath( "//ldml/dates/timeZoneNames/gmtFormat");
-subCtx.showXpath( "//ldml/dates/timeZoneNames/hourFormat");
+SurveyForum.showXpathShort(subCtx, "//ldml/dates/timeZoneNames/gmtFormat");
+SurveyForum.showXpathShort(subCtx, "//ldml/dates/timeZoneNames/hourFormat");
 
-subCtx.closeTable();
-subCtx.doneWithXpaths(); // print hidden field notifying which bases to accept submission for. 
+SurveyForum.printSectionTableCloseShort(subCtx, thisBaseXpath);
 %>

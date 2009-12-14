@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.StandardCodes;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 
 import com.ibm.icu.dev.test.util.BNF;
 import com.ibm.icu.dev.test.util.BagFormatter;
@@ -34,8 +34,8 @@ import com.ibm.icu.util.ULocale;
  *
  */
 class CheckLangTagBNF {
-  private static final String LANGUAGE_TAG_TEST_FILE = CldrUtility.getProperty("test");
-  private static final String BNF_DEFINITION_FILE = CldrUtility.getProperty("bnf");
+  private static final String LANGUAGE_TAG_TEST_FILE = Utility.getProperty("test");
+  private static final String BNF_DEFINITION_FILE = Utility.getProperty("bnf");
 
   private String rules;
   private String generationRules;
@@ -43,8 +43,7 @@ class CheckLangTagBNF {
   private BNF bnf;
 
   private static final String[] groupNames = {"whole", "lang", "script", "region", "variants", "extensions", 
-    "privateuse", 
-    "grandfathered", "privateuse", "localeExtensions"
+    "privateuse", "grandfathered", "privateuse", "localeExtensions"
   };
 
   /**
@@ -55,7 +54,7 @@ class CheckLangTagBNF {
    */
   public CheckLangTagBNF setFromFile(String filename) throws IOException {
     BufferedReader in = BagFormatter.openUTF8Reader("", filename);
-    CldrUtility.VariableReplacer result = new CldrUtility.VariableReplacer();
+    Utility.VariableReplacer result = new Utility.VariableReplacer();
     String variable = null;
     StringBuffer definition = new StringBuffer();
     StringBuffer ruleBuffer = new StringBuffer();
@@ -63,7 +62,7 @@ class CheckLangTagBNF {
     for (int count = 1; ; ++count) {
       String line = in.readLine();
       if (line == null) break;
-      ruleBuffer.append(line).append(CldrUtility.LINE_SEPARATOR);
+      ruleBuffer.append(line).append(Utility.LINE_SEPARATOR);
       // remove initial bom, comments
       if (line.length() == 0) continue;
       if (line.charAt(0) == '\uFEFF') line = line.substring(1);
@@ -71,7 +70,7 @@ class CheckLangTagBNF {
       if (hashPos >= 0) line = line.substring(0, hashPos);
       String trimline = line.trim();
       if (trimline.length() == 0) continue;
-      generationRuleBuffer.append(trimline).append(CldrUtility.LINE_SEPARATOR);
+      generationRuleBuffer.append(trimline).append(Utility.LINE_SEPARATOR);
 
       // String[] lineParts = line.split(";");
       String linePart = line; // lineParts[i]; // .trim().replace("\\s+", " ");
@@ -91,7 +90,7 @@ class CheckLangTagBNF {
         if (variable == null) {
           throw new IllegalArgumentException("Missing '=' at " + count + ") " + line);
         }
-        definition.append(CldrUtility.LINE_SEPARATOR).append(linePart);
+        definition.append(Utility.LINE_SEPARATOR).append(linePart);
       }
       // we are terminated if i is not at the end, or the line ends with a ;
       if (terminated) {
@@ -101,7 +100,7 @@ class CheckLangTagBNF {
       }
     }
     if (variable != null) {
-    	throw new IllegalArgumentException("Missing ';' at end");
+      throw new IllegalArgumentException("Missing ';' at end");
     }
     String resolved = result.replace("$root").replaceAll("[0-9]+%", "");
     System.out.println("Regex: " + resolved);

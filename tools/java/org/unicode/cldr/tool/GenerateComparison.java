@@ -13,15 +13,15 @@ import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.Counter;
 import org.unicode.cldr.util.EscapingUtilities;
 import org.unicode.cldr.util.PrettyPath;
+import org.unicode.cldr.util.Row;
 import org.unicode.cldr.util.Timer;
-import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Utility;
 import org.unicode.cldr.util.CLDRFile.Factory;
 import org.unicode.cldr.util.CLDRFile.Status;
+import org.unicode.cldr.util.Row.R2;
 
 import com.ibm.icu.dev.test.util.BagFormatter;
 import com.ibm.icu.dev.test.util.CollectionUtilities;
-import com.ibm.icu.impl.Row;
-import com.ibm.icu.impl.Row.R2;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.text.Transliterator;
@@ -65,12 +65,12 @@ public class GenerateComparison {
 
     // Get the args
 
-    String oldDirectory = CldrUtility.getProperty("oldDirectory", new File(CldrUtility.BASE_DIRECTORY, "../../common-cldr1.6/main/").getCanonicalPath() + "/");
-    String newDirectory = CldrUtility.getProperty("newDirectory", new File(CldrUtility.BASE_DIRECTORY, "incoming/vetted/main/").getCanonicalPath() + "/");
-    String changesDirectory = CldrUtility.getProperty("changesDirectory", new File(CldrUtility.CHART_DIRECTORY + "/changes/").getCanonicalPath() + "/");
+    String oldDirectory = Utility.getProperty("oldDirectory", new File(Utility.BASE_DIRECTORY, "../../common-cldr1.6/main/").getCanonicalPath() + "/");
+    String newDirectory = Utility.getProperty("newDirectory", new File(Utility.BASE_DIRECTORY, "incoming/vetted/main/").getCanonicalPath() + "/");
+    String changesDirectory = Utility.getProperty("changesDirectory", new File(Utility.CHART_DIRECTORY + "/changes/").getCanonicalPath() + "/");
 
-    String filter = CldrUtility.getProperty("localeFilter", ".*");
-    boolean SHOW_ALIASED = CldrUtility.getProperty("showAliased", "false").toLowerCase().startsWith("t");
+    String filter = Utility.getProperty("localeFilter", ".*");
+    boolean SHOW_ALIASED = Utility.getProperty("showAliased", "false").toLowerCase().startsWith("t");
 
     // Create the factories
 
@@ -88,7 +88,7 @@ public class GenerateComparison {
     unifiedList.addAll(newList);
     Set<R2<String, String>> pairs = new TreeSet<R2<String, String>>();
     for (String code : unifiedList) {
-      pairs.add(Row.of(english.getName(code), code));
+      pairs.add(Row.make(english.getName(code), code));
     }
 
     prettyPathMaker = new PrettyPath();
@@ -169,8 +169,6 @@ public class GenerateComparison {
           paths.addAll(newFile.getExtraPaths());
         }
       } catch (Exception e) {
-	System.err.println("Locale: " + locale + ", "+localeName);
-	e.printStackTrace();
         addToIndex(indexInfo, "ERROR ", locale, localeName);
         continue;
       }
@@ -351,12 +349,12 @@ public class GenerateComparison {
       PrintWriter out = BagFormatter.openUTF8Writer(changesDirectory, locale + ".html");
       String title = "Changes in " + localeDisplayName ;
       out.println("<html>" +
-              "<head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'>" + CldrUtility.LINE_SEPARATOR +
-              "<title>" + title + "</title>" + CldrUtility.LINE_SEPARATOR +
-              "<link rel='stylesheet' href='index.css' type='text/css'>" + CldrUtility.LINE_SEPARATOR +
-              "<base target='_blank'>" + CldrUtility.LINE_SEPARATOR +
-              "</head><body>" + CldrUtility.LINE_SEPARATOR +
-              "<h1>" + title + "</h1>" + CldrUtility.LINE_SEPARATOR
+              "<head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'>" + Utility.LINE_SEPARATOR +
+              "<title>" + title + "</title>" + Utility.LINE_SEPARATOR +
+              "<link rel='stylesheet' href='index.css' type='text/css'>" + Utility.LINE_SEPARATOR +
+              "<base target='_blank'>" + Utility.LINE_SEPARATOR +
+              "</head><body>" + Utility.LINE_SEPARATOR +
+              "<h1>" + title + "</h1>" + Utility.LINE_SEPARATOR
               + "<a href='index.html'>Index</a> | <a href=\"http://unicode.org/cldr/data/docs/survey/vetting.html\"><b style=\"background-color: yellow;\"><i>Help: How to Vet</i></b></a>"
               + warningMessage
               );
@@ -394,12 +392,12 @@ public class GenerateComparison {
     }
     PrintWriter indexFile = BagFormatter.openUTF8Writer(changesDirectory, "index.html");
     indexFile.println("<html>" +
-            "<head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'>" + CldrUtility.LINE_SEPARATOR +
-            "<title>" + "Change Summary" + "</title>" + CldrUtility.LINE_SEPARATOR +
-            "<link rel='stylesheet' href='index.css' type='text/css'>" + CldrUtility.LINE_SEPARATOR +
-            "<base target='_blank'>" + CldrUtility.LINE_SEPARATOR +
-            "</head><body>" + CldrUtility.LINE_SEPARATOR +
-            "<h1>" + "Change Summary" + "</h1>" + CldrUtility.LINE_SEPARATOR
+            "<head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'>" + Utility.LINE_SEPARATOR +
+            "<title>" + "Change Summary" + "</title>" + Utility.LINE_SEPARATOR +
+            "<link rel='stylesheet' href='index.css' type='text/css'>" + Utility.LINE_SEPARATOR +
+            "<base target='_blank'>" + Utility.LINE_SEPARATOR +
+            "</head><body>" + Utility.LINE_SEPARATOR +
+            "<h1>" + "Change Summary" + "</h1>" + Utility.LINE_SEPARATOR
             + "<a href=\"http://unicode.org/cldr/data/docs/survey/vetting.html\"><b style=\"background-color: yellow;\"><i>Help: How to Vet</i></b></a>"
             + warningMessage
             + "<table><tr>");
@@ -448,7 +446,7 @@ public class GenerateComparison {
   private static void addToIndex(Set<R2<String,String>> indexInfo, String title, final String locale,
           final String localeName, Counter<String> fileCounter) {
     if (title.startsWith("ERROR")) {
-      indexInfo.add(R2.of(localeName, 
+      indexInfo.add(R2.make(localeName, 
               title + " " + localeName + " (" + locale + ")"));
       return;
     }
@@ -461,7 +459,7 @@ public class GenerateComparison {
         counterString += s.charAt(0) + ":" + format.format(fileCounter.getCount(s));
       }
     }
-    indexInfo.add(R2.of(localeName, 
+    indexInfo.add(R2.make(localeName, 
             "<a href='" + locale + ".html'>" + title + localeName + " (" + locale + ")</a>" 
             + (counterString.length() == 0 ? "" : " [" + counterString + "]")));
   }

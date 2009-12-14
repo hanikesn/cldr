@@ -1013,7 +1013,6 @@
 		<exemplarCharacters references="R079">[a á b c {cs} {ccs} d {dz} {ddz} {dzs} {ddzs} e é f g {gy} {ggy} h i í j-l {ly} {lly} m n {ny} {nny} o ó ö ő p r s {sz} {ssz} t {ty} {tty} u ú ü ű v z {zs} {zzs}]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[q w-y]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B C {CS} D {DZ} {DZS} E F G {GY} H I J K L {LY} M N {NY} O Ö P Q R S {SZ} T {TY} U Ü V W X Y Z {ZS}]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>„</quotationStart>
@@ -1136,14 +1135,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" references="R077">de.</dayPeriod>
-							<dayPeriod type="pm" references="R077">du.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am references="R077">de.</am>
+				<pm references="R077">du.</pm>
 				<eras>
 					<eraNames>
 						<era type="0" references="R077">időszámításunk előtt</era>
@@ -1220,32 +1213,18 @@
 							<greatestDifference id="d">d-d.</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="h">h a - h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
-							<greatestDifference id="H">HH-HH</greatestDifference>
+							<greatestDifference id="h">HH-HH</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="h">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
-							<greatestDifference id="H">HH:mm-HH:mm</greatestDifference>
+							<greatestDifference id="h">HH:mm-HH:mm</greatestDifference>
 							<greatestDifference id="m">HH:mm-HH:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="h">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
-							<greatestDifference id="H">HH:mm-HH:mm v</greatestDifference>
+							<greatestDifference id="h">HH:mm-HH:mm v</greatestDifference>
 							<greatestDifference id="m">HH:mm-HH:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="h">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
-							<greatestDifference id="H">HH-HH v</greatestDifference>
+							<greatestDifference id="h">HH-HH v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">M-M.</greatestDifference>
@@ -1355,8 +1334,7 @@
 							<month type="4">Tévész</month>
 							<month type="5">Svát</month>
 							<month type="6">Ádár risón</month>
-							<month type="7">Ádár</month>
-							<month type="7" yeartype="leap">Ádár séni</month>
+							<month type="7">Ádár séni</month>
 							<month type="8">Niszán</month>
 							<month type="9">Ijár</month>
 							<month type="10">Sziván</month>

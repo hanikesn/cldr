@@ -96,7 +96,6 @@
 	<characters>
 		<exemplarCharacters>[а б г-е ё ж-н ӊ о ө п-у ү х ч ш ъ ы э-я]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[в ф ц щ ь]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[А Б Г Д Е Ж З И Й К Л М Н Ӊ О Ө П Р С Т У Ү Х Ч Ш Ъ Ы Э Ю Я]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -198,14 +197,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AM</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">PM</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AM</am>
+				<pm draft="unconfirmed">PM</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0" draft="unconfirmed">BCE</era>
@@ -281,4 +274,3 @@
 		</currencies>
 	</numbers>
 </ldml>
-

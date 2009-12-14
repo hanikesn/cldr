@@ -8,7 +8,6 @@
 	</identity>
 	<characters>
 		<exemplarCharacters>[a b ɓ d e ə ɛ f g ĝ {gb} {gw} ɣ h-k {kp} {kw} l-n {ny} ɲ ŋ {ŋw} o ɔ p t-w y z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B Ɓ C D E Ə Ɛ F G Ɣ H I J K L M N Ɲ Ŋ O Ɔ P Q R S T U V W X Y Z]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -110,14 +109,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AM</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">PM</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AM</am>
+				<pm draft="unconfirmed">PM</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0" draft="unconfirmed">BCE</era>
@@ -193,4 +186,3 @@
 		<reference type="RP2" uri="http://www.unhchr.ch/udhr/lang/gkp1.htm">UDHR -- Kpelewo Version</reference>
 	</references>
 </ldml>
-

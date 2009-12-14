@@ -156,7 +156,6 @@
 	<characters>
 		<exemplarCharacters>[़ ँ-ः ०-९ ॐ अ-ऍ ए-ऑ ओ-क {क़} ख {ख़} ग {ग़} घ-ज {ज़} झ-ड {ड़} ढ {ढ़} ण-न प फ {फ़} ब-य {य़} र ल ळ व-ह ऽ-ॅ े-ॉ ो-्]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u200C \u200D]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[ॐ अ आ इ ई उ ऊ ऋ ऌ ऍ ए ऐ ऑ ओ औ क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म य र ल ळ व श ष स ह ऽ]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -258,14 +257,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">म.पू.</dayPeriod>
-							<dayPeriod type="pm">म.नं.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>म.पू.</am>
+				<pm>म.नं.</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0">क्रिस्तपूर्व</era>

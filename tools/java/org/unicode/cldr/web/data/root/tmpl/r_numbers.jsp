@@ -3,9 +3,12 @@
 <p> Enter the character used as the decimal separator.</p>
 
 <%
-subCtx.openTable(); 
+//  Copy "x=___"  from input to output URL
+subCtx.setQuery(SurveyMain.QUERY_SECTION,subCtx.field(SurveyMain.QUERY_SECTION));
 
-subCtx.showXpath( "//ldml/numbers/symbols/decimal");
+SurveyForum.printSectionTableOpenShort(subCtx, "//ldml/numbers/symbols/decimal");
+
+SurveyForum.showXpathShort(subCtx, "//ldml/numbers/symbols/decimal");
 
 SurveyForum.printSectionTableCloseShort(subCtx, "//ldml/numbers/symbols/decimal");
 

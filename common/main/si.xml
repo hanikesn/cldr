@@ -29,7 +29,6 @@
 		<exemplarCharacters>[අ-ඍ එ-ඖ ං ඃ ක-ඣ ඥ ඤ ට-න ඳ-ර ල ව-ෆ ා-\u0DD4 \u0DD6 ෘ ෲ ෟ ෙ-ෞ \u0DCA]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u200B-\u200D ඎ-ඐ ඦ ෳ]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[අ ආ ඇ ඈ ඉ ඊ උ ඌ ඍ එ ඒ ඓ ඔ ඕ ඖ ක ඛ ග ඝ ඞ ඟ ච ඡ ජ ඣ ඥ ඤ ට ඨ ඩ ඪ ණ ඬ ත ථ ද ධ න ඳ ප ඵ බ භ ම ඹ ය ර ල ව ශ ෂ ස හ ළ ෆ]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -131,14 +130,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">පෙ.ව.</dayPeriod>
-							<dayPeriod type="pm">ප.ව.</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>පෙ.ව.</am>
+				<pm>ප.ව.</pm>
 				<eras>
 					<eraNames>
 						<era type="0">ක්‍රිස්තු පූර්‍ව</era>

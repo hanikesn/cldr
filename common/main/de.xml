@@ -1088,7 +1088,6 @@
 		<exemplarCharacters>[a ä b-o ö p-s ß t u ü v-z]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[á à ă â å ā æ ç é è ĕ ê ë ē í ì ĭ î ï ī ñ ó ò ŏ ô ø ō œ ú ù ŭ û ū ÿ]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a-z]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B C D E F G H I J K L M N O P Q R S ẞ T U V W X Y Z]</exemplarCharacters>
 	</characters>
 	<delimiters>
 		<quotationStart>„</quotationStart>
@@ -1100,6 +1099,8 @@
 		<dateRangePattern draft="unconfirmed">{0}−{1}</dateRangePattern>
 		<calendars>
 			<calendar type="buddhist">
+				<am>vorm.</am>
+				<pm>nachm.</pm>
 				<dateFormats>
 					<dateFormatLength type="full">
 						<dateFormat>
@@ -1122,6 +1123,14 @@
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
+			</calendar>
+			<calendar type="chinese">
+				<am>vorm.</am>
+				<pm>nachm.</pm>
+			</calendar>
+			<calendar type="coptic">
+				<am>vorm.</am>
+				<pm>nachm.</pm>
 			</calendar>
 			<calendar type="gregorian">
 				<months>
@@ -1238,18 +1247,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="afternoon">nachmittags</dayPeriod>
-							<dayPeriod type="earlyMorning">morgens</dayPeriod>
-							<dayPeriod type="evening">abends</dayPeriod>
-							<dayPeriod type="morning">vormittags</dayPeriod>
-							<dayPeriod type="night">nachts</dayPeriod>
-							<dayPeriod type="noon">Mittag</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>vorm.</am>
+				<pm>nachm.</pm>
 				<eras>
 					<eraNames>
 						<era type="0">v. Chr.</era>
@@ -1368,40 +1367,22 @@
 							<greatestDifference id="d">d.-d.</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="h">
-							<greatestDifference id="a">h a - h a</greatestDifference>
-							<greatestDifference id="h">h-h a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="H">
 							<greatestDifference id="a">HH-HH</greatestDifference>
-							<greatestDifference id="H">HH-HH</greatestDifference>
+							<greatestDifference id="h">HH-HH</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hm">
-							<greatestDifference id="a">h:mm a - h:mm a</greatestDifference>
-							<greatestDifference id="h">h:mm-h:mm a</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hm">
 							<greatestDifference id="a">HH:mm-HH:mm</greatestDifference>
-							<greatestDifference id="H">HH:mm-HH:mm</greatestDifference>
+							<greatestDifference id="h">HH:mm-HH:mm</greatestDifference>
 							<greatestDifference id="m">HH:mm-HH:mm</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hmv">
-							<greatestDifference id="a">h:mm a - h:mm a v</greatestDifference>
-							<greatestDifference id="h">h:mm-h:mm a v</greatestDifference>
-							<greatestDifference id="m">h:mm-h:mm a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hmv">
 							<greatestDifference id="a">HH:mm-HH:mm v</greatestDifference>
-							<greatestDifference id="H">HH:mm-HH:mm v</greatestDifference>
+							<greatestDifference id="h">HH:mm-HH:mm v</greatestDifference>
 							<greatestDifference id="m">HH:mm-HH:mm v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="hv">
-							<greatestDifference id="a">h a - h a v</greatestDifference>
-							<greatestDifference id="h">h-h a v</greatestDifference>
-						</intervalFormatItem>
-						<intervalFormatItem id="Hv">
 							<greatestDifference id="a">HH-HH v</greatestDifference>
-							<greatestDifference id="H">HH-HH v</greatestDifference>
+							<greatestDifference id="h">HH-HH v</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="M">
 							<greatestDifference id="M">M.-M.</greatestDifference>
@@ -1515,6 +1496,14 @@
 						<displayName alt="proposed-x1001" draft="unconfirmed">Zeitzone</displayName>
 					</field>
 				</fields>
+			</calendar>
+			<calendar type="hebrew">
+				<am>vorm.</am>
+				<pm>nachm.</pm>
+			</calendar>
+			<calendar type="islamic">
+				<am>vorm.</am>
+				<pm>nachm.</pm>
 			</calendar>
 		</calendars>
 		<timeZoneNames>

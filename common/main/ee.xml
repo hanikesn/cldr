@@ -9,7 +9,6 @@
 	<characters>
 		<exemplarCharacters references="R031">[a b d {dz} ɖ e ɛ f ƒ g {gb} ɣ h i k {kp} l-n {ny} ŋ o ɔ p r-t {ts} u v ʋ w-z]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[c j q]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[A B C D Ɖ E Ɛ F Ƒ G Ɣ H I J K L M N Ŋ O Ɔ P Q R S T U V Ʋ W X Y Z]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -111,14 +110,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AN</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">EW</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AN</am>
+				<pm draft="unconfirmed">EW</pm>
 				<eras>
 					<eraNames>
 						<era type="0" draft="unconfirmed">Hafi Yesu Va Do ŋgɔ na Yesu</era>

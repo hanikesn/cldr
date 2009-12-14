@@ -1838,7 +1838,7 @@ public class LDMLComparator {
 
     private void getCVSVersion()
     {
-        ourCvsVersion = LDMLUtilities.loadFileRevision(goldFileName);
+        ourCvsVersion = LDMLUtilities.getCVSVersion(goldFileName);
     }
 
 } //end of class definition/declaration

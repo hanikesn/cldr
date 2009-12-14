@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ldml SYSTEM "../../common/dtd/ldml.dtd">
 <ldml>
 	<identity>
@@ -1136,18 +1136,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="afternoon">下午</dayPeriod>
-							<dayPeriod type="earlyMorning">清晨</dayPeriod>
-							<dayPeriod type="midDay"> 中午</dayPeriod>
-							<dayPeriod type="morning">上午</dayPeriod>
-							<dayPeriod type="night">晚上</dayPeriod>
-							<dayPeriod type="weeHours">凌晨</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>上午</am>
+				<pm>下午</pm>
 				<eras>
 					<eraNames>
 						<era type="0">公元前</era>
@@ -1227,7 +1217,6 @@
 						<dateFormatItem id="d">d日</dateFormatItem>
 						<dateFormatItem id="Ed">d日E</dateFormatItem>
 						<dateFormatItem id="H">H时</dateFormatItem>
-						<dateFormatItem id="HHmm">H:mm</dateFormatItem>
 						<dateFormatItem id="HHmmss">HH:mm:ss</dateFormatItem>
 						<dateFormatItem id="hm">ah:mm</dateFormatItem>
 						<dateFormatItem id="Hm">H:mm</dateFormatItem>

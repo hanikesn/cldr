@@ -61,7 +61,6 @@
 	<characters>
 		<exemplarCharacters>[় অ-ঋ ৠ ঌ ৡ এ ঐ ও ঔ ং ঁ ঃ ক-ড {ড়} ঢ {ঢ়} ণ ত ৎ থ-ন প-য {য়} ৰ ল ৱ শ-হ ঽ-ৄ ৢ ৣ ে ৈ ো-্ ৗ]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[\u200C \u200D ৲]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ ক খ গ ঘ ঙ চ ছ জ ঝ ঞ ট ঠ ড ঢ ণ ত ৎ থ দ ধ ন প ফ ব ভ ম য ৰ ল ৱ শ ষ স হ ঽ]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -163,14 +162,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am">পূৰ্বা</dayPeriod>
-							<dayPeriod type="pm">অপ</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am>পূৰ্বা</am>
+				<pm>অপ</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0" draft="unconfirmed">BCE</era>

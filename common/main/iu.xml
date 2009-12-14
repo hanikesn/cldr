@@ -13,7 +13,6 @@
 	</localeDisplayNames>
 	<characters>
 		<exemplarCharacters>[ᐃ-ᐆ ᐊ ᐋ ᐱ-ᐴ ᐸ ᐹ ᑉ ᑎ-ᑑ ᑕ ᑖ ᑦ ᑭ-ᑰ ᑲ ᑳ ᒃ ᒋ-ᒎ ᒐ ᒑ ᒡ ᒥ-ᒨ ᒪ ᒫ ᒻ ᓂ-ᓅ ᓇ ᓈ ᓐ ᓕ-ᓘ ᓚ ᓛ ᓪ ᓯ-ᓲ ᓴ ᓵ ᔅ ᔨ-ᔫ ᔭ ᔮ ᔾ ᕆ-ᕉ ᕋ ᕌ ᕐ ᕕ-ᕚ ᕝ ᕿ-ᖃ ᖅ ᖏ ᖑ-ᖕ ᙱ-ᙶ ᖖ ᖠ-ᖦ]</exemplarCharacters>
-		<exemplarCharacters type="index" draft="unconfirmed">[ᐃ ᐄ ᐅ ᐆ ᐊ ᐋ ᐱ ᐲ ᐳ ᐴ ᐸ ᐹ ᑎ ᑏ ᑐ ᑑ ᑕ ᑖ ᑦ ᑭ ᑮ ᑯ ᑰ ᑳ ᒃ ᒋ ᒌ ᒍ ᒎ ᒐ ᒑ ᒡ ᒥ ᒦ ᒨ ᒪ ᒫ ᒻ ᓂ ᓃ ᓄ ᓅ ᓇ ᓈ ᓐ ᓖ ᓗ ᓘ ᓚ ᓛ ᓪ ᓯ ᓰ ᓱ ᓲ ᓴ ᔅ ᔨ ᔩ ᔪ ᔫ ᔭ ᔮ ᔾ ᕆ ᕇ ᕈ ᕋ ᕌ ᕐ ᕕ ᕖ ᕗ ᕘ ᕙ ᕚ ᕝ ᕿ ᖁ ᖂ ᖃ ᖅ ᖏ ᖑ ᖒ ᖓ ᖔ ᖕ ᙱ ᙳ ᙴ ᙵ ᙶ ᖖ ᖠ ᖡ ᖢ ᖣ ᖤ ᖥ]</exemplarCharacters>
 	</characters>
 	<dates>
 		<calendars>
@@ -115,14 +114,8 @@
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
-				<dayPeriods>
-					<dayPeriodContext type="format">
-						<dayPeriodWidth type="wide">
-							<dayPeriod type="am" draft="unconfirmed">AM</dayPeriod>
-							<dayPeriod type="pm" draft="unconfirmed">PM</dayPeriod>
-						</dayPeriodWidth>
-					</dayPeriodContext>
-				</dayPeriods>
+				<am draft="unconfirmed">AM</am>
+				<pm draft="unconfirmed">PM</pm>
 				<eras>
 					<eraAbbr>
 						<era type="0" draft="unconfirmed">BCE</era>
@@ -187,4 +180,3 @@
 		</timeZoneNames>
 	</dates>
 </ldml>
-

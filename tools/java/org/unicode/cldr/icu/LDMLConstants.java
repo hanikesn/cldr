@@ -46,7 +46,6 @@ public class LDMLConstants {
     public static final String TYPE            = "type";
     public static final String AUXILIARY       = "auxiliary";
     public static final String CURRENCY_SYMBOL = "currencySymbol";
-    public static final String INDEX           = "index";
     public static final String NUMBER          = "number";
     public static final String GENERATION      = "generation";
     public static final String LANGUAGES       = "languages";
@@ -122,7 +121,6 @@ public class LDMLConstants {
     public static final String DAY_WIDTH       = "dayWidth";
 
     public static final String MONTH           = "month";
-    public static final String YEARTYPE        = "yeartype";
     public static final String DAY             = "day";
     public static final String COUNT           = "count";
     public static final String MINDAYS         = "minDays";
@@ -369,8 +367,6 @@ public class LDMLConstants {
     public static final String UNIT             = "unit";
     public static final String UNIT_PATTERN     = "unitPattern";
     public static final String LANGUAGES_SHORT  = "languagesShort";
-
-    public static final String LANGUAGE_MATCHING  = "languageMatching";
 
     // Rule Based Number Formatting (RBNF)
     public static final String RBNF             = "rbnf";

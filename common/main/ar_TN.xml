@@ -52,6 +52,10 @@
 	</dates>
 	<numbers>
 		<defaultNumberingSystem>latn</defaultNumberingSystem>
+		<symbols>
+			<nativeZeroDigit>0</nativeZeroDigit>
+			<exponential draft="provisional">E</exponential>
+		</symbols>
 		<decimalFormats>
 			<decimalFormatLength>
 				<decimalFormat>

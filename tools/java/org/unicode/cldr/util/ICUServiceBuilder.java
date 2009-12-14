@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.ibm.icu.dev.test.util.CollectionUtilities;
+import org.unicode.cldr.icu.CollectionUtilities;
 import com.ibm.icu.text.ChineseDateFormat;
 import com.ibm.icu.text.ChineseDateFormatSymbols;
 import com.ibm.icu.text.DateFormat;
@@ -159,11 +159,9 @@ public class ICUServiceBuilder {
     DateFormatSymbols formatData = calendar.equals("chinese") ? new ChineseDateFormatSymbols() : new DateFormatSymbols();
     
     String prefix = "//ldml/dates/calendars/calendar[@type=\""+ calendar + "\"]/";
-
-    
-    formatData.setAmPmStrings(last = getArrayOfWinningValues(new String[] {
-        getDayPeriods(prefix, "format", "wide", "am"),
-        getDayPeriods(prefix, "format", "wide", "pm")}));
+    formatData.setAmPmStrings(last = new String[] {
+        cldrFile.getWinningValue(prefix + "am"),
+        cldrFile.getWinningValue(prefix + "pm")});
     checkFound(last);
 //    if (last[0] == null && notGregorian) {
 //      if (gregorianBackup == null) gregorianBackup = _getDateFormatSymbols("gregorian");
@@ -223,42 +221,10 @@ public class ICUServiceBuilder {
     cacheDateFormatSymbols.put(key, formatData);
     return formatData;
   }
-/**
-    * Example from en.xml 
-    * <dayPeriods>
-    *     <dayPeriodContext type="format">
-    *         <dayPeriodWidth type="wide">
-    *             <dayPeriod type="am">AM</dayPeriod>
-    *             <dayPeriod type="am" alt="variant">a.m.</dayPeriod>
-    *             <dayPeriod type="pm">PM</dayPeriod>
-    *             <dayPeriod type="pm" alt="variant">p.m.</dayPeriod>
-    *         </dayPeriodWidth>
-    *     </dayPeriodContext>
-    * </dayPeriods>
-    */
-  private String getDayPeriods(String prefix, String context, String width, String type) {
-    return prefix+"dayPeriods/dayPeriodContext[@type=\"" + context + "\"]/dayPeriodWidth[@type=\"" +
-         width + "\"]/dayPeriod[@type=\"" + type + "\"]";
-  }
   
-
-  private String[] getArrayOfWinningValues(String[] xpaths) {
-	String result[] = new String[xpaths.length];
-	for(int i=0;i<xpaths.length;i++) {
-		result[i] = cldrFile.getWinningValue(xpaths[i]);
-	}
-	checkFound(result, xpaths);
-	return result;
-  }
-
   private void checkFound(String[] last) {
     if (last == null || last.length == 0 || last[0] == null) {
       throw new IllegalArgumentException("Failed to load array");
-    }
-  }
-  private void checkFound(String[] last, String[] xpaths) {
-    if (last == null || last.length == 0 || last[0] == null) {
-      throw new IllegalArgumentException("Failed to load array {"+xpaths[0]+",...}");
     }
   }
   private String getPattern(String calendar, int dateIndex, int timeIndex) {
@@ -287,7 +253,7 @@ public class ICUServiceBuilder {
     // change standard to a choice
     
     String value = cldrFile.getWinningValue(key);
-    if (value == null) throw new IllegalArgumentException("locale: " + cldrFile.getLocaleID() + "\tpath: " + key + CldrUtility.LINE_SEPARATOR + "value: " + value);
+    if (value == null) throw new IllegalArgumentException("locale: " + cldrFile.getLocaleID() + "\tpath: " + key + Utility.LINE_SEPARATOR + "value: " + value);
     return value;
   }
   
@@ -481,7 +447,7 @@ public class ICUServiceBuilder {
         for (int i = 0; i < pieces.length; ++i) {
           pieces[i] = fixCurrencySpacing(pieces[i], currencySymbol);
         }
-        pattern = org.unicode.cldr.util.CldrUtility.join(pieces, ";");
+        pattern = org.unicode.cldr.util.Utility.join(pieces, ";");
       } else {
         pattern = fixCurrencySpacing(pattern, currencySymbol);
       }

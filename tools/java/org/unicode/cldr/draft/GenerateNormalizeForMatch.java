@@ -22,7 +22,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.ibm.icu.dev.test.util.UnicodeMap;
+import org.unicode.cldr.util.UnicodeMap;
 
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.DateFormat;
@@ -123,7 +123,7 @@ public class GenerateNormalizeForMatch {
     if (fix) {
       fixOld(sourceFile, targetFile);
     } else {
-      frequencies = new FrequencyData(frequencyFile, true);
+      frequencies = new FrequencyData(frequencyFile);
       generateMappings(sourceFile, targetFile, oldMappingFile, frequencyFile);
     }
     LOG_WRITER.println("# END");

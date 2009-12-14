@@ -12,7 +12,6 @@ import java.io.*;
 import java.util.*;
 
 import org.unicode.cldr.util.*;
-import org.unicode.cldr.web.Vetting.DataSubmissionResultHandler;
 import org.unicode.cldr.test.*;
 import org.unicode.cldr.test.ExampleGenerator.HelpMessages;
 
@@ -89,7 +88,7 @@ public class WebContext implements Cloneable {
      * @param irs
      * @throws IOException
      */
-    protected void setRequestResponse(HttpServletRequest irq, HttpServletResponse irs) throws IOException {
+    private void setRequestResponse(HttpServletRequest irq, HttpServletResponse irs) throws IOException {
        request = irq;
        response = irs;
        // register us - only if another webcontext is not already registered.
@@ -98,7 +97,7 @@ public class WebContext implements Cloneable {
        }
     }
     
-    protected void setStream(Writer w) {
+    private void setStream(Writer w) {
         out = w;
         if(out instanceof PrintWriter) {
             pw = (PrintWriter)out;
@@ -118,12 +117,12 @@ public class WebContext implements Cloneable {
      * @return the new WebContext, which was cloned from the one posted to the Request
      * @throws IOException
      */
-    public static JspWebContext fromRequest(ServletRequest request, ServletResponse response, Writer out) throws IOException {
+    public static WebContext fromRequest(ServletRequest request, ServletResponse response, Writer out) throws IOException {
         WebContext ctx = (WebContext) request.getAttribute(CLDR_WEBCONTEXT);
         if(ctx == null) {
             throw new InternalError("WebContext: could not load fromRequest. Are you trying to load a JSP directly?");
         }
-        JspWebContext subCtx = new JspWebContext(ctx); // clone the important fields..
+        WebContext subCtx = new WebContext(ctx); // clone the important fields..
         subCtx.setRequestResponse((HttpServletRequest)request,  // but use the req/resp of the current situation
                          (HttpServletResponse)response );
         subCtx.setStream(out);
@@ -992,12 +991,11 @@ public class WebContext implements Cloneable {
 	}
 	
 	// Display Context Data
-	protected Boolean canModify = null;
+	private Boolean canModify = null;
 	private Boolean zoomedIn = null;
 
-	public boolean setCanModify(boolean canModify) {
+	public void setCanModify(boolean canModify) {
 		this.canModify = canModify;
-		return canModify;
 	}
 	
 	public Boolean canModify() {
