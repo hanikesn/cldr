@@ -151,7 +151,7 @@ public class SurveyMain extends HttpServlet {
     private static String isBustedStack = null;
     private static Throwable isBustedThrowable = null;
     private static ElapsedTimer isBustedTimer = null;
-    static ServletConfig config = null;
+    ServletConfig config = null;
 
     
     // ===== UI constants
@@ -209,7 +209,7 @@ public class SurveyMain extends HttpServlet {
     static String fileBase = null; // not static - may change lager
     static String specialMessage = System.getProperty("CLDR_MESSAGE"); //  static - may change later
     static String specialHeader = System.getProperty("CLDR_HEADER"); //  static - may change later
-    public static String lockOut = System.getProperty("CLDR_LOCKOUT"); //  static - may change later
+    static String lockOut = System.getProperty("CLDR_LOCKOUT"); //  static - may change later
     static long specialTimer = 0; // 0 means off.  Nonzero:  expiry time of countdown.
     static int progressMax = 0;  // "an operation is in progress"
     static int progressCount = 0;
@@ -265,7 +265,7 @@ public class SurveyMain extends HttpServlet {
     public static final String PREF_COVTYP = "p_covtyp"; // covtyp
     //    static final String PREF_SORTMODE_DEFAULT = PREF_SORTMODE_WARNING;
     
-    static final String  BASELINE_ID = "en_ZZ"; // Needs to be en_ZZ as per cldrbug #2918
+    static final String  BASELINE_ID = "en"; // Needs to be en_ZZ as per cldrbug #2918
     public static final ULocale BASELINE_LOCALE = new ULocale(BASELINE_ID);
     public static final String  BASELINE_LANGUAGE_NAME = BASELINE_LOCALE.getDisplayLanguage(BASELINE_LOCALE); // Note: Only shows language.
     
@@ -325,16 +325,6 @@ public class SurveyMain extends HttpServlet {
     /**
      * Servlet initializer
      */
-    
-    public static SurveyMain getInstance(HttpServletRequest req) {
-        if(config == null) return null; // not initialized.
-        return(SurveyMain)config.getServletContext().getAttribute(SurveyMain.class.getName());
-    }
-    private void setInstance(HttpServletRequest req) {
-        config.getServletContext().setAttribute(SurveyMain.class.getName(), this);
-    }
-    
-    
     public final void init(final ServletConfig config)
     throws ServletException {
         new com.ibm.icu.text.SimpleDateFormat(); // Ensure that ICU is available before we get any farther.
@@ -452,19 +442,14 @@ public class SurveyMain extends HttpServlet {
                 out.println("<title>CLDR Survey Tool offline</title>");
                 out.println("<link rel='stylesheet' type='text/css' href='"+ request.getContextPath() + "/" + "surveytool.css" + "'>");
                 out.println(SHOWHIDE_SCRIPT);
-                WebContext.includeFragment(request,response,SurveyAjax.AJAX_STATUS_SCRIPT);
-                out.println("<script type=\"text/javascript\">timerSpeed = 60080;</script>"); // don't flood server if busted- check every minute.
                 out.println("</head>");
                 out.println("<body>");
-                out.print("<div id='st_err'><!-- for ajax errs --></div><span id='progress'>");
-                out.print(getTopBox());
-                out.println("</span>");
-//                showSpecialHeader(out);
-//                out.println("<h1>The CLDR Survey Tool is offline</h1>");
-//                out.println("<div class='ferrbox'><pre>" + isBusted +"</pre><hr>");
-//                out.println("\n");
-//                out.println(getShortened((SurveyForum.HTMLSafe(isBustedStack).replaceAll("\t", "&nbsp;&nbsp;&nbsp;").replaceAll("\n", "<br>"))));
-//                out.println("</div><br>");
+                showSpecialHeader(out);
+                out.println("<h1>The CLDR Survey Tool is offline</h1>");
+                out.println("<div class='ferrbox'><pre>" + isBusted +"</pre><hr>");
+                out.println("\n");
+                out.println(getShortened((SurveyForum.HTMLSafe(isBustedStack).replaceAll("\t", "&nbsp;&nbsp;&nbsp;").replaceAll("\n", "<br>"))));
+                out.println("</div><br>");
                 
                 
                 out.println("<hr>");
@@ -542,18 +527,15 @@ public class SurveyMain extends HttpServlet {
      * @param response
      * @return true if started, false if we are not (on false, get out, we're done printing..)
      * @throws IOException
-     * @throws ServletException 
      */
-    private boolean ensureStartup(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        setInstance(request);
+    private boolean ensureStartup(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if(!isSetup) {
             boolean isGET = "GET".equals(request.getMethod());
-            int sec = 600; // was 4
+            int sec = 4;
             if(isBusted != null) {
-                sec = 300;
+		sec = 120;
             }
             String base = WebContext.base(request);
-            String loadOnOk = base;
             if(isGET) {
                 String qs  = "";
                 String pi = "";
@@ -563,21 +545,12 @@ public class SurveyMain extends HttpServlet {
                 if(request.getQueryString()!=null&&request.getQueryString().length()>0) {
                     qs = "?"+request.getQueryString();
                 }
-                loadOnOk = base+pi+qs;
-                response.setHeader("Refresh", sec+"; "+loadOnOk);
-            } else {
-                loadOnOk = base + "?sorryPost=1";
+                response.setHeader("Refresh", sec+"; "+base+pi+qs);
             }
             response.setContentType("text/html; charset=utf-8");
             PrintWriter out = response.getWriter();
             out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"><html><head>");
             out.println("<title>"+sysmsg("startup_title")+"</title>");
-            WebContext.includeFragment(request, response, SurveyAjax.AJAX_STATUS_SCRIPT);
-	    if(isUnofficial) {
-            	out.println("<script type=\"text/javascript\">timerSpeed = 2500;</script>");
-            } else {
-                out.println("<script type=\"text/javascript\">timerSpeed = 10000;</script>");
-	    }
             out.println("<link rel='stylesheet' type='text/css' href='"+base+"/../surveytool.css'>");
             out.println("</head><body>");
             if(isUnofficial) {
@@ -587,16 +560,14 @@ public class SurveyMain extends HttpServlet {
             }
             if(isBusted != null) {
                 out.println(SHOWHIDE_SCRIPT);
-                out.println("<script type=\"text/javascript\">clickContinue = '"+loadOnOk+"';</script>");
                 out.println("</head>");
                 out.println("<body>");
-                out.print("<div id='st_err'><!-- for ajax errs --></div><span id='progress'>"+getTopBox()+"</span>");
-//                showSpecialHeader(out);
-//                out.println("<h1>The CLDR Survey Tool is offline</h1>");
-//                out.println("<div class='ferrbox'><pre>" + isBusted +"</pre><hr>");
-//                out.println("\n");
-//                out.println(getShortened((SurveyForum.HTMLSafe(isBustedStack).replaceAll("\t", "&nbsp;&nbsp;&nbsp;").replaceAll("\n", "<br>"))));
-//                out.println("</div><br>");
+                showSpecialHeader(out);
+                out.println("<h1>The CLDR Survey Tool is offline</h1>");
+                out.println("<div class='ferrbox'><pre>" + isBusted +"</pre><hr>");
+                out.println("\n");
+                out.println(getShortened((SurveyForum.HTMLSafe(isBustedStack).replaceAll("\t", "&nbsp;&nbsp;&nbsp;").replaceAll("\n", "<br>"))));
+                out.println("</div><br>");
 
 
                 out.println("<hr>");
@@ -608,24 +579,16 @@ public class SurveyMain extends HttpServlet {
                             " <i>This message has been viewed " + pages + " time(s), SurveyTool has been down for " + isBustedTimer + "</i>");
             } else {
             out.print(sysmsg("startup_header"));
-
-            out.print("<div id='st_err'><!-- for ajax errs --></div><span id='progress'>"+getTopBox()+"</span>");
-
-//            String threadInfo = startupThread.htmlStatus();
-//            if(threadInfo!=null) {
-//            	out.println("<b>Processing:"+threadInfo+"</b><br>");
-//            }
-//            if(progressWhat != null) {
-//                out.println(getProgress()+"<br><hr><br>");
-//            }
-            
+            String threadInfo = startupThread.htmlStatus();
+            if(threadInfo!=null) {
+            	out.println("<b>Processing:"+threadInfo+"</b><br>");
+            }
+            if(progressWhat != null) {
+                out.println(getProgress()+"<br><hr><br>");
+            }
             out.print(sysmsg("startup_wait"));
         }
-            out.println("<br><i id='uptime'> "+uptime+"</i><br>");
-            // TODO: on up, goto <base>
-            
-            out.println("<script type=\"text/javascript\">loadOnOk = '"+loadOnOk+"';</script>");
-            out.println("<script type=\"text/javascript\">clickContinue = '"+loadOnOk+"';</script>");
+            out.println("<br><i> "+uptime+"</i><br>");
             if(!isGET) {
                 out.println("(Sorry,  we can't automatically retry your "+request.getMethod()+" request - you may attempt Reload in a few seconds "+
                             "<a href='"+base+"'>or click here</a><br>");
@@ -675,7 +638,6 @@ public class SurveyMain extends HttpServlet {
     private void doSql(WebContext ctx)
     {
         printHeader(ctx, "SQL Console@"+localhost());
-        ctx.println("<script type=\"text/javascript\">timerSpeed = 6000;</script>");
         String q = ctx.field("q");
         boolean tblsel = false;        
         printAdminMenu(ctx, "/AdminSql");
@@ -957,7 +919,6 @@ public class SurveyMain extends HttpServlet {
     {
         String action = ctx.field("action");
         printHeader(ctx, "ST Admin@"+localhost() + " | " + action);
-        ctx.println("<script type=\"text/javascript\">timerSpeed = 6000;</script>");
         printAdminMenu(ctx, "/AdminDump");
         ctx.println("<h1>SurveyTool Administration</h1>");
         ctx.println("<hr>");
@@ -1019,8 +980,6 @@ public class SurveyMain extends HttpServlet {
             printMenu(actionCtx, action, "srl_vet_wash", "Clear out old votes", "action");       
             actionCtx.println(" | ");
             printMenu(actionCtx, action, "srl_output", "Output Vetting Data", "action");       
-            actionCtx.println(" | ");
-            printMenu(actionCtx, action, "srl_crash", "Bust Survey Tool", "action");       
             actionCtx.println(" | ");
             
             
@@ -1735,8 +1694,6 @@ public class SurveyMain extends HttpServlet {
 //                SurveyMain.closeDBConnection(conn);
             }
             
-		} else if (action.equals("srl_crash")) {
-		    this.busted("User clicked 'Crash Survey Tool'");
         } else if(action.equals("srl_output")) {
             WebContext subCtx = (WebContext)ctx.clone();
             subCtx.addQuery("dump",vap);
@@ -2226,7 +2183,6 @@ public class SurveyMain extends HttpServlet {
         ctx.println("<meta name=\"gigabot\" content=\"noarchive\">");
         ctx.println("<meta name=\"gigabot\" content=\"nofollow\">");
 
-        ctx.includeFragment(SurveyAjax.AJAX_STATUS_SCRIPT);
         ctx.println("<link rel='stylesheet' type='text/css' href='"+ ctx.schemeHostPort()  + ctx.context("surveytool.css") + "'>");
         ctx.println("<title>CLDR Vetting | ");
         if(ctx.getLocale() != null) {
@@ -2247,7 +2203,7 @@ public class SurveyMain extends HttpServlet {
         }
         
         ctx.println("</head>");
-        ctx.println("<body onload='this.focus(); top.focus(); top.parent.focus(); setTimerOn();'>");
+        ctx.println("<body onload='this.focus(); top.focus(); top.parent.focus(); '>");
         ctx.print("<div class='topnotices'>");
         if(/*!isUnofficial && */ 
             ((ctx.session!=null && ctx.session.user!=null && UserRegistry.userIsAdmin(ctx.session.user))||
@@ -2267,9 +2223,7 @@ public class SurveyMain extends HttpServlet {
             ctx.println("</p>");
         }
         ctx.print("</div>");
-        ctx.print("<div id='st_err'><!-- for ajax errs --></div><span id='progress'>");
         showSpecialHeader(ctx);
-        ctx.print("</span>");
         ctx.println(SHOWHIDE_SCRIPT);
         
     }
@@ -2288,73 +2242,42 @@ public class SurveyMain extends HttpServlet {
      * @param ctx context - optional. 
      */
     void showSpecialHeader(WebContext ctx, PrintWriter out) {
-        out.print(getSpecialHeader(ctx));
-    }
-    
-    public String getSpecialHeader() {
-        return getSpecialHeader(null);
-    }
-    
-    public String getSpecialHeader(WebContext ctx) {
-        StringBuffer out = new StringBuffer();
         if((specialHeader != null) && (specialHeader.length()>0)) {
-            out.append("<div class='specialHeader'>");
+            out.println("<div class='specialHeader'>");
             if(ctx != null) {
-                out.append("News");
-                //ctx.printHelpLink("/BannerMessage","News",true,false);
-                out.append(": &nbsp; ");
+                ctx.printHelpLink("/BannerMessage","News",true,false);
+                out.println(": &nbsp; ");
             }
-            out.append(specialHeader);
+            out.println(specialHeader);
             if(specialTimer != 0) {
                 long t0 = System.currentTimeMillis();
-                out.append("<br><b>Timer:</b> ");
+                out.print("<br><b>Timer:</b> ");
                 if(t0 > specialTimer) {
-                    out.append("<b>The countdown time has arrived.</b>");
+                    out.print("<b>The countdown time has arrived.</b>");
                 } else {
-                    out.append("The countdown timer has " + timeDiff(t0,specialTimer) +" remaining on it.");
+                    out.print("The countdown timer has " + timeDiff(t0,specialTimer) +" remaining on it.");
                 }
             }
-            out.append("<br>");
+            out.print("<br>");
             String threadInfo = startupThread.htmlStatus();
             if(threadInfo!=null) {
-            	out.append("<b>Processing:"+threadInfo+"</b><br>");
+            	out.println("<b>Processing:"+threadInfo+"</b><br>");
             }
-            if(progressWhat != null) {
-                out.append(getProgress());
-            } else {
+            if(ctx != null && progressWhat != null) {
+                showProgress(ctx);
             }
-            out.append("</div><br>");
+            out.println("</div><br>");
         } else {
             String threadInfo = startupThread.htmlStatus();
             if(threadInfo!=null) {
-            	out.append("<b>Processing:"+threadInfo+"</b><br>");
+            	out.println("<b>Processing:"+threadInfo+"</b><br>");
             }
             if(progressWhat != null) {
-                out.append("<div class='specialHeader'>SurveyTool may be busy: <br>");
-                out.append(getProgress());
-                out.append("</div><br>");
+                out.print("<div class='specialHeader'>SurveyTool may be busy: <br>");
+                out.println(getProgress());
+                out.print("</div><br>");
             }
         }
-        return out.toString();
-    }
-    
-    /**
-     * Return the entire top 'box' including progress bars, busted notices, etc.
-     * @return
-     */
-    public String getTopBox() {
-        StringBuffer out = new StringBuffer();
-        if(isBusted!=null) {
-            out.append("<h1>The CLDR Survey Tool is offline</h1>");
-            out.append("<div class='ferrbox'><pre>" + isBusted +"</pre><hr>");
-            out.append(getShortened((SurveyForum.HTMLSafe(isBustedStack).replaceAll("\t", "&nbsp;&nbsp;&nbsp;").replaceAll("\n", "<br>"))));
-            out.append("</div><br>");
-        }
-        if(lockOut != null) {
-            out.append("<h1>The CLDR Survey Tool is Locked for Maintenance</h1>");
-        }
-        out.append(getSpecialHeader());
-        return out.toString();
     }
     
     public static final int PROGRESS_WID=100; /** Progress bar width **/
@@ -2464,9 +2387,22 @@ public class SurveyMain extends HttpServlet {
         ctx.print("<span style='color: #ddd'> "+SURVEYMAIN_REVISION+" \u00b7 </span>");
         ctx.print("<span class='notselected'>validate <a href='http://jigsaw.w3.org/css-validator/check/referer'>css</a>, "+
             "<a href='http://validator.w3.org/check?uri=referer'>html</a></span>");
-        ctx.print(" \u00b7 <span id='visitors'>");
-        ctx.print(getGuestsAndUsers());
-        ctx.print("</span> \u00b7 ");
+        ctx.print(" \u00b7 ");
+        int guests = CookieSession.nGuests;
+        int users = CookieSession.nUsers;
+        if((guests+users)>0) { // ??
+            ctx.print("approx. ");
+            if(users>0) {
+                ctx.print(users+" logged in");
+            }
+            if(guests>0) {
+                if(users>0) {
+                    ctx.print(" and");
+                }
+                ctx.print(" "+guests+" visiting");
+            }
+            ctx.print(" \u00b7 ");
+        }
         ctx.print("#" + pages + " served in " + ctx.reqTimer + "</div>");
         ctx.println("<a href='http://www.unicode.org'>Unicode</a> | <a href='"+URL_CLDR+"'>Common Locale Data Repository</a>");
         if(ctx.request != null) try {
@@ -2501,24 +2437,6 @@ public class SurveyMain extends HttpServlet {
         ctx.println("</html>");
     }
     
-    public String getGuestsAndUsers() {
-        StringBuffer out = new StringBuffer();
-        int guests = CookieSession.nGuests;
-        int users = CookieSession.nUsers;
-        if((guests+users)>0) { // ??
-            out.append("approx. ");
-            if(users>0) {
-                out.append(users+" logged in");
-            }
-            if(guests>0) {
-                if(users>0) {
-                    out.append(" and");
-                }
-                out.append(" "+guests+" visiting");
-            }
-        }
-        return out.toString();
-    }
     /**
      * process the '_' parameter, if present, and set the locale.
      */
@@ -4272,6 +4190,7 @@ public class SurveyMain extends HttpServlet {
                     return;
                 }
             }
+
             // Option wasn't found
             sessionMessage = ("<i>Could not do the action '"+doWhat+"'. You may need to be logged in first.</i>");
         }
@@ -10312,7 +10231,7 @@ public class SurveyMain extends HttpServlet {
         return timeDiff(a,System.currentTimeMillis());
     }
     
-    public static final String timeDiff(long a, long b) {        
+    public static final String timeDiff(long a, long b) {
         final long ONE_DAY = 86400*1000;
         final long A_LONG_TIME = ONE_DAY*3;
         if((b-a)>(A_LONG_TIME)) {
@@ -10321,10 +10240,7 @@ public class SurveyMain extends HttpServlet {
             int days = (int)del;
             return days + " days";
         } else {
-          // round to even second, to avoid ElapsedTimer bug
-          a -= (a%1000);
-          b -= (b%1000);
-          return ElapsedTimer.elapsedTime(a, b);
+            return ElapsedTimer.elapsedTime(a,b);
         }
     }
     
