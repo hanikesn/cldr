@@ -1,8 +1,6 @@
 package org.unicode.cldr.test;
 
-import java.util.List;
-import java.util.Map;
-
+import org.unicode.cldr.test.CheckCLDR.CheckStatus;
 import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.XPathParts;
@@ -10,6 +8,10 @@ import org.unicode.cldr.util.XPathParts;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.BreakIterator;
 import com.ibm.icu.util.ULocale;
+
+import java.text.CharacterIterator;
+import java.util.List;
+import java.util.Map;
 
 public class CheckCasing extends CheckCLDR {
   public enum Case {mixed, lowercase_words, titlecase_words, titlecase_firstword, verbatim;

@@ -1,20 +1,24 @@
 package org.unicode.cldr.test;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
+import org.unicode.cldr.test.CheckCLDR.CheckStatus;
 import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.PrettyPath;
 import org.unicode.cldr.util.XPathParts;
+import org.unicode.cldr.util.CLDRFile.Status;
 
 import com.ibm.icu.dev.test.util.CollectionUtilities;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.BreakIterator;
 import com.ibm.icu.util.ULocale;
+
+import java.text.CharacterIterator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 public class CheckConsistentCasing extends CheckCLDR {
 

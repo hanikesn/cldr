@@ -1,14 +1,8 @@
 package org.unicode.cldr.draft;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.MatchResult;
-
+import java.io.*;
 import com.ibm.icu.text.UCharacterIterator;
 
 /**

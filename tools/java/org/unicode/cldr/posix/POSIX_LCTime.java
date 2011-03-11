@@ -10,6 +10,7 @@
 package org.unicode.cldr.posix;
 
 import java.io.PrintWriter;
+import java.lang.Character;
 
 import org.unicode.cldr.util.CLDRFile;
 

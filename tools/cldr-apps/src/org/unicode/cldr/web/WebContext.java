@@ -3,7 +3,7 @@
 //  cldrtools
 //
 //  Created by Steven R. Loomis on 3/11/2005.
-//  Copyright 2005-2011 IBM. All rights reserved.
+//  Copyright 2005-2008 IBM. All rights reserved.
 //
 package org.unicode.cldr.web;
 
@@ -12,8 +12,6 @@ import java.io.*;
 import java.util.*;
 
 import org.unicode.cldr.util.*;
-import org.unicode.cldr.web.CLDRProgressIndicator.CLDRProgressTask;
-import org.unicode.cldr.web.SurveyAjax.AjaxType;
 import org.unicode.cldr.web.Vetting.DataSubmissionResultHandler;
 import org.unicode.cldr.web.WebContext.HTMLDirection;
 import org.unicode.cldr.test.*;
@@ -46,12 +44,15 @@ public class WebContext implements Cloneable {
     public SurveyMain sm = null;
     public Document doc[]= new Document[0];
     private CLDRLocale locale = null;
+//    public String  localeString = null;
     public ULocale displayLocale = SurveyMain.BASELINE_LOCALE;
     public CLDRLocale docLocale[] = new CLDRLocale[0];
+    public String localeName = null; 
     public CookieSession session = null;
     public ElapsedTimer reqTimer = null;
     public Hashtable temporaryStuff = new Hashtable();
     public static final String CLDR_WEBCONTEXT="cldr_webcontext";
+    
     
 // private fields
     protected Writer out = null;
@@ -158,7 +159,6 @@ public class WebContext implements Cloneable {
     public WebContext(boolean fake)throws IOException  {
         dontCloseMe=false;
         out=openUTF8Writer(System.out);
-        pw = new PrintWriter(out);
     }
     
     /**
@@ -176,7 +176,7 @@ public class WebContext implements Cloneable {
         out = other.out;
         pw = other.pw;
         outQuery = other.outQuery;
-//        localeName = other.localeName;
+        localeName = other.localeName;
         locale = other.locale;
 //        if(locale != null) {
 //            localeString = locale.getBaseName();
@@ -355,7 +355,7 @@ public class WebContext implements Cloneable {
      * @param x pref name
      * @return preference value (or false)
      */
-    public boolean prefBool(String x) {
+    boolean prefBool(String x) {
         return prefBool(x,false);
     }
 
@@ -458,7 +458,7 @@ public class WebContext implements Cloneable {
      * @param target the target name to use
      * @return the 'target=...' string - may be blank if the user has requested no popups
      */
-    public String atarget(String target) {
+    String atarget(String target) {
         if(prefBool(SurveyMain.PREF_NOPOPUPS)) {
             return "";
         } else {
@@ -471,7 +471,7 @@ public class WebContext implements Cloneable {
      * @param k key
      * @param v value
      */
-    public void addQuery(String k, String v) {
+    void addQuery(String k, String v) {
         outQueryMap.put(k,v);
         if(outQuery == null) {
             outQuery = k + "=" + v;
@@ -541,7 +541,7 @@ public class WebContext implements Cloneable {
      * Return the output URL 
      * @return the output URL
      */
-    public String url() {
+    String url() {
         if(outQuery == null) {
             return base();
         } else {
@@ -588,17 +588,7 @@ public class WebContext implements Cloneable {
      * @return the context path for the specified resource
      */
     public String context(String s) { 
-    	if(request==null) return s;
-        return context(request,s);
-    }
-    /**
-     * Get the context path for a certain resource
-     * @param s resource URL
-     * @return the context path for the specified resource
-     */
-    public static String context(HttpServletRequest request, String s) { 
-    	if(request==null) return "/"+s;
-        return request.getContextPath() + "/" + s;
+        return context() + "/" + s;
     }
     
     /**
@@ -631,7 +621,7 @@ public class WebContext implements Cloneable {
         for(Iterator<String> e = outQueryMap.keySet().iterator();e.hasNext();) {
             String k = e.next().toString();
             String v = outQueryMap.get(k).toString();
-            print("<input type='hidden' name='" + k + "' value='" + v + "'/>");
+            println("<input type='hidden' name='" + k + "' value='" + v + "'/>");
         }
     }
     
@@ -718,7 +708,7 @@ public class WebContext implements Cloneable {
      * @param s line to print
      * @see PrintWriter#println(String)
      */
-    public final void println(String s) {
+    final void println(String s) {
         pw.println(s);
     }
     
@@ -726,7 +716,7 @@ public class WebContext implements Cloneable {
      * @param s
      * @see PrintWriter#print(String)
      */
-    public final void print(String s) {
+    final void print(String s) {
         pw.print(s);
     }
     
@@ -739,7 +729,7 @@ public class WebContext implements Cloneable {
                 t.toString() + "<br />");
         StringWriter asString = new StringWriter();
         if(t instanceof SQLException) {
-        	println("SQL: "+DBUtils.unchainSqlException((SQLException)t));
+        	println("SQL: "+SurveyMain.unchainSqlException((SQLException)t));
         } else {
         	t.printStackTrace(new PrintWriter(asString));
         }
@@ -1037,81 +1027,52 @@ public class WebContext implements Cloneable {
         }
         subHash.put(key,value);
     }
+    static private StandardCodes sc = null;
     
     /**
-     * Print the coverage level for a certain locale.
+     * Get a copy of the StandardCodes
+     * @return the StandardCodes
+     * @see StandardCodes#make()
      */
-	public void showCoverageLevel() {
-        String itsLevel = getEffectiveCoverageLevel();
-        String recLevel = getRecommendedCoverageLevel();
-        String def = getCoverageSetting();
-        if(def.equals(COVLEV_RECOMMENDED)) {
-            print("Coverage Level: <tt class='codebox'>"+itsLevel.toString()+"</tt><br>");
-        } else {
-            print("Coverage Level: <tt class='codebox'>"+def+"</tt>  (overriding <tt>"+itsLevel.toString()+"</tt>)<br>");
+    static private synchronized StandardCodes getSC() {
+        if(sc == null) {
+        	// TODO: this is a singleton. NO need to cache.
+            sc = StandardCodes.make();
         }
-        print("Recommended level: <tt class='codebox'>"+recLevel.toString()+"</tt><br>");
-        print("<ul><li>To change your default coverage level, see ");
-        sm.printMenu(this, "", "options", "My Options", SurveyMain.QUERY_DO);
-        println("</li></ul>");
-		if(SurveyMain.isUnofficial) {
-			println("<smaller><i> // User Org:" + getUserOrg() + "isCoverageOrg:"+isCoverageOrganization(getUserOrg())+ " // Effective: " + getEffectiveCoverageLevel() +  " // Recommended: " + getRecommendedCoverageLevel() + "</i></smaller>");
-		}
-	}
-	
-	
-	public String getEffectiveCoverageLevel() {
-		String level = getCoverageSetting();
-		if((level == null) || (level.equals(COVLEV_RECOMMENDED))||(level.equals("default"))) {
-			// fetch from org
-			String  myOrg = getUserOrg();
-			if((myOrg == null) || !isCoverageOrganization(myOrg)) {
-				level = COVLEV_DEFAULT_RECOMMENDED_STRING;
-			} else {
-				level = StandardCodes.make().getLocaleCoverageLevel(myOrg, getLocale().toString()).toString() ;
-			}
-		}
-		return level;
-	}
-	
-	String getRecommendedCoverageLevel() {
-		String  myOrg = getUserOrg();
-		if((myOrg == null) || !isCoverageOrganization(myOrg)) {
-			return COVLEV_DEFAULT_RECOMMENDED_STRING;
-		} else {
-			return StandardCodes.make().getLocaleCoverageLevel(myOrg, getLocale().toString()).toString() ;
-		}
-	}
-	
-	public String showCoverageSetting() {
-		String rv = sm.showListSetting(this, SurveyMain.PREF_COVLEV, "Coverage Level", WebContext.PREF_COVLEV_LIST);
-		return rv;
-	}
-
-	public String showCoverageSettingForLocale() {
-		String rv = sm.showListSetting(this, SurveyMain.PREF_COVLEV, "Coverage Level (Recommended= <b>"+getRecommendedCoverageLevel()+"</b>)", WebContext.PREF_COVLEV_LIST);
-		return rv;
-	}
-
-	public String getCoverageSetting() {
-		return sm.getListSetting(this, SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST);
-	}
-
-	public static final String COVLEV_RECOMMENDED = "recommended";
-	public static final String PREF_COVLEV_LIST[] = { COVLEV_RECOMMENDED,"comprehensive","modern","moderate","basic","minimal" };
-	/**
-	 * The default level, if no organization is available.
-	 */
-	public static final Level COVLEVEL_DEFAULT_RECOMMENDED = org.unicode.cldr.util.Level.MODERN;
-	public static final String COVLEV_DEFAULT_RECOMMENDED_STRING = COVLEVEL_DEFAULT_RECOMMENDED.name().toLowerCase();
-
+        return sc;
+    }
+    
     /**
-     * Is it an organization that participates in coverage?
+     * Get the default coverage level type, possibly for the user's org
+     * @return the default type
+     */
+    public String defaultPtype() {
+        if(sm.isPhaseSubmit()) {
+            String def = pref(SurveyMain.PREF_COVLEV,"default");
+            if(!def.equals("default")) {
+                return def;
+            } else {
+                String org = getChosenLocaleType();
+                String ltype = getEffectiveLocaleType(org);
+                return ltype;
+            }
+        } else {
+            return "Defaults";
+        }
+    }
+    
+    /**
+     * Get the effective locale type
      * @param org
      * @return
+     * @see StandardCodes#getEffectiveLocaleType(String)
      */
-    public static boolean isCoverageOrganization(String org) {
-		return (org!=null && StandardCodes.make().getLocaleCoverageOrganizations().contains(org));
+    static String getEffectiveLocaleType(String org) {
+        try {
+            return  getSC().getEffectiveLocaleType(org);
+        } catch (java.io.IOException ioe) {
+            return org;
+        }
     }
    
     /**
@@ -1119,20 +1080,28 @@ public class WebContext implements Cloneable {
      * @return a list of locale types
      * @see StandardCodes#getLocaleCoverageOrganizations()
      */
-   static String[] getLocaleCoverageOrganizations() {
-       return StandardCodes.make().getLocaleCoverageOrganizations().toArray(new String[0]);
+   static String[] getLocaleTypes() {
+       return getSC().getLocaleCoverageOrganizations().toArray(new String[0]);
    }
     
-    /**
-     * User's organization or null.
-     * @return
-     */
-    public String getUserOrg() {
-    	if(session.user != null) {
-    		return session.user.org;
-    	} else {
-    		return null;
-    	}
+   /**
+    * Return the type of the current locale according to coverage
+    * @return the type for locale coverage
+    */
+    public String getChosenLocaleType() {
+        if(sm.isPhaseSubmit()) { 
+            String org = pref(SurveyMain.PREF_COVTYP, "default");
+            if(org.equals("default")) {
+                org = null;
+            }
+            if((org==null) && 
+               (session.user != null)) {
+                org = session.user.org;
+            }
+            return org;
+        } else {
+            return defaultPtype();
+        }
     }
     
     /**
@@ -1154,14 +1123,18 @@ public class WebContext implements Cloneable {
      * @see SurveyMain#basicOptionsMap()
      */
     public Map<String, String> getOptionsMap(Map<String, String> options) {
-        String def = getCoverageSetting();
-        options.put("CheckCoverage.requiredLevel",def);
-        
-        String org = getEffectiveCoverageLevel();
-        if(org!=null) {
-            options.put("CoverageLevel.localeType",org);
+        if(sm.isPhaseSubmit()) { 
+            String def = pref(SurveyMain.PREF_COVLEV,"default");
+            if(!def.equals("default")) {
+                options.put("CheckCoverage.requiredLevel",def);
+            }
+            
+            String org = getEffectiveLocaleType(getChosenLocaleType());
+            if(org!=null) {
+                options.put("CoverageLevel.localeType",org);
+            }
         }
-        
+                
         return options;
     }
     
@@ -1175,7 +1148,7 @@ public class WebContext implements Cloneable {
      * @return the existing data section or null if it is invalid
      */
     DataSection getExistingSection(String prefix) {
-        return getExistingSection(prefix, getEffectiveCoverageLevel());
+        return getExistingSection(prefix, defaultPtype());
     }
     
     /**
@@ -1205,7 +1178,7 @@ public class WebContext implements Cloneable {
      * @param prefix
      */
     DataSection getSection(String prefix) {
-        return getSection(prefix, getEffectiveCoverageLevel());
+        return getSection(prefix, defaultPtype());
     }
     
     /** 
@@ -1231,28 +1204,14 @@ public class WebContext implements Cloneable {
                 loadString = "data was re-loaded due to a new user submission.";
             }
             if(section == null) {
-                CLDRProgressTask progress = sm.openProgress("Loading");
-                try {
-	                progress.update("<span title='"+sm.xpt.getPrettyPath(prefix)+"'>"+locale+"</span>");
-	                long t0 = System.currentTimeMillis();
-	                ElapsedTimer podTimer = new ElapsedTimer("There was a delay of {0} as " + loadString);
-	                section = DataSection.make(this, locale, prefix, false);
-	                if((System.currentTimeMillis()-t0) > 10 * 1000) {
-	                    println("<i><b>" + podTimer + "</b></i><br/>");
-	                }
-                } catch (OutOfMemoryError oom) {
-                	System.err.println("Error loading " + prefix + " / " + ptype + " in " + locale);
-                	oom.printStackTrace();
-                	this.println("Error loading " + prefix + " / " + ptype + " in " + locale + " - " + oom.toString());
-                } catch (Throwable t) {
-                	System.err.println("Error loading " + prefix + " / " + ptype + " in " + locale);
-                	t.printStackTrace();
-                	this.println("Error loading " + prefix + " / " + ptype + " in " + locale + " - " + t.toString());
-                } finally {
-                	progress.close();
+                long t0 = System.currentTimeMillis();
+                ElapsedTimer podTimer = new ElapsedTimer("There was a delay of {0} as " + loadString);
+                section = DataSection.make(this, locale, prefix, false);
+                if((System.currentTimeMillis()-t0) > 10 * 1000) {
+                    println("<i><b>" + podTimer + "</b></i><br/>");
                 }
             }
-            section.register();
+                    section.register();
 //                    SoftReference sr = (SoftReference)getByLocaleStatic(DATA_POD+prefix+":"+ptype);  // GET******
 	}
             putByLocaleStatic(DATA_POD+prefix+":"+ptype, new SoftReference<DataSection>(section)); // PUT******
@@ -1372,14 +1331,10 @@ public class WebContext implements Cloneable {
      * @return the HTML for the icon and message
      */
     public String iconHtml(String icon, String message) {
-        return iconHtml(request, icon, message);
-    }
-    
-    public static String iconHtml(HttpServletRequest request, String icon, String message) {
         if(message==null) {
             message = "[" + icon +"]";
         }
-        return "<img border='0' alt='["+icon+"]' style='width: 16px; height: 16px;' src='"+context(request, icon+".png")+"' title='"+message+"' />";
+        return "<img border='0' alt='["+icon+"]' style='width: 16px; height: 16px;' src='"+context(icon+".png")+"' title='"+message+"' />";
     }
     
     /**
@@ -1388,7 +1343,6 @@ public class WebContext implements Cloneable {
      */
     public Object clone() {
         return new WebContext(this);
-        // TODO: call super.clone()
     }
     
     /**
@@ -1415,10 +1369,8 @@ public class WebContext implements Cloneable {
      * @throws IOException
      */
     public static void includeFragment(HttpServletRequest request, HttpServletResponse response, String filename) throws ServletException, IOException {
-            if(request != null) {
-            	RequestDispatcher dp = request.getRequestDispatcher(TMPL_PATH+filename);
-            	dp.include(request,response);
-            }
+            RequestDispatcher dp = request.getRequestDispatcher(TMPL_PATH+filename);
+            dp.include(request,response);
     }
 
     /**
@@ -1439,20 +1391,11 @@ public class WebContext implements Cloneable {
     }
 
     /**
-     * @return the CLDRLocale with which this WebContext currently pertains.
+     * @return the CLDRLocale with which this WebCOntext currently pertains.
      * @see CLDRLocale
      */
     public CLDRLocale getLocale() {
         return locale;
-    }
-    
-    /**
-     * @return display name of current locale if set
-     * @see #getLocale()
-     * @see SurveyMain#getLocaleDisplayName(CLDRLocale)
-     */
-    public String getLocaleDisplayName() {
-        return SurveyMain.getLocaleDisplayName(getLocale());
     }
 
 	// Display Context Data
@@ -1529,103 +1472,4 @@ public class WebContext implements Cloneable {
 		if(canModify==null) throw new InternalError("zoomedIn()- not set.");
 		return zoomedIn;
 	}
-
-
-    public void includeAjaxScript(AjaxType type)  {
-        try {
-            SurveyAjax.includeAjaxScript(request, response, type);
-        } catch(Throwable t) {
-            this.println("<div class='ferrorbox'><B>Error</b> while including template :<br>");
-            this.print(t);
-            this.println("</div>");
-            System.err.println("While expanding ajax: " +t.toString());
-            t.printStackTrace();
-        }
-    }
-    
-    public SurveyMain.UserLocaleStuff getUserFile() {
-    	return sm.getUserFile(session, getLocale());
-    }
-    public CLDRFile getCLDRFile() {
-    	return getUserFile().cldrfile;
-    }
-    
-    /**
-     * Get the user settings.
-     * @return
-     */
-    UserSettings settings() {
-        return session.settings();
-    }
-
-    public void no_js_warning() {
-        boolean no_js = prefBool(SurveyMain.PREF_NOJAVASCRIPT);
-        if(!no_js) {
-            WebContext nuCtx = (WebContext)clone();
-            nuCtx.setQuery(SurveyMain.PREF_NOJAVASCRIPT, "t");
-            println("<noscript><h1>");
-            println("<a href='"+nuCtx.url()+"'>");
-            println(iconHtml("warn", "JavaScript disabled")+ "JavaScript is disabled. Please click here to continue.");
-            println("</a>");
-            println("</h1></noscript>");
-        }
-    }
-
-    /**
-     * Return the ID of this user, or -1 (UserRegistry.NO_USER)
-     * @return user's id, or -1 (UserRegistry.NO_USER) if not found/not set
-     */
-    public int userId() {
-        if(session!=null && session.user!=null) {
-            return session.user.id;
-        } else {
-            return UserRegistry.NO_USER;
-        }
-    }
-
-    /**
-     * Get a certain cookie
-     * @param id
-     * @return
-     */
-    public Cookie getCookie(String id) {
-        return getCookie(request,id);
-    }
-    
-    public static Cookie getCookie(HttpServletRequest request, String id) {
-	Cookie cooks[] = request.getCookies();
-	if(cooks == null) return null;
-        for(Cookie c : cooks) {
-            if(c.getName().equals(id)) {
-                return c;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * Get a cookie value or null
-     * @param id
-     * @return
-     */
-    public String getCookieValue(String id) {
-        Cookie c = getCookie(id);
-        if(c!=null) {
-            return c.getValue();
-        }
-        return null;
-    }
-    
-    /**
-     * Set a cookie
-     * @param id
-     * @param value
-     * @param expiry
-     */
-    void addCookie(String id, String value, int expiry) {
-        Cookie c = new Cookie(id,value);
-        c.setMaxAge(expiry);
-        response.addCookie(c);
-    }
-
 }

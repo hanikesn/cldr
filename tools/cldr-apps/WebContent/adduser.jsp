@@ -9,7 +9,6 @@
 	} else {
 		myorg = "";
 	}
-	
 %>
 <html>
 <head>
@@ -36,24 +35,7 @@
 	</tr>
 	<tr>
 		<th><label for="new_org">Organization:</label></th>
-		
-		<% if(myorg.length()==0) { %>
-			<td><input id='new_org' name="new_org" value="<%=myorg%>" /></td>
-			<td>
-				<select onchange="document.getElementById('new_org').value=this.value">
-					<option value='' selected="selected">Choose...</option>
-					<%
-						for(String o : UserRegistry.getOrgList()) {
-					%>
-							<option value='<%= o %>'><%= o %></option>
-					<%
-						}
-					%>
-				</select>
-			</td>
-		<% } else { %>
-			<td><input name="new_org" disabled="disabled" value="<%=myorg%>" /></td>
-		<% }  %>
+		<td><input name="new_org" value="<%=myorg%>" /></td>
 	</tr>
 	<tr>
 		<th><label for="new_userlevel">Userlevel:</label></th>

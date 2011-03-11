@@ -10,10 +10,11 @@
 
 package org.unicode.cldr.web;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
+import java.net.*;
+
+import org.unicode.cldr.util.*;
 
 
 public class URLWebContext extends WebContext {

@@ -5,7 +5,8 @@
     <generation date="$Date$"/>
     <plurals>
         <!-- if locale is known to have no plurals, there are no rules -->
-        <pluralRules locales="az bm bo dz fa id ig ii hu ja jv ka kde kea km kn ko lo ms my sah ses sg th to tr vi wo yo zh"/> 
+        <pluralRules locales="az bm fa ig hu ja kde kea ko my ses sg to tr vi wo yo zh bo dz id jv ka km kn ms th"/> 
+        <!-- 2nd line from Tamplin's data -->
         <pluralRules locales="ar">
             <pluralRule count="zero">n is 0</pluralRule>
             <pluralRule count="one">n is 1</pluralRule>
@@ -13,10 +14,10 @@
             <pluralRule count="few">n mod 100 in 3..10</pluralRule>
             <pluralRule count="many">n mod 100 in 11..99</pluralRule>
         </pluralRules>
-        <pluralRules locales="af bem bg bn brx ca chr da de ee el en eo es et eu fi fo fur fy gl gsw gu ha he is it ku lb ml mn mr nah nb ne nl nn no om or pa pap ps pt rm so sq sv sw ta te tk ur wae zu">
+        <pluralRules locales="bem brx da de el en eo es et fi fo gl he iw it nb nl nn no pt_PT sv af bg bn ca eu fur fy gu ha is ku lb ml mr nah ne om or pa pap ps so sq sw ta te tk ur zu mn gsw chr rm pt"> <!-- 2nd two lines from Tamplin's data, deleting az fa -->
             <pluralRule count="one">n is 1</pluralRule>
         </pluralRules>
-        <pluralRules locales="ak am bh fil tl guw hi ln mg nso ti wa">
+        <pluralRules locales="ak am bh fil tl guw hi ln mg nso ti wa"> <!-- last line from Tamplin's data -->
             <pluralRule count="one">n in 0..1</pluralRule>
         </pluralRules>
         <pluralRules locales="ff fr kab">
@@ -38,7 +39,7 @@
             <pluralRule count="one">n mod 10 is 1 and n mod 100 not in 11..19</pluralRule>
             <pluralRule count="few">n mod 10 in 2..9 and n mod 100 not in 11..19</pluralRule>
         </pluralRules>
-        <pluralRules locales="be bs hr ru sh sr uk">
+        <pluralRules locales="hr ru sr uk be bs sh">
             <pluralRule count="one">n mod 10 is 1 and n mod 100 is not 11</pluralRule>
             <pluralRule count="few">n mod 10 in 2..4 and n mod 100 not in 12..14</pluralRule>
             <pluralRule count="many">n mod 10 is 0 or n mod 10 in 5..9 or n mod 100 in 11..14</pluralRule>

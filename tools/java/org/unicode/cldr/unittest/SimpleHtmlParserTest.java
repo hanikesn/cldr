@@ -1,14 +1,14 @@
 package org.unicode.cldr.unittest;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.SimpleHtmlParser;
+import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.SimpleHtmlParser.Type;
 
 import com.ibm.icu.dev.test.util.BagFormatter;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class SimpleHtmlParserTest {
   public static void main(String[] args) throws IOException {

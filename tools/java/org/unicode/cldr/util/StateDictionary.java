@@ -7,6 +7,9 @@
  */
 package org.unicode.cldr.util;
 
+import org.unicode.cldr.util.StateDictionary.Row.Uniqueness;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
@@ -18,8 +21,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Map.Entry;
-
-import org.unicode.cldr.util.StateDictionary.Row.Uniqueness;
 
 public class StateDictionary<T> extends Dictionary<T> {
 

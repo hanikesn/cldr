@@ -4,6 +4,7 @@
 
 package org.unicode.cldr.ooo;
 
+import java.util.*;
 
 public class OOLocales
 {

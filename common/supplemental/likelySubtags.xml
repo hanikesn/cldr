@@ -108,6 +108,7 @@
       <likelySubtag from="kcg" to="kcg_Latn_NG"/> <!--{ Tyap; ?; ? } => { Tyap; Latin; Nigeria }-->
       <likelySubtag from="kde" to="kde_Latn_TZ"/> <!--{ Makonde; ?; ? } => { Makonde; Latin; Tanzania }-->
       <likelySubtag from="kea" to="kea_Latn_CV"/> <!--{ Kabuverdianu; ?; ? } => { Kabuverdianu; Latin; Cape Verde }-->
+      <likelySubtag from="kfo" to="kfo_Latn_CI"/> <!--{ Koro; ?; ? } => { Koro; Latin; Côte d’Ivoire }-->
       <likelySubtag from="kg" to="kg_Latn_CD"/> <!--{ Kongo; ?; ? } => { Kongo; Latin; Congo - Kinshasa }-->
       <likelySubtag from="kha" to="kha_Latn_IN"/> <!--{ Khasi; ?; ? } => { Khasi; Latin; India }-->
       <likelySubtag from="khq" to="khq_Latn_ML"/> <!--{ Koyra Chiini; ?; ? } => { Koyra Chiini; Latin; Mali }-->
@@ -204,7 +205,7 @@
       <likelySubtag from="rw" to="rw_Latn_RW"/> <!--{ Kinyarwanda; ?; ? } => { Kinyarwanda; Latin; Rwanda }-->
       <likelySubtag from="rwk" to="rwk_Latn_TZ"/> <!--{ Rwa; ?; ? } => { Rwa; Latin; Tanzania }-->
       <likelySubtag from="sa" to="sa_Deva_IN"/> <!--{ Sanskrit; ?; ? } => { Sanskrit; Devanagari; India }-->
-      <likelySubtag from="sah" to="sah_Cyrl_RU"/> <!--{ Sakha; ?; ? } => { Sakha; Cyrillic; Russia }-->
+      <likelySubtag from="sah" to="sah_Cyrl_RU"/> <!--{ Yakut; ?; ? } => { Yakut; Cyrillic; Russia }-->
       <likelySubtag from="saq" to="saq_Latn_KE"/> <!--{ Samburu; ?; ? } => { Samburu; Latin; Kenya }-->
       <likelySubtag from="sat" to="sat_Latn_IN"/> <!--{ Santali; ?; ? } => { Santali; Latin; India }-->
       <likelySubtag from="sd" to="sd_Arab_IN"/> <!--{ Sindhi; ?; ? } => { Sindhi; Arabic; India }-->
@@ -241,7 +242,7 @@
       <likelySubtag from="tig" to="tig_Ethi_ER"/> <!--{ Tigre; ?; ? } => { Tigre; Ethiopic; Eritrea }-->
       <likelySubtag from="tk" to="tk_Latn_TM"/> <!--{ Turkmen; ?; ? } => { Turkmen; Latin; Turkmenistan }-->
       <likelySubtag from="tkl" to="tkl_Latn_TK"/> <!--{ Tokelau; ?; ? } => { Tokelau; Latin; Tokelau }-->
-      <likelySubtag from="tl" to="fil_Latn_PH"/> <!--{ Tagalog; ?; ? } => { Tagalog; Latin; Philippines }-->
+      <likelySubtag from="tl" to="tl_Latn_PH"/> <!--{ Tagalog; ?; ? } => { Tagalog; Latin; Philippines }-->
       <likelySubtag from="tn" to="tn_Latn_ZA"/> <!--{ Tswana; ?; ? } => { Tswana; Latin; South Africa }-->
       <likelySubtag from="to" to="to_Latn_TO"/> <!--{ Tonga; ?; ? } => { Tonga; Latin; Tonga }-->
       <likelySubtag from="tpi" to="tpi_Latn_PG"/> <!--{ Tok Pisin; ?; ? } => { Tok Pisin; Latin; Papua New Guinea }-->
@@ -499,7 +500,6 @@
       <likelySubtag from="ve" to="ve_Latn_ZA"/> <!--{ Venda; ?; ? } => { Venda; Latin; South Africa }-->
       <likelySubtag from="vi" to="vi_Latn_VN"/> <!--{ Vietnamese; ?; ? } => { Vietnamese; Latin; Vietnam }-->
       <likelySubtag from="vun" to="vun_Latn_TZ"/> <!--{ Vunjo; ?; ? } => { Vunjo; Latin; Tanzania }-->
-      <likelySubtag from="wae" to="wae_Latn_CH"/> <!--{ Walser; ?; ? } => { Walser; Latin; Switzerland }-->
       <likelySubtag from="wal" to="wal_Ethi_ET"/> <!--{ Walamo; ?; ? } => { Walamo; Ethiopic; Ethiopia }-->
       <likelySubtag from="war" to="war_Latn_PH"/> <!--{ Waray; ?; ? } => { Waray; Latin; Philippines }-->
       <likelySubtag from="wo" to="wo_Latn_SN"/> <!--{ Wolof; ?; ? } => { Wolof; Latin; Senegal }-->

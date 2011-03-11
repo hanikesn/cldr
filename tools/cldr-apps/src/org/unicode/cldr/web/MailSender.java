@@ -11,21 +11,12 @@
 
 package org.unicode.cldr.web;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.util.*;
+import javax.mail.*;
+import java.io.*;
 import java.nio.charset.Charset;
-import java.util.Date;
-import java.util.Properties;
-import java.util.Set;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
 
 
 /**

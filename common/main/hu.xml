@@ -1260,9 +1260,7 @@
 						<dateFormatItem id="MMMEd">MMM d., E</dateFormatItem>
 						<dateFormatItem id="MMMMd">MMMM d.</dateFormatItem>
 						<dateFormatItem id="mmss">mm:ss</dateFormatItem>
-						<dateFormatItem id="yMd">yyyy.MM.dd.</dateFormatItem>
 						<dateFormatItem id="yMEd">yyyy.MM.dd., E</dateFormatItem>
-						<dateFormatItem id="yMMMd">y. MMM d.</dateFormatItem>
 						<dateFormatItem id="yMMMEd">y. MMM d., E</dateFormatItem>
 						<dateFormatItem id="yyQ">yy/Q</dateFormatItem>
 						<dateFormatItem id="yyyyMM">yyyy.MM</dateFormatItem>
@@ -3717,7 +3715,7 @@
 				<displayName count="other">Venezuelai bolivar fuerte</displayName>
 			</currency>
 			<currency type="VND">
-				<displayName>Vietnami dong</displayName>
+				<displayName>Vietnámi dong</displayName>
 			</currency>
 			<currency type="VUV">
 				<displayName>Vanuatui vatu</displayName>

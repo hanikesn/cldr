@@ -1,4 +1,4 @@
-/* Copyright (C) 2005-2010, International Business Machines Corporation and   *
+/* Copyright (C) 2005-2007, International Business Machines Corporation and   *
  * others. All Rights Reserved.                                               */
 //
 //  CookieSession.java
@@ -10,16 +10,11 @@
 
 package org.unicode.cldr.web;
 
+import java.security.SecureRandom;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.Connection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Instances of this class represent the session-persistent data kept on a per-user basis.
@@ -35,13 +30,9 @@ public class CookieSession {
     
     private Connection conn = null;
     
-    public String toString() {
-    	return id;
-    }
-    
     public Connection db(SurveyMain sm) {
         if(conn == null) {
-            conn = sm.dbUtils.getDBConnection();
+            conn = sm.getDBConnection();
         }
         return conn;
     }
@@ -139,7 +130,6 @@ public class CookieSession {
      */
     public void setUser(UserRegistry.User u) {
         user = u;
-        settings = null;
         synchronized(gHash) {
             uHash.put(user.email, this); // replaces any existing session by this user.
         }
@@ -149,8 +139,7 @@ public class CookieSession {
      * Create a bran-new session.  
      * @param isGuest True if the user is a guest.
      */
-    public CookieSession(boolean isGuest, String ip) {
-        this.ip = ip;
+    public CookieSession(boolean isGuest) {
         id = newId(isGuest);
         touch();
         synchronized(gHash) {
@@ -165,6 +154,12 @@ public class CookieSession {
         last = System.currentTimeMillis();
     }
     
+    /**
+     * Set the user's IP, if known.
+     */
+    public void setIp(String ip) {
+        this.ip=ip;
+    }
     
     /**
      * Delete a session.
@@ -177,7 +172,7 @@ public class CookieSession {
             gHash.remove(id);
         }
         // clear out any database sessions in use
-        DBUtils.closeDBConnection(conn);
+        SurveyMain.closeDBConnection(conn);
     }
     
     /**
@@ -504,107 +499,6 @@ public class CookieSession {
                     //
                 }
             }
-        }
-    }
-
-    public UserSettings settings() {
-        if(settings==null) {
-            if(user==null) {
-                settings = new EphemeralSettings();
-            } else {
-                settings = user.settings();
-            }
-        }
-        return settings;
-    }
-
-    private UserSettings settings;
-    
-   static CookieSession specialGuest = null;
-    
-    private static synchronized CookieSession getSpecialGuest() {
-        if(specialGuest==null) {
-            specialGuest = new CookieSession(true,"[throttled]");
-//            gHash.put("throttled", specialGuest);
-        }
-        return specialGuest;
-    }
-    
-    private static class BadUserRecord {
-        String ip;
-        int hits=0;
-        Set<String> agents = new HashSet<String>();
-        public BadUserRecord(String IP) {
-            ip = IP;
-        }
-        public void hit(String userAgent) {
-            agents.add(userAgent);
-            hits++;
-        }
-        public String toString() {
-            String s =" hits: " + hits + ", from :";
-            for(String ua:agents) {
-                s = s + ua + ", ";
-            }
-            return s;
-        }
-    }
-
-    public static synchronized CookieSession checkForAbuseFrom(String userIP,
-            Hashtable<String, Object> BAD_IPS, String userAgent) {
-        if(BAD_IPS.containsKey(userIP)) {
-            BadUserRecord bur = (BadUserRecord)BAD_IPS.get(userIP);
-            bur.hit(userAgent);
-            return getSpecialGuest();
-        }
-        
-        if(SurveyMain.isUnofficial) {
-            return null; // OK.
-        }
-        
-        // get the # of sessions
-        
-        int noSes = 0;
-        long now = System.currentTimeMillis();
-        synchronized(gHash) {
-            for(Object o : gHash.values()) {
-                CookieSession cs = (CookieSession)o;
-                if(!userIP.equals(cs.ip)) {
-                    continue;
-                }
-                if(cs.user!=null) {
-                    return null; // has a user, OK
-                }
-                if((now-cs.last) < (5*60*1000)) {
-                    noSes++;
-                }
-            }
-        }
-        if(noSes>10) {
-            //System.err.println(userIP+" has " + noSes + " sessions recently.");
-            BadUserRecord bur = new BadUserRecord(userIP);
-            bur.hit(userAgent);
-            
-            BAD_IPS.put(userIP, bur);
-            return getSpecialGuest();
-        } else {
-            return null; // OK.
-        }
-    }
-
-    public String banIn(Hashtable<String, Object> BAD_IPS) {
-        synchronized(gHash) {
-            BadUserRecord bur  = (BadUserRecord)BAD_IPS.get(this.ip);
-            if(bur == null) {
-                bur = new BadUserRecord(this.ip);
-                BAD_IPS.put(this.ip, bur);
-            } else {
-                bur.hit("(Banned by Admin)");
-            }
-            int kickCount = 0;
-            this.remove();
-            kickCount++;
-            return "banned and kicked this session";
         }
     }
 }

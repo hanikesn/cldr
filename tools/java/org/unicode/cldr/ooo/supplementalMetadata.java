@@ -4,13 +4,17 @@
 
 package org.unicode.cldr.ooo;
 
-import java.io.File;
-import java.util.Hashtable;
-
-import org.unicode.cldr.icu.LDMLConstants;
 import org.unicode.cldr.util.LDMLUtilities;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+import org.unicode.cldr.icu.LDMLConstants;
+
+/**
+ *
+ * reads supplementalMetadata.xml into memory
+ */
+
+import java.util.*;
+import org.w3c.dom.*;
+import java.io.*;
 
 public class supplementalMetadata
 {

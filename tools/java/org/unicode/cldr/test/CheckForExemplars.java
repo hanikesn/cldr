@@ -11,13 +11,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.unicode.cldr.test.CheckCLDR.CheckStatus;
 import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.InternalCldrException;
 import org.unicode.cldr.util.XMLSource;
 import org.unicode.cldr.util.CLDRFile.Status;
 
+import com.ibm.icu.dev.test.util.CollectionUtilities;
 import com.ibm.icu.dev.test.util.PrettyPrinter;
+
+import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.Collator;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.ULocale;
@@ -28,8 +32,7 @@ public class CheckForExemplars extends CheckCLDR {
   static String[] EXEMPLAR_SKIPS = {"/currencySpacing", "/hourFormat", "/exemplarCharacters", "/pattern",
     "/localizedPatternChars", "/segmentations", "/dateFormatItem", "/references", "/unitPattern",
     "/intervalFormatItem",
-    "/localeDisplayNames/variants/",
-    "/commonlyUsed"
+    "/localeDisplayNames/variants/"
   };
   
   private UnicodeSet exemplars;

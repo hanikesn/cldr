@@ -7,7 +7,7 @@
 
 package org.unicode.cldr.web;
 
-import java.util.Hashtable;
+import java.util.*;
 
 import org.unicode.cldr.util.CLDRLocale;
 

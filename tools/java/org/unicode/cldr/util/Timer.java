@@ -1,6 +1,7 @@
 package org.unicode.cldr.util;
 
 import com.ibm.icu.text.DecimalFormat;
+
 import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.util.ULocale;
 
@@ -38,7 +39,7 @@ public final class Timer {
   }
   
   public String toString(long iterations, long other) {
-    return nf.format(getDuration()/iterations) + "ns" + "\t(" + pf.format((double)getDuration()/other - 1D) + ")";
+    return nf.format(getDuration()/iterations) + "ns" + " (" + pf.format((double)getDuration()/other - 1D) + ")";
   }
   
   private static DecimalFormat nf = (DecimalFormat) NumberFormat.getNumberInstance(ULocale.ENGLISH);

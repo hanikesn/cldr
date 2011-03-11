@@ -4,13 +4,10 @@
 
 package org.unicode.cldr.ooo;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
-
 import org.unicode.cldr.util.LDMLUtilities;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+import java.io.*;
+import java.util.*;
+import org.w3c.dom.*;
 
 /**
  *

@@ -8,13 +8,18 @@ package org.unicode.cldr.test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.unicode.cldr.test.CheckCLDR.CheckStatus;
+import org.unicode.cldr.test.CheckCLDR.Phase;
 import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
+import org.unicode.cldr.test.CoverageLevel.Level;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.InternalCldrException;
 import org.unicode.cldr.util.LanguageTagParser;
-import org.unicode.cldr.util.Level;
 import org.unicode.cldr.util.SupplementalDataInfo;
+import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.XMLSource;
 import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo;
 
@@ -82,9 +87,9 @@ public class CheckCoverage extends CheckCLDR {
         }
 
         // check to see if the level is good enough
-        Level level = coverageLevel.getCoverageLevel(fullPath, path);
+        CoverageLevel.Level level = coverageLevel.getCoverageLevel(fullPath, path);
         
-        if (level == Level.UNDETERMINED) return this; // continue if we don't know what the status is
+        if (level == CoverageLevel.Level.UNDETERMINED) return this; // continue if we don't know what the status is
         if (requiredLevel.compareTo(level) >= 0) {
             result.add(new CheckStatus().setCause(this).setMainType(CheckStatus.warningType).setSubtype(Subtype.coverageLevel)
                 .setCheckOnSubmit(false)

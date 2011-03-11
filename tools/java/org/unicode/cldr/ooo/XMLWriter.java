@@ -6,7 +6,8 @@
  */
 package org.unicode.cldr.ooo;
 
-import java.io.PrintStream;
+import java.io.*;
+import java.util.*;
 
 /**
  * A LocaleWriter takes locale data in standard form and

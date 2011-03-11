@@ -36,7 +36,6 @@
 						<dateFormatItem id="MMd">MM-d</dateFormatItem>
 						<dateFormatItem id="MMdd">MM-dd</dateFormatItem>
 						<dateFormatItem id="yM">yyyy-MM</dateFormatItem>
-						<dateFormatItem id="yMd">yyyy-MM-dd</dateFormatItem>
 						<dateFormatItem id="yMEd">EEE yyyy-MM-dd</dateFormatItem>
 						<dateFormatItem id="yyMM">yy-MM</dateFormatItem>
 					</availableFormats>
@@ -80,8 +79,8 @@
 							<greatestDifference id="d">E MM-dd – E MM-dd</greatestDifference>
 							<greatestDifference id="M">E MM-dd – E MM-dd</greatestDifference>
 						</intervalFormatItem>
-						<intervalFormatItem id="MMM">
-							<greatestDifference id="M">MMM–MMM</greatestDifference>
+						<intervalFormatItem id="MMMM">
+							<greatestDifference id="M">LLLL-LLLL</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="y">
 							<greatestDifference id="y">y–y</greatestDifference>

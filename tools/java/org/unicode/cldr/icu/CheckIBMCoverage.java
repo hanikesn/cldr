@@ -20,7 +20,6 @@ import org.unicode.cldr.test.CoverageLevel;
 import org.unicode.cldr.test.CheckCLDR.CheckStatus;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.LDMLUtilities;
-import org.unicode.cldr.util.Level;
 import org.unicode.cldr.util.StandardCodes;
 import org.unicode.cldr.util.CLDRFile.Factory;
 import org.w3c.dom.Node;
@@ -171,14 +170,14 @@ public class CheckIBMCoverage  extends CLDRConverterTool {
                 printWarning( locale , " not required by IBM whitepaper");
                 continue;
             }
-            Level level = Level.get(group);
+            CoverageLevel.Level level = CoverageLevel.Level.get(group);
             
             fw.write("\t\t\t<tr>\n");
             fw.write("\t\t\t\t<td>"+locale+"</td>\n");
             fw.write("\t\t\t\t<td>"+group+"</td>\n");
             
             // check posix coverage
-            int posix = processFile(locale, destDir+File.separator+plf, Level.POSIX, group, true);
+            int posix = processFile(locale, destDir+File.separator+plf, CoverageLevel.Level.POSIX, group, true);
             if(posix==0){
                 fw.write("\t\t\t\t<td><img src=\"blue_check.gif\" border=\"0\" ALT=\"Pass\"></td>\n");
                 mp++;
@@ -187,7 +186,7 @@ public class CheckIBMCoverage  extends CLDRConverterTool {
                 mf++;
             }
             
-            int basic = processFile(locale, destDir+File.separator+blf, Level.BASIC, group, true);
+            int basic = processFile(locale, destDir+File.separator+blf, CoverageLevel.Level.BASIC, group, true);
             if(basic==0){
                 fw.write("\t\t\t\t<td><img src=\"blue_check.gif\" border=\"0\" ALT=\"Pass\"></td>\n");
                 bp++;
@@ -196,7 +195,7 @@ public class CheckIBMCoverage  extends CLDRConverterTool {
                 bf++;
             }
             
-            if(level.equals(Level.POSIX)){
+            if(level.equals(CoverageLevel.Level.POSIX)){
                 if(posix==0){
                     fw.write("\t\t\t\t<td><img src=\"blue_check.gif\" border=\"0\" ALT=\"Pass\"></td>\n");
                     gp++;
@@ -204,7 +203,7 @@ public class CheckIBMCoverage  extends CLDRConverterTool {
                     fw.write("\t\t\t\t<td><a href=\""+glf+"\"><img src=\"red_x.gif\" border=\"0\" ALT=\"Fail\"></a></td>\n");
                     gf++;
                 }
-            }else if(level.equals(Level.BASIC)){
+            }else if(level.equals(CoverageLevel.Level.BASIC)){
                 if(basic==0){
                     fw.write("\t\t\t\t<td><img src=\"blue_check.gif\" border=\"0\" ALT=\"Pass\"></td>\n");
                     gp++;
@@ -258,22 +257,22 @@ public class CheckIBMCoverage  extends CLDRConverterTool {
             printWarning( locale , " not required by IBM whitepaper");
             return -1;
         }
-        Level level = Level.get(group);
-        int out = processFile(locale, destDir+File.separator+locale +"_posix.log", Level.POSIX, group, pretty);
-            out = processFile(locale, destDir+File.separator+locale +"_basic.log", Level.BASIC, group, pretty);
+        CoverageLevel.Level level = CoverageLevel.Level.get(group);
+        int out = processFile(locale, destDir+File.separator+locale +"_posix.log", CoverageLevel.Level.POSIX, group, pretty);
+            out = processFile(locale, destDir+File.separator+locale +"_basic.log", CoverageLevel.Level.BASIC, group, pretty);
             out = processFile(locale, destDir+File.separator+locale +"_group.log", level, group, pretty);
         return out;
     }
     //private static final String SETTINGS = "//ldml/collations/collation[@type=\"standard\"]/settings";
     private static final String RULES = "//ldml/collations/collation[@type=\"standard\"]/rules";
     private static final String COLLATIONS = "//ldml/collations";
-    private int processFile(String locale, String logFile, Level level, String group, boolean pretty)throws IOException{
+    private int processFile(String locale, String logFile, CoverageLevel.Level level, String group, boolean pretty)throws IOException{
 
 
         //Map m = new TreeMap();
         FileWriter fw = new FileWriter(logFile);
         int ret = check(locale, group, level, fw);
-        if(level.compareTo(Level.POSIX)==0){
+        if(level.compareTo(CoverageLevel.Level.POSIX)==0){
            Node node = LDMLUtilities.getFullyResolvedLDML(sourceDir+"/../collation", locale, false, true, false, false);
            Node collation = LDMLUtilities.getNode(node, COLLATIONS);
            String validSubLocales = LDMLUtilities.getAttributeValue(collation, LDMLConstants.VALID_SUBLOCALE);
@@ -298,7 +297,7 @@ public class CheckIBMCoverage  extends CLDRConverterTool {
         fw.close();
         return ret;
     }
-    private int check( String locale, String group, Level level, FileWriter fw) throws IOException{
+    private int check( String locale, String group, CoverageLevel.Level level, FileWriter fw) throws IOException{
         
         CheckCoverage coverage = new CheckCoverage();
         
@@ -329,7 +328,7 @@ public class CheckIBMCoverage  extends CLDRConverterTool {
                 System.out.println(fullPath);
             }
             result.clear();
-            if (level.compareTo(Level.POSIX)==0) {
+            if (level.compareTo(CoverageLevel.Level.POSIX)==0) {
                covLevel.checkPosixCoverage(path, fullPath, value, options, result, file, resolved);
             } else {
                 coverage.check(path, fullPath, value, options, result);

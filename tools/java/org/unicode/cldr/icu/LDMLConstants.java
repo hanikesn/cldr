@@ -1,6 +1,6 @@
 /*
  ******************************************************************************
- * Copyright (C) 2004-2011, International Business Machines Corporation and   *
+ * Copyright (C) 2004-2010, International Business Machines Corporation and   *
  * others. All Rights Reserved.                                               *
  ******************************************************************************
  */
@@ -19,7 +19,6 @@ public class LDMLConstants {
     public static final String INTEXT          = "inText";
     public static final String INLIST          = "inList";
     public static final String CHARACTERS      = "characters";
-    public static final String STOPWORDS       = "stopwords";
     public static final String CASING          = "casing";
     public static final String LINES           = "lines";
     public static final String DELIMITERS      = "delimiters";
@@ -40,8 +39,6 @@ public class LDMLConstants {
     public static final String ALIAS           = "alias";
     public static final String VERSION         = "version";
     public static final String LOCALEDISPLAYPATTERN = "localeDisplayPattern";
-    public static final String LOCALE_KEYTYPE_PATTERN = "localeKeyTypePattern";
-    public static final String KEYTYPE_PATTERN = "keyTypePattern";
     public static final String LANGUAGE        = "language";
     public static final String SCRIPT          = "script";
     public static final String CANONICAL       = "canonical";
@@ -89,7 +86,6 @@ public class LDMLConstants {
     public static final String GMT_ZERO_FORMAT       = "gmtZeroFormat";
     public static final String REGION_FORMAT         = "regionFormat";
     public static final String FALLBACK_FORMAT       = "fallbackFormat";
-    public static final String FALLBACK_REGION_FORMAT = "fallbackRegionFormat";
     public static final String ABBREVIATION_FALLBACK = "abbreviationFallback";
     public static final String PREFERENCE_ORDERING   = "preferenceOrdering";
     public static final String SINGLE_COUNTRIES      = "singleCountries";
@@ -272,7 +268,6 @@ public class LDMLConstants {
     public static final String META_ZONES        = "metaZones";
     public static final String WINDOWS_ZONES     = "windowsZones";
     public static final String COVERAGE_LEVELS   = "coverageLevels";
-    public static final String PARENT_LOCALES    = "parentLocales";
     public static final String DAY_PERIOD_RULE_SET = "dayPeriodRuleSet";
 
     //PN added

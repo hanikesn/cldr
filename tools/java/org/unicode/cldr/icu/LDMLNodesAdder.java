@@ -10,9 +10,7 @@
  */
 package org.unicode.cldr.icu;
 
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import com.ibm.icu.dev.tool.UOption;
 
 import org.unicode.cldr.util.LDMLUtilities;
 import org.unicode.cldr.util.XPathTokenizer;
@@ -22,7 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.ibm.icu.dev.tool.UOption;
+import java.io.*;
 
 public class LDMLNodesAdder {
     /**

@@ -6,8 +6,7 @@ package org.unicode.cldr.draft;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.unicode.cldr.draft.CharacterListCompressor.Interval;
+import org.unicode.cldr.draft.CharacterListCompressor.*;
 
 import com.ibm.icu.text.UTF16;
 

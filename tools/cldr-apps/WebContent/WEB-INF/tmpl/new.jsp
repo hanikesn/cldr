@@ -3,7 +3,6 @@
 <%@ page import="com.ibm.icu.util.Currency" %>
 <%@ page import="com.ibm.icu.util.ULocale" %>
 
-
 <h2>New items for 1.8, or cases where the English has changed</h2>
 <%
 
@@ -68,4 +67,3 @@ subCtx.closeTable();
 subCtx.doneWithXpaths(); // print hidden field notifying which bases to accept submission for. 
 
 %>
--->

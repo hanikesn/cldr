@@ -11,7 +11,6 @@
 		<localeDisplayPattern>
 			<localePattern>{0} ({1})</localePattern>
 			<localeSeparator>, </localeSeparator>
-            <localeKeyTypePattern>{0}: {1}</localeKeyTypePattern>
 		</localeDisplayPattern>
 		<measurementSystemNames>
 			<measurementSystemName type="metric">Metric</measurementSystemName>
@@ -89,22 +88,22 @@
 					<default choice="medium"/>
 					<dateFormatLength type="full">
 						<dateFormat>
-							<pattern>EEEE, G y MMMM dd</pattern>
+							<pattern>EEEE, MMMM d, y G</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
 						<dateFormat>
-							<pattern>G y MMMM d</pattern>
+							<pattern>MMMM d, y G</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="medium">
 						<dateFormat>
-							<pattern>G y MMM d</pattern>
+							<pattern>MMM d, y G</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern>GGGGG yyyy-MM-dd</pattern>
+							<pattern>M/d/yyyy</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -112,52 +111,7 @@
 					<alias source="locale" path="../../calendar[@type='gregorian']/timeFormats"/>
 				</timeFormats>
 				<dateTimeFormats>
-					<dateTimeFormatLength>
-						<alias source="locale" path="../../../calendar[@type='gregorian']/dateTimeFormats/dateTimeFormatLength"/>
-					</dateTimeFormatLength>
-					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="EEEd">d EEE</dateFormatItem>
-						<dateFormatItem id="Gy">G y</dateFormatItem>
-						<dateFormatItem id="h">h a</dateFormatItem>
-						<dateFormatItem id="H">HH</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
-						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
-						<dateFormatItem id="Md">M-d</dateFormatItem>
-						<dateFormatItem id="MEd">E, M-d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
-						<dateFormatItem id="MMMEd">E MMM d</dateFormatItem>
-						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">G y</dateFormatItem>
-						<dateFormatItem id="yM">GGGGG yyyy-MM</dateFormatItem>
-						<dateFormatItem id="yMd">GGGGG yyyy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yMEd">EEE, GGGGG yyyy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yMMM">G y MMM</dateFormatItem>
-						<dateFormatItem id="yMMMd">G y MMM d</dateFormatItem>
-						<dateFormatItem id="yMMMEd">EEE, G y MMM d</dateFormatItem>
-						<dateFormatItem id="yQ">GGGGG yyyy Q</dateFormatItem>
-						<dateFormatItem id="yQQQ">G y QQQ</dateFormatItem>
-					</availableFormats>
-					<appendItems>
-						<appendItem request="Day">{0} ({2}: {1})</appendItem>
-						<appendItem request="Day-Of-Week">{0} {1}</appendItem>
-						<appendItem request="Era">{0} {1}</appendItem>
-						<appendItem request="Hour">{0} ({2}: {1})</appendItem>
-						<appendItem request="Minute">{0} ({2}: {1})</appendItem>
-						<appendItem request="Month">{0} ({2}: {1})</appendItem>
-						<appendItem request="Quarter">{0} ({2}: {1})</appendItem>
-						<appendItem request="Second">{0} ({2}: {1})</appendItem>
-						<appendItem request="Timezone">{0} {1}</appendItem>
-						<appendItem request="Week">{0} ({2}: {1})</appendItem>
-						<appendItem request="Year">{0} {1}</appendItem>
-					</appendItems>
-					<intervalFormats>
-						<alias source="locale" path="../../../calendar[@type='gregorian']/dateTimeFormats/intervalFormats"/>
-					</intervalFormats>
+					<alias source="locale" path="../../calendar[@type='gregorian']/dateTimeFormats"/>
 				</dateTimeFormats>
 			</calendar>
 			<calendar type="chinese">
@@ -679,10 +633,8 @@
 						<dateFormatItem id="ms">mm:ss</dateFormatItem>
 						<dateFormatItem id="y">y</dateFormatItem>
 						<dateFormatItem id="yM">y-M</dateFormatItem>
-						<dateFormatItem id="yMd">y-M-d</dateFormatItem>
 						<dateFormatItem id="yMEd">EEE, y-M-d</dateFormatItem>
 						<dateFormatItem id="yMMM">y MMM</dateFormatItem>
-						<dateFormatItem id="yMMMd">y MMM d</dateFormatItem>
 						<dateFormatItem id="yMMMEd">EEE, y MMM d</dateFormatItem>
 						<dateFormatItem id="yQ">y Q</dateFormatItem>
 						<dateFormatItem id="yQQQ">y QQQ</dateFormatItem>
@@ -762,6 +714,9 @@
 						<intervalFormatItem id="MMMEd">
 							<greatestDifference id="d">E, MM-d – E, MM-d</greatestDifference>
 							<greatestDifference id="M">E, MM-d – E, MM-d</greatestDifference>
+						</intervalFormatItem>
+						<intervalFormatItem id="MMMM">
+							<greatestDifference id="M">LLLL–LLLL</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="y">
 							<greatestDifference id="y">y–y</greatestDifference>
@@ -1372,7 +1327,7 @@
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern>GGGGG yy-MM-dd</pattern>
+							<pattern>G yy-MM-dd</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -1402,32 +1357,23 @@
 						</dateTimeFormat>
 					</dateTimeFormatLength>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="EEEd">d EEE</dateFormatItem>
-						<dateFormatItem id="Gy">G y</dateFormatItem>
-						<dateFormatItem id="h">h a</dateFormatItem>
+						<dateFormatItem id="Ed">E d</dateFormatItem>
+						<dateFormatItem id="h">hh a</dateFormatItem>
 						<dateFormatItem id="H">HH</dateFormatItem>
-						<dateFormatItem id="hm">h:mm a</dateFormatItem>
+						<dateFormatItem id="hm">hh:mm a</dateFormatItem>
 						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
-						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
+						<dateFormatItem id="hms">hh:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
 						<dateFormatItem id="Md">M-d</dateFormatItem>
-						<dateFormatItem id="MEd">E, M-d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
-						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
 						<dateFormatItem id="MMMEd">E MMM d</dateFormatItem>
+						<dateFormatItem id="MMMMd">MMMM d</dateFormatItem>
 						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">G y</dateFormatItem>
-						<dateFormatItem id="yyyy">G y</dateFormatItem>
+						<dateFormatItem id="yyyy">yy GGG</dateFormatItem>
 						<dateFormatItem id="yyyyM">GGGGG yy-MM</dateFormatItem>
 						<dateFormatItem id="yyyyMd">GGGGG yy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyyyMEd">EEE, GGGGG yy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyyyMMM">G y MMM</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd">G y MMM d</dateFormatItem>
-						<dateFormatItem id="yyyyMMMEd">EEE, G y MMM d</dateFormatItem>
+						<dateFormatItem id="yyyyMMM">GGGGG yy MMM</dateFormatItem>
+						<dateFormatItem id="yyyyMMMd">GGGGG yy MMM d</dateFormatItem>
 						<dateFormatItem id="yyyyQ">GGGGG yy Q</dateFormatItem>
-						<dateFormatItem id="yyyyQQQ">G y QQQ</dateFormatItem>
 					</availableFormats>
 					<appendItems>
 						<appendItem request="Day">{0} ({2}: {1})</appendItem>
@@ -1553,22 +1499,22 @@
 					<default choice="medium"/>
 					<dateFormatLength type="full">
 						<dateFormat>
-							<pattern>EEEE, G y MMMM dd</pattern>
+							<pattern>EEEE, MMMM d, G y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="long">
 						<dateFormat>
-							<pattern>G y MMMM d</pattern>
+							<pattern>MMMM d, G y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="medium">
 						<dateFormat>
-							<pattern>G y MMM d</pattern>
+							<pattern>MMM d, G y</pattern>
 						</dateFormat>
 					</dateFormatLength>
 					<dateFormatLength type="short">
 						<dateFormat>
-							<pattern>GGGGG yy-MM-dd</pattern>
+							<pattern>G y/M/d</pattern>
 						</dateFormat>
 					</dateFormatLength>
 				</dateFormats>
@@ -1580,32 +1526,25 @@
 						<alias source="locale" path="../../../calendar[@type='gregorian']/dateTimeFormats/dateTimeFormatLength"/>
 					</dateTimeFormatLength>
 					<availableFormats>
-						<dateFormatItem id="d">d</dateFormatItem>
-						<dateFormatItem id="EEEd">d EEE</dateFormatItem>
-						<dateFormatItem id="Gy">G y</dateFormatItem>
+						<dateFormatItem id="Ed">E d</dateFormatItem>
 						<dateFormatItem id="h">h a</dateFormatItem>
 						<dateFormatItem id="H">HH</dateFormatItem>
 						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
 						<dateFormatItem id="hms">h:mm:ss a</dateFormatItem>
 						<dateFormatItem id="Hms">HH:mm:ss</dateFormatItem>
-						<dateFormatItem id="M">L</dateFormatItem>
-						<dateFormatItem id="Md">M-d</dateFormatItem>
-						<dateFormatItem id="MEd">E, M-d</dateFormatItem>
-						<dateFormatItem id="MMM">LLL</dateFormatItem>
+						<dateFormatItem id="Md">M/d</dateFormatItem>
+						<dateFormatItem id="MEd">E, M/d</dateFormatItem>
 						<dateFormatItem id="MMMd">MMM d</dateFormatItem>
-						<dateFormatItem id="MMMEd">E MMM d</dateFormatItem>
+						<dateFormatItem id="MMMEd">E, MMM d</dateFormatItem>
 						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">G y</dateFormatItem>
 						<dateFormatItem id="yyyy">G y</dateFormatItem>
-						<dateFormatItem id="yyyyM">GGGGG yy-MM</dateFormatItem>
-						<dateFormatItem id="yyyyMd">GGGGG yy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyyyMEd">EEE, GGGGG yy-MM-dd</dateFormatItem>
-						<dateFormatItem id="yyyyMMM">G y MMM</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd">G y MMM d</dateFormatItem>
-						<dateFormatItem id="yyyyMMMEd">EEE, G y MMM d</dateFormatItem>
-						<dateFormatItem id="yyyyQ">GGGGG yy Q</dateFormatItem>
-						<dateFormatItem id="yyyyQQQ">G y QQQ</dateFormatItem>
+						<dateFormatItem id="yyyyM">G y/M</dateFormatItem>
+						<dateFormatItem id="yyyyMEd">EEE, G y/M/d</dateFormatItem>
+						<dateFormatItem id="yyyyMMM">MMM, G y</dateFormatItem>
+						<dateFormatItem id="yyyyMMMEd">EEE, MMM d, G y</dateFormatItem>
+						<dateFormatItem id="yyyyQ">Q G y</dateFormatItem>
+						<dateFormatItem id="yyyyQQQ">QQQ G y</dateFormatItem>
 					</availableFormats>
 					<appendItems>
 						<appendItem request="Day">{0} ({2}: {1})</appendItem>
@@ -1631,24 +1570,25 @@
 			<gmtFormat>GMT{0}</gmtFormat>
 			<gmtZeroFormat>GMT</gmtZeroFormat>
 			<regionFormat>({0})</regionFormat>
-            <fallbackFormat>{1} ({0})</fallbackFormat>
-            <fallbackRegionFormat>{1} ({0})</fallbackRegionFormat>
+			<fallbackFormat>{1} ({0})</fallbackFormat>
 			<singleCountries list="Europe/Kiev Pacific/Majuro Africa/Bamako America/Godthab America/Santiago America/Guayaquil Asia/Shanghai Asia/Tashkent Asia/Kuala_Lumpur Europe/Madrid Europe/Lisbon Europe/London Pacific/Auckland Pacific/Tahiti"/>
 			<zone type="Etc/Unknown">
 				<exemplarCity>Unknown</exemplarCity>
 			</zone>
-
-			<zone type="Africa/Asmera">
-				<exemplarCity>Asmara</exemplarCity>
+			<zone type="Antarctica/DumontDUrville">
+				<exemplarCity>Dumont d'Urville</exemplarCity>
 			</zone>
-			<zone type="America/Coral_Harbour">
-				<exemplarCity>Atikokan</exemplarCity>
+			<zone type="America/St_Johns">
+				<exemplarCity>St. John's</exemplarCity>
 			</zone>
-			<zone type="America/Indiana/Knox">
-				<exemplarCity>Knox, Indiana</exemplarCity>
+			<zone type="America/North_Dakota/New_Salem">
+				<exemplarCity>New Salem, North Dakota</exemplarCity>
 			</zone>
-			<zone type="America/Indiana/Marengo">
-				<exemplarCity>Marengo, Indiana</exemplarCity>
+			<zone type="America/North_Dakota/Center">
+				<exemplarCity>Center, North Dakota</exemplarCity>
+			</zone>
+			<zone type="America/Indiana/Vincennes">
+				<exemplarCity>Vincennes, Indiana</exemplarCity>
 			</zone>
 			<zone type="America/Indiana/Petersburg">
 				<exemplarCity>Petersburg, Indiana</exemplarCity>
@@ -1656,70 +1596,21 @@
 			<zone type="America/Indiana/Tell_City">
 				<exemplarCity>Tell City, Indiana</exemplarCity>
 			</zone>
-			<zone type="America/Indiana/Vincennes">
-				<exemplarCity>Vincennes, Indiana</exemplarCity>
-			</zone>
-			<zone type="America/Indiana/Vevay">
-				<exemplarCity>Vevay, Indiana</exemplarCity>
+			<zone type="America/Indiana/Knox">
+				<exemplarCity>Knox, Indiana</exemplarCity>
 			</zone>
 			<zone type="America/Indiana/Winamac">
 				<exemplarCity>Winamac, Indiana</exemplarCity>
 			</zone>
+			<zone type="America/Indiana/Marengo">
+				<exemplarCity>Marengo, Indiana</exemplarCity>
+			</zone>
+			<zone type="America/Indiana/Vevay">
+				<exemplarCity>Vevay, Indiana</exemplarCity>
+			</zone>
 			<zone type="America/Kentucky/Monticello">
 				<exemplarCity>Monticello, Kentucky</exemplarCity>
 			</zone>
-			<zone type="America/North_Dakota/Beulah">
-				<exemplarCity>Beulah, North Dakota</exemplarCity>
-			</zone>
-			<zone type="America/North_Dakota/Center">
-				<exemplarCity>Center, North Dakota</exemplarCity>
-			</zone>
-			<zone type="America/North_Dakota/New_Salem">
-				<exemplarCity>New Salem, North Dakota</exemplarCity>
-			</zone>
-			<zone type="America/St_Barthelemy">
-				<exemplarCity>St. Barthelemy</exemplarCity>
-			</zone>
-			<zone type="America/St_Johns">
-				<exemplarCity>St. John's</exemplarCity>
-			</zone>
-			<zone type="America/St_Kitts">
-				<exemplarCity>St. Kitts</exemplarCity>
-			</zone>
-			<zone type="America/St_Lucia">
-				<exemplarCity>St. Lucia</exemplarCity>
-			</zone>
-			<zone type="America/St_Thomas">
-				<exemplarCity>St. Thomas</exemplarCity>
-			</zone>
-			<zone type="America/St_Vincent">
-				<exemplarCity>St. Vincent</exemplarCity>
-			</zone>
-			<zone type="Antarctica/DumontDUrville">
-				<exemplarCity>Dumont d'Urville</exemplarCity>
-			</zone>
-			<zone type="Asia/Calcutta">
-				<exemplarCity>Kolkata</exemplarCity>
-			</zone>
-			<zone type="Asia/Katmandu">
-				<exemplarCity>Kathmandu</exemplarCity>
-			</zone>
-			<zone type="Asia/Saigon">
-				<exemplarCity>Ho Chi Minh</exemplarCity>
-			</zone>
-			<zone type="Atlantic/Faeroe">
-				<exemplarCity>Faroe</exemplarCity>
-			</zone>
-			<zone type="Atlantic/St_Helena">
-				<exemplarCity>St. Helena</exemplarCity>
-			</zone>
-			<zone type="Pacific/Ponape">
-				<exemplarCity>Pohnpei</exemplarCity>
-			</zone>
-			<zone type="Pacific/Truk">
-				<exemplarCity>Chuuk</exemplarCity>
-			</zone>
-
 			<metazone type="Acre">
 				<short>
 					<standard>ACT (Acre)</standard>
@@ -2650,7 +2541,7 @@
 			</metazone>
 			<metazone type="Truk">
 				<short>
-					<standard>CHUT</standard>
+					<standard>TRUT</standard>
 				</short>
 			</metazone>
 			<metazone type="Turkey">
@@ -3040,7 +2931,8 @@
 				<symbol>₪</symbol>
 			</currency>
 			<currency type="INR">
-				<symbol>₹</symbol>
+				<symbol>Rs</symbol>
+				<symbol alt="new">₹</symbol>
 			</currency>
 			<currency type="ISK">
 				<symbol>Ikr</symbol>
@@ -3322,69 +3214,27 @@
 	</numbers>
 	<units>
 		<!-- http://physics.nist.gov/cuu/Units/outside.html -->
-        <unit type="day">
-            <unitPattern count="other">{0} d</unitPattern>
-        </unit>
-        <unit type="day-past">
-            <unitPattern count="other">-{0} d</unitPattern>
-        </unit>
-        <unit type="day-future">
-            <unitPattern count="other">+{0} d</unitPattern>
-        </unit>
-        <unit type="hour">
-            <unitPattern count="other">{0} h</unitPattern>
-        </unit>
-        <unit type="hour-past">
-            <unitPattern count="other">-{0} h</unitPattern>
-        </unit>
-        <unit type="hour-future">
-            <unitPattern count="other">+{0} h</unitPattern>
-        </unit>
-        <unit type="minute">
-            <unitPattern count="other">{0} min</unitPattern>
-        </unit>
-        <unit type="minute-past">
-            <unitPattern count="other">-{0} min</unitPattern>
-        </unit>
-        <unit type="minute-future">
-            <unitPattern count="other">+{0} min</unitPattern>
-        </unit>
-        <unit type="month">
-            <unitPattern count="other">{0} m</unitPattern>
-        </unit>
-        <unit type="month-past">
-            <unitPattern count="other">-{0} m</unitPattern>
-        </unit>
-        <unit type="month-future">
-            <unitPattern count="other">+{0} m</unitPattern>
-        </unit>
-        <unit type="second">
-            <unitPattern count="other">{0} s</unitPattern>
-        </unit>
-        <unit type="second-past">
-            <unitPattern count="other">-{0} s</unitPattern>
-        </unit>
-        <unit type="second-future">
-            <unitPattern count="other">+{0} s</unitPattern>
-        </unit>
-        <unit type="week">
-            <unitPattern count="other">{0} w</unitPattern>
-        </unit>
-        <unit type="week-past">
-            <unitPattern count="other">-{0} w</unitPattern>
-        </unit>
-        <unit type="week-future">
-            <unitPattern count="other">+{0} w</unitPattern>
-        </unit>
-        <unit type="year">
-            <unitPattern count="other">{0} y</unitPattern>
-        </unit>
-        <unit type="year-past">
-            <unitPattern count="other">-{0} y</unitPattern>
-        </unit>
-        <unit type="year-future">
-            <unitPattern count="other">+{0} y</unitPattern>
-        </unit>
+		<unit type="day">
+			<unitPattern count="other">{0} d</unitPattern>
+		</unit>
+		<unit type="hour">
+			<unitPattern count="other">{0} h</unitPattern>
+		</unit>
+		<unit type="minute">
+			<unitPattern count="other">{0} min</unitPattern>
+		</unit>
+		<unit type="month">
+			<unitPattern count="other">{0} m</unitPattern>
+		</unit>
+		<unit type="second">
+			<unitPattern count="other">{0} s</unitPattern>
+		</unit>
+		<unit type="week">
+			<unitPattern count="other">{0} w</unitPattern>
+		</unit>
+		<unit type="year">
+			<unitPattern count="other">{0} y</unitPattern>
+		</unit>
 	</units>
 	<listPatterns>
 		<listPattern>

@@ -1,6 +1,6 @@
 /*
  **********************************************************************
- * Copyright (c) 2002-2011, International Business Machines
+ * Copyright (c) 2002-2010, International Business Machines
  * Corporation and others.  All Rights Reserved.
  **********************************************************************
  * Author: Mark Davis
@@ -8,29 +8,34 @@
  */
 package org.unicode.cldr.util;
 
+import org.unicode.cldr.test.CoverageLevel;
+import org.unicode.cldr.test.CoverageLevel.Level;
+import org.unicode.cldr.util.Iso639Data.Type;
+
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.unicode.cldr.util.Iso639Data.Type;
-
 import com.ibm.icu.dev.test.util.BagFormatter;
-import com.ibm.icu.dev.test.util.Relation;
 import com.ibm.icu.dev.test.util.TransliteratorUtilities;
-import com.ibm.icu.impl.Row.R2;
+import com.ibm.icu.dev.test.util.XEquivalenceClass;
+import com.ibm.icu.dev.test.util.CollectionUtilities;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.UnicodeSet;
 
@@ -244,7 +249,7 @@ public class StandardCodes {
         if ((type != null) && (getLocaleCoverageOrganizations().contains(type))) {
             return type;
         } else {
-            return null; // the default.. for now..
+            return "IBM"; // the default.. for now..
         }
     }
 
@@ -273,7 +278,7 @@ public class StandardCodes {
     }
 
     /**
-     * Returns coverage level of locale according to organization. Returns Level.MODERN if information is missing.
+     * Returns coverage level of locale according to organization. Returns Level.BASIC if information is missing.
      */
     public Level getLocaleCoverageLevel(String organization, String desiredLocale) {
         synchronized (StandardCodes.class) {
@@ -281,16 +286,16 @@ public class StandardCodes {
                 loadPlatformLocaleStatus();
             }
         }
-        if (organization == null) return Level.MODERN;
+        if (organization == null) return Level.BASIC;
         Map<String, Level> locale_status = platform_locale_level.get(organization);
-        if (locale_status == null) return Level.MODERN;
+        if (locale_status == null) return Level.BASIC;
         // see if there is a parent
         while (desiredLocale != null) {
             Level status = locale_status.get(desiredLocale);
             if (status != null && status != Level.UNDETERMINED) return status;
             desiredLocale = LocaleIDParser.getParent(desiredLocale);
         }
-        return Level.MODERN;
+        return Level.BASIC;
     }
 
     public Set<String> getLocaleCoverageOrganizations() {
@@ -364,7 +369,7 @@ public class StandardCodes {
 
                 String language = parser.getLanguage();
                 if (!language.equals(locale)) {
-                    Level languageLevel = (Level) locale_level.get(language);
+                    CoverageLevel.Level languageLevel = (CoverageLevel.Level) locale_level.get(language);
                     if (languageLevel == null || languageLevel.compareTo(childLevel) < 0) {
                         locale_level.put(language, childLevel);
                     }
@@ -372,7 +377,7 @@ public class StandardCodes {
                 String oldLanguage = language;
                 language = parser.getLanguageScript();
                 if (!language.equals(oldLanguage)) {
-                    Level languageLevel = (Level) locale_level.get(language);
+                    CoverageLevel.Level languageLevel = (CoverageLevel.Level) locale_level.get(language);
                     if (languageLevel == null || languageLevel.compareTo(childLevel) < 0) {
                         locale_level.put(language, childLevel);
                     }
@@ -699,6 +704,18 @@ public class StandardCodes {
         return WorldBankInfo;
     }
 
+    Set MainTimeZones;
+
+    public Set getMainTimeZones() {
+        if (MainTimeZones == null) {
+            List temp = fillFromCommaFile(CldrUtility.UTIL_DATA_DIR, "MainTimeZones.txt", false);
+            MainTimeZones = new TreeSet();
+            MainTimeZones.addAll(temp);
+            MainTimeZones = CldrUtility.protectCollection(MainTimeZones);
+        }
+        return MainTimeZones;
+    }
+
     Set moribundLanguages;
 
     public Set<String> getMoribundLanguages() {
@@ -975,10 +992,6 @@ public class StandardCodes {
     public Map getZoneData() {
         return zoneParser.getZoneData();
     }
-    
-    public Set<String> getCanonicalTimeZones() {
-        return zoneParser.getZoneData().keySet();
-    }
 
     public Map getCountryToZoneSet() {
         return zoneParser.getCountryToZoneSet();
@@ -1045,8 +1058,8 @@ public class StandardCodes {
                     "ga gl gn gsw gu ha haw he hi hr ht hu hy id ig is it ja jv " +
                     "ka kea kk km kn ko ks ku ky la lah lb ln lo lt luy lv " +
                     "mg mi mk ml mn mr ms mt mul my nb nd ne nl nn no nso ny or os " +
-                    "pa pl ps pt qu rm rn ro rof ru rw rwk sa sah sd se sg sh si sk sl sm sn so sq sr ss st su sv sw swb " +
-            "ta te tet tg th ti tk tl tn to tpi tr ts ty ug uk und ur uz ve vi wae wo xh yo yue zh zu zxx"))));
+                    "pa pl ps pt qu rm rn ro rof ru rw rwk sa sd se sg sh si sk sl sm sn so sq sr ss st su sv sw swb " +
+            "ta te tet tg th ti tk tl tn to tpi tr ts ty ug uk und ur uz ve vi wo xh yo yue zh zu zxx"))));
     static final Set<String> filteredScripts = Collections
     .unmodifiableSet(new TreeSet(
             Arrays

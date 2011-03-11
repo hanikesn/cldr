@@ -10,11 +10,9 @@
 
 package org.unicode.cldr.ooo;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Vector;
+import java.util.*;
+import java.io.*;
+import java.lang.*;
 
 /**
  *

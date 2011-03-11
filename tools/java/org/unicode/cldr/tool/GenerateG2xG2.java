@@ -1,5 +1,6 @@
 package org.unicode.cldr.tool;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,9 +16,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.unicode.cldr.util.CLDRFile;
-import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.StandardCodes;
-import org.unicode.cldr.util.SupplementalDataInfo;
+import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.util.CLDRFile.Factory;
 
@@ -100,8 +100,7 @@ public class GenerateG2xG2 {
 		}
 		// fill in the currencies, and TZs for the countries that have multiple zones
 		Map c2z = sc.getCountryToZoneSet();
-		SupplementalDataInfo supplementalDataInfo = SupplementalDataInfo.getInstance();
-        Set mainTimeZones = supplementalDataInfo.getCanonicalTimeZones();
+		Set mainTimeZones = sc.getMainTimeZones();
 		for (Iterator it = targetRegionSet.iterator(); it.hasNext();) {
 			String country = (String)it.next();
 			String priority = (String)priorityMap.get(country);

@@ -7,31 +7,32 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRLocale;
 import org.unicode.cldr.util.XMLSource;
+import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.util.CLDRFile.DraftStatus;
 import org.unicode.cldr.util.CLDRFile.Factory;
 import org.unicode.cldr.util.CLDRFile.SimpleXMLSource;
 import org.unicode.cldr.util.XPathParts.Comments;
 import org.unicode.cldr.web.CLDRDBSourceFactory.CLDRDBSource;
-import org.unicode.cldr.web.CLDRProgressIndicator.CLDRProgressTask;
 
 /**
  * @author srl
  * 
  */
 public class CLDRFileCache {
-	private long startTime = System.currentTimeMillis();
-	static final private boolean DEBUG_INSANE = false;
+	static final private boolean DEBUG_INSANE = true;
 	/**
 	 * @author srl
 	 * 
@@ -373,7 +374,7 @@ public class CLDRFileCache {
 						+ tmp.getAbsolutePath());
 			}
 
-			if(DEBUG_INSANE) System.err.println("##ren " + f.getAbsolutePath() + " <<  "
+			System.err.println("##ren " + f.getAbsolutePath() + " <<  "
 					+ tmp.getAbsolutePath() + " - " + n + " rows written");
 			tmp.renameTo(f);
 		}
@@ -438,7 +439,7 @@ public class CLDRFileCache {
 			}
 			dis.close();
 			fis.close();
-			if(DEBUG_INSANE) System.err.println("##" + f + " - read " + (n - 1) + " records.");
+			System.err.println("##" + f + " - read " + (n - 1) + " records.");
 		}
 
 		/**
@@ -460,35 +461,31 @@ public class CLDRFileCache {
 		 */
 		public void load(XMLSource from) {
 			Iterator<String> iter = from.iterator();
-			CLDRProgressTask progress = sm.openProgress("Cache " + this.getLocaleID());
+
+			// dos.writeInt(COOKIE);
 			int n = 0;
-			try {
-				// dos.writeInt(COOKIE);
-				for (; iter.hasNext();) {
-					n++;
-					String xpath = iter.next();
-					String fxpath = from.getFullPathAtDPath(xpath);
-					String wxpath = from.getWinningPath(xpath);
-					String val = from.getValueAtDPath(xpath);
-					String bxpath = sm.xpt.xpathToBaseXpath(xpath);
-					this.putValueAtDPath(xpath, val);
-					this.putFullPathAtDPath(xpath, fxpath);
-					this.setWinningPath(xpath, wxpath);
-	
-					if (!bxpath.equals(xpath)) {
-						String wbxpath = from.getWinningPath(bxpath);
-						this.setWinningPath(bxpath, wbxpath);
-					}
-	
-					// if(xpath.contains("singleCountries")) {
-					// System.err.println(getLocaleID()+"\n/// " + xpath + "\n->- "
-					// + fxpath + "\n$>- "+wxpath+"\n<<< "+bxpath);
-					// }
+			for (; iter.hasNext();) {
+				n++;
+				String xpath = iter.next();
+				String fxpath = from.getFullPathAtDPath(xpath);
+				String wxpath = from.getWinningPath(xpath);
+				String val = from.getValueAtDPath(xpath);
+				String bxpath = sm.xpt.xpathToBaseXpath(xpath);
+				this.putValueAtDPath(xpath, val);
+				this.putFullPathAtDPath(xpath, fxpath);
+				this.setWinningPath(xpath, wxpath);
+
+				if (!bxpath.equals(xpath)) {
+					String wbxpath = from.getWinningPath(bxpath);
+					this.setWinningPath(bxpath, wbxpath);
 				}
-			} finally {
-				progress.close();
+
+				// if(xpath.contains("singleCountries")) {
+				// System.err.println(getLocaleID()+"\n/// " + xpath + "\n->- "
+				// + fxpath + "\n$>- "+wxpath+"\n<<< "+bxpath);
+				// }
 			}
-			if(DEBUG_INSANE) System.err.println("## WXP load " + this.getLocaleID() + " from "
+			System.err.println("## WXP load " + this.getLocaleID() + " from "
 					+ from.getClass().getName() + "  - loaded " + n);
 		}
 
@@ -517,7 +514,7 @@ public class CLDRFileCache {
 				// + fxpath + "\n$>- "+wxpath+"\n<<< "+bxpath);
 				// }
 			}
-			if(DEBUG_INSANE) System.err.println("## WXP reload win " + this.getLocaleID()
+			System.err.println("## WXP reload win" + this.getLocaleID()
 					+ " from " + from.getClass().getName() + "  - loaded " + n);
 		}
 
@@ -527,16 +524,11 @@ public class CLDRFileCache {
 			// }
 			try {
 				File f = getCacheFile();
-				if(f.exists() && f.lastModified() < startTime) {
-					f.delete();
-					if(DEBUG_INSANE) System.err.println("Expiring old cache file: " + f.getAbsolutePath());
-				}
-				
 				if (f.exists()) {
-				    if(DEBUG_INSANE) System.err.println("## load: " + f.getAbsolutePath());
+					System.err.println("## load: " + f.getAbsolutePath());
 					load(f);
 				} else {
-				    if(DEBUG_INSANE) System.err.println("## create: " + f.getAbsolutePath());
+					System.err.println("## create: " + f.getAbsolutePath());
 					load();
 					save(f);
 				}
@@ -562,7 +554,7 @@ public class CLDRFileCache {
 					// load(f);
 				}
 				{
-				    if(DEBUG_INSANE) System.err.println("## re-create: " + f.getAbsolutePath());
+					System.err.println("## re-create: " + f.getAbsolutePath());
 					// load();
 					save(f);
 				}
@@ -593,7 +585,7 @@ public class CLDRFileCache {
 
 		public void deleteInvalid() {
 			File f = getCacheFile();
-			if(DEBUG_INSANE) System.err.println("## delete-invalid: " + f.getAbsolutePath());
+			System.err.println("## delete-invalid: " + f.getAbsolutePath());
 			f.delete();
 		}
 	}
@@ -767,18 +759,16 @@ public class CLDRFileCache {
 			boolean isVetted) {
 		String key = (isVetted ? "w." : "")
 				+ (locale != null ? locale : "null");
-		CacheableXMLSource src = null;
-		
-		src = sources.get(key);
+		CacheableXMLSource src = sources.get(key);
 		if (src != null && src.invalid()) {
 			src.deleteInvalid();
-			if(DEBUG_INSANE) System.err.println("## " + serno + " / invalid: " + key);
+			System.err.println("## " + serno + " / invalid: " + key);
 			src = null;
 		}
 		if (src == null) {
-				src = makeXMLSource(locale, isVetted);
-				sources.put(key, src);
-				if(DEBUG_INSANE) System.err.println("## " + serno + " / + " + key);
+			src = makeXMLSource(locale, isVetted);
+			sources.put(key, src);
+			System.err.println("## " + serno + " / + " + key);
 		} else {
 			// System.err.println("## " + serno + " / reuse " + key);
 		}
@@ -838,6 +828,7 @@ public class CLDRFileCache {
 			// CLDRFile.makeFromFile(cacheFile.getAbsolutePath(),
 			// getLocaleID(),CLDRFile.DraftStatus.unconfirmed).dataSource;
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new InternalError("While trying to cache " + cacheFile
 					+ " - " + e.toString());

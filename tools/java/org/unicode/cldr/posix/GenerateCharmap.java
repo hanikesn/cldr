@@ -8,23 +8,20 @@
 */
 package org.unicode.cldr.posix;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.ByteBuffer;
+import java.io.File;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
-
-import org.unicode.cldr.icu.SimpleConverter;
+import java.nio.ByteBuffer;
+import java.util.*;
 
 import com.ibm.icu.dev.test.util.BagFormatter;
-import com.ibm.icu.dev.tool.UOption;
 import com.ibm.icu.impl.Utility;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.text.UnicodeSetIterator;
+
+import com.ibm.icu.dev.tool.UOption;
+import org.unicode.cldr.icu.SimpleConverter;
 
 /**
  * Class to generate POSIX format charmap

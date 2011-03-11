@@ -30,12 +30,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
+import org.unicode.cldr.test.CoverageLevel.Level;
 import org.unicode.cldr.test.ExampleGenerator.HelpMessages;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.Iso639Data;
 import org.unicode.cldr.util.LanguageTagParser;
-import org.unicode.cldr.util.Level;
 import org.unicode.cldr.util.Log;
 import org.unicode.cldr.util.Pair;
 import org.unicode.cldr.util.StandardCodes;
@@ -69,7 +69,7 @@ import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.ULocale;
 
 public class ShowLanguages {
-    public static final String CHART_DISPLAY_VERSION = "2.0\u03B1"; // "1.8\u03B2"; // \u03B2 is beta - β, \u03b1 is alpha - α
+    public static final String CHART_DISPLAY_VERSION = "1.9\u03B2"; // "1.8\u03B2"; // \u03B2 is betaβ
 
     private static final boolean SHOW_NATIVE = true;
 

@@ -15,15 +15,12 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.unicode.cldr.test.CoverageLevel2;
 import org.unicode.cldr.util.Builder.CBuilder;
 import org.unicode.cldr.util.DayPeriodInfo.DayPeriod;
 import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo.Count;
@@ -39,7 +36,6 @@ import com.ibm.icu.text.PluralRules;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.Freezable;
-import com.ibm.icu.util.TimeZone;
 import com.ibm.icu.util.ULocale;
 
 /**
@@ -395,106 +391,51 @@ public class SupplementalDataInfo {
             return null;
         }
     }
-    
     /**
-     * Class for a range of two dates, refactored to share code.
-     * @author markdavis
+     * Information about when currencies are in use in territories
      */
-    public static final class DateRange implements Comparable<DateRange> {
-        static final long START_OF_TIME = Long.MIN_VALUE;
-        static final long END_OF_TIME = Long.MAX_VALUE;
-        private final long from;
-        private final long to;
-        
-        public DateRange(String fromString, String toString) {
-            from = parseDate(fromString, START_OF_TIME);
-            to = parseDate(toString, END_OF_TIME);
-        }
-        
-        public long getFrom() {
-            return from;
+    public static class CurrencyDateInfo implements Comparable<CurrencyDateInfo> {
+        public static final Date END_OF_TIME = new Date(Long.MAX_VALUE);
+        public static final Date START_OF_TIME = new Date(Long.MIN_VALUE);
+        private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        private String currency;
+        private Date start;
+        private Date end;
+        private boolean isLegalTender;
+        private String errors = "";
+
+        public CurrencyDateInfo(String currency, String startDate, String endDate, boolean isLegalTender) {
+            this.currency = currency;
+            start = parseDate(startDate, START_OF_TIME);
+            end = parseDate(endDate, END_OF_TIME);
+            this.isLegalTender = isLegalTender;
         }
 
-        public long getTo() {
-            return to;
-        }
-
-        static final DateFormat[] simpleFormats = { 
-            new SimpleDateFormat("yyyy-MM-dd HH:mm"),
+        static DateFormat[] simpleFormats = { 
             new SimpleDateFormat("yyyy-MM-dd"),
             new SimpleDateFormat("yyyy-MM"), 
-            new SimpleDateFormat("yyyy"),
-            };
-        static {
-            TimeZone gmt = TimeZone.getTimeZone("GMT");
-            for (DateFormat format : simpleFormats) {
-                format.setTimeZone(gmt);
-            }
-        }
+            new SimpleDateFormat("yyyy"), };
 
-        long parseDate(String dateString, long defaultDate) {
+        Date parseDate(String dateString, Date defaultDate) {
             if (dateString == null) {
                 return defaultDate;
             }
             ParseException e2 = null;
             for (int i = 0; i < simpleFormats.length; ++i) {
                 try {
-                    synchronized (simpleFormats[i]) {
-                        Date result = simpleFormats[i].parse(dateString);
-                        return result.getTime();
-                    }
+                    Date result = simpleFormats[i].parse(dateString);
+                    return result;
                 } catch (ParseException e) {
+                    if (i == 0) {
+                        errors += dateString + " ";
+                    }
                     if (e2 == null) {
                         e2 = e;
                     }
                 }
             }
-            throw new IllegalArgumentException(e2);  
-        }
-        
-        public String toString() {
-            return 
-            "{" + formatDate(from) 
-            + ", " 
-            + formatDate(to) + "}";
-        }
-
-        public static String formatDate(long date) {
-            if (date == START_OF_TIME) {
-                return "-∞";
-            }
-            if (date == END_OF_TIME) {
-                return "∞";
-            }
-            synchronized (simpleFormats[0]) {
-                return simpleFormats[0].format(date);
-            }
-        }
-
-        @Override
-        public int compareTo(DateRange arg0) {
-            return to > arg0.to ? 1 : to < arg0.to ? -1 : from > arg0.from ? 1 : from < arg0.from ? -1 : 0;
-        }
-    }
-
-    /**
-     * Information about when currencies are in use in territories
-     */
-    public static class CurrencyDateInfo implements Comparable<CurrencyDateInfo> {
-        private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        public static final Date END_OF_TIME = new Date(DateRange.END_OF_TIME);
-        public static final Date START_OF_TIME = new Date(DateRange.START_OF_TIME);
-
-        private String currency;
-        private DateRange dateRange;
-        private boolean isLegalTender;
-        private String errors = "";
-
-        public CurrencyDateInfo(String currency, String startDate, String endDate, String tender) {
-            this.currency = currency;
-            this.dateRange = new DateRange(startDate, endDate);
-            this.isLegalTender = ( tender == null || !tender.equals("false"));
+            throw (IllegalArgumentException)new IllegalArgumentException().initCause(e2);  
         }
 
         public String getCurrency() {
@@ -502,11 +443,11 @@ public class SupplementalDataInfo {
         }
 
         public Date getStart() {
-            return new Date(dateRange.getFrom());
+            return start;
         }
 
         public Date getEnd() {
-            return new Date(dateRange.getTo());
+            return end;
         }
 
         public String getErrors() {
@@ -518,47 +459,24 @@ public class SupplementalDataInfo {
         }
 
         public int compareTo(CurrencyDateInfo o) {
-            int result = dateRange.compareTo(o.dateRange);
+            int result = start.getDate() - o.start.getDate();
+            if (result != 0) return result;
+            result = end.getDate() - o.end.getDate();
             if (result != 0) return result;
             return currency.compareTo(o.currency);
         }
 
         public String toString() {
-            return "{" + dateRange + ", " + currency + "}";
+            return "{" + formatDate(start) + ", " + formatDate(end) + ", " + currency + "}";
         }
 
         public static String formatDate(Date date) {
-            return DateRange.formatDate(date.getTime());
+            if (date.equals(START_OF_TIME)) return "-∞";
+            if (date.equals(END_OF_TIME)) return "∞";
+            return dateFormat.format(date);
         }
+    }
 
-    }
-    
-    public static final class MetaZoneRange implements Comparable<MetaZoneRange> {
-        final DateRange dateRange;
-        final String metazone;
-        /**
-         * @param metazone
-         * @param from
-         * @param to
-         */
-        public MetaZoneRange(String metazone, String fromString, String toString) {
-            super();
-            this.metazone = metazone;
-            dateRange = new DateRange(fromString, toString);
-        }
-        @Override
-        public int compareTo(MetaZoneRange arg0) {
-            int result;
-            if (0 != (result = dateRange.compareTo(arg0.dateRange))) {
-                return result;
-            }
-            return metazone.compareTo(arg0.metazone);
-        } 
-        public String toString() {
-            return "{" + dateRange + ", " + metazone + "}";
-        }
-    }
-    
     /**
      * Information about telephone code(s) for a given territory
      */
@@ -660,68 +578,7 @@ public class SupplementalDataInfo {
             return dateFormat.format(date);
         }
     }
-    public static class CoverageLevelInfo implements Comparable<CoverageLevelInfo> {
-        public final String match;
-        public final Level value;
-        public final String inLanguage;
-        public final Set<String> inLanguageSet;
-        public final String inScript;
-        public final Set<String> inScriptSet;
-        public final String inTerritory;
-        public final Set<String> inTerritorySet;
-        private Set<String> inTerritorySetInternal;
-        
-        public CoverageLevelInfo(String match, int value, String language, String script, String territory) {
-            this.inLanguage = language;
-            this.inScript = script;
-            this.inTerritory = territory;
-            this.inLanguageSet = toSet(language);
-            this.inScriptSet = toSet(script);
-            this.inTerritorySet = toSet(territory); // MUST BE LAST, sets inTerritorySetInternal
-            this.match = match;
-            this.value = Level.fromLevel(value);
-        }
 
-        public static final Pattern NON_ASCII_LETTER = Pattern.compile("[^A-Za-z]+");
-        
-        private Set<String> toSet(String source) {
-            if (source == null) {
-                return null;
-            }
-            Set<String> result = new HashSet<String>(Arrays.asList(NON_ASCII_LETTER.split(source)));
-            result.remove("");
-            inTerritorySetInternal = result;
-            return Collections.unmodifiableSet(result);
-        }
-
-        public int compareTo(CoverageLevelInfo o) {
-            if (value == o.value) {
-                return match.compareTo(o.match);
-            } else {
-                return value.compareTo(o.value);
-            }
-        }
-
-        public static int strToCoverageValue(String str) {
-            if (str.equals("posix")) return 20;
-            if (str.equals("minimal")) return 30;
-            if (str.equals("basic")) return 40;
-            if (str.equals("moderate")) return 60;
-            if (str.equals("modern")) return 80;
-            return 100;
-        }
-        
-        static void fixEU(Collection<CoverageLevelInfo> targets, SupplementalDataInfo info) {
-            Set<String> euCountries = info.getContained("EU");
-            for (CoverageLevelInfo item : targets) {
-                if (item.inTerritorySet != null 
-                        && item.inTerritorySet.contains("EU")) {
-                    item.inTerritorySetInternal.addAll(euCountries);
-                }
-            }
-        }
-    }
-    
     private Map<String, PopulationData> territoryToPopulationData = new TreeMap();
 
     private Map<String, Map<String, PopulationData>> territoryToLanguageToPopulationData = new TreeMap();
@@ -763,7 +620,6 @@ public class SupplementalDataInfo {
             LinkedHashSet.class);
 
     private  Map<String, Map<String, Map<String,String>>> typeToZoneToRegionToZone = new TreeMap<String, Map<String, Map<String,String>>>();
-    private Relation<String, MetaZoneRange> zoneToMetaZoneRanges = Relation.of(new TreeMap<String, Set<MetaZoneRange>>(), TreeSet.class);
 
     private Map<String, String> metazoneContinentMap = new HashMap<String,String>();
     private Set<String> allMetazones = new TreeSet<String>();
@@ -894,8 +750,6 @@ public class SupplementalDataInfo {
 
         typeToZoneToRegionToZone = CldrUtility.protectCollection(typeToZoneToRegionToZone);
         typeToTagToReplacement = CldrUtility.protectCollection(typeToTagToReplacement);
-        
-        zoneToMetaZoneRanges.freeze();
 
         containment.freeze();
         languageToBasicLanguageData.freeze();
@@ -939,8 +793,6 @@ public class SupplementalDataInfo {
         languageMatch = CldrUtility.protectCollection(languageMatch);
         key_subtypes.freeze();
         bcp47Aliases.freeze();
-        CoverageLevelInfo.fixEU(coverageLevels, this);
-        coverageLevels = Collections.unmodifiableSortedSet(coverageLevels);
     }
 
     //private Map<String, Map<String, String>> makeUnmodifiable(Map<String, Map<String, String>> metazoneToRegionToZone) {
@@ -965,7 +817,7 @@ public class SupplementalDataInfo {
             try {
                 parts.set(path);
                 String level0 = parts.getElement(0);
-                String level1 = parts.size() < 2 ? null : parts.getElement(1);
+                String level1 = parts.getElement(1);
                 String level2 = parts.size() < 3 ? null : parts.getElement(2);
                 String level3 = parts.size() < 4 ? null : parts.getElement(3);
                 //String level4 = parts.size() < 5 ? null : parts.getElement(4);
@@ -983,9 +835,6 @@ public class SupplementalDataInfo {
                     if (handleTerritoryInfo()) {
                         return;
                     }
-                } else if (level1.equals("calendarPreferenceData")) {
-                    handleCalendarPreferenceData();
-                    return;
                 } else if (level1.equals("languageData")) {
                     handleLanguageData();
                     return;
@@ -1000,10 +849,6 @@ public class SupplementalDataInfo {
                     //          if (handleTimezoneData(level2)) {
                     //            return;
                     //          }
-                } else if ("metazoneInfo".equals(level2)) {
-                    if (handleMetazoneInfo(level2,level3)) {
-                        return;
-                    }
                 } else if ("mapTimezones".equals(level2)) {
                     if (handleMetazoneData(level2,level3)) {
                         return;
@@ -1027,12 +872,6 @@ public class SupplementalDataInfo {
                     return;
                 } else if (level1.equals("numberingSystems")) {
                     handleNumberingSystems();
-                    return;
-                } else if (level1.equals("coverageLevels")) {
-                    handleCoverageLevels();
-                    return;
-                } else if (level1.equals("parentLocales")) {
-                    handleParentLocales();
                     return;
                 } else if (level1.equals("metadata")) {
                     if (handleMetadata(level2, value)) {
@@ -1106,35 +945,6 @@ public class SupplementalDataInfo {
             numberingSystems.add(name);
         }
 
-        private void handleCoverageLevels() {
-            String match = parts.getAttributeValue(-1,"match");
-            String valueStr = parts.getAttributeValue(-1,"value");
-            String inLanguage = parts.getAttributeValue(-1,"inLanguage");
-            String inScript = parts.getAttributeValue(-1,"inScript");
-            String inTerritory = parts.getAttributeValue(-1,"inTerritory");
-            Integer value =  ( valueStr != null ) ? Integer.valueOf(valueStr) : Integer.valueOf("101");
-            CoverageLevelInfo ci = new CoverageLevelInfo(match,value,inLanguage,inScript,inTerritory);
-            coverageLevels.add(ci);
-        }
-        
-        private void handleParentLocales() {
-            String parent = parts.getAttributeValue(-1,"parent");
-            String locales = parts.getAttributeValue(-1,"locales");
-            String [] pl = locales.split(" ");
-            for (int i = 0 ; i < pl.length ; i++ ) {
-                parentLocales.put(pl[i], parent);
-            }
-        }
-        private void handleCalendarPreferenceData() {
-            String territoryString = parts.getAttributeValue(-1, "territories");
-            String orderingString = parts.getAttributeValue(-1,"ordering");
-            String[] calendars = orderingString.split(" ");
-            String[] territories = territoryString.split(" ");
-            List<String> calendarList = Arrays.asList(calendars);
-            for ( int i = 0 ; i < territories.length ; i++ ) {
-                calendarPreferences.put(territories[i], calendarList);
-            }
-        }
         private void handleLikelySubtags() {
             String from = parts.getAttributeValue(-1, "from");
             String to = parts.getAttributeValue(-1, "to");
@@ -1178,8 +988,7 @@ public class SupplementalDataInfo {
         /*
 <supplementalData>
   <metaZones>
-    <metazoneInfo>
-...
+    <metazoneInfo...>
     <mapTimezones type="metazones">
       <mapZone other="Acre" territory="001" type="America/Rio_Branco"/>
 
@@ -1216,29 +1025,6 @@ public class SupplementalDataInfo {
                     }
                     allMetazones.add(mzone);
                 }
-                return true;
-            }
-            return false;
-        }
-
-        /*
-         * 
-<supplementalData>
-  <metaZones>
-    <metazoneInfo>
-            <timezone type="Asia/Yerevan">
-                <usesMetazone to="1991-09-22 20:00" mzone="Yerevan"/>
-                <usesMetazone from="1991-09-22 20:00" mzone="Armenia"/>
-         */
-        
-        private boolean handleMetazoneInfo(String level2, String level3) {
-            if (level3.equals("timezone")) {
-                String zone = parts.getAttributeValue(3,"type");
-                String mzone = parts.getAttributeValue(4,"mzone");
-                String from = parts.getAttributeValue(4,"from");
-                String to = parts.getAttributeValue(4,"to");
-                MetaZoneRange mzoneRange = new MetaZoneRange(mzone, from, to);
-                zoneToMetaZoneRanges.put(zone, mzoneRange);
                 return true;
             }
             return false;
@@ -1398,7 +1184,8 @@ public class SupplementalDataInfo {
                         new CurrencyDateInfo(parts.getAttributeValue(3, "iso4217"),
                                 parts.getAttributeValue(3, "from"),
                                 parts.getAttributeValue(3, "to"),
-                                parts.getAttributeValue(3, "tender")));
+                                parts.getAttributeValue(3, "tender") != "false"
+                        ));
                 return true;
             }
 
@@ -1492,41 +1279,15 @@ public class SupplementalDataInfo {
         }
     }
 
-    public class CoverageVariableInfo {
-        public Set<String> targetScripts;
-        public Set<String> targetTerritories;
-        public Set<String> calendars;
-        public Set<String> targetCurrencies;
-        public Set<String> targetTimeZones;
-    }
-
-    public static String toRegexString(Set<String> s) {
-        Iterator<String> it = s.iterator();
-        StringBuilder sb = new StringBuilder("(");
-        int count = 0;
-        while (it.hasNext()) {
-            if ( count > 0 ) {
-                sb.append("|");
-            }
-            sb.append(it.next());
-            count++;
-        }
-        sb.append(")");
-        return sb.toString();
-
-    }
-
     Set<String> skippedElements = new TreeSet();
 
     private Map<String, Pair<String, String>> references = new TreeMap();
     private Map<String, String> likelySubtags = new TreeMap();
-    // make public temporarily until we resolve.
-    private SortedSet<CoverageLevelInfo> coverageLevels = new TreeSet<CoverageLevelInfo>();
-    private Map<String, String> parentLocales = new HashMap<String,String>();
-    private Map<String, List<String>> calendarPreferences= new HashMap();
-    private Map<String, CoverageVariableInfo> coverageVariables = new TreeMap();    
+
     private Set<String> numberingSystems = new TreeSet();
+
     private Set<String> defaultContentLocales;
+
     /**
      * Get the population data for a language. Warning: if the language has script variants, cycle on those variants.
      * 
@@ -1659,239 +1420,6 @@ public class SupplementalDataInfo {
     public Set<String> getNumberingSystems() {
         return numberingSystems;
     }
-    
-    public SortedSet<CoverageLevelInfo> getCoverageLevelInfo() {
-        return coverageLevels;
-    }
-
-    /**
-     * Used to get the coverage value for a path. Note, it is more efficient to create a CoverageLevel2 for a language, and keep it around.
-     * @param xpath
-     * @param loc
-     * @return
-     */
-    public int getCoverageValue(String xpath, ULocale loc) {
-        return CoverageLevel2.getInstance(this, loc.getLanguage()).getIntLevel(xpath);
-    }
-    
-    private RegexLookup<Level> coverageLookup = null;
-    
-    public synchronized RegexLookup<Level> getCoverageLookup() {
-        if(coverageLookup==null) {
-            RegexLookup<Level> lookup=  new RegexLookup<Level>();
-
-
-            Matcher variable = Pattern.compile("\\$\\{[\\-A-Za-z]*\\}").matcher("");
-            
-            for (CoverageLevelInfo ci : getCoverageLevelInfo()) {
-                String pattern = ci.match.replace('\'','"')
-                        .replace("[@","\\[@") // make sure that attributes are quoted
-                        .replace("(","(?:") // make sure that there are no capturing groups (beyond what we generate below).
-                        ;
-                pattern = "^//ldml/" + pattern + "$"; // for now, force a complete match
-                String variableType = null;
-                variable.reset(pattern);
-                if (variable.find()) {
-                    pattern = pattern.substring(0,variable.start()) + "([^\"]*)" + pattern.substring(variable.end());
-                    variableType = variable.group();
-                    if (variable.find()) {
-                        throw new IllegalArgumentException("We can only handle a single variable on a line");
-                    }
-                }
-                
-                //.replaceAll("\\]","\\\\]");
-                lookup.add(new CoverageLevel2.MyRegexFinder(pattern, variableType, ci), ci.value);
-            }
-            coverageLookup=lookup;
-        }
-        return coverageLookup;
-    }
-    
-    /**
-     * This appears to be unused, so didn't provide new version.
-     * @param xpath
-     * @return
-     */
-    public int getCoverageValueOld(String xpath) {
-        ULocale loc = new ULocale("und");
-        return getCoverageValueOld(xpath,loc);
-    }
-    /**
-     * Older version of code.
-     * @param xpath
-     * @param loc
-     * @return
-     */
-    public int getCoverageValueOld(String xpath, ULocale loc) {
-        String targetLanguage = loc.getLanguage();
-       
-        CoverageVariableInfo cvi = getCoverageVariableInfo(targetLanguage);
-        String targetScriptString = toRegexString(cvi.targetScripts);
-        String targetTerritoryString = toRegexString(cvi.targetTerritories);
-        String calendarListString = toRegexString(cvi.calendars);
-        String targetCurrencyString = toRegexString(cvi.targetCurrencies);
-        String targetTimeZoneString = toRegexString(cvi.targetTimeZones);
-        Iterator<CoverageLevelInfo> i = coverageLevels.iterator();
-        while (i.hasNext()) {
-            CoverageLevelInfo ci = i.next();
-            StringBuilder sb = new StringBuilder(ci.match.replace('\'','"'));
-            String regex = "//ldml/"+ci.match.replace('\'','"')
-                                             .replaceAll("\\[","\\\\[")
-                                             .replaceAll("\\]","\\\\]")
-                                             .replace("${Target-Language}", targetLanguage)
-                                             .replace("${Target-Scripts}", targetScriptString)
-                                             .replace("${Target-Territories}", targetTerritoryString)
-                                             .replace("${Target-TimeZones}", targetTimeZoneString)
-                                             .replace("${Target-Currencies}", targetCurrencyString)
-                                             .replace("${Calendar-List}", calendarListString);
-
-            // Special logic added for coverage fields that are only to be applicable
-            // to certain territories
-            if (ci.inTerritory != null) {
-              if (ci.inTerritory.equals("EU")) {
-                  Set<String> containedTerritories = new HashSet<String>();
-                  containedTerritories.addAll(getContained(ci.inTerritory));
-                  containedTerritories.retainAll(cvi.targetTerritories);                  
-                  if ( containedTerritories.isEmpty())  {
-                   continue;
-                  }
-              }
-              else {
-                  if (!cvi.targetTerritories.contains(ci.inTerritory)) {
-                      continue;
-                  }
-              }
-            }
-            // Special logic added for coverage fields that are only to be applicable
-            // to certain languages         
-            if (ci.inLanguage != null && !targetLanguage.matches(ci.inLanguage)) {
-                continue;
-            }
-            
-            // Special logic added for coverage fields that are only to be applicable
-            // to certain scripts
-            if (ci.inScript != null && !cvi.targetScripts.contains(ci.inScript)) {
-                continue;
-            }
-            
-            if (xpath.matches(regex)) {
-                return ci.value.getLevel();
-            }
-            
-            if (xpath.matches(regex)) {
-                return ci.value.getLevel();
-            }
-        }
-        return Level.OPTIONAL.getLevel(); // If no match then return highest possible value
-    }
-
-    public CoverageVariableInfo getCoverageVariableInfo(String targetLanguage) {
-        CoverageVariableInfo cvi;
-        if ( coverageVariables.containsKey(targetLanguage)) {
-            cvi = coverageVariables.get(targetLanguage);
-        } else {
-            cvi = new CoverageVariableInfo();
-            cvi.targetScripts = getTargetScripts(targetLanguage);
-            cvi.targetTerritories = getTargetTerritories(targetLanguage);
-            cvi.calendars = getCalendars(cvi.targetTerritories);
-            cvi.targetCurrencies = getCurrentCurrencies(cvi.targetTerritories);
-            cvi.targetTimeZones = getCurrentTimeZones(cvi.targetTerritories);
-            coverageVariables.put(targetLanguage, cvi);
-        }
-        return cvi;
-    }
-    
-    private Set<String> getTargetScripts(String language) {
-        Set<BasicLanguageData> langData = getBasicLanguageData(language);
-        Set<String> targetScripts = new HashSet<String>();
-        if (langData != null) {
-            Iterator<BasicLanguageData> ldi = langData.iterator();
-            while ( ldi.hasNext()) {
-                BasicLanguageData bl = ldi.next();
-                Set<String> addScripts = bl.scripts;
-                if ( addScripts != null && bl.getType() != BasicLanguageData.Type.secondary) {
-                    targetScripts.addAll(addScripts);              
-                }
-            }
-        }
-        if (targetScripts.size() == 0) {
-            targetScripts.add("Zzzz"); // Unknown Script
-        }
-        return targetScripts;
-    }
-    private Set<String> getTargetTerritories(String language) {
-        Set<BasicLanguageData> langData = getBasicLanguageData(language);
-        Set<String> targetTerritories = new HashSet<String>();
-        if (langData != null) {
-            Iterator<BasicLanguageData> ldi = langData.iterator();
-            while ( ldi.hasNext()) {
-                BasicLanguageData bl = ldi.next();
-                Set<String> addTerritories = bl.territories;
-                if ( addTerritories != null && bl.getType() != BasicLanguageData.Type.secondary) {
-                    targetTerritories.addAll(addTerritories);              
-                }
-            }
-        }
-        if (targetTerritories.size() == 0) {
-            targetTerritories.add("ZZ");
-        }
-        return targetTerritories;
-    }
-    private Set<String> getCalendars(Set<String> territories) {
-        Set<String> targetCalendars = new HashSet<String>();
-        Iterator<String> it = territories.iterator();
-        while ( it.hasNext()) {
-            List<String> addCalendars = calendarPreferences.get(it.next());
-            if ( addCalendars == null ) {
-                continue;
-            }
-            Iterator<String> it2 = addCalendars.iterator();
-            while ( it2.hasNext() ) {
-                targetCalendars.add(it2.next());
-            }
-        }
-        return targetCalendars;
-    }
-    
-    private Set<String> getCurrentCurrencies(Set<String> territories) {
-        Set<String> targetCurrencies = new HashSet<String>();
-        Iterator<String> it = territories.iterator();
-        Date now = new Date();
-        while ( it.hasNext()) {
-            Set<CurrencyDateInfo> targetCurrencyInfo = getCurrencyDateInfo(it.next());
-            if ( targetCurrencyInfo == null ) {
-                continue;
-            }
-            Iterator<CurrencyDateInfo> it2 = targetCurrencyInfo.iterator();
-            while ( it2.hasNext() ) {
-                CurrencyDateInfo cdi = it2.next();
-                if ( cdi.getStart().before(now) && cdi.getEnd().after(now) && cdi.isLegalTender()) {
-                    targetCurrencies.add(cdi.getCurrency());
-                }
-            }
-        }
-        return targetCurrencies;
-    }
-    private Set<String> getCurrentTimeZones(Set<String> territories) {
-        Set<String> targetTimeZones = new HashSet<String>();
-        Iterator<String> it = territories.iterator();
-        Date now = new Date();
-        while ( it.hasNext()) {
-            String[] countryIDs = TimeZone.getAvailableIDs(it.next());
-            for ( int i = 0 ; i < countryIDs.length ; i++ ) {
-                targetTimeZones.add(countryIDs[i]);
-            }
-        }
-        return targetTimeZones;
-    }
-    
-    public String getParentLocale(String loc) {
-        if ( parentLocales.containsKey(loc)) {
-            return parentLocales.get(loc);
-        }
-        return null;
-    }
-
     /**
      * Return the canonicalized zone, or null if there is none.
      * 
@@ -2251,26 +1779,13 @@ public class SupplementalDataInfo {
      * @return
      */
     public PluralInfo getPlurals(String locale) {
-        return getPlurals(locale, true);
-    }
-    
-    /**
-     * Returns the plural info for a given locale.
-     * @param locale
-     * @return
-     */
-    public PluralInfo getPlurals(String locale, boolean allowRoot) {
         while (locale != null) {
-            if (!allowRoot && locale.equals("root")) {
-                break;
-            }
             PluralInfo result = localeToPluralInfo.get(locale);
             if (result != null) return result;
             locale = LanguageTagParser.getParent(locale);
         }
         return null;
     }
-
 
     public DayPeriodInfo getDayPeriods(String locale) {
         while (locale != null) {
@@ -2347,35 +1862,6 @@ public class SupplementalDataInfo {
      */
     public Relation<R2<String, String>, String> getBcp47Aliases() {
         return bcp47Aliases;
-    }
-    
-    static Set<String> MainTimeZones;;
-
-    /**
-     * Return canonical timezones
-     * @return
-     */
-    public Set<String> getCanonicalTimeZones() {
-        synchronized (SupplementalDataInfo.class) {
-            if (MainTimeZones == null) {
-                MainTimeZones = new TreeSet<String>();
-                SupplementalDataInfo info = SupplementalDataInfo.getInstance();
-                Set<String> keys = info.getBcp47Keys().get("timezone");
-                for (Entry<R2<String, String>, Set<String>> entry : info.getBcp47Aliases().keyValuesSet()) {
-                    R2<String, String> subtype_aliases = entry.getKey();
-                    if (!subtype_aliases.get0().equals("timezone")) {
-                        continue;
-                    }
-                    MainTimeZones.add(entry.getValue().iterator().next());
-                }
-                MainTimeZones = Collections.unmodifiableSet(MainTimeZones);
-            }
-            return MainTimeZones;
-        }
-    }
-
-    public Set<MetaZoneRange> getMetaZoneRanges(String zone) {
-        return zoneToMetaZoneRanges.get(zone);
     }
 }
 

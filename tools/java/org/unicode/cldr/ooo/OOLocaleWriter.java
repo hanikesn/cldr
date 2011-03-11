@@ -4,11 +4,8 @@
 
 package org.unicode.cldr.ooo;
 
-import java.io.PrintStream;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.TreeSet;
-import java.util.Vector;
+import java.io.*;
+import java.util.*;
 
 /**
  *

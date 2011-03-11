@@ -1,5 +1,7 @@
 package org.unicode.cldr.util;
 
+import com.ibm.icu.dev.test.util.XEquivalenceClass;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,8 +19,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.ibm.icu.dev.test.util.XEquivalenceClass;
 
 public class ZoneParser {
   static final boolean DEBUG = false;

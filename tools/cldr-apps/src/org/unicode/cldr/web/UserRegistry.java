@@ -1,37 +1,27 @@
 //  UserRegistry.java
 //
 //  Created by Steven R. Loomis on 14/10/2005.
-//  Copyright 2005-2011 IBM. All rights reserved.
+//  Copyright 2005-2010 IBM. All rights reserved.
 //
 
 package org.unicode.cldr.web;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.io.*;
+import java.util.*;
+
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Connection;
 import java.sql.Statement;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 import org.unicode.cldr.util.CLDRLocale;
 import org.unicode.cldr.util.VoteResolver;
-import org.unicode.cldr.util.VoteResolver.Organization;
 import org.unicode.cldr.util.VoteResolver.VoterInfo;
 
-import com.ibm.icu.dev.test.util.ElapsedTimer;
-import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.util.ULocale;
+import com.ibm.icu.dev.test.util.ElapsedTimer;
 
 /**
  * This class represents the list of all registered users.  It contains an inner class, UserRegistry.User, 
@@ -53,7 +43,7 @@ public class UserRegistry {
 	public static final int NO_LEVEL  = -1;  /** min level **/
     
     public static final String FOR_ADDING= "(for adding)"; /** special "IP" value referring to a user being added **/ 
-    private static final String INTERNAL = "INTERNAL";
+private static final String INTERNAL = "INTERNAL";
     
 
     /**
@@ -91,32 +81,20 @@ public class UserRegistry {
         return thestr;
     }
     
-	/**
-     * The name of the user sql database
-     */
-    public static final String CLDR_USERS = "cldr_users";
-    public static final String CLDR_INTEREST = "cldr_interest";
     
-    
-    
-    public static final String SQL_insertStmt = "INSERT INTO " + CLDR_USERS + "(userlevel,name,org,email,password,locales,lastlogin) " +
-    "VALUES(?,?,?,?,?,?,NULL)";
-    public static final String SQL_queryStmt_FRO = "SELECT id,name,userlevel,org,locales,intlocs,lastlogin from " + CLDR_USERS +" where email=? AND password=?"; 
-    	//            ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
-    public static final String SQL_queryIdStmt_FRO = "SELECT name,org,email,userlevel,intlocs,locales,lastlogin,password from " + CLDR_USERS +" where id=?"; 
-    	//            ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
-    public static final String SQL_queryEmailStmt_FRO = "SELECT id,name,userlevel,org,locales,intlocs,lastlogin,password from " + CLDR_USERS +" where email=?"; 
-    	//            ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
-    public static final String SQL_touchStmt = "UPDATE "+CLDR_USERS+" set lastlogin=CURRENT_TIMESTAMP where id=?";
-    public static final String SQL_updateInfoEmailStmt = "UPDATE "+CLDR_USERS+" set email=? WHERE id=? AND email=?";
-    public static final String SQL_updateInfoNameStmt = "UPDATE "+CLDR_USERS+" set name=? WHERE id=? AND email=?";
-    public static final String SQL_updateInfoPasswordStmt = "UPDATE "+CLDR_USERS+" set password=? WHERE id=? AND email=?";
-    public static final String SQL_removeIntLoc = "DELETE FROM "+CLDR_INTEREST+" WHERE uid=?";
-    public static final String SQL_updateIntLoc = "INSERT INTO " + CLDR_INTEREST + " (uid,forum) VALUES(?,?)";
+    PreparedStatement insertStmt = null;
+    PreparedStatement importStmt = null;
+    PreparedStatement queryStmt = null;
+    PreparedStatement queryIdStmt = null;
+    PreparedStatement queryEmailStmt = null;
+    PreparedStatement updateInfoEmailStmt = null;
+    PreparedStatement updateInfoNameStmt = null;
+    PreparedStatement updateInfoPasswordStmt = null;
+    PreparedStatement touchStmt = null;
 
-    
-    
-    private UserSettingsData userSettings;
+
+    PreparedStatement removeIntLoc = null;
+    PreparedStatement updateIntLoc = null;
     
     /**
      * This nested class is the representation of an individual user. 
@@ -134,26 +112,7 @@ public class UserRegistry {
         public String intlocs = null;
         public String ip;
         
-        private UserSettings settings;
         
-        /**
-         * @deprecated may not use
-         */
-        private User() {
-            this.id = -1;
-            settings = userSettings.getSettings(id); // may not use settings.
-        }
-        public User(int id) {
-           this.id = id;
-           settings = userSettings.getSettings(id);
-        }
-        /**
-         * Get a settings object for use with this user.
-         * @return
-         */
-        public UserSettings settings() {
-            return settings;
-        }
         public void touch()  {
             UserRegistry.this.touch(id);
         }
@@ -267,7 +226,19 @@ public class UserRegistry {
          * @return VoteResolver.Organization format
          */
         private VoteResolver.Organization computeVROrganization() {
-        	return UserRegistry.computeVROrganization(this.org);
+            VoteResolver.Organization o = null;
+            try {
+                String arg = this.org
+                                .replaceAll("Utilika Foundation", "utilika")
+                                .replaceAll("Government of Pakistan - National Language Authority", "pakistan")
+				.replaceAll("ICT Agency of Sri Lanka", "srilanka")
+                                .toLowerCase().replaceAll("[.-]", "_");
+                o = VoteResolver.Organization.valueOf(arg);
+            } catch(IllegalArgumentException iae) {
+                o = VoteResolver.Organization.guest;
+                System.err.println("Unknown organization: "+this.org);
+            }
+            return o;
         }
         
         private String voterOrg = null;
@@ -297,33 +268,22 @@ public class UserRegistry {
             email + "</a>");
     }
     
-    public static Organization computeVROrganization(String org) {
-        VoteResolver.Organization o = null;
-        try {
-            String arg = org
-                            .replaceAll("Utilika Foundation", "utilika")
-                            .replaceAll("Government of Pakistan - National Language Authority", "pakistan")
-			.replaceAll("ICT Agency of Sri Lanka", "srilanka")
-                            .toLowerCase().replaceAll("[.-]", "_");
-            o = VoteResolver.Organization.valueOf(arg);
-        } catch(IllegalArgumentException iae) {
-            o = VoteResolver.Organization.guest;
-            System.err.println("Unknown organization: "+org);
-        }
-        return o;
-	}
-
-
+    /**
+     * The name of the user sql database
+     */
+    public static final String CLDR_USERS = "cldr_users";
+    public static final String CLDR_INTEREST = "cldr_interest";
+    
     /** 
      * Called by SM to create the reg
      * @param xlogger the logger to use
      * @param ourConn the conn to use
      */
-    public static UserRegistry createRegistry(java.util.logging.Logger xlogger, SurveyMain theSm) 
+    public static UserRegistry createRegistry(java.util.logging.Logger xlogger, Connection ourConn, SurveyMain theSm) 
       throws SQLException
     {
         sm = theSm;
-        UserRegistry reg = new UserRegistry(xlogger);
+        UserRegistry reg = new UserRegistry(xlogger,ourConn);
         reg.setupDB();
 //        logger.info("UserRegistry DB: created");
         return reg;
@@ -333,7 +293,7 @@ public class UserRegistry {
      * Called by SM to shutdown
      */
     public void shutdownDB() throws SQLException {
-    //    DBUtils.closeDBConnection(conn);
+        SurveyMain.closeDBConnection(conn);
     }
 
     /**
@@ -341,30 +301,27 @@ public class UserRegistry {
      */
     private void setupDB() throws SQLException
     {
-    	// must be set up first.
-        userSettings = UserSettingsData.getInstance(sm);
-        
         String sql = null;
-        Connection conn = sm.dbUtils.getDBConnection();
         try{
             synchronized(conn) {
     //            logger.info("UserRegistry DB: initializing...");
-                boolean hadUserTable = DBUtils.hasTable(conn,CLDR_USERS);
+                boolean hadUserTable = sm.hasTable(conn,CLDR_USERS);
                 if(!hadUserTable) {
                     Statement s = conn.createStatement();
                 
-                    sql = ("create table " + CLDR_USERS + "(id INT NOT NULL "+DBUtils.DB_SQL_IDENTITY+", " +
+                    sql = ("create table " + CLDR_USERS + "(id INT NOT NULL "+sm.DB_SQL_IDENTITY+", " +
                                                             "userlevel int not null, " +
-                                                            "name "+DBUtils.DB_SQL_UNICODE+" not null, " +
-                                                            "email varchar(128) not null UNIQUE, " +
+                                                            "name "+sm.DB_SQL_UNICODE+" not null, " +
+                                                            "email varchar(256) not null UNIQUE, " +
                                                             "org varchar(256) not null, " +
                                                             "password varchar(100) not null, " +
                                                             "audit varchar(1024) , " +
                                                             "locales varchar(1024) , " +
-                                                            //"prefs varchar(1024) , " + /* deprecated Dec 2010. Not used anywhere */
+                                                            "prefs varchar(1024) , " +
                                                             "intlocs varchar(1024) , " + // added apr 2006: ALTER table CLDR_USERS ADD COLUMN intlocs VARCHAR(1024)
-                                                            "lastlogin " + DBUtils.DB_SQL_TIMESTAMP0 + // added may 2006:  alter table CLDR_USERS ADD COLUMN lastlogin TIMESTAMP
-                                                            (!DBUtils.db_Mysql?",primary key(id)":"") +  ")"); 
+                                                            "lastlogin DATETIME " + // added may 2006:  alter table CLDR_USERS ADD COLUMN lastlogin TIMESTAMP
+                                                            (sm.db_Mysql?"":",primary key(id)")+
+                                                                ")"); 
                     s.execute(sql);
                     sql=("INSERT INTO " + CLDR_USERS + "(userlevel,name,org,email,password) " +
                                                             "VALUES(" + ADMIN +"," + 
@@ -378,7 +335,7 @@ public class UserRegistry {
                     
                     s.close();
                     conn.commit();
-                } else if(!DBUtils.db_Derby) {
+                } else {
                     /* update table to DATETIME instead of TIMESTAMP */
                     Statement s = conn.createStatement();
                     sql = "alter table cldr_users change lastlogin lastlogin DATETIME";
@@ -387,7 +344,7 @@ public class UserRegistry {
                     conn.commit();
                 }
     
-                boolean hadInterestTable = DBUtils.hasTable(conn,CLDR_INTEREST);
+                boolean hadInterestTable = sm.hasTable(conn,CLDR_INTEREST);
                 if(!hadInterestTable) {
                     Statement s = conn.createStatement();
                 
@@ -414,12 +371,11 @@ public class UserRegistry {
             }
         } catch(SQLException se) {
             se.printStackTrace();
-            System.err.println("SQL err: " + DBUtils.unchainSqlException(se));
+            System.err.println("SQL err: " + SurveyMain.unchainSqlException(se));
             System.err.println("Last SQL run: " + sql);
             throw se;
-        } finally {
-        	DBUtils.close(conn);
         }
+            
     }
     
     /**
@@ -432,7 +388,141 @@ public class UserRegistry {
      */
     static final int ALL_ID = -1;
 	
-    private void myinit() throws SQLException {}
+    /**
+     * Migrate the user DB from the separate user DB to the main DB
+     * @deprecated
+     */
+//	public void migrateFrom(Connection uConn) throws SQLException {
+//		System.err.println("USER MIGRATE");
+//		Statement s = conn.createStatement(); // 'new' side
+//		int n = s.executeUpdate("DROP TABLE "+CLDR_USERS+"");
+//		System.err.println("drop table: " + n + " rows from 'new' side table");
+//		setupDB();
+//		System.err.println("Reset table");
+//		Statement oldS = uConn.createStatement(); // old side
+//
+//		ResultSet rs = oldS.executeQuery("select id from "+CLDR_USERS+" order by id desc");
+//		if(rs.next()) {
+//			n=rs.getInt(1);
+//		} else { 
+//			throw new RuntimeException("Err: couldn't count old users");
+//		}
+//		rs.close();
+//
+//		System.err.println("max userid: " + n);
+//		
+//		for(;n>0;n--) {
+//			s.execute("INSERT INTO "+CLDR_USERS+" (userlevel,name,org,email,password) VALUES(999,'junk user"+n+"','_Delete','delete"+n+"@example.com','delete"+("delete"+n).hashCode()+"')");
+//		}
+//		conn.commit();
+//		System.err.println("dummy users created.");
+//		
+//		PreparedStatement patchStmt = conn.prepareStatement("UPDATE " + CLDR_USERS + " set userlevel=?,name=?,email=?,org=?,password=?,locales=?,intlocs=?,lastlogin=?  " +
+//                                                    " where id=?" );
+//
+//		Statement us = uConn.createStatement();
+//		rs = us.executeQuery("SELECT userlevel,name,email,org,password,locales,intlocs,lastlogin,id from "+CLDR_USERS);
+//		//								1         2   3    4     5       6      7        8       9
+//		n=0;
+//		while(rs.next()) {
+//			n++;
+//			patchStmt.setInt(1,		rs.getInt(1));
+//			SurveyMain.setStringUTF8(patchStmt, 2, SurveyMain.getStringUTF8(rs, 2));
+//			patchStmt.setString(3,	rs.getString(3));
+//			patchStmt.setString(4,	rs.getString(4));
+//			patchStmt.setString(5,  rs.getString(5));
+//			patchStmt.setString(6,  rs.getString(6));
+//			patchStmt.setString(7,  rs.getString(7));
+//			patchStmt.setTimestamp(8, rs.getTimestamp(8));
+//			patchStmt.setInt(9, rs.getInt(9));
+//			
+//			int j = patchStmt.executeUpdate();
+//			System.err.println("n"+n+", id"+rs.getInt(9)+", e:"+rs.getString(3) + " -> updt. " + j);
+//		}
+//		conn.commit();
+//		rs.close();
+//		
+//		System.err.println("Done.  Probably good to restart ST now.");
+//	}
+    
+    public void importOldUsers(String dir) throws SQLException
+    {
+        int nUsers = 0;
+        synchronized(conn) {
+            try {
+                logger.info("Importing old users...");
+                  importStmt = conn.prepareStatement("INSERT  INTO " + CLDR_USERS +" (userlevel,password,email,org,name,audit) " +
+                    " VALUES(999,?,?,?,?,'Imported')");       
+                    
+                OldUserRegistry our = new OldUserRegistry(dir);
+                if(!our.read()) {
+                    logger.severe("Couldn't import old user registry from " + dir);
+                    return;
+                }
+                Hashtable emails = our.getEmails();
+                Iterator e = emails.values().iterator();
+                while(e.hasNext()) {
+                    OldUserRegistry.User u = (OldUserRegistry.User)e.next();
+                    importStmt.setString(1,u.id);
+                    importStmt.setString(2,u.email);
+                    importStmt.setString(3,u.sponsor);
+                    SurveyMain.setStringUTF8(importStmt, 4, u.real); //    importStmt.setString(4,u.real);
+                    importStmt.execute();
+                    nUsers++;   
+                }
+                
+            } finally {
+                logger.info("Imported " + nUsers + " users.");
+                if(importStmt != null) {
+                    importStmt.close();
+                    importStmt = null;
+                }
+                conn.commit();
+            }
+        }
+    }
+    
+    private void myinit() throws SQLException {
+     try {
+        synchronized(conn) {
+            insertStmt = conn.prepareStatement("INSERT INTO " + CLDR_USERS + "(userlevel,name,org,email,password,locales,lastlogin) " +
+            "VALUES(?,?,?,?,?,?,NULL)" );
+            queryStmt = conn.prepareStatement("SELECT id,name,userlevel,org,locales,intlocs,lastlogin from " + CLDR_USERS +" where email=? AND password=?",
+                    ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+            queryIdStmt = conn.prepareStatement("SELECT name,org,email,userlevel,intlocs,locales,lastlogin,password from " + CLDR_USERS +" where id=?",
+                    ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+            queryEmailStmt = conn.prepareStatement("SELECT id,name,userlevel,org,locales,intlocs,lastlogin,password from " + CLDR_USERS +" where email=?",
+                    ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+            touchStmt = conn.prepareStatement("UPDATE "+CLDR_USERS+" set lastlogin=CURRENT_TIMESTAMP where id=?");
+
+            updateInfoEmailStmt = conn.prepareStatement("UPDATE "+CLDR_USERS+" set email=? WHERE id=? AND email=?");
+            updateInfoNameStmt = conn.prepareStatement("UPDATE "+CLDR_USERS+" set name=? WHERE id=? AND email=?");
+            updateInfoPasswordStmt = conn.prepareStatement("UPDATE "+CLDR_USERS+" set password=? WHERE id=? AND email=?");
+
+            removeIntLoc = conn.prepareStatement("DELETE FROM "+CLDR_INTEREST+" WHERE uid=?");
+            updateIntLoc = conn.prepareStatement("INSERT INTO " + CLDR_INTEREST + " (uid,forum) VALUES(?,?)");
+        }
+      }finally{
+        if(queryStmt == null) {
+            logger.severe("queryStmt failed to initialize");
+        }
+        if(queryIdStmt == null) {
+            logger.severe("queryIdStmt failed to initialize");
+        }
+        if(insertStmt == null) {
+            logger.severe("insertStmt failed to initialize");
+        }
+        if(touchStmt == null) {
+            logger.severe("touchStmt failed to initialize");
+        }
+        if(updateInfoEmailStmt == null) {
+            logger.severe("updateInfoStmt failed to initialize");
+        }
+        if(updateInfoNameStmt == null) {
+            logger.severe("updateInfoStmt failed to initialize");
+        }
+      }
+    }
     
     /**
      * info = name/email/org
@@ -466,15 +556,7 @@ public class UserRegistry {
         voterInfo = null;
     }
 
-    /**
-     * Get the singleton user for this ID. 
-     * @param id
-     * @return singleton, or null if not found/invalid
-     */
     public UserRegistry.User getInfo(int id) {
-        if(id<0) {
-            return null;
-        }
 //    System.err.println("Fetching info for id " + id);
         synchronized(infoArray) {
             User ret = null;
@@ -487,14 +569,13 @@ public class UserRegistry {
                 ret = null; // not found
             }
             
-            if(ret == null) { // synchronized(conn) {
+            if(ret == null) synchronized(conn) {
 //    System.err.println("go fish for id " + id);
 //          queryIdStmt = conn.prepareStatement("SELECT name,org,email from " + CLDR_USERS +" where id=?");
                 ResultSet rs = null;
-                PreparedStatement pstmt = null;
-                Connection conn = sm.dbUtils.getDBConnection();
                 try{ 
-                    pstmt = DBUtils.prepareForwardReadOnly(conn, this.SQL_queryIdStmt_FRO);
+                    PreparedStatement pstmt = null;
+                    pstmt = queryIdStmt;
                     pstmt.setInt(1,id);
                     // First, try to query it back from the DB.
                     rs = pstmt.executeQuery();                
@@ -502,9 +583,10 @@ public class UserRegistry {
 //                        System.err.println("Unknown user#:" + id);
                         return null;
                     }
-                    User u = new UserRegistry.User(id);                    
+                    User u = new UserRegistry.User();                    
                     // from params:
-                    u.name = DBUtils.getStringUTF8(rs, 1);// rs.getString(1);
+                    u.id = id;
+                    u.name = SurveyMain.getStringUTF8(rs, 1);// rs.getString(1);
                     u.org = rs.getString(2);
                     u.email = rs.getString(3);
                     u.userlevel = rs.getInt(4);
@@ -529,8 +611,8 @@ public class UserRegistry {
                         throw new InternalError("Dup user id # " + id);
                     }
                 } catch (SQLException se) {
-                    logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to get #" + id + " - " + DBUtils.unchainSqlException(se),se);
-		    throw new InternalError("UserRegistry: SQL error trying to get #" + id + " - " + DBUtils.unchainSqlException(se));
+                    logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to get #" + id + " - " + SurveyMain.unchainSqlException(se),se);
+		    throw new InternalError("UserRegistry: SQL error trying to get #" + id + " - " + SurveyMain.unchainSqlException(se));
                     //return ret;
                 } catch (Throwable t) {
                     logger.log(java.util.logging.Level.SEVERE, "UserRegistry: some error trying to get #" + id,t);
@@ -539,9 +621,11 @@ public class UserRegistry {
                 } finally {
                     // close out the RS
                     try {
-                    	DBUtils.close(rs,pstmt,conn);
+                        if(rs!=null) {
+                            rs.close();
+                        }
                     } catch(SQLException se) {
-                        /*logger.severe*/System.err.println(/*java.util.logging.Level.SEVERE,*/ "UserRegistry: SQL error trying to close resultset for: #" + id + " - " + DBUtils.unchainSqlException(se)/*,se*/);
+                        /*logger.severe*/System.err.println(/*java.util.logging.Level.SEVERE,*/ "UserRegistry: SQL error trying to close resultset for: #" + id + " - " + SurveyMain.unchainSqlException(se)/*,se*/);
                     }
                 } // end try
             }
@@ -551,34 +635,22 @@ public class UserRegistry {
     }
 
     public final UserRegistry.User get(String pass, String email, String ip) {
-        return get(pass, email, ip, false);
+	return get(pass, email, ip, false);
     }
     
     
     public void touch(int id)  {
-        //System.err.println("Touching: " + id);
-    	Connection conn = null; 
-    	PreparedStatement pstmt = null;
-//        synchronized(conn) {
+        System.err.println("Touching: " + id);
+        synchronized(conn) {
             try {
-            	conn = sm.dbUtils.getDBConnection();
-            	pstmt = conn.prepareStatement(SQL_touchStmt);
-            	pstmt .setInt(1, id);
-            	pstmt .executeUpdate();
+                touchStmt.setInt(1, id);
+                touchStmt.executeUpdate();
                 conn.commit();
             } catch(SQLException se) {
-                logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to touch " + id + " - " + DBUtils.unchainSqlException(se),se);
-                throw new InternalError("UserRegistry: SQL error trying to touch " + id + " - " + DBUtils.unchainSqlException(se));
-            } finally {
-            	try {
-            		DBUtils.close(pstmt,conn);
-            	} catch(SQLException se) {
-                    logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error closing " + DBUtils.unchainSqlException(se),se);
-                    throw new InternalError("UserRegistry: SQL error closing  " + DBUtils.unchainSqlException(se));
-            	}
+                logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to touch " + id + " - " + SurveyMain.unchainSqlException(se),se);
+                throw new InternalError("UserRegistry: SQL error trying to touch " + id + " - " + SurveyMain.unchainSqlException(se));
             }
-            
-  //      }
+        }
     }
     
 
@@ -593,19 +665,17 @@ public class UserRegistry {
             return null; // nothing to do
         }
         ResultSet rs = null;
-        //synchronized(conn) {
-        Connection conn  = null;
-        PreparedStatement pstmt = null;
+        synchronized(conn) {
             try{ 
-            	conn = sm.dbUtils.getDBConnection();
+                PreparedStatement pstmt = null;
                 if((pass != null) && !letmein) {
 //                    logger.info("Looking up " + email + " : " + pass);
-                    pstmt = DBUtils.prepareForwardReadOnly(conn, SQL_queryStmt_FRO);
+                    pstmt = queryStmt;
                     pstmt.setString(1,email);
                     pstmt.setString(2,pass);
                 } else {
 //                    logger.info("Looking up " + email);
-                    pstmt = DBUtils.prepareForwardReadOnly(conn, SQL_queryEmailStmt_FRO);
+                    pstmt = queryEmailStmt;
                     pstmt.setString(1,email);
                 }
                 // First, try to query it back from the DB.
@@ -614,7 +684,7 @@ public class UserRegistry {
                     logger.info("Unknown user or bad login: " + email + " @ " + ip);
                     return null;
                 }
-                User u = new UserRegistry.User(rs.getInt(1));
+                User u = new UserRegistry.User();
                 
                 // from params:
                 u.password = pass;
@@ -623,7 +693,8 @@ public class UserRegistry {
                 }
                 u.email = email;
                 // from db:   (id,name,userlevel,org,locales)
-                u.name = DBUtils.getStringUTF8(rs, 2);//rs.getString(2);
+                u.id = rs.getInt(1);
+                u.name = SurveyMain.getStringUTF8(rs, 2);//rs.getString(2);
                 u.userlevel = rs.getInt(3);
                 u.org = rs.getString(4);
                 u.locales = rs.getString(5);
@@ -643,8 +714,8 @@ public class UserRegistry {
                 
                 return u;
             } catch (SQLException se) {
-                logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to get " + email + " - " + DBUtils.unchainSqlException(se),se);
-                throw new InternalError("UserRegistry: SQL error trying to get " + email + " - " + DBUtils.unchainSqlException(se));
+                logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to get " + email + " - " + SurveyMain.unchainSqlException(se),se);
+                throw new InternalError("UserRegistry: SQL error trying to get " + email + " - " + SurveyMain.unchainSqlException(se));
                 //return null;
             } catch (Throwable t) {
                 logger.log(java.util.logging.Level.SEVERE, "UserRegistry: some error trying to get " + email,t);
@@ -653,23 +724,22 @@ public class UserRegistry {
             } finally {
                 // close out the RS
                 try {
-                	DBUtils.close(rs,pstmt,conn);
+                    if(rs!=null) {
+                        rs.close();
+                    }
                 } catch(SQLException se) {
-                    logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to close resultset for: " + email + " - " + DBUtils.unchainSqlException(se),se);
+                    logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to close resultset for: " + email + " - " + SurveyMain.unchainSqlException(se),se);
                 }
             } // end try
-//        } // end synch(conn)
+        } // end synch(conn)
     } // end get
 
     public UserRegistry.User get(String email) {
         return get(null,email,INTERNAL);
     }
-    /**
-     * @deprecated
-     * @return
-     */
     public UserRegistry.User getEmptyUser() {
         User u = new User();
+        u.id = -1;
         u.name = "UNKNOWN";
         u.email = "UN@KNOWN.example.com";
         u.org = "NONE"; 
@@ -679,19 +749,21 @@ public class UserRegistry {
        return u;   
     }
     
+    Connection conn = null;
     static SurveyMain sm = null; // static for static checking of defaultContent..
 
-    private UserRegistry(java.util.logging.Logger xlogger) {
+    private UserRegistry(java.util.logging.Logger xlogger, Connection ourConn) {
         logger = xlogger;
+        conn = ourConn;
     }
 
     // ------- special things for "list" mode:
     
-    public java.sql.ResultSet list(String organization, Connection conn) throws SQLException {
+    public java.sql.ResultSet list(String organization) throws SQLException {
         ResultSet rs = null;
         Statement s = null;
         final String ORDER = " ORDER BY org,userlevel,name ";
-//        synchronized(conn) {
+        synchronized(conn) {
 //            try {
                 s = conn.createStatement();
                 if(organization == null) {
@@ -702,62 +774,44 @@ public class UserRegistry {
 //            } finally  {
 //                s.close();
 //            }
-//        }
+        }
         
         return rs;
     }
-    public java.sql.ResultSet listPass(Connection conn) throws SQLException {
+    public java.sql.ResultSet listPass() throws SQLException {
         ResultSet rs = null;
         Statement s = null;
         final String ORDER = " ORDER BY id ";
-//        synchronized(conn) {
+        synchronized(conn) {
 //            try {
                 s = conn.createStatement();
                 rs = s.executeQuery("SELECT id,userlevel,name,email,org,locales,intlocs, password FROM " + CLDR_USERS + ORDER);
 //            } finally  {
 //                s.close();
 //            }
-//        }
+        }
         
         return rs;
     }
     
     void setupIntLocs() throws SQLException {
-    	Connection conn = sm.dbUtils.getDBConnection();
-        PreparedStatement removeIntLoc=null;
-		PreparedStatement updateIntLoc=null;
-    	try {
-    		removeIntLoc = conn.prepareStatement(SQL_removeIntLoc);
-    		updateIntLoc = conn.prepareStatement(SQL_updateIntLoc);
-	        ResultSet rs = list(null,conn);
-	        ElapsedTimer et = new ElapsedTimer();
-	        int count=0;
-	        while(rs.next()) {
-	            int user = rs.getInt(1);
-	//            String who = rs.getString(4);
-	            
-				updateIntLocs(user, false, conn, removeIntLoc, updateIntLoc);
-	            count++;
-	        }
-	        conn.commit();
-	        System.err.println("update:" + count + " user's locales updated " + et);
-    	} finally {
-    		DBUtils.close(removeIntLoc, updateIntLoc, conn);
-    	}
+        ResultSet rs = list(null);
+        ElapsedTimer et = new ElapsedTimer();
+        int count=0;
+        while(rs.next()) {
+            int user = rs.getInt(1);
+//            String who = rs.getString(4);
+            
+            updateIntLocs(user);
+            count++;
+        }
+        System.err.println("update:" + count + " user's locales updated " + et);
     }
     /**
      * assumes caller has a lock on conn
      */
-    String updateIntLocs(int user, Connection conn) throws SQLException {
-        PreparedStatement removeIntLoc=null;
-		PreparedStatement updateIntLoc=null;
-    	try {
-    		removeIntLoc = conn.prepareStatement(SQL_removeIntLoc);
-    		updateIntLoc = conn.prepareStatement(SQL_updateIntLoc);
-    		return updateIntLocs(user, true, conn, removeIntLoc, updateIntLoc);
-    	} finally {
-    		DBUtils.close(removeIntLoc, updateIntLoc);
-    	}
+    String updateIntLocs(int user) throws SQLException {
+        return updateIntLocs(user, true);
     }
     
     static String normalizeLocaleList(String list) {
@@ -786,7 +840,7 @@ public class UserRegistry {
     /**
      * assumes caller has a lock on conn
      */
-    String updateIntLocs(int id, boolean doCommit, Connection conn, PreparedStatement removeIntLoc, PreparedStatement updateIntLoc) throws SQLException {
+    String updateIntLocs(int id, boolean doCommit) throws SQLException {
         // do something
         User user = getInfo(id);
         if(user==null) {
@@ -835,9 +889,8 @@ public class UserRegistry {
         } else {
             orgConstraint = " AND org='" + ctx.session.user.org + "' ";
         }
-        Connection conn = null;
+        synchronized(conn) {
             try {
-            	conn = sm.dbUtils.getDBConnection();
                 Statement s = conn.createStatement();
                 String theSql = "UPDATE " + CLDR_USERS + " SET userlevel=" + newLevel + 
                     " WHERE id=" + theirId + " AND email='" + theirEmail + "' "  + orgConstraint;
@@ -854,16 +907,15 @@ public class UserRegistry {
                     logger.severe("Error: " + n + " records updated!");
                 } else {
                     msg = msg + " [user level set]";
-                    msg = msg + updateIntLocs(theirId, conn);
+                    msg = msg + updateIntLocs(theirId);
                 }
             } catch (SQLException se) {
-                msg = msg + " exception: " + DBUtils.unchainSqlException(se);
+                msg = msg + " exception: " + SurveyMain.unchainSqlException(se);
             } catch (Throwable t) {
                 msg = msg + " exception: " + t.toString();
             } finally  {
-            	sm.dbUtils.closeDBConnection(conn);
               //  s.close();
-//            }
+            }
         }
         
         return msg;
@@ -887,13 +939,11 @@ public class UserRegistry {
         } else {
             orgConstraint = " AND org='" + ctx.session.user.org + "' ";
         }
-        Connection conn = null;
-        PreparedStatement ps = null;
-        try {
-        	conn = sm.dbUtils.getDBConnection();
+        synchronized(conn) {
+            try {
                 String theSql = "UPDATE " + CLDR_USERS + " SET "+
                     (intLocs?"intlocs":"locales") + "=? WHERE id=" + theirId + " AND email='" + theirEmail + "' "  + orgConstraint;
-                ps = conn.prepareStatement(theSql);
+                PreparedStatement ps = conn.prepareStatement(theSql);
       //           msg = msg + " (<br /><pre> " + theSql + " </pre><br />) ";
                 logger.info("Attempt user locales update by " + ctx.session.user.email + ": " + theSql + " - " + newLocales);
                 ps.setString(1, newLocales);
@@ -908,24 +958,19 @@ public class UserRegistry {
                     logger.severe("Error: " + n + " records updated!");
                 } else {
                     msg = msg + " [locales set]";
-                    msg = msg + updateIntLocs(theirId, conn);
+                    msg = msg + updateIntLocs(theirId);
                     /*if(intLocs) { 
                         return updateIntLocs(theirId);
                     }*/
                 }
             } catch (SQLException se) {
-                msg = msg + " exception: " + DBUtils.unchainSqlException(se);
+                msg = msg + " exception: " + SurveyMain.unchainSqlException(se);
             } catch (Throwable t) {
                 msg = msg + " exception: " + t.toString();
             } finally  {
-                try {
-	            	if(ps!=null) ps.close();
-	            	if(conn!=null) conn.close();
-                } catch(SQLException se) {
-                    logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to close. " + DBUtils.unchainSqlException(se),se);
-                }
+              //  s.close();
             }
-        //}
+        }
         
         return msg;
     }
@@ -943,11 +988,9 @@ public class UserRegistry {
         } else {
             orgConstraint = " AND org='" + ctx.session.user.org + "' ";
         }
-        Connection conn = null;
-        Statement s = null;
-        try {
-        		conn = sm.dbUtils.getDBConnection();
-                s = conn.createStatement();
+        synchronized(conn) {
+            try {
+                Statement s = conn.createStatement();
                 String theSql = "DELETE FROM " + CLDR_USERS + 
                     " WHERE id=" + theirId + " AND email='" + theirEmail + "' "  + orgConstraint;
 //                 msg = msg + " (<br /><pre> " + theSql + " </pre><br />) ";
@@ -965,18 +1008,13 @@ public class UserRegistry {
                     msg = msg + " [removed OK]";
                 }
             } catch (SQLException se) {
-                msg = msg + " exception: " + DBUtils.unchainSqlException(se);
+                msg = msg + " exception: " + SurveyMain.unchainSqlException(se);
             } catch (Throwable t) {
                 msg = msg + " exception: " + t.toString();
             } finally  {
-            	try {
-            		DBUtils.close(s,conn);
-                } catch (SQLException se) {
-                    msg = msg + " closing exception: " + DBUtils.unchainSqlException(se);
-                }
               //  s.close();
             }
-//        }
+        }
         
         return msg;
     }
@@ -989,28 +1027,27 @@ public class UserRegistry {
         }
 
         String msg = "";
-        Connection conn = null;
-        PreparedStatement updateInfoStmt = null;
-        try {
-        		conn = sm.dbUtils.getDBConnection();
+        synchronized(conn) {
+            try {
+                PreparedStatement updateInfoStmt = null;
                 
                 //updateInfoStmt = conn.prepareStatement("UPDATE CLDR_USERS set ?=? WHERE id=? AND email=?");
                 switch(type) {
                     case INFO_EMAIL: 
-                        updateInfoStmt = conn.prepareStatement(SQL_updateInfoEmailStmt);
+                        updateInfoStmt = updateInfoEmailStmt;
                         value = value.toLowerCase();
                         break;
                     case INFO_NAME:
-                        updateInfoStmt = conn.prepareStatement(SQL_updateInfoNameStmt);
+                        updateInfoStmt = updateInfoNameStmt;
                         break;
                     case INFO_PASSWORD:
-                        updateInfoStmt = conn.prepareStatement(SQL_updateInfoPasswordStmt);
+                        updateInfoStmt = updateInfoPasswordStmt;
                         break;
                     default:
                         return("[unknown type: " + type.toString() +"]");
                 }
                 if(type==UserRegistry.InfoType.INFO_NAME) { // unicode treatment
-                    DBUtils.setStringUTF8(updateInfoStmt, 1, value);
+                    SurveyMain.setStringUTF8(updateInfoStmt, 1, value);
                 } else {
                     updateInfoStmt.setString(1, value);
                 }
@@ -1031,56 +1068,47 @@ public class UserRegistry {
                     msg = msg + " [updated OK]";
                 }
             } catch (SQLException se) {
-                msg = msg + " exception: " + DBUtils.unchainSqlException(se);
+                msg = msg + " exception: " + SurveyMain.unchainSqlException(se);
             } catch (Throwable t) {
                 msg = msg + " exception: " + t.toString();
             } finally  {
-                try {
-                	DBUtils.close(updateInfoStmt,conn);
-                } catch(SQLException se) {
-                    logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to close. " + DBUtils.unchainSqlException(se),se);
-                }
+              //  s.close();
             }
-    //    }
+        }
         
         return msg;
     }
     
 
     public String getPassword(WebContext ctx, int theirId)  {
-    	ResultSet rs = null;
-    	Statement s = null;
-    	String result = null;
-    	Connection conn = null;
-    	//        try {
-    	logger.info("UR: Attempt getPassword by " + ctx.session.user.email + ": of #" + theirId);
-    	try {
-    		conn = sm.dbUtils.getDBConnection();
-    		s = conn.createStatement();
-    		rs = s.executeQuery("SELECT password FROM " + CLDR_USERS + " WHERE id=" + theirId);
-    		if(!rs.next()) {
-    			ctx.println("Couldn't find user.");
-    			return null;
-    		}
-    		result = rs.getString(1);
-    		if(rs.next()) {
-    			ctx.println("Matched duplicate user (?)");
-    			return null;
-    		}                
-    	} catch (SQLException se) {
-    		logger.severe("UR:  exception: " + DBUtils.unchainSqlException(se));
-    		ctx.println(" An error occured: " + DBUtils.unchainSqlException(se));
-    	} catch (Throwable t) {
-    		logger.severe("UR:  exception: " + t.toString());
-    		ctx.println(" An error occured: " + t.toString());
-        } finally  {
+        ResultSet rs = null;
+        Statement s = null;
+        String result = null;
+        synchronized(conn) {
+            logger.info("UR: Attempt getPassword by " + ctx.session.user.email + ": of #" + theirId);
             try {
-            	DBUtils.close(s,conn);
-            } catch(SQLException se) {
-                logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to close. " + DBUtils.unchainSqlException(se),se);
+                s = conn.createStatement();
+                rs = s.executeQuery("SELECT password FROM " + CLDR_USERS + " WHERE id=" + theirId);
+                if(!rs.next()) {
+                    ctx.println("Couldn't find user.");
+                    return null;
+                }
+                result = rs.getString(1);
+                if(rs.next()) {
+                    ctx.println("Matched duplicate user (?)");
+                    return null;
+                }                
+            } catch (SQLException se) {
+                logger.severe("UR:  exception: " + SurveyMain.unchainSqlException(se));
+                ctx.println(" An error occured: " + SurveyMain.unchainSqlException(se));
+            } catch (Throwable t) {
+                logger.severe("UR:  exception: " + t.toString());
+                ctx.println(" An error occured: " + t.toString());
+            } finally {
+            //    if(rs != null ) rs.close();
+            //    if(s != null) s.close();
             }
         }
-//    }
         
         return result;
     }
@@ -1091,63 +1119,49 @@ public class UserRegistry {
 //            CookieSession.cheapEncode(email.hashCode() * SurveyMain.vap.hashCode());
     }
 
-	public User newUser(WebContext ctx, User u) {
-		if (ctx.session.user.userlevel > TC) {
-			return null;
-		}
-		// prepare quotes
-		u.email = u.email.replace('\'', '_').toLowerCase();
-		u.org = u.org.replace('\'', '_');
-		u.name = u.name.replace('\'', '_');
-		u.locales = u.locales.replace('\'', '_');
+    public User newUser(WebContext ctx, User u) {
+        if(ctx.session.user.userlevel > TC) {
+            return null;
+        }
+        // prepare quotes 
+        u.email = u.email.replace('\'', '_').toLowerCase();
+        u.org = u.org.replace('\'', '_');
+        u.name = u.name.replace('\'', '_');
+        u.locales = u.locales.replace('\'', '_');
 
-		Connection conn = null;
-		PreparedStatement insertStmt = null;
-		try {
-			conn = sm.dbUtils.getDBConnection();
-			insertStmt = conn.prepareStatement(SQL_insertStmt);
-			logger.info("UR: Attempt newuser by " + ctx.session.user.email
-					+ ": of " + u.email + " @ " + ctx.userIP());
-			insertStmt.setInt(1, u.userlevel);
-			DBUtils.setStringUTF8(insertStmt, 2, u.name); // insertStmt.setString(2,
-															// u.name);
-			insertStmt.setString(3, u.org);
-			insertStmt.setString(4, u.email);
-			insertStmt.setString(5, u.password);
-			insertStmt.setString(6, normalizeLocaleList(u.locales));
-			if (!insertStmt.execute()) {
-				logger.info("Added.");
-				conn.commit();
-				ctx.println("<p>Added user.<p>");
-				User newu = get(u.password, u.email, FOR_ADDING); // throw away
-																	// old user
-				updateIntLocs(newu.id, conn);
-				resetOrgList(); // update with new org spelling.
-				return newu;
-			} else {
-				ctx.println("Couldn't add user.");
-				conn.commit();
-				return null;
-			}
-		} catch (SQLException se) {
-			logger.severe("UR: Adding: exception: "
-					+ DBUtils.unchainSqlException(se));
-		} catch (Throwable t) {
-			logger.severe("UR: Adding: exception: " + t.toString());
-		} finally {
-			userModified(); // new user
-			try {
-				DBUtils.close(insertStmt,conn);
-			} catch (SQLException se) {
-				logger.log(
-						java.util.logging.Level.SEVERE,
-						"UserRegistry: SQL error trying to close. "
-								+ DBUtils.unchainSqlException(se), se);
-			}
-		}
-
-		return null;
-	}
+        synchronized(conn) {
+            try {
+                logger.info("UR: Attempt newuser by " + ctx.session.user.email + ": of " + u.email + " @ " + ctx.userIP());
+                insertStmt.setInt(1, u.userlevel);
+                SurveyMain.setStringUTF8(insertStmt, 2, u.name); //insertStmt.setString(2, u.name);
+                insertStmt.setString(3, u.org);
+                insertStmt.setString(4, u.email);
+                insertStmt.setString(5, u.password);
+                insertStmt.setString(6, normalizeLocaleList(u.locales));
+                if(!insertStmt.execute()) {
+                    logger.info("Added.");
+                    conn.commit();
+                    ctx.println("<p>Added user.<p>");
+                    User newu =  get(u.password, u.email,FOR_ADDING); // throw away old user
+                    updateIntLocs(newu.id);
+                    return newu;
+                } else {
+                    ctx.println("Couldn't add user.");
+                    conn.commit();
+                    return null;
+                }
+            } catch (SQLException se) {
+                logger.severe("UR: Adding: exception: " + SurveyMain.unchainSqlException(se));
+            } catch (Throwable t) {
+                logger.severe("UR: Adding: exception: " + t.toString());
+            } finally  {
+                userModified(); // new user
+              //  s.close();
+            }
+        }
+        
+        return null;
+    }
     
     // All of the userlevel policy is concentrated here, or in above functions (search for 'userlevel')
     
@@ -1358,10 +1372,6 @@ public class UserRegistry {
     }
     
     static final String LOCALE_PATTERN = "[, \t\u00a0\\s]+"; // whitespace
-    /**
-     * Invalid user ID, representing NO USER.
-     */
-    public static final int NO_USER = -1;
     
     static String[] tokenizeLocale(String localeList) {
         if((localeList == null)||((localeList=localeList.trim()).length()==0)) {
@@ -1519,18 +1529,17 @@ public class UserRegistry {
             Map<Integer, VoterInfo> map = new TreeMap<Integer, VoterInfo>();
             
             ResultSet rs = null;
-            Connection conn = null;
             try {
-            	conn = sm.dbUtils.getDBConnection();
-                rs = list(null,conn);
+                rs = list(null);
                 // id,userlevel,name,email,org,locales,intlocs,lastlogin    
                 while(rs.next()){
                     // We don't go through the cache, because not all users may be loaded.
                     
-                    User u = new UserRegistry.User(rs.getInt(1));
+                    User u = new UserRegistry.User();
                     // from params:
+                    u.id = rs.getInt(1);
                     u.userlevel = rs.getInt(2);
-                    u.name = DBUtils.getStringUTF8(rs, 3);
+                    u.name = SurveyMain.getStringUTF8(rs, 3);
                     u.email = rs.getString(4);
                     u.org = rs.getString(5);
                     u.locales = rs.getString(6);
@@ -1544,15 +1553,17 @@ public class UserRegistry {
                 }
                 voterInfo = map;
             } catch (SQLException se) {
-                logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to  update VoterInfo - " + DBUtils.unchainSqlException(se),se);
+                logger.log(java.util.logging.Level.SEVERE, "UserRegistry: SQL error trying to  update VoterInfo - " + SurveyMain.unchainSqlException(se),se);
             } catch (Throwable t) {
                 logger.log(java.util.logging.Level.SEVERE, "UserRegistry: some error trying to update VoterInfo - "  + t.toString(),t);
             } finally {
                 // close out the RS
                 try {
-                    DBUtils.close(rs,conn);
+                    if(rs!=null) {
+                        rs.close();
+                    }
                 } catch(SQLException se) {
-                    /*logger.severe*/System.err.println(/*java.util.logging.Level.SEVERE,*/ "UserRegistry: SQL error trying to close resultset for: VI "  + " - " + DBUtils.unchainSqlException(se)/*,se*/);
+                    /*logger.severe*/System.err.println(/*java.util.logging.Level.SEVERE,*/ "UserRegistry: SQL error trying to close resultset for: VI "  + " - " + SurveyMain.unchainSqlException(se)/*,se*/);
                 }
             } // end try
         }
@@ -1563,78 +1574,4 @@ public class UserRegistry {
      * VoterInfo map
      */
     private Map<Integer, VoterInfo> voterInfo = null;
-    
-    /**
-     * Not yet implemented.
-     * @return
-     */
-    private static String[] orgList = new String[0];
-    public static String[] getOrgList() {
-    	return orgList;
-    }
-    /**
-     * Update the organization list.
-     */
-    public void setOrgList() {
-    	if(orgList.length > 0) {
-    		return; // already set.
-    	}
-    	resetOrgList();
-    }
-
-	private void resetOrgList() {
-		// get all orgs in use...
-		Set<String> orgs = new TreeSet<String>();
-		Connection conn = null;
-		Statement s = null;
-		try {
-			conn=sm.dbUtils.getDBConnection();
-			s = conn.createStatement();
-			ResultSet rs = s.executeQuery("SELECT distinct org FROM "
-					+ CLDR_USERS + " order by org");
-			// System.err.println("Adding orgs...");
-			while (rs.next()) {
-				String org = rs.getString(1);
-				// System.err.println("Adding org: "+ org);
-				orgs.add(org);
-			}
-		} catch (SQLException se) {
-			/* logger.severe */System.err
-					.println(/* java.util.logging.Level.SEVERE, */"UserRegistry: SQL error trying to get orgs resultset for: VI "
-							+ " - " + DBUtils.unchainSqlException(se)/* ,se */);
-		} finally {
-			// close out the RS
-			try {
-				if (s != null) {
-					s.close();
-				}
-				if (conn != null) {
-					DBUtils.closeDBConnection(conn);
-				}
-			} catch (SQLException se) {
-				/* logger.severe */System.err
-						.println(/* java.util.logging.Level.SEVERE, */"UserRegistry: SQL error trying to close out: "
-								+ DBUtils.unchainSqlException(se)/* ,se */);
-			}
-		} // end try
-
-
-		// get all possible VR orgs..
-		Set<VoteResolver.Organization> allvr = new HashSet<VoteResolver.Organization>();
-		for (VoteResolver.Organization org : VoteResolver.Organization.values()) {
-			allvr.add(org);
-		}
-		// Subtract out ones already in use
-		for (String org : orgs) {
-			allvr.remove(UserRegistry.computeVROrganization(org));
-		}
-		// Add back any ones not yet in use
-		for (VoteResolver.Organization org : allvr) {
-			String orgName = org.name();
-			orgName = UCharacter.toTitleCase(orgName, null);
-			orgs.add(orgName);
-		}
-
-		orgList = orgs.toArray(orgList);
-	}
 }

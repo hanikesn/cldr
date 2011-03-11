@@ -6,6 +6,9 @@
  */
 package org.unicode.cldr.util;
 
+import com.ibm.icu.dev.test.util.TransliteratorUtilities;
+import com.ibm.icu.impl.Utility;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,9 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import com.ibm.icu.dev.test.util.TransliteratorUtilities;
-import com.ibm.icu.impl.Utility;
 
 /**
  * Parser for XPath

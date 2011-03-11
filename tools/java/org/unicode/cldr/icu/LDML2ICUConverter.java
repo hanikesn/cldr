@@ -1,6 +1,6 @@
 /*
  ******************************************************************************
- * Copyright (C) 2004-2011 International Business Machines Corporation and    *
+ * Copyright (C) 2004-2010 International Business Machines Corporation and    *
  * others. All Rights Reserved.                                               *
  ******************************************************************************
  */
@@ -40,6 +40,7 @@ import java.util.TreeSet;
 
 import javax.xml.transform.TransformerException;
 
+import org.unicode.cldr.ant.CLDRBuild;
 import org.unicode.cldr.ant.CLDRConverterTool;
 import org.unicode.cldr.icu.ICUResourceWriter.Resource;
 import org.unicode.cldr.icu.ICUResourceWriter.ResourceAlias;
@@ -62,6 +63,7 @@ import org.w3c.dom.NodeList;
 import com.ibm.icu.dev.test.util.ElapsedTimer;
 import com.ibm.icu.dev.tool.UOption;
 import com.ibm.icu.impl.Utility;
+import com.ibm.icu.text.Normalizer;
 import com.ibm.icu.text.UCharacterIterator;
 import com.ibm.icu.text.UTF16;
 import com.ibm.icu.text.UnicodeSet;
@@ -882,12 +884,16 @@ public class LDML2ICUConverter extends CLDRConverterTool {
             return mainTable;
         }
 
-        // If this locale has an explicit parent, then put that into the resource file
-        if (supplementalDataInfo != null && supplementalDataInfo.getParentLocale(localeID) != null) {
-            ResourceString pl = new ResourceString();
-            pl.name = "%%Parent";
-            pl.val = supplementalDataInfo.getParentLocale(localeID);
-            mainTable.appendContents(pl);
+        // If this is a language + script locale and the script is not default content,
+        // then add a "Parent is root" boolean resource in order to prevent cross-script
+        // inheritance.
+        if (ULocale.getScript(localeID).length() > 0 && ULocale.getCountry(localeID).length() == 0 && !supplementalDataInfo.getDefaultContentLocales().contains(localeID)
+            && sourceDir.indexOf("coll") < 0) {
+
+            ResourceInt pr = new ResourceInt();
+            pr.name = "%%ParentIsRoot";
+            pr.val = "1";
+            mainTable.appendContents(pr);
         }
 
         // Now, loop over other stuff.
@@ -969,7 +975,30 @@ public class LDML2ICUConverter extends CLDRConverterTool {
             String variant = ULocale.getVariant(locName);
             boolean isRoot = locName.equals("root");
 
-            Resource temp = parseMeasurement(country, variant, isRoot);
+            Resource temp = parseWeek(country, variant, isRoot);
+            if (temp != null) {
+                Resource greg = findResource(mainTable, LDMLConstants.GREGORIAN);
+                Resource cals = findResource(mainTable, LDMLConstants.CALENDAR);
+                if (greg != null) {
+                    greg.first.end().next = temp;
+                } else if (cals != null) {
+                    greg = new ResourceTable();
+                    greg.name = LDMLConstants.GREGORIAN;
+                    greg.first = temp;
+                    cals.first.end().next = greg;
+                } else {
+                    greg = new ResourceTable();
+                    greg.name = LDMLConstants.GREGORIAN;
+                    greg.first = temp;
+
+                    ResourceTable cal = new ResourceTable();
+                    cal.name = LDMLConstants.CALENDAR;
+                    cal.first = greg;
+
+                    mainTable.appendContents(cal);
+                }
+            }
+            temp = parseMeasurement(country, variant, isRoot);
             if (temp != null) {
                 mainTable.appendContents(temp);
             }
@@ -1243,8 +1272,6 @@ public class LDML2ICUConverter extends CLDRConverterTool {
                 name = LDMLConstants.PATTERN;
             } else if (LDMLConstants.LOCALE_SEPARATOR.equals(element)) {
                 name = LDMLConstants.SEPARATOR;
-            } else if (LDMLConstants.LOCALE_KEYTYPE_PATTERN.equals(element)) {
-                name = LDMLConstants.KEYTYPE_PATTERN;
             } else {
                 log.error("Encountered unknown <" + xpath + "> subelement: " + element + " while looking for " + LDMLConstants.TYPE);
                 System.exit(-1);
@@ -1471,8 +1498,6 @@ public class LDML2ICUConverter extends CLDRConverterTool {
                 // Currently we dont have a way to represent this data in ICU !
                 // And we don't need to
                 // if (DEBUG)printXPathWarning(node, xpath);
-            } else if (aPath.contains(LDMLConstants.STOPWORDS)) {
-                // Skip for now
             } else if (aPath.indexOf("/" + LDMLConstants.SPECIAL) > 0) {
               res = parseSpecialElements(loc, aPath);
             } else if (aPath.contains("/ellipsis")) {
@@ -1961,7 +1986,7 @@ public class LDML2ICUConverter extends CLDRConverterTool {
                 String mzname = XPPUtil.getAttributeValue(apath, LDMLConstants.METAZONE, LDMLConstants.TYPE);
                 metazones.add(mzname);
             } else if (name.equals(LDMLConstants.HOUR_FORMAT) || name.equals(LDMLConstants.GMT_FORMAT) || name.equals(LDMLConstants.GMT_ZERO_FORMAT) || name.equals(LDMLConstants.REGION_FORMAT)
-                || name.equals(LDMLConstants.FALLBACK_FORMAT) || name.equals(LDMLConstants.FALLBACK_REGION_FORMAT)) {
+                || name.equals(LDMLConstants.FALLBACK_FORMAT)) {
                 ResourceString str = new ResourceString();
                 str.name = name;
                 str.val = loc.getFile().getStringValue(apath);
@@ -2793,7 +2818,7 @@ public class LDML2ICUConverter extends CLDRConverterTool {
         return null;
     }
 
-    public static String getDayNumberAsString(String type) {
+    private String getDayNumberAsString(String type) {
         if (type.equals("sun")) {
             return "1";
         } else if (type.equals("mon")) {
@@ -3034,8 +3059,31 @@ public class LDML2ICUConverter extends CLDRConverterTool {
 
         return map;
     }
-    
-    public static int getMillis(String time) {
+
+    private Resource parseWeek(String country, String variant, boolean isRoot) {
+        Resource ret = null;
+        // optimization
+        if (variant.length() != 0) {
+            return ret;
+        }
+
+        StringBuilder xpath = new StringBuilder("//supplementalData/weekData");
+        Node root = LDMLUtilities.getNode(supplementalDoc, xpath.toString());
+        if (root != null) {
+            Resource week = parseWeekend(root, xpath, country, isRoot);
+            Resource dte = parseDTE(root, xpath, country, isRoot);
+            if (week != null) {
+                week.next = dte;
+                ret = week;
+            } else {
+                ret = dte;
+            }
+        }
+
+        return ret;
+    }
+
+    private static int getMillis(String time) {
         String[] strings = time.split(":"); // time is in hh:mm format
         int hours = Integer.parseInt(strings[0]);
         int minutes = Integer.parseInt(strings[1]);
@@ -3064,7 +3112,103 @@ public class LDML2ICUConverter extends CLDRConverterTool {
         return ret;
     }
 
+    private Resource parseWeekend(Node root, StringBuilder xpath, String country, boolean isRoot) {
+        Node wkendStart = null;
+        Node wkendEnd = null;
+        if (country.length() > 0) {
+            wkendStart = getVettedNode(root, LDMLConstants.WENDSTART, LDMLConstants.TERRITORIES, country, xpath);
+            wkendEnd = getVettedNode(root, LDMLConstants.WENDEND, LDMLConstants.TERRITORIES, country, xpath);
+        }
 
+        if (wkendEnd != null || wkendStart != null || isRoot) {
+            if (wkendStart == null) {
+                wkendStart = getVettedNode(null, root, LDMLConstants.WENDSTART + "[@territories='001']", xpath, true);
+                if (wkendStart == null) {
+                    log.error("Could not find weekendStart resource.");
+                }
+            }
+            if (wkendEnd == null) {
+                wkendEnd = getVettedNode(null, root, LDMLConstants.WENDEND + "[@territories='001']", xpath, true);
+                if (wkendEnd == null) {
+                    log.error("Could not find weekendEnd resource.");
+                }
+            }
+        }
+
+        ResourceIntVector wkend = null;
+        if (wkendStart != null && wkendEnd != null) {
+            try {
+                wkend = new ResourceIntVector();
+                wkend.name = LDMLConstants.WEEKEND;
+                ResourceInt startday = new ResourceInt();
+                startday.val = getDayNumberAsString(LDMLUtilities.getAttributeValue(wkendStart, LDMLConstants.DAY));
+                ResourceInt starttime = new ResourceInt();
+                String time = LDMLUtilities.getAttributeValue(wkendStart, LDMLConstants.TIME);
+                starttime.val = Integer.toString(getMillis(time == null ? "00:00" : time));
+                ResourceInt endday = new ResourceInt();
+                endday.val = getDayNumberAsString(LDMLUtilities.getAttributeValue(wkendEnd, LDMLConstants.DAY));
+                ResourceInt endtime = new ResourceInt();
+
+                time = LDMLUtilities.getAttributeValue(wkendEnd, LDMLConstants.TIME);
+                endtime.val = Integer.toString(getMillis(time == null ? "24:00" : time));
+
+                wkend.first = startday;
+                startday.next = starttime;
+                starttime.next = endday;
+                endday.next = endtime;
+            } catch (NullPointerException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        return wkend;
+    }
+
+    private Resource parseDTE(Node root, StringBuilder xpath, String country, boolean isRoot) {
+        Node minDays = null;
+        Node firstDay = null;
+        ResourceIntVector dte = null;
+
+        if (country.length() > 0) {
+            minDays = getVettedNode(root, LDMLConstants.MINDAYS, LDMLConstants.TERRITORIES, country, xpath);
+            firstDay = getVettedNode(root, LDMLConstants.FIRSTDAY, LDMLConstants.TERRITORIES, country, xpath);
+        }
+
+        if (minDays != null || firstDay != null || isRoot) {
+            // fetch inherited to complete the resource..
+            if (minDays == null) {
+                minDays = getVettedNode(root, LDMLConstants.MINDAYS, LDMLConstants.TERRITORIES, "001", xpath);
+                if (minDays == null) {
+                    log.error("Could not find minDays resource.");
+                }
+            }
+            if (firstDay == null) {
+                firstDay = getVettedNode(root, LDMLConstants.FIRSTDAY, LDMLConstants.TERRITORIES, "001", xpath);
+                if (firstDay == null) {
+                    log.error("Could not find firstDay resource.");
+                }
+            }
+        }
+
+        if (minDays != null && firstDay != null) {
+            dte = new ResourceIntVector();
+            ResourceInt int1 = new ResourceInt();
+            int1.val = getDayNumberAsString(LDMLUtilities.getAttributeValue(firstDay, LDMLConstants.DAY));
+            ResourceInt int2 = new ResourceInt();
+            int2.val = LDMLUtilities.getAttributeValue(minDays, LDMLConstants.COUNT);
+
+            dte.name = DTE;
+            dte.first = int1;
+            int1.next = int2;
+        }
+
+        if ((minDays == null && firstDay != null) || (minDays != null && firstDay == null)) {
+            log.warning("Could not find minDays = " + minDays + " or firstDay = " + firstDay + " from fullyResolved locale. Not producing the resource. " + xpath.toString());
+            return null;
+        }
+
+        return dte;
+    }
 
     private Resource parseEras(LDML2ICUInputLocale loc, String xpath) {
         ResourceTable table = new ResourceTable();
