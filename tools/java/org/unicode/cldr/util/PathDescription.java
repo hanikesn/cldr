@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import org.unicode.cldr.tool.GenerateXMB;
 import org.unicode.cldr.util.CldrUtility.Output;
+import org.unicode.cldr.util.PathDescription.ErrorHandling;
 
 import com.ibm.icu.text.MessageFormat;
 

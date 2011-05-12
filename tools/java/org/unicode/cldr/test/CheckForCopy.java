@@ -1,5 +1,6 @@
 package org.unicode.cldr.test;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -7,9 +8,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
-import org.unicode.cldr.util.Builder;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRFile.Status;
+import org.unicode.cldr.util.Builder;
 import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.RegexLookup;
 import org.unicode.cldr.util.SupplementalDataInfo;
