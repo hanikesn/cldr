@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!-- Copyright (C) 2012 IBM and Others. All Rights Reserved --> 
 <html>
 	<head>
 		<title>Unicode | CLDR | About the Survey Tool</title>
@@ -9,7 +8,6 @@
 	</head>
     
     <body>
-				<img src="STLogo.png" align="right" border="0" title="[logo]" alt="[logo]" />
     <h2 class="selected">About the Survey Tool</h2>
 
         <p class="hang">For more information about the Survey Tool, see <a href="http://www.unicode.org/cldr">unicode.org/cldr</a>.</p>

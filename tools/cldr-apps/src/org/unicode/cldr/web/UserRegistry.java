@@ -1,7 +1,7 @@
 //  UserRegistry.java
 //
 //  Created by Steven R. Loomis on 14/10/2005.
-//  Copyright 2005-2012 IBM. All rights reserved.
+//  Copyright 2005-2011 IBM. All rights reserved.
 //
 
 package org.unicode.cldr.web;
@@ -33,7 +33,6 @@ import org.unicode.cldr.util.CLDRLocale;
 import org.unicode.cldr.util.VoteResolver;
 import org.unicode.cldr.util.VoteResolver.Organization;
 import org.unicode.cldr.util.VoteResolver.VoterInfo;
-import org.unicode.cldr.web.UserRegistry.InfoType;
 
 import com.ibm.icu.dev.test.util.ElapsedTimer;
 import com.ibm.icu.lang.UCharacter;
@@ -114,8 +113,13 @@ public class UserRegistry {
     public static final String SQL_queryEmailStmt_FRO = "SELECT id,name,userlevel,org,locales,intlocs,lastlogin,password from " + CLDR_USERS +" where email=?"; 
     	//            ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
     public static final String SQL_touchStmt = "UPDATE "+CLDR_USERS+" set lastlogin=CURRENT_TIMESTAMP where id=?";
+    public static final String SQL_updateInfoEmailStmt = "UPDATE "+CLDR_USERS+" set email=? WHERE id=? AND email=?";
+    public static final String SQL_updateInfoNameStmt = "UPDATE "+CLDR_USERS+" set name=? WHERE id=? AND email=?";
+    public static final String SQL_updateInfoPasswordStmt = "UPDATE "+CLDR_USERS+" set password=? WHERE id=? AND email=?";
     public static final String SQL_removeIntLoc = "DELETE FROM "+CLDR_INTEREST+" WHERE uid=?";
     public static final String SQL_updateIntLoc = "INSERT INTO " + CLDR_INTEREST + " (uid,forum) VALUES(?,?)";
+
+    
     
     private UserSettingsData userSettings;
     
@@ -123,7 +127,7 @@ public class UserRegistry {
      * This nested class is the representation of an individual user. 
      * It may not have all fields filled out, if it is simply from the cache.
      */
-    public class User implements Comparable<User> {
+    public class User {
         public int    id;  // id number
         public int    userlevel=LOCKED;    // user level
         public String password;       // password
@@ -169,7 +173,7 @@ public class UserRegistry {
             UserRegistry.printPasswordLink(ctx, email, password);
         }
         public String toString() {
-            return email + "("+org+")-" + levelAsStr(userlevel)+"#"+userlevel + " - " + name;
+            return email + "("+org+")-" + levelAsStr(userlevel)+"#"+userlevel;
         }
         public String toHtml(User forUser) {
             if(forUser==null||!userIsTC(forUser)) {
@@ -291,15 +295,6 @@ public class UserRegistry {
                         ( UserRegistry.userIsTC(this) && (other!=null) && this.org.equals(other.org)); 
             return adminOrRelevantTc;
         }
-        @Override
-        public int compareTo(User other) {
-            if(other==this || other.equals(this)) return 0;
-            if(this.id < other.id){
-                return -1;
-            } else {
-                return 1;
-            }
-        }
     }
         
     public static void printPasswordLink(WebContext ctx, String email, String password) {
@@ -384,7 +379,7 @@ public class UserRegistry {
                                                             "'" + sm.vap +"')");
                     s.execute(sql);
                     sql = null;
-                    SurveyLog.debug("DB: added user Admin");
+                    logger.info("DB: added user Admin");
                     
                     s.close();
                     conn.commit();
@@ -409,7 +404,7 @@ public class UserRegistry {
                     s.execute(sql); 
                     sql = "CREATE  INDEX " + CLDR_INTEREST + "_id_for ON " + CLDR_INTEREST + " (forum) ";
                     s.execute(sql); 
-                    SurveyLog.debug("DB: created "+CLDR_INTEREST);
+                    logger.info("DB: created "+CLDR_INTEREST);
                     sql=null;
                     s.close();
                     conn.commit();
@@ -585,17 +580,16 @@ public class UserRegistry {
 
     /**
      * @param letmein The VAP was given - allow the user in regardless 
-     * @param pass the password to match. If NULL, means just do a lookup
      */
     public  UserRegistry.User get(String pass, String email, String ip, boolean letmein) {
         if((email == null)||(email.length()<=0)) {
             return null; // nothing to do
         }
-        if(((pass!=null&&pass.length()<=0)) && !letmein ) {
+        if(((pass == null)||(pass.length()<=0)) && !letmein ) {
             return null; // nothing to do
         }
         
-        if(email.startsWith("!") && pass!=null&&pass.equals(sm.vap)) {
+        if(email.startsWith("!") && pass.equals(sm.vap)) {
         	email=email.substring(1);
         	letmein=true;
         }
@@ -744,7 +738,7 @@ public class UserRegistry {
 	            count++;
 	        }
 	        conn.commit();
-	        SurveyLog.debug("update:" + count + " user's locales updated " + et);
+	        System.err.println("update:" + count + " user's locales updated " + et);
     	} finally {
     		DBUtils.close(removeIntLoc, updateIntLoc, conn);
     	}
@@ -981,32 +975,7 @@ public class UserRegistry {
         return msg;
     }
     
-    public enum InfoType { INFO_EMAIL("E-mail","email"), INFO_NAME("Name","name"), INFO_PASSWORD("Password","password"), INFO_ORG("Organization","org") ;
-    	private static final String CHANGE = "change_";
-		private String sqlField;
-    	private String title;
-    	InfoType(String title, String sqlField) {
-    		this.title=title;
-    		this.sqlField = sqlField;
-    	}
-    	public String toString() {
-    		return title;
-    	}
-		public String field() {
-			return sqlField;
-		}
-		public static InfoType fromAction(String action) {
-			if(action!=null&&action.startsWith(CHANGE)) {
-				 String which = action.substring(CHANGE.length());
-				 return InfoType.valueOf(which);
-			} else {
-				return null;
-			}
-		}
-		public String toAction() {
-			return CHANGE+name();
-		}
-    };
+    public enum InfoType { INFO_EMAIL, INFO_NAME, INFO_PASSWORD };
     
     String updateInfo(WebContext ctx, int theirId, String theirEmail, InfoType type, String value) {
         if(ctx.session.user.userlevel > TC) {
@@ -1019,7 +988,21 @@ public class UserRegistry {
         try {
         		conn = sm.dbUtils.getDBConnection();
                 
-                updateInfoStmt = conn.prepareStatement("UPDATE "+CLDR_USERS+" set "+type.field()+"=? WHERE id=? AND email=?");
+                //updateInfoStmt = conn.prepareStatement("UPDATE CLDR_USERS set ?=? WHERE id=? AND email=?");
+                switch(type) {
+                    case INFO_EMAIL: 
+                        updateInfoStmt = conn.prepareStatement(SQL_updateInfoEmailStmt);
+                        value = value.toLowerCase();
+                        break;
+                    case INFO_NAME:
+                        updateInfoStmt = conn.prepareStatement(SQL_updateInfoNameStmt);
+                        break;
+                    case INFO_PASSWORD:
+                        updateInfoStmt = conn.prepareStatement(SQL_updateInfoPasswordStmt);
+                        break;
+                    default:
+                        return("[unknown type: " + type.toString() +"]");
+                }
                 if(type==UserRegistry.InfoType.INFO_NAME) { // unicode treatment
                     DBUtils.setStringUTF8(updateInfoStmt, 1, value);
                 } else {
@@ -1098,9 +1081,6 @@ public class UserRegistry {
 		if (ctx.session.user.userlevel > TC) {
 			return null;
 		}
-		logger.info("UR: Attempt newuser by " + ctx.session.user.email
-				+ ": of " + u.email + " @ " + ctx.userIP());
-
 		// prepare quotes
 		u.email = u.email.replace('\'', '_').toLowerCase();
 		u.org = u.org.replace('\'', '_');
@@ -1112,6 +1092,8 @@ public class UserRegistry {
 		try {
 			conn = sm.dbUtils.getDBConnection();
 			insertStmt = conn.prepareStatement(SQL_insertStmt);
+			logger.info("UR: Attempt newuser by " + ctx.session.user.email
+					+ ": of " + u.email + " @ " + ctx.userIP());
 			insertStmt.setInt(1, u.userlevel);
 			DBUtils.setStringUTF8(insertStmt, 2, u.name); // insertStmt.setString(2,
 															// u.name);
@@ -1134,11 +1116,9 @@ public class UserRegistry {
 				return null;
 			}
 		} catch (SQLException se) {
-			SurveyLog.logException(se,"Adding User");
 			logger.severe("UR: Adding: exception: "
 					+ DBUtils.unchainSqlException(se));
 		} catch (Throwable t) {
-			SurveyLog.logException(t,"Adding User");
 			logger.severe("UR: Adding: exception: " + t.toString());
 		} finally {
 			userModified(); // new user
@@ -1151,27 +1131,27 @@ public class UserRegistry {
     // All of the userlevel policy is concentrated here, or in above functions (search for 'userlevel')
     
     // * user types
-    public static final boolean userIsAdmin(User u) {
+    static final boolean userIsAdmin(User u) {
         return (u!=null)&&(u.userlevel <= UserRegistry.ADMIN);
     }
-    public static final boolean userIsTC(User u) {
+    static final boolean userIsTC(User u) {
         return (u!=null)&&(u.userlevel <= UserRegistry.TC);
     }
-    public static final boolean userIsExpert(User u) {
+    static final boolean userIsExpert(User u) {
         return (u!=null)&&(u.userlevel <= UserRegistry.EXPERT);
     }
-    public static final boolean userIsVetter(User u) {
+    static final boolean userIsVetter(User u) {
         return (u!=null)&&(u.userlevel <= UserRegistry.VETTER);
     }
-   public static final boolean userIsStreet(User u) {
+    static final boolean userIsStreet(User u) {
         return (u!=null)&&(u.userlevel <= UserRegistry.STREET);
     }
-    public static final boolean userIsLocked(User u) {
+    static final boolean userIsLocked(User u) {
         return (u!=null)&&(u.userlevel == UserRegistry.LOCKED);
     }
     // * user rights
     /** can create a user in a different organization? */
-    public  static final boolean userCreateOtherOrgs(User u) {
+    static final boolean userCreateOtherOrgs(User u) {
         return userIsAdmin(u);
     }
     /** What level can the new user be, given requested? */
@@ -1731,7 +1711,7 @@ public class UserRegistry {
 		        out.println("\"/>");
 		    }            
 		}/*end synchronized(reg)*/ } catch(SQLException se) {
-		    SurveyLog.logger.log(java.util.logging.Level.WARNING,"Query for org " + org + " failed: " + DBUtils.unchainSqlException(se),se);
+		    SurveyMain.logger.log(java.util.logging.Level.WARNING,"Query for org " + org + " failed: " + DBUtils.unchainSqlException(se),se);
 		    out.println("<!-- Failure: " + DBUtils.unchainSqlException(se) + " -->");
 		} finally {
 			DBUtils.close(conn);

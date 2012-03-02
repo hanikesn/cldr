@@ -97,7 +97,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
   public static final String SUPPLEMENTAL_NAME = "supplementalData";
   public static final String SUPPLEMENTAL_METADATA = "supplementalMetadata";
   public static final String SUPPLEMENTAL_PREFIX = "supplemental";
-  public static final String GEN_VERSION = "21.0";
+  public static final String GEN_VERSION = "21.0.1";
 
   private boolean locked;
   XMLSource dataSource;  // TODO(jchye): make private
@@ -247,8 +247,6 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
     return this;
   }
-  
-  private final static Map<String,Object> nullOptions = Collections.unmodifiableMap(new TreeMap<String,Object>());
 
   /**
    * Write the corresponding XML file out, with the normal formatting and indentation.
@@ -256,17 +254,6 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
    * If the CLDRFile is empty, the DTD type will be //ldml.
    */
   public CLDRFile write(PrintWriter pw) {
-      return write(pw,nullOptions);
-  }
-
-  /**
-   * Write the corresponding XML file out, with the normal formatting and indentation.
-   * Will update the identity element, including generation, version, and other items.
-   * If the CLDRFile is empty, the DTD type will be //ldml.
-   * @param pw writer to print to
-   * @param options map of options for writing
-   */
-  public CLDRFile write(PrintWriter pw,Map<String,Object> options) {
     Set orderedSet = new TreeSet(ldmlComparator);
     CollectionUtilities.addAll(dataSource.iterator(), orderedSet);
 
@@ -284,16 +271,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
 
     pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-    if(!options.containsKey("DTD_OMIT")) {
-        String dtdDir = "../../common/dtd/";
-        if(options.containsKey("DTD_DIR")) {
-            dtdDir = options.get("DTD_DIR").toString();
-        }
-        pw.println("<!DOCTYPE " + dtdType + " SYSTEM \"" + dtdDir + dtdType + ".dtd\">");
-    }
-    if(options.containsKey("COMMENT")) {
-        pw.println("<!-- " + options.get("COMMENT") + " -->");
-    }
+    pw.println("<!DOCTYPE " + dtdType + " SYSTEM \"../../common/dtd/" + dtdType + ".dtd\">");
     /*
      <identity>
      <version number="1.2"/>
@@ -896,25 +874,23 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
    * Utility to restrict to files matching a given regular expression. The expression does not contain ".xml".
    * Note that supplementalData is always skipped, and root is always included.
    */
-  public static Set<String> getMatchingXMLFiles(File sourceDirs[], Matcher m) {
-    Set<String> s = new TreeSet<String>();
-    
-    for(File dir : sourceDirs) {
-        if (!dir.exists()) {
-          throw new IllegalArgumentException("Directory doesn't exist:\t" + dir.getPath());
-        }
-        if (!dir.isDirectory()) {
-          throw new IllegalArgumentException("Input isn't a file directory:\t" + dir.getPath());
-        }
-        File[] files = dir.listFiles();
-        for (int i = 0; i < files.length; ++i) {
-          String name = files[i].getName();
-          if (!name.endsWith(".xml")) continue;
-          //if (name.startsWith(SUPPLEMENTAL_NAME)) continue;
-          String locale = name.substring(0,name.length()-4); // drop .xml
-          if (!m.reset(locale).matches()) continue;
-          s.add(locale);
-        }
+  public static Set<String> getMatchingXMLFiles(String sourceDir, Matcher m) {
+    Set<String> s = new TreeSet();
+    File dir = new File(sourceDir);
+    if (!dir.exists()) {
+      throw new IllegalArgumentException("Directory doesn't exist:\t" + sourceDir);
+    }
+    if (!dir.isDirectory()) {
+      throw new IllegalArgumentException("Input isn't a file directory:\t" + sourceDir);
+    }
+    File[] files = dir.listFiles();
+    for (int i = 0; i < files.length; ++i) {
+      String name = files[i].getName();
+      if (!name.endsWith(".xml")) continue;
+      //if (name.startsWith(SUPPLEMENTAL_NAME)) continue;
+      String locale = name.substring(0,name.length()-4); // drop .xml
+      if (!m.reset(locale).matches()) continue;
+      s.add(locale);
     }
     return s;
   }

@@ -1386,14 +1386,6 @@ public class SupplementalDataInfo {
                 if (level3.equals("variable")) {
                     Map<String,String> attributes = parts.getAttributes(-1);
                     validityInfo.put(attributes.get("id"), Row.of(attributes.get("type"), value));
-                    if ("$language".equals(attributes.get("id")) && "choice".equals(attributes.get("type"))) {
-                        String [] validCodeArray = value.trim().split("\\s+");
-                        CLDRLanguageCodes = Collections.unmodifiableSet(new TreeSet<String>(Arrays.asList(validCodeArray)));
-                    }
-                    if ("$script".equals(attributes.get("id")) && "choice".equals(attributes.get("type"))) {
-                        String [] validCodeArray = value.trim().split("\\s+");
-                        CLDRScriptCodes = Collections.unmodifiableSet(new TreeSet<String>(Arrays.asList(validCodeArray)));
-                    }
                     return true;
                 }
             } else if (level2.equals("attributeOrder")) {
@@ -1677,9 +1669,6 @@ public class SupplementalDataInfo {
     private Map<String, CoverageVariableInfo> coverageVariables = new TreeMap();    
     private Map<String,String> numberingSystems = new HashMap<String,String>();
     private Set<String> defaultContentLocales;
-    private Set<String> CLDRLanguageCodes;
-    private Set<String> CLDRScriptCodes;
-    
     /**
      * Get the population data for a language. Warning: if the language has script variants, cycle on those variants.
      * 
@@ -2650,21 +2639,6 @@ public class SupplementalDataInfo {
     
     public Map<String, R2<String, String>> getValidityInfo() {
         return validityInfo;
-    }
-
-    public Set<String> getCLDRLanguageCodes() {
-        return CLDRLanguageCodes;
-    }
-    
-    public boolean isCLDRLanguageCode(String code) {
-        return CLDRLanguageCodes.contains(code);
-    }
-    public Set<String> getCLDRScriptCodes() {
-        return CLDRScriptCodes;
-    }
-    
-    public boolean isCLDRScriptCode(String code) {
-        return CLDRScriptCodes.contains(code);
     }
 }
 

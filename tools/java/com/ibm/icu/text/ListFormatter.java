@@ -2,21 +2,21 @@ package com.ibm.icu.text;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 
 import com.ibm.icu.util.ULocale;
 
 /**
  * Immutable class for formatting a list, using data from CLDR (or supplied
- * separately). The class is not subclassable.
+ * separately). The class is currently not subclassable.
  * 
  * @author markdavis
- * @internal
  */
-final public class ListFormat {
+final public class ListFormatter implements Transform<Collection<String>, String> {
+    // TODO optimize this for the common case that the patterns are all of the
+    // form {0}<sometext>{1}.
+    // For now, we avoid MessageFormat, because there is no "sub" formatting.
     private final String two;
     private final String start;
     private final String middle;
@@ -38,9 +38,8 @@ final public class ListFormat {
      * @param end
      *            string for the end of a list items, containing {0} for the
      *            first part of the list, and {1} for the last item.
-     * @internal
      */
-    public ListFormat(String two, String start, String middle, String end) {
+    public ListFormatter(String two, String start, String middle, String end) {
         this.two = two;
         this.start = start;
         this.middle = middle;
@@ -53,21 +52,11 @@ final public class ListFormat {
      * @param locale
      *            the locale in question.
      * @return ListFormatter
-     * @internal
      */
-    public static ListFormat getInstance(ULocale locale) {
-        // These can be cached, since they are read-only
-        // poor-man's locale lookup, for hardcoded data
-        while (true) {
-            ListFormat data = localeToData.get(locale);
-            if (data != null) {
-                return data;
-            }
-            locale = locale.equals(zhTW) ? ULocale.TRADITIONAL_CHINESE : locale.getFallback();
-            if (locale == null) return localeToData.get(ULocale.ROOT);
-        }
+    public static ListFormatter getInstance(ULocale locale) {
+        // TODO: get ICU data from resource bundle
+        return null;
     }
-    private static ULocale zhTW = new ULocale("zh_TW");
 
     /**
      * Create a list formatter that is appropriate for a locale.
@@ -75,9 +64,8 @@ final public class ListFormat {
      * @param locale
      *            the locale in question.
      * @return ListFormatter
-     * @internal
      */
-    public static ListFormat getInstance(Locale locale) {
+    public static ListFormatter getInstance(Locale locale) {
         return getInstance(ULocale.forLocale(locale));
     }
 
@@ -87,9 +75,9 @@ final public class ListFormat {
      * @param items
      *            items to format. The toString() method is called on each.
      * @return items formatted into a string
-     * @internal
      */
     public String format(Object... items) {
+        // TODO: optimize
         return format(Arrays.asList(items));
     }
 
@@ -99,12 +87,8 @@ final public class ListFormat {
      * @param items
      *            items to format. The toString() method is called on each.
      * @return items formatted into a string
-     * @internal
      */
     public String format(Collection<Object> items) {
-        // TODO optimize this for the common case that the patterns are all of the
-        // form {0}<sometext>{1}.
-        // We avoid MessageFormat, because there is no "sub" formatting.
         Iterator<Object> it = items.iterator();
         int count = items.size();
         switch (count) {
@@ -128,16 +112,8 @@ final public class ListFormat {
         return pattern.replace("{0}", a.toString()).replace("{1}", b.toString());
     }
 
-    /** JUST FOR DEVELOPMENT */
-    // For use with the hard-coded data
-    // TODO Replace by use of RB
-    // Verify in building that all of the patterns contain {0}, {1}.
-
-    static Map<ULocale, ListFormat> localeToData = new HashMap<ULocale, ListFormat>();
-    static void add(String locale, String...data) {
-        localeToData.put(new ULocale(locale), new ListFormat(data[0], data[1], data[2], data[3]));
-    }
-    static {
-        ListFormatData.load();
+    @Override
+    public String transform(Collection<String> source) {
+        return format(source);
     }
 }

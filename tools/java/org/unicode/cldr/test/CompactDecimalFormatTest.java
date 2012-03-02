@@ -165,7 +165,7 @@ public class CompactDecimalFormatTest {
 
         PrintWriter hardOut = display 
         ? null : 
-            BagFormatter.openUTF8Writer(hardCodedFile, "CompactDecimalFormatData2.java");
+            BagFormatter.openUTF8Writer(hardCodedFile, "CompactDecimalFormatData.java");
         if (hardOut != null) {
             hardOut.println("package org.unicode.cldr.test;\npublic class CompactDecimalFormatData {\n\tstatic void load() {");
         }

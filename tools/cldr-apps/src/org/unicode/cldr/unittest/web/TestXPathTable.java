@@ -1,14 +1,18 @@
 /**
- * Copyright (C) ?-2012
+ * 
  */
 package org.unicode.cldr.unittest.web;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.unicode.cldr.unittest.TestPaths;
 import org.unicode.cldr.web.CookieSession;
 import org.unicode.cldr.web.DBUtils;
+import org.unicode.cldr.web.IntHash;
 import org.unicode.cldr.web.SurveyMain;
 import org.unicode.cldr.web.XPathTable;
 
@@ -31,9 +35,8 @@ public class TestXPathTable extends TestFmwk {
 	public static final int TEST_COUNT=200;
 
 	public void TestPutGet() throws SQLException {
-		logln("Testing " + TEST_COUNT + " xpaths");
 		Connection conn = DBUtils.getInstance().getDBConnection();
-		XPathTable xpt = XPathTable.createTable(conn, new SurveyMain());
+		XPathTable xpt = XPathTable.createTable(null, conn, new SurveyMain());
 		DBUtils.closeDBConnection(conn);
 		HashMap<Integer,String> s = new HashMap<Integer,String>();
 		for(int i=0;i<TEST_COUNT;i++) {
@@ -43,8 +46,7 @@ public class TestXPathTable extends TestFmwk {
 			if(s.containsKey(xpid)) {
 				errln("Error: Duplicate id " + xpid + " for " + str + " and " + s.get(xpid)+"\n");
 			}
-			//logln("#"+i+" - xpath " + str + " id " + xpid);
-			s.put(xpid,str);
+			logln("#"+i+" - xpath " + str + " id " + xpid);
 		}
 
 		int ii=0;
@@ -58,9 +60,9 @@ public class TestXPathTable extends TestFmwk {
 			}else if(!xpath.equals(expect)) {
 				errln("Error: xpath is " + xpath + " expected " + expect);
 			}else {
-				//logln("XP#"+n+" -> " + xpath);
+				log("XP#"+n+" -> " + xpath);
 			}
 		}
-		logln("OK: Tested "+ii+" values");
+		log("OK: Tested "+ii+" values\n");
 	}
 }

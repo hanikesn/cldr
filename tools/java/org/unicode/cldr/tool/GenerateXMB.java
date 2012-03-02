@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -88,7 +87,7 @@ public class GenerateXMB {
     static final String stock = "en|ar|de|es|fr|it|ja|ko|nl|pl|ru|th|tr|pt|zh|zh_Hant|bg|ca|cs|da|el|fa|fi|fil|hi|hr|hu|id|lt|lv|ro|sk|sl|sr|sv|uk|vi|he|nb|et|ms|am|bn|gu|is|kn|ml|mr|sw|ta|te|ur|eu|gl|af|zu|en_GB|es_419|pt_PT|fr_CA|zh_HK";
     private static final HashSet<String> REGION_LOCALES = new HashSet<String>(Arrays.asList(stock.split("\\|")));
 
-    final static Options myOptions = new Options("In normal usage, you set the -t option for the target.")
+    final static Options myOptions = new Options()
     .add("target", ".*", CldrUtility.TMP_DIRECTORY + "dropbox/xmb/", "The target directory for building. Will generate an English .xmb file, and .wsb files for other languages.")
     .add("file", ".*", stock, "Filter the information based on file name, using a regex argument. The '.xml' is removed from the file before filtering")
     // "^(sl|fr)$", 
@@ -104,7 +103,6 @@ public class GenerateXMB {
     //static Matcher contentMatcher;
     static Matcher pathMatcher;
     static PrettyPath prettyPath = new PrettyPath();
-    static int errors = 0;
 
     //enum Handling {SKIP};
     static final Matcher datePatternMatcher = Pattern.compile("dates.*(pattern|available)").matcher("");
@@ -122,7 +120,7 @@ public class GenerateXMB {
             return;
         }
         option = myOptions.get("file");
-        String fileMatcherString = option.getValue();
+        String fileMatcherString = option.doesOccur() ? option.getValue() : ".*";
         option = myOptions.get("content");
         Matcher contentMatcher = option.doesOccur() ? Pattern.compile(option.getValue()).matcher("") : null;
         option = myOptions.get("path");
@@ -139,8 +137,8 @@ public class GenerateXMB {
         EnglishInfo englishInfo = new EnglishInfo(targetDir, english, root);
 
         option = myOptions.get("kompare");
-        if (option.doesOccur()) {
-            compareDirectory = option.getValue();
+        compareDirectory = option.getValue();
+        if (compareDirectory != null) {
             compareFiles(fileMatcherString, contentMatcher, targetDir, cldrFactory1, english, englishInfo);
             return;
         }
@@ -193,7 +191,6 @@ public class GenerateXMB {
             countFile.flush();
         }
         countFile.close();
-        System.out.println("Errors: " + errors);
     }
 
 
@@ -520,7 +517,7 @@ public class GenerateXMB {
         int wordCount = 0;
         PluralInfo pluralInfo = supplementalDataInfo.getPlurals(locale);
         int lineCount = 0;
-        Set<String> errorSet = new LinkedHashSet<String>();
+
         for (Entry<String, Set<R2<PathInfo, String>>> entry : countItems.keyValuesSet()) {
             String countLessPath = entry.getKey();
             Map<String,String> fullValues = new TreeMap<String,String>();
@@ -544,10 +541,9 @@ public class GenerateXMB {
                 continue;
             }
             String var = pathInfo.getFirstVariable();
-            String fullPlurals = showPlurals(var, fullValues, locale, pluralInfo, isEnglish, errorSet);
+            String fullPlurals = showPlurals(var, fullValues, locale, pluralInfo, isEnglish);
             if (fullPlurals == null) {
-                System.out.println(locale + "\tCan't format plurals for: " + entry.getKey() + "\t" + errorSet);
-                errors++;
+                System.out.println("Can't format plurals for: " + entry.getKey());
                 continue;
             }
 
@@ -575,35 +571,33 @@ public class GenerateXMB {
     static final String[] PLURAL_KEYS = {"=0", "=1", "zero", "one", "two", "few", "many", "other"};
     static final String[] EXTRA_PLURAL_KEYS = {"0", "1", "zero", "one", "two", "few", "many"};
 
-    private static String showPlurals(String var, Map<String,String> values, String locale, PluralInfo pluralInfo, boolean isEnglish, Set<String> errorSet) {
-        errorSet.clear();
+    private static String showPlurals(String var, Map<String,String> values, String locale, PluralInfo pluralInfo, boolean isEnglish) {
         /*
-         * Desired output for English XMB
-<msg desc="[ICU Syntax] Plural forms for a number of hours. These are special messages: before translating, see cldr.org/translation/plurals.">
- {LENGTH, select,
-  abbreviated {
-   {NUMBER_OF_HOURS, plural,
-    =0 {0 hrs}
-    =1 {1 hr}
-    zero {# hrs}
-    one {# hrs}
-    two {# hrs}
-    few {# hrs}
-    many {# hrs}
-    other {# hrs}}}
-  full {
-   {NUMBER_OF_HOURS, plural,
-    =0 {0 hours}
-    =1 {1 hour}
-    zero {# hours}
-    one {# hours}
-    two {# hours}
-    few {# hours}
-    many {# hours}
-    other {# hours}}}}
- </msg>
+        <msg desc="[ICU Syntax] Plural forms for a number of hours. These are special messages: before translating, see cldr.org/translation/plurals.">
+         {LENGTH, select,
+          abbreviated {
+           {NUMBER_OF_HOURS, plural,
+            =0 {0 hrs}
+            =1 {1 hr}
+            zero {# hrs}
+            one {# hrs}
+            two {# hrs}
+            few {# hrs}
+            many {# hrs}
+            other {# hrs}}}
+          full {
+           {NUMBER_OF_HOURS, plural,
+            =0 {0 hours}
+            =1 {1 hour}
+            zero {# hours}
+            one {# hours}
+            two {# hours}
+            few {# hours}
+            many {# hours}
+            other {# hours}}}}
+         </msg>
 
- NOTE: For the WSB, the format has to match the following, WITHOUT LFs
+         NOTE: For the WSB, the format has to match the following, WITHOUT LFs
 
 <msg id='1431840205484292448' desc='[ICU Syntax] who is viewing?​ This message requires special attention. Please follow the instructions here: https://sites.google.com/a/google.com/localization-info-site/Home/training/icusyntax'>
 <ph name='[PLURAL_NUM_USERS_OFFSET_1]' ex='Special placeholder used in [ICU Syntax] messages, see instructions page.'/>
@@ -629,24 +623,20 @@ public class GenerateXMB {
         }
         for (String key : PLURAL_KEYS) {
             String value;
-            String coreKey = key.startsWith("=") ? key.substring(1,2) : key;
-            value = values.get(coreKey);
+            value = values.get(key);
             if (value == null) {
                 if (key.startsWith("=")) {
                     String stringCount = key.substring(1);
-                    // handle both =x case, and the category
                     int intCount = Integer.parseInt(stringCount);
                     Count count = pluralInfo.getCount(intCount);
                     value = values.get(count.toString());
                     if (value == null) {
-                        errorSet.add("Bad key/value " + key + "='" + value + "' in " + values);
                         return null;
                     }
                     value = value.replace("{0}", stringCount);
                 } else {
                     value = values.get("other");
                     if (value == null) {
-                        errorSet.add("No 'other' value in " + values);
                         return null;
                     }
                 }
@@ -656,6 +646,9 @@ public class GenerateXMB {
                 result.append("\n            ").append(key).append(" {").append(newValue).append('}');
             } else {
                 String prefix = key.toUpperCase(Locale.ENGLISH);
+                if (key.equals("=0")) {
+                    prefix = '\u200b' + prefix;
+                }
                 result.append("<!--\n        --><ph name='[").append(prefix).append("]'/>").append(newValue);
             }
         }

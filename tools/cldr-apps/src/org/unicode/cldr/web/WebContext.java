@@ -7,45 +7,34 @@
 //
 package org.unicode.cldr.web;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.ref.Reference;
-import java.sql.SQLException;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Vector;
+import org.w3c.dom.Document;
+import java.io.*;
+import java.util.*;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.unicode.cldr.test.DisplayAndInputProcessor;
-import org.unicode.cldr.test.ExampleGenerator.HelpMessages;
-import org.unicode.cldr.util.CLDRFile;
-import org.unicode.cldr.util.CLDRLocale;
-import org.unicode.cldr.util.CldrUtility;
-import org.unicode.cldr.util.Level;
-import org.unicode.cldr.util.StandardCodes;
+import org.unicode.cldr.util.*;
 import org.unicode.cldr.web.CLDRProgressIndicator.CLDRProgressTask;
 import org.unicode.cldr.web.SurveyAjax.AjaxType;
 import org.unicode.cldr.web.SurveyMain.UserLocaleStuff;
-import org.unicode.cldr.web.UserRegistry.User;
-import org.w3c.dom.Document;
+import org.unicode.cldr.web.Vetting.DataSubmissionResultHandler;
+import org.unicode.cldr.web.WebContext.HTMLDirection;
+import org.unicode.cldr.test.*;
+import org.unicode.cldr.test.ExampleGenerator.HelpMessages;
+
+import com.ibm.icu.util.ULocale;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
+
+// servlet imports
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+
+// sql imports
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import com.ibm.icu.dev.test.util.ElapsedTimer;
-import com.ibm.icu.util.ULocale;
 
 /**
  * This is the per-client context passed to basically all functions
@@ -53,7 +42,7 @@ import com.ibm.icu.util.ULocale;
  */
 public class WebContext implements Cloneable, Appendable {
     public static final String TMPL_PATH = "/WEB-INF/tmpl/";
-    public static java.util.logging.Logger logger = SurveyLog.logger;
+    public static java.util.logging.Logger logger = SurveyMain.logger;
 // USER fields
     public SurveyMain sm = null;
     public Document doc[]= new Document[0];
@@ -62,7 +51,7 @@ public class WebContext implements Cloneable, Appendable {
     public CLDRLocale docLocale[] = new CLDRLocale[0];
     public CookieSession session = null;
     public ElapsedTimer reqTimer = null;
-    public Hashtable<String, Object> temporaryStuff = new Hashtable<String, Object>();
+    public Hashtable temporaryStuff = new Hashtable();
     public static final String CLDR_WEBCONTEXT="cldr_webcontext";
     
     public static final String TARGET_ZOOMED = "CLDR-ST-ZOOMED";
@@ -99,7 +88,7 @@ public class WebContext implements Cloneable, Appendable {
      * Return the parameter map of the underlying request.
      * @return {@link ServletRequest#getParameterMap()}
      */
-    public Map<?, ?> getParameterMap() { 
+    public Map getParameterMap() { 
         return request.getParameterMap();
     }
     
@@ -176,16 +165,6 @@ public class WebContext implements Cloneable, Appendable {
         out=openUTF8Writer(System.out);
         pw = new PrintWriter(out);
     }
-    /**
-     * Construct a new, fake WebContext - for testing purposes.
-     * Writes all output to stdout.
-     * @param fake ignored
-     */
-    public WebContext(OutputStream os)throws IOException  {
-        dontCloseMe=false;
-        out=openUTF8Writer(os);
-        pw = new PrintWriter(out);
-    }
     
     /**
      * Copy one WebContext to another. This is useful when you wish to create a sub-context
@@ -196,14 +175,27 @@ public class WebContext implements Cloneable, Appendable {
         if((other instanceof URLWebContext) && !(this instanceof URLWebContext)) {
             throw new InternalError("Can't slice a URLWebContext - use clone()");
         }
-        init(other);
+        doc = other.doc;
+        docLocale = other.docLocale;
+        displayLocale = other.displayLocale;
+        out = other.out;
+        pw = other.pw;
+        outQuery = other.outQuery;
+//        localeName = other.localeName;
+        locale = other.locale;
+//        if(locale != null) {
+//            localeString = locale.getBaseName();
+//        }
+        session = other.session;
+        outQueryMap = (TreeMap<String, String>)other.outQueryMap.clone();
+        dontCloseMe = true;
+        request = other.request;
+        response = other.response;
+        sm = other.sm;
+        processor = other.processor;
+        temporaryStuff = other.temporaryStuff;
     }
     
-    public WebContext(Writer sw) {
-        dontCloseMe=false;
-        pw = new PrintWriter(out=sw);
-    }
-
     /**
      * get a field's value as a boolean
      * @param x field name
@@ -227,7 +219,7 @@ public class WebContext implements Cloneable, Appendable {
      * @param x field name
      * @return the field's value as an integer, or -1 if it was not found
      */
-    public final int fieldInt(String x) {
+    final int fieldInt(String x) {
         return fieldInt(x,-1);
     }
     
@@ -567,7 +559,7 @@ public class WebContext implements Cloneable, Appendable {
      * Returns the string that must be appended to the URL to start the next parameter - either ? or &amp;
      * @return the connecting string
      */
-    public final String urlConnector() {
+    final String urlConnector() {
         return (url().indexOf('?')!=-1)?"&amp;":"?";
     }
     
@@ -576,18 +568,8 @@ public class WebContext implements Cloneable, Appendable {
      * @return the servlet path in context
      */
     public String base() { 
-        if(theServletPath==null) {
-            return context() + request.getServletPath();
-        } else {
-            return context() + theServletPath;
-        }
+        return context() + request.getServletPath();
     }
-    
-    public void setServletPath(String path) {
-        theServletPath = path;
-    }
-    
-    private String theServletPath = null;
     
     /**
      * Get the base URL for some request
@@ -811,7 +793,7 @@ public class WebContext implements Cloneable, Appendable {
      * Set this context to be handling a certain locale
      * @param l locale to set
      */
-    public void setLocale(CLDRLocale l) {
+    void setLocale(CLDRLocale l) {
         locale = l;
 //        localeString = locale.getBaseName();
         processor = new DisplayAndInputProcessor(l.toULocale());
@@ -919,7 +901,7 @@ public class WebContext implements Cloneable, Appendable {
      */
     public int staticInfo_Reference(Object o) {
         int s = 0;
-        Object oo = ((Reference<?>)o).get();
+        Object oo = ((Reference)o).get();
         println("Reference -&gt; <ul>");
         s += staticInfo_Object(oo);
         println("</ul>");
@@ -972,9 +954,9 @@ public class WebContext implements Cloneable, Appendable {
      */
     public int staticInfo_Hashtable(Object o) {
         int s = 0;
-        Hashtable<?, ?> subHash = (Hashtable<?, ?>)o;
+        Hashtable subHash = (Hashtable)o;
         println("<ul>");
-        for(Iterator<?> ee = subHash.keySet().iterator();ee.hasNext();) {
+        for(Iterator ee = subHash.keySet().iterator();ee.hasNext();) {
             String kk = ee.next().toString();
             println(kk + ":");
             Object oo = subHash.get(kk);
@@ -1041,7 +1023,7 @@ public class WebContext implements Cloneable, Appendable {
      * Get an object from the specified static stuff
      */
     public static synchronized final Object getByLocaleStatic(String key, CLDRLocale aLocale) {
-        Hashtable<?, ?> subHash = staticStuff.get(aLocale);
+        Hashtable subHash = staticStuff.get(aLocale);
         if(subHash == null) {
             return null;
         }
@@ -1066,9 +1048,9 @@ public class WebContext implements Cloneable, Appendable {
      * Print the coverage level for a certain locale.
      */
 	public void showCoverageLevel() {
-        String itsLevel = getEffectiveCoverageLevel(getLocale().toString());
+        String itsLevel = getEffectiveCoverageLevel();
         String recLevel = getRecommendedCoverageLevel();
-        String def = sm.getListSetting(this,SurveyMain.PREF_COVLEV,WebContext.PREF_COVLEV_LIST,false);
+        String def = getCoverageSetting();
         if(def.equals(COVLEV_RECOMMENDED)) {
             print("Coverage Level: <tt class='codebox'>"+itsLevel.toString()+"</tt><br>");
         } else {
@@ -1079,21 +1061,31 @@ public class WebContext implements Cloneable, Appendable {
         sm.printMenu(this, "", "options", "My Options", SurveyMain.QUERY_DO);
         println("</li></ul>");
 		if(SurveyMain.isUnofficial) {
-			println("<smaller><i> // User Org:" + session.getUserOrg() + "isCoverageOrg:"+isCoverageOrganization(session.getUserOrg())+ " // Effective: " + getEffectiveCoverageLevel(getLocale().toString()) +  " // Recommended: " + getRecommendedCoverageLevel() + "</i></smaller>");
+			println("<smaller><i> // User Org:" + getUserOrg() + "isCoverageOrg:"+isCoverageOrganization(getUserOrg())+ " // Effective: " + getEffectiveCoverageLevel() +  " // Recommended: " + getRecommendedCoverageLevel() + "</i></smaller>");
 		}
 	}
 	
-	    public String getEffectiveCoverageLevel(String locale) {
-        String level = sm.getListSetting(this,SurveyMain.PREF_COVLEV,WebContext.PREF_COVLEV_LIST,false);
-        if((level == null) || (level.equals(COVLEV_RECOMMENDED))||(level.equals("default"))) {
-            // fetch from org
-            level = session.getOrgCoverageLevel(locale);
-        }
-        return level;
-    }
-
-    String getRecommendedCoverageLevel() {
-		String  myOrg = session.getUserOrg();
+	
+	public String getEffectiveCoverageLevel() {
+		return getEffectiveCoverageLevel(getLocale().toString());
+	}
+	public String getEffectiveCoverageLevel(String locale) {
+		String level = getCoverageSetting();
+		if((level == null) || (level.equals(COVLEV_RECOMMENDED))||(level.equals("default"))) {
+			// fetch from org
+			String  myOrg = getUserOrg();
+			if((myOrg == null) || !isCoverageOrganization(myOrg)) {
+				level = COVLEV_DEFAULT_RECOMMENDED_STRING;
+			} else {
+				level = StandardCodes.make().getLocaleCoverageLevel(myOrg, locale).toString() ;
+			}
+		}
+		return level;
+	}
+	
+	
+	String getRecommendedCoverageLevel() {
+		String  myOrg = getUserOrg();
 		if((myOrg == null) || !isCoverageOrganization(myOrg)) {
 			return COVLEV_DEFAULT_RECOMMENDED_STRING;
 		} else {
@@ -1112,7 +1104,7 @@ public class WebContext implements Cloneable, Appendable {
 	}
 
 	public String getCoverageSetting() {
-		return sm.getListSetting(this,SurveyMain.PREF_COVLEV,WebContext.PREF_COVLEV_LIST,false);
+		return sm.getListSetting(this, SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST);
 	}
 
 	public static final String COVLEV_RECOMMENDED = "(default*)";
@@ -1153,7 +1145,11 @@ public class WebContext implements Cloneable, Appendable {
      * @return
      */
     public String getUserOrg() {
-        return session.getUserOrg();
+    	if(session.user != null) {
+    		return session.user.org;
+    	} else {
+    		return null;
+    	}
     }
     
     /**
@@ -1175,10 +1171,10 @@ public class WebContext implements Cloneable, Appendable {
      * @see SurveyMain#basicOptionsMap()
      */
     public Map<String, String> getOptionsMap(Map<String, String> options) {
-        String def = sm.getListSetting(this,SurveyMain.PREF_COVLEV,WebContext.PREF_COVLEV_LIST,false);
+        String def = getCoverageSetting();
         options.put("CheckCoverage.requiredLevel",def);
         
-        String org = getEffectiveCoverageLevel(getLocale().toString());
+        String org = getEffectiveCoverageLevel();
         if(org!=null) {
             options.put("CoverageLevel.localeType",org);
         }
@@ -1198,7 +1194,7 @@ public class WebContext implements Cloneable, Appendable {
      * @return the existing data section or null if it is invalid
      */
     DataSection getExistingSection(String prefix) {
-        return getExistingSection(prefix, getEffectiveCoverageLevel(getLocale().toString()));
+        return getExistingSection(prefix, getEffectiveCoverageLevel());
     }
         
     /**
@@ -1210,11 +1206,11 @@ public class WebContext implements Cloneable, Appendable {
      */
     DataSection getExistingSection(String prefix, String ptype) {
         synchronized(this) {
-            Reference<DataSection> sr = (Reference<DataSection>)getByLocaleStatic(DATA_POD+prefix+":"+ptype);  // GET******
+            Reference sr = (Reference)getByLocaleStatic(DATA_POD+prefix+":"+ptype);  // GET******
             if(sr == null) {
                 return null; // wasn't never there
             }
-            DataSection dp = sr.get();
+            DataSection dp = (DataSection)sr.get();
             if(dp == null) {
 //                System.err.println("SR expired: " + locale + ":"+ prefix+":"+ptype);
             }
@@ -1228,100 +1224,77 @@ public class WebContext implements Cloneable, Appendable {
      * @param prefix
      */
     DataSection getSection(String prefix) {
-        return getSection(prefix, getEffectiveCoverageLevel(getLocale().toString()),LoadingShow.showLoading);
+        return getSection(prefix, getEffectiveCoverageLevel());
     }
-    
-    public enum LoadingShow { dontShowLoading, showLoading };
     
     /** 
      * Get a currently valid DataSection for the specified ptype.. creating it if need be.
      * prints informative notes to the ctx in case of a long delay.
      * @param prefix
      */
-    public DataSection getSection(String prefix, String ptype, LoadingShow options) {
-//    	if(hasField("srl_veryslow")&&sm.isUnofficial) {
-//    		// TODO: parameterize
-//    		// test case: make the data section 50x
-//    		for(int q=0;q<50;q++) {
-//    			DataSection.make(this, locale, prefix, false,ptype);
-//    		}
-//    	}
+    DataSection getSection(String prefix, String ptype) {
+    	if(hasField("srl_veryslow")&&sm.isUnofficial) {
+    		// TODO: parameterize
+    		// test case: make the data section 50x
+    		for(int q=0;q<50;q++) {
+    			DataSection.make(this, locale, prefix, false,ptype);
+    		}
+    	}
 
     	String loadString = "data was loaded.";
     	DataSection section = null;
 
-    	if(options==LoadingShow.showLoading) {
-    	    println("<i id='loadSection'>Loading, please wait...</i>");
-    	}
+    	println("<i id='loadSection'>Loading, please wait...</i>");
+
     	synchronized(this) {
-            if(options==LoadingShow.showLoading) {
-                println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='Checking cache';</script>"); flush();
-            }
-            //section = getExistingSection(prefix, ptype);
-//    		if((section != null) && (!section.isValid())) {
-//    			section = null;
-//    			loadString = "data was re-loaded due to a new user submission.";
-//    		}
+    		println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='Checking cache';</script>"); flush();
+    		section = getExistingSection(prefix, ptype);
+    		if((section != null) && (!section.isValid())) {
+    			section = null;
+    			loadString = "data was re-loaded due to a new user submission.";
+    		}
     		if(section == null) {
-    			CLDRProgressTask progress = null;
-    			progress = sm.openProgress("Loading");
+    			CLDRProgressTask progress = sm.openProgress("Loading");
     			try {
     				progress.update("<span title='"+sm.xpt.getPrettyPath(prefix)+"'>"+locale+"</span>"); flush();
     				long t0 = System.currentTimeMillis();
     				ElapsedTimer waitTimer = new ElapsedTimer("There was a delay of {0} waiting for your other windows");
     				ElapsedTimer podTimer=null;
     				String waitString;
-    		        if(options==LoadingShow.showLoading) {
-    		            println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='Waiting for other windows';</script>"); flush();
-    		        }
-    		        synchronized(session) {
+    				println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='Waiting for other windows';</script>"); flush();
+    				synchronized(session) {
     					waitString = waitTimer.toString();
     					podTimer = new ElapsedTimer("There was a delay of {0} as " + loadString);
-                        if(options==LoadingShow.showLoading) {
-                            println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='Loading data...';</script>"); flush();
-                        }
-                        section = DataSection.make(this, this.session, locale, prefix, options==LoadingShow.showLoading,ptype);
-                        if(options==LoadingShow.showLoading) {
-                            println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='Cleaning up...';</script>"); flush();
-                        }
+    					println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='Loading data...';</script>"); flush();
+    					section = DataSection.make(this, locale, prefix, false,ptype);
+    					println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='Cleaning up...';</script>"); flush();
     				}
-                    if(options==LoadingShow.showLoading && (System.currentTimeMillis()-t0) > 10 * 1000) {
+    				if((System.currentTimeMillis()-t0) > 10 * 1000) {
     					println("<i><b>" + waitString+"<br/>"+podTimer + "</b></i><br/>");
     				}
-    				/* no point in catching these. */
-//    			} catch (OutOfMemoryError oom) {
-//    				SurveyMain.logException(oom,this);
-//    				System.err.println("Error loading " + prefix + " / " + ptype + " in " + locale);
-//    				oom.printStackTrace();
-//    				this.println("Error loading " + prefix + " / " + ptype + " in " + locale + " - " + oom.toString());
-//    			} catch (Throwable t) {
-//    				SurveyMain.logException(t,this);
-//    				System.err.println("Error loading " + prefix + " / " + ptype + " in " + locale);
-//    				t.printStackTrace();
-//    				this.println("Error loading " + prefix + " / " + ptype + " in " + locale + " - " + t.toString());
+    			} catch (OutOfMemoryError oom) {
+    				System.err.println("Error loading " + prefix + " / " + ptype + " in " + locale);
+    				oom.printStackTrace();
+    				this.println("Error loading " + prefix + " / " + ptype + " in " + locale + " - " + oom.toString());
+    			} catch (Throwable t) {
+    				System.err.println("Error loading " + prefix + " / " + ptype + " in " + locale);
+    				t.printStackTrace();
+    				this.println("Error loading " + prefix + " / " + ptype + " in " + locale + " - " + t.toString());
     			} finally {
     				progress.close();
-                    if(options==LoadingShow.showLoading) {
-                        println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='';</script>"); flush();
-                    }
+    				println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='';</script>"); flush();
     			}
     		} else {
     			if(DEBUG) {
     				System.err.println("Re-using cached section: " + section.toString());
     			}
-                if(options==LoadingShow.showLoading) {
-                    println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='';</script>"); flush();
-                }
+    			println("<script type=\"text/javascript\">document.getElementById('loadSection').innerHTML='';</script>"); flush();
     		}
-    		if(section==null) {
-    			throw new InternalError("No section.");
-    		}
-//    		section.register();
+    		section.register();
     		//                    SoftReference sr = (SoftReference)getByLocaleStatic(DATA_POD+prefix+":"+ptype);  // GET******
     	}
-    	// NO CACHE
-    	//putByLocaleStatic(DATA_POD+prefix+":"+ptype, new SoftReference<DataSection>(section)); // PUT******
-    	//putByLocale("__keeper:"+prefix+":"+ptype, section); // put into user's hash so it wont go out of scope
+    	putByLocaleStatic(DATA_POD+prefix+":"+ptype, new SoftReference<DataSection>(section)); // PUT******
+    	putByLocale("__keeper:"+prefix+":"+ptype, section); // put into user's hash so it wont go out of scope
     	section.touch();
     	return section;
     }
@@ -1452,41 +1425,10 @@ public class WebContext implements Cloneable, Appendable {
      * @see #WebContext(WebContext)
      */
     public Object clone() {
-        Object o;
-        try {
-            o = super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new InternalError();
-        }
-        WebContext n = (WebContext)o;
-        n.init(this);
-
-        return o;
+        return new WebContext(this);
+        // TODO: call super.clone()
     }
     
-    private void init(WebContext other) {
-        doc = other.doc;
-        docLocale = other.docLocale;
-        displayLocale = other.displayLocale;
-        out = other.out;
-        pw = other.pw;
-        outQuery = other.outQuery;
-//        localeName = other.localeName;
-        locale = other.locale;
-//        if(locale != null) {
-//            localeString = locale.getBaseName();
-//        }
-        session = other.session;
-        outQueryMap = (TreeMap<String, String>)other.outQueryMap.clone();
-        dontCloseMe = true;
-        request = other.request;
-        response = other.response;
-        sm = other.sm;
-        processor = other.processor;
-        temporaryStuff = other.temporaryStuff;
-        theServletPath = other.theServletPath;
-    }
-
     /**
      * Include a template fragment from /WEB-INF/tmpl
      * @param filename
@@ -1495,7 +1437,6 @@ public class WebContext implements Cloneable, Appendable {
         try {
             WebContext.includeFragment(request, response, filename);
         } catch(Throwable t) {
-        	SurveyLog.logException(t, "Including template " + filename);
             this.println("<div class='ferrorbox'><B>Error</b> while including template <tt class='code'>"+filename+"</tt>:<br>");
             this.print(t);
             this.println("</div>");
@@ -1509,11 +1450,13 @@ public class WebContext implements Cloneable, Appendable {
      * @param response
      * @param filename
      * @throws ServletException
-     * @throws IOException, NullPointerException
+     * @throws IOException
      */
     public static void includeFragment(HttpServletRequest request, HttpServletResponse response, String filename) throws ServletException, IOException {
-        RequestDispatcher dp = request.getRequestDispatcher(TMPL_PATH+filename);
-        dp.include(request,response);
+            if(request != null) {
+            	RequestDispatcher dp = request.getRequestDispatcher(TMPL_PATH+filename);
+            	dp.include(request,response);
+            }
     }
 
     /**
@@ -1521,13 +1464,8 @@ public class WebContext implements Cloneable, Appendable {
      * @param string
      * @param object
      */
-    @SuppressWarnings("unchecked")
-	public void put(String string, Object object) {
-    	if(object==null) {
-    		temporaryStuff.remove(string);
-    	} else {
-    		temporaryStuff.put(string, object);
-    	}
+    public void put(String string, Object object) {
+        temporaryStuff.put(string, object);
     }
     /**
      * Get something from the temporary (context, non session data) store
@@ -1536,13 +1474,6 @@ public class WebContext implements Cloneable, Appendable {
      */
     public Object get(String string) {
         return temporaryStuff.get(string);
-    }
-    
-    public String getString(String k) {
-    	return (String)get(k);
-    }
-    public Boolean getBoolean(String k) {
-    	return (Boolean)get(k);
     }
 
     /**
@@ -1559,7 +1490,7 @@ public class WebContext implements Cloneable, Appendable {
      * @see SurveyMain#getLocaleDisplayName(CLDRLocale)
      */
     public String getLocaleDisplayName() {
-        return getLocaleDisplayName(getLocale());
+        return SurveyMain.getLocaleDisplayName(getLocale());
     }
 
 	// Display Context Data
@@ -1600,20 +1531,24 @@ public class WebContext implements Cloneable, Appendable {
         }
     }
 
-    /**
-     * Return true if the user can modify this locale
-     * @return true if the user can modify this locale
-     */
-    public Boolean canModify() {
-        if(canModify==null) {
-            if(session!=null && session.user!=null){
-                canModify = UserRegistry.userCanModifyLocale(session.user, locale);
-            } else {
-                canModify = false;
-            }
-        }
-        return canModify;
-    }
+	/**
+	 * Set whether this user can modify this locale
+	 * @param canModify
+	 * @return true if the user can modify this locale
+	 */
+	public boolean setCanModify(boolean canModify) {
+		this.canModify = canModify;
+		return canModify;
+	}
+	
+	/**
+	 * Return true if the user can modify this locale
+	 * @return true if the user can modify this locale
+	 */
+	public Boolean canModify() {
+		if(canModify==null) throw new InternalError("canModify()- not set.");
+		return canModify;
+	}
 
 	/**
 	 * Set the zoomed-in state of this context
@@ -1638,7 +1573,7 @@ public class WebContext implements Cloneable, Appendable {
         try {
             SurveyAjax.includeAjaxScript(request, response, type);
         } catch(Throwable t) {
-            this.println("<div class='ferrorbox'><B>Error</b> while expanding ajax template ajax_"+type.name().toLowerCase()+".jsp:<br>");
+            this.println("<div class='ferrorbox'><B>Error</b> while including template :<br>");
             this.print(t);
             this.println("</div>");
             System.err.println("While expanding ajax: " +t.toString());
@@ -1698,14 +1633,6 @@ public class WebContext implements Cloneable, Appendable {
             return session.user.id;
         } else {
             return UserRegistry.NO_USER;
-        }
-    }
-
-    private User user() {
-        if(session!=null && session.user!=null) {
-            return session.user;
-        } else {
-            return null;
         }
     }
 
@@ -1771,56 +1698,6 @@ public class WebContext implements Cloneable, Appendable {
             throws IOException {
         pw.append(csq,start,end);
         return this;
-    }
-
-    
-    @Override
-    public String toString() {
-        return "{ " + this.getClass().getName() + ": url="+url()+", ip="+this.userIP()+", user="+this.user()+"}";
-    }
-
-	/**
-	 * @return
-	 */
-	public String getAlign() {
-		String ourAlign = "left";
-		if (getDirectionForLocale().equals(HTMLDirection.RIGHT_TO_LEFT)) {
-			ourAlign = "right";
-		}
-		return ourAlign;
-	}
-
-	/**
-	 * @return
-	 */
-	public boolean getCanModify() {
-		boolean canModify = (UserRegistry.userCanModifyLocale(session.user,getLocale()));
-		return canModify;
-	}
-
-    /**
-     * @param locale
-     * @return
-     */
-    String urlForLocale(CLDRLocale locale) {
-        String localeUrl = url() 
-                + urlConnector() + SurveyMain.QUERY_LOCALE+"=" + locale.getBaseName();
-        return localeUrl;
-    }
-
-    public String getLocaleDisplayName(String loc) {
-        return getLocaleDisplayName(CLDRLocale.getInstance(loc));
-    }
-
-    public String getLocaleDisplayName(CLDRLocale instance) {
-        return instance.getDisplayName();
-    }
-
-    /**
-     * @return
-     */
-    public boolean hasAdminPassword() {
-        return field("dump").equals(SurveyMain.vap);
     }
 
 }
