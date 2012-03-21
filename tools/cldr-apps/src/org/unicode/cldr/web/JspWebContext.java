@@ -151,11 +151,11 @@ public class JspWebContext extends WebContext {
 	 */
 	public void openMainForm() {
 		if(mainFormState == MainFormState.CLOSED) {
-//			if(debugJsp()) {
-//				this.println("<h4>&lt;form url='"+url()+"'&gt;</h4>");
-//			}
+			if(debugJsp()) {
+				this.println("<h4>&lt;form url='"+url()+"'&gt;</h4>");
+			}
 			sm.printPathListOpen(this);
-//            printUrlAsHiddenFields();   
+            printUrlAsHiddenFields();   
 			mainFormState = MainFormState.OPEN;
 		} else 	if(debugJsp()) {
 			this.println("<h4><i>duplicate &lt;form/&gt;</i></h4>");
@@ -171,15 +171,13 @@ public class JspWebContext extends WebContext {
 		if(mainFormState == MainFormState.OPEN) {
 			String nextStep = (String)this.get("nextStep");
 			if(nextStep!=null) {
-			    this.println("Not implemented:  nextStep");
-			    STFactory.unimp();
-//				this.println("<input type='hidden' name='step' value='"+ nextStep+"'>");
+				this.println("<input type='hidden' name='step' value='"+ nextStep+"'>");
 			}
-//			if(canModify()) {
-//				this.println("<input type='submit' value='Submit'>");
-//			} else {
-//				this.println("<input type='submit' value='Continue'>");
-//			}
+			if(canModify()) {
+				this.println("<input type='submit' value='Submit'>");
+			} else {
+				this.println("<input type='submit' value='Continue'>");
+			}
 			sm.printPathListClose(this);
 			mainFormState = MainFormState.CLOSED;
 			if(debugJsp()) {
@@ -267,7 +265,23 @@ public class JspWebContext extends WebContext {
 		this.println("<input name='pod_bases' type='hidden' value='"+sb+"'>");
 		closeMainForm();
 	}
-		
+	
+	/**
+	 * Check based on user permissions.
+	 * @return true if the user is allowed to modify this locale
+	 */
+	public Boolean canModify() {
+		if(canModify == null) {
+			if(session==null||session.user==null) {
+				return setCanModify(false);
+			}
+			return setCanModify(UserRegistry.userCanModifyLocale(session.user, this.getLocale()));
+		} else {
+			return super.canModify();
+		}
+	}
+	
+	
 	/**
 	 * @return URL to the 'top' of a survey tool locale.
 	 */

@@ -19,11 +19,11 @@ public class Option {
     private final String helpString;
     private boolean doesOccur;
     private String value;
-    //private boolean implicitValue;
+    private boolean implicitValue;
 
     public void clear() {
         doesOccur = false;
-        //implicitValue = false;
+        implicitValue = false;
         value = null;
     }
 
@@ -43,9 +43,9 @@ public class Option {
         return value;
     }
 
-    //    public boolean getUsingImplicitValue() {
-    //        return false;
-    //    }
+    public boolean getUsingImplicitValue() {
+        return implicitValue;
+    }
 
     public boolean doesOccur() {
         return doesOccur;
@@ -94,7 +94,6 @@ public class Option {
 
     public static class Options implements Iterable<Option> {
 
-        private String mainMessage;
         final Map<String, Option> stringToValues = new LinkedHashMap<String, Option>();
         final Map<Character, Option> charToValues = new LinkedHashMap<Character, Option>();
         final Set<String> results = new LinkedHashSet<String>();
@@ -103,18 +102,10 @@ public class Option {
         }
         final Option help = charToValues.values().iterator().next();
 
-        public Options(String mainMessage) {
-            this.mainMessage = (mainMessage.isEmpty() ? "" : mainMessage + "\n") + "Here are the options:\n";
-        }
-
-        public Options() {
-            this("");
-        }
-
         public Options add(String string, String helpText) {
             return add(string, string.charAt(0), null, null, helpText);
         }
-
+        
         public Options add(String string, String argumentPattern, String helpText) {
             return add(string, string.charAt(0), argumentPattern, null, helpText);
         }
@@ -194,21 +185,21 @@ public class Option {
             // clean up defaults
             for (Option option : stringToValues.values()) {
                 if (!option.doesOccur && option.defaultArgument != null) {
+                    option.doesOccur = true;
                     option.value = option.defaultArgument;
-                    //option.implicitValue = true;
+                    option.implicitValue = true;
                 }
             }
 
             if (errorCount > 0) {
-                System.err.println("Invalid Option - Choices are:");
-                System.err.println(getHelp());
-                System.exit(1);            
+                    System.err.println("Invalid Option - Choices are:");
+                    System.err.println(getHelp());
+                    throw new IllegalArgumentException();            
             } else if (needHelp) {
                 System.err.println(getHelp());
-                System.exit(1);            
             } else if (showArguments) {
                 for (Option option : stringToValues.values()) {
-                    if (!option.doesOccur && option.value == null) {
+                    if (!option.doesOccur) {
                         continue;
                     }
                     System.out.println(option.tag + "\t=\t" + option.value);
@@ -218,7 +209,7 @@ public class Option {
         }
 
         private String getHelp() {
-            StringBuilder buffer = new StringBuilder(mainMessage);
+            StringBuilder buffer = new StringBuilder();
             boolean first = true;
             for (Option option : stringToValues.values()) {
                 if (first) {
@@ -248,22 +239,20 @@ public class Option {
     final static Options myOptions = new Options()
     .add("file", ".*", "Filter the information based on file name, using a regex argument")
     .add("path", ".*", "default-path", "Filter the information based on path name, using a regex argument")
-    .add("content", ".*", "Filter the information based on content name, using a regex argument")
-    .add("gorp", null, null, "Gorp")
-    .add("regex", "a*", null, "Gorp")
-    ;
+    .add("content", ".*", "Filter the information based on content name, using a regex argument");
 
     public static void main(String[] args) {
         if (args.length == 0) {
-            args = "foo -fen.xml -c a* --path bar -g b -r aaa".split("\\s+");
+            args = "foo -fen.xml -c a* --path -h -pfoo bar".split("\\s+");
         }
         myOptions.parse(args, true);
-
+        
         for (Option option : myOptions) {
-            System.out.println(option.getTag() + "\t" + option.doesOccur() + "\t" + option.getValue() + "\t" + option.getHelpString());
+            System.out.println(option.getTag() + "\t" + option.doesOccur() + "\t" + option.getValue());
         }
         Option option = myOptions.get("file");
-        System.out.println("\n" + option.doesOccur() + "\t" + option.getValue() + "\t" + option);
+        System.out.println("\n" + 
+                option.doesOccur() + "\t" + option.getValue() + "\t" + option);
     }
 
     public String getDefaultArgument() {

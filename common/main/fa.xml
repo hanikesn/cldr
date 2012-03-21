@@ -3080,7 +3080,9 @@
 			</zone>
 			<metazone type="Afghanistan">
 				<long>
-					<standard>وقت افغانستان</standard>
+					<generic>وقت افغانستان</generic>
+					<standard>وقت عادی افغانستان</standard>
+					<daylight>وقت تابستانی افغانستان</daylight>
 				</long>
 			</metazone>
 			<metazone type="Africa_Central">
@@ -3247,9 +3249,7 @@
 			</metazone>
 			<metazone type="Bangladesh">
 				<long>
-					<generic>وقت بنگلادش</generic>
-					<standard>وقت عادی بنگلادش</standard>
-					<daylight>وقت تابستانی بنگلادش</daylight>
+					<standard>وقت بنگلادش</standard>
 				</long>
 			</metazone>
 			<metazone type="Bering">
@@ -3323,9 +3323,7 @@
 			</metazone>
 			<metazone type="Cook">
 				<long>
-					<generic>وقت جزایر کوک</generic>
-					<standard>وقت عادی جزایر کوک</standard>
-					<daylight>وقت تابستانی جزایر کوک</daylight>
+					<standard>وقت جزایر کوک</standard>
 				</long>
 			</metazone>
 			<metazone type="Cuba">
@@ -3603,7 +3601,7 @@
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard>ساعت ماکواری</standard>
+					<generic>ساعت ماکواری</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">

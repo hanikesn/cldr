@@ -2458,9 +2458,7 @@
 			</metazone>
 			<metazone type="Bangladesh">
 				<long>
-					<generic>Hora de Bangladesh</generic>
-					<standard>Hora estándar de Bangladesh</standard>
-					<daylight>Hora de verano de Bangladesh</daylight>
+					<standard>Hora de Bangladesh</standard>
 				</long>
 			</metazone>
 			<metazone type="Bering">
@@ -2822,7 +2820,7 @@
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard draft="contributed">Hora de Macquarie</standard>
+					<generic draft="contributed">Hora de Macquarie</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">

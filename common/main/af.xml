@@ -1200,12 +1200,16 @@
 			</metazone>
 			<metazone type="Kazakhstan_Eastern">
 				<long>
-					<standard>Oos-Kazakstan-tyd</standard>
+					<generic>Oos-Kazakstan-tyd</generic>
+					<standard>Oos-Kazakstan-standaardtyd</standard>
+					<daylight>Kazakstan Oostelike somertyd</daylight>
 				</long>
 			</metazone>
 			<metazone type="Kazakhstan_Western">
 				<long>
-					<standard>Wes-Kazakstan-tyd</standard>
+					<generic>Wes-Kazakstan-tyd</generic>
+					<standard>Wes-Kazakstan-standaardtyd</standard>
+					<daylight>Kazakstan Westelike somertyd</daylight>
 				</long>
 			</metazone>
 			<metazone type="Krasnoyarsk">

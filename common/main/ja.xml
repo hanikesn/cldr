@@ -4120,9 +4120,7 @@
 			</metazone>
 			<metazone type="Cook">
 				<long>
-					<generic draft="provisional">クック諸島時間</generic>
-					<standard draft="provisional">クック諸島標準時</standard>
-					<daylight draft="provisional">クック諸島夏時間</daylight>
+					<standard draft="provisional">クック諸島時間</standard>
 				</long>
 			</metazone>
 			<metazone type="Cuba">

@@ -9,7 +9,6 @@
 package org.unicode.cldr.util;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +28,6 @@ import org.unicode.cldr.util.Iso639Data.Type;
 
 import com.ibm.icu.dev.test.util.BagFormatter;
 import com.ibm.icu.dev.test.util.TransliteratorUtilities;
-import com.ibm.icu.impl.Row;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.UnicodeSet;
 
@@ -38,8 +36,6 @@ import com.ibm.icu.text.UnicodeSet;
  * tzids
  */
 public class StandardCodes {
-    public static final String DESCRIPTION_SEPARATOR = "\u25AA";
-
     public static final String NO_COUNTRY = "001";
 
     private static StandardCodes singleton;
@@ -201,12 +197,6 @@ public class StandardCodes {
                         it.remove();
                     }
                 }
-            } else if (type.equals("language")) {
-                SupplementalDataInfo sd = SupplementalDataInfo.getInstance();
-                return sd.getCLDRLanguageCodes();
-            } else if (type.equals("script")) {
-                SupplementalDataInfo sd = SupplementalDataInfo.getInstance();
-                return sd.getCLDRScriptCodes();
             } else if (!type.equals("tzid")) {
                 for (Iterator it = result.iterator(); it.hasNext();) {
                     String code = (String) it.next();
@@ -808,14 +798,6 @@ public class StandardCodes {
         // "CLDR", "True", "Deprecated", "True"},
     };
 
-    static final String registryName = CldrUtility.getProperty("registry", "language-subtag-registry");
-
-    /**
-     * Returns a map like {extlang={aao={Added=2009-07-29, Description=Algerian Saharan Arabic, ...<br>
-     * That is, type => subtype => map<tag,value>. Descriptions are concatenated together, separated by
-     * DESCRIPTION_SEPARATOR.
-     * @return
-     */
     public static Map<String,Map<String,Map<String,String>>> getLStreg() {
 
         Map<String,Map<String,Map<String,String>>> result = new TreeMap();
@@ -824,6 +806,7 @@ public class StandardCodes {
 
         Set funnyTags = new TreeSet();
         String line;
+        String registryName = CldrUtility.getProperty("registry", "language-subtag-registry");
         try {
             BufferedReader lstreg = CldrUtility.getUTF8Data(registryName);
             boolean started = false;
@@ -913,7 +896,7 @@ public class StandardCodes {
                     lastRest = TransliteratorUtilities.fromXML.transliterate(rest);
                     String oldValue = (String) currentData.get(lastLabel);
                     if (oldValue != null) {
-                        lastRest = oldValue + DESCRIPTION_SEPARATOR + lastRest;
+                        lastRest = oldValue + "\u25AA" + lastRest;
                     }
                     currentData.put(lastLabel, lastRest);
                 }

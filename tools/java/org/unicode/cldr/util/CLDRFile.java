@@ -51,7 +51,6 @@ import com.ibm.icu.dev.test.util.Relation;
 import com.ibm.icu.impl.Utility;
 import com.ibm.icu.text.DateTimePatternGenerator;
 import com.ibm.icu.text.MessageFormat;
-import com.ibm.icu.text.PluralRules;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.Freezable;
 import com.ibm.icu.util.ULocale;
@@ -98,7 +97,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
   public static final String SUPPLEMENTAL_NAME = "supplementalData";
   public static final String SUPPLEMENTAL_METADATA = "supplementalMetadata";
   public static final String SUPPLEMENTAL_PREFIX = "supplemental";
-  public static final String GEN_VERSION = "21.0";
+  public static final String GEN_VERSION = "21.0.1";
 
   private boolean locked;
   XMLSource dataSource;  // TODO(jchye): make private
@@ -248,8 +247,6 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
     return this;
   }
-  
-  private final static Map<String,Object> nullOptions = Collections.unmodifiableMap(new TreeMap<String,Object>());
 
   /**
    * Write the corresponding XML file out, with the normal formatting and indentation.
@@ -257,17 +254,6 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
    * If the CLDRFile is empty, the DTD type will be //ldml.
    */
   public CLDRFile write(PrintWriter pw) {
-      return write(pw,nullOptions);
-  }
-
-  /**
-   * Write the corresponding XML file out, with the normal formatting and indentation.
-   * Will update the identity element, including generation, version, and other items.
-   * If the CLDRFile is empty, the DTD type will be //ldml.
-   * @param pw writer to print to
-   * @param options map of options for writing
-   */
-  public CLDRFile write(PrintWriter pw,Map<String,Object> options) {
     Set orderedSet = new TreeSet(ldmlComparator);
     CollectionUtilities.addAll(dataSource.iterator(), orderedSet);
 
@@ -285,16 +271,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
 
     pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
-    if(!options.containsKey("DTD_OMIT")) {
-        String dtdDir = "../../common/dtd/";
-        if(options.containsKey("DTD_DIR")) {
-            dtdDir = options.get("DTD_DIR").toString();
-        }
-        pw.println("<!DOCTYPE " + dtdType + " SYSTEM \"" + dtdDir + dtdType + ".dtd\">");
-    }
-    if(options.containsKey("COMMENT")) {
-        pw.println("<!-- " + options.get("COMMENT") + " -->");
-    }
+    pw.println("<!DOCTYPE " + dtdType + " SYSTEM \"../../common/dtd/" + dtdType + ".dtd\">");
     /*
      <identity>
      <version number="1.2"/>
@@ -897,25 +874,23 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
    * Utility to restrict to files matching a given regular expression. The expression does not contain ".xml".
    * Note that supplementalData is always skipped, and root is always included.
    */
-  public static Set<String> getMatchingXMLFiles(File sourceDirs[], Matcher m) {
-    Set<String> s = new TreeSet<String>();
-    
-    for(File dir : sourceDirs) {
-        if (!dir.exists()) {
-          throw new IllegalArgumentException("Directory doesn't exist:\t" + dir.getPath());
-        }
-        if (!dir.isDirectory()) {
-          throw new IllegalArgumentException("Input isn't a file directory:\t" + dir.getPath());
-        }
-        File[] files = dir.listFiles();
-        for (int i = 0; i < files.length; ++i) {
-          String name = files[i].getName();
-          if (!name.endsWith(".xml")) continue;
-          //if (name.startsWith(SUPPLEMENTAL_NAME)) continue;
-          String locale = name.substring(0,name.length()-4); // drop .xml
-          if (!m.reset(locale).matches()) continue;
-          s.add(locale);
-        }
+  public static Set<String> getMatchingXMLFiles(String sourceDir, Matcher m) {
+    Set<String> s = new TreeSet();
+    File dir = new File(sourceDir);
+    if (!dir.exists()) {
+      throw new IllegalArgumentException("Directory doesn't exist:\t" + sourceDir);
+    }
+    if (!dir.isDirectory()) {
+      throw new IllegalArgumentException("Input isn't a file directory:\t" + sourceDir);
+    }
+    File[] files = dir.listFiles();
+    for (int i = 0; i < files.length; ++i) {
+      String name = files[i].getName();
+      if (!name.endsWith(".xml")) continue;
+      //if (name.startsWith(SUPPLEMENTAL_NAME)) continue;
+      String locale = name.substring(0,name.length()-4); // drop .xml
+      if (!m.reset(locale).matches()) continue;
+      s.add(locale);
     }
     return s;
   }
@@ -1297,8 +1272,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
           //if (!isSupplemental) ldmlComparator.addAttribute(attribute); // must do BEFORE put
           //ldmlComparator.addValue(value);
           // special fix to remove version
-          if (attribute.equals("cldrVersion") 
-                  && (qName.equals("version"))) {
+          if (attribute.equals("version") && (qName.equals("ldml") || qName.equals("supplementalData"))) {
             target.dtdVersion = value;
           } else {
             putAndFixDeprecatedAttribute(qName, attribute, value);
@@ -1823,7 +1797,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     boolean isCompound = localeOrTZID.contains("_");
     String name = isCompound && onlyConstructCompound ? null : getName(LANGUAGE_NAME, localeOrTZID);
     // TODO - handle arbitrary combinations
-    if (name != null && !name.contains("_") && !name.contains("-")) {
+    if (name != null && !name.contains("_")) {
       return name;
     }
     lparser.set(localeOrTZID);
@@ -2763,8 +2737,6 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
   }
 
-  static final UnicodeSet DIGITS = new UnicodeSet("[0-9]").freeze();
-  
   /**
    * Get the path with the given count. 
    * It acts like there is an alias in root from count=n to count=one, 
@@ -2778,43 +2750,27 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
    * @return
    */
   public String getCountPathWithFallback(String xpath, Count count, boolean winning) {
-      String result;
-      XPathParts parts = new XPathParts().set(xpath);
-      boolean isDisplayName = parts.contains("displayName");
+    String result;
+    XPathParts parts = new XPathParts().set(xpath);
+    boolean isDisplayName = parts.contains("displayName");
 
-      String intCount = parts.getAttributeValue(-1, "count");
-      if (intCount != null && DIGITS.containsAll(intCount)) {
-          try {
-              int item = Integer.parseInt(intCount);
-              String locale = getLocaleID();
-              // TODO get data from SupplementalDataInfo...
-              PluralRules rules = PluralRules.forLocale(new ULocale(locale));
-              String keyword = rules.select(item);
-              Count itemCount = Count.valueOf(keyword);
-              result = getCountPathWithFallback2(parts, xpath, itemCount, winning);
-              if (result != null && isNotRoot(result)) {
-                  return result;
-              }
-          } catch (NumberFormatException e) {}
-      }
-
-      // try the given count first
-      result = getCountPathWithFallback2(parts, xpath, count, winning);
-      if (result != null && isNotRoot(result)) {
-          return result;
-      }
-      // now try fallback
-      if (count != Count.other) {
-          result = getCountPathWithFallback2(parts, xpath, Count.other, winning);
-          if (result != null && isNotRoot(result)) {
-              return result;
-          }
-      }
-      // now try deletion (for currency)
-      if (isDisplayName) {
-          result = getCountPathWithFallback2(parts, xpath, null, winning);
-      }
+    // try the given count first
+    result = getCountPathWithFallback2(parts, xpath, count, winning);
+    if (result != null && isNotRoot(result)) {
       return result;
+    }
+    // now try fallback
+    if (count != Count.other) {
+      result = getCountPathWithFallback2(parts, xpath, Count.other, winning);
+      if (result != null && isNotRoot(result)) {
+        return result;
+      }
+    }
+    // now try deletion (for currency)
+    if (isDisplayName) {
+      result = getCountPathWithFallback2(parts, xpath, null, winning);
+    }
+    return result;
   }
 
   private String getCountPathWithFallback2(XPathParts parts, String xpathWithNoCount,

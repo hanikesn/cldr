@@ -1963,17 +1963,17 @@
 			</metazone>
 			<metazone type="Indonesia_Central">
 				<long>
-					<standard draft="contributed">Hora central d'Indonèsia</standard>
+					<generic draft="contributed">Hora central d'Indonèsia</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Eastern">
 				<long>
-					<standard draft="contributed">Hora de l'est d'Indonèsia</standard>
+					<generic draft="contributed">Hora de l'est d'Indonèsia</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Western">
 				<long>
-					<standard draft="contributed">Hora de l'oest d'Indonèsia</standard>
+					<generic draft="contributed">Hora de l'oest d'Indonèsia</generic>
 				</long>
 			</metazone>
 			<metazone type="Irkutsk">
@@ -2044,7 +2044,7 @@
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard draft="contributed">Hora de Macquarie</standard>
+					<generic draft="contributed">Hora de Macquarie</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">
@@ -2105,7 +2105,7 @@
 			</metazone>
 			<metazone type="Samara">
 				<long>
-					<generic>Hora de Samara</generic>
+					<generic draft="contributed">Hora de Samara</generic>
 					<standard>Hora estàndard de Samara</standard>
 					<daylight>Hora d'estiu de Samara</daylight>
 				</long>

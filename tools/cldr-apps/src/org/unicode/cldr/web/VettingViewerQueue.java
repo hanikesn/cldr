@@ -4,6 +4,8 @@
 package org.unicode.cldr.web;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,14 +14,17 @@ import java.util.TreeMap;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRLocale;
 import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Factory;
 import org.unicode.cldr.util.Level;
-import org.unicode.cldr.util.LruMap;
 import org.unicode.cldr.util.VettingViewer;
 import org.unicode.cldr.util.VettingViewer.UsersChoice;
 import org.unicode.cldr.util.VettingViewer.VoteStatus;
 import org.unicode.cldr.util.VoteResolver;
 import org.unicode.cldr.util.VoteResolver.Organization;
-import org.unicode.cldr.web.UserRegistry.User;
+import org.unicode.cldr.util.XMLSource;
+import org.unicode.cldr.web.CLDRDBSourceFactory.DBEntry;
+import org.unicode.cldr.web.CLDRDBSourceFactory.SubFactory;
+import org.unicode.cldr.web.CLDRProgressIndicator.CLDRProgressTask;
 
 import com.ibm.icu.dev.test.util.ElapsedTimer;
 import com.ibm.icu.util.ULocale;
@@ -173,6 +178,7 @@ public class VettingViewerQueue {
 			statusCode = Status.WAITING;
 			final CLDRProgressTask progress = openProgress("vv:"+locale,maxn+100);
 			
+			DBEntry dbEntry = null;
 			VettingViewer<VoteResolver.Organization> vv = null;
 			
 			if(DEBUG) System.err.println("Starting up vv task:"+locale);
@@ -187,10 +193,12 @@ public class VettingViewerQueue {
 						return;
 					}
 					status="Beginning Process, Calculating";
+		            SubFactory ourFactory = sm.dbsrcfac.getFactory(false);
+		            dbEntry = sm.dbsrcfac.openEntry(ourFactory);
 		            
 		            vv = new VettingViewer<VoteResolver.Organization>(
-		                    sm.getSupplementalDataInfo(), sm.getSTFactory(), sm.getOldFactory(),
-		                    getUsersChoice(sm), "CLDR "+sm.getOldVersion(), "Winning "+sm.getNewVersion());
+		                    sm.getSupplementalDataInfo(), ourFactory, sm.getOldFactory(),
+		                    getUsersChoice(sm, dbEntry), "CLDR "+sm.getOldVersion(), "Winning "+sm.getNewVersion());
 		            vv.setBaseUrl(baseUrl);
 					progress.update("Got VettingViewer");
 					statusCode = Status.PROCESSING;
@@ -259,6 +267,8 @@ public class VettingViewerQueue {
 			} catch (RuntimeException re) {
 				// We're done.
 			} finally {
+				if(dbEntry!=null) dbEntry.close();
+				dbEntry=null;
 				if(progress!=null) progress.close();
 				vv=null; // release vv
 			}
@@ -367,7 +377,7 @@ public class VettingViewerQueue {
 		Organization usersOrg;
 		if(ctx!=null) {
 			baseUrl = ctx.base();
-			usersLevel =  Level.get(ctx.getEffectiveCoverageLevel(ctx.getLocale().toString()));
+			usersLevel =  Level.get(ctx.getEffectiveCoverageLevel());
 		} else {
 			baseUrl = (String)sess.get("BASE_URL");
 			String levelString = sess.settings().get(SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST[0]);;
@@ -411,7 +421,7 @@ public class VettingViewerQueue {
     	return entry;
 	}
 	
-	private synchronized QueueEntry getSummaryEntry() {
+	private QueueEntry getSummaryEntry() {
     	QueueEntry entry = summaryEntry;
     	if(summaryEntry==null) {
     		entry=summaryEntry = new QueueEntry();
@@ -420,23 +430,16 @@ public class VettingViewerQueue {
 	}
 
     
-    LruMap<CLDRLocale, BallotBox<UserRegistry.User>> ballotBoxes = new LruMap<CLDRLocale, BallotBox<User>>(8);
-    BallotBox<UserRegistry.User> getBox(SurveyMain sm, CLDRLocale loc) {
-        BallotBox<User> box = ballotBoxes.get(loc);
-        if(box==null) {
-            box = sm.getSTFactory().ballotBoxForLocale(loc);
-            ballotBoxes.put(loc, box);
-        }
-        return box;
-    }
-    private UsersChoice<VoteResolver.Organization> getUsersChoice(final SurveyMain sm) { 
-    	final Map<CLDRLocale,DataTester> testMap = new HashMap<CLDRLocale,DataTester>();
+    private UsersChoice<VoteResolver.Organization> getUsersChoice(final SurveyMain sm, final CLDRDBSourceFactory.DBEntry entry) { 
+    	final Map<CLDRLocale,Vetting.DataTester> testMap = new HashMap<CLDRLocale,Vetting.DataTester>();
+    	
         return new UsersChoice<VoteResolver.Organization>() {
-            private DataTester getTester(CLDRLocale loc) {
-            	DataTester tester = testMap.get(loc);
+            private Vetting.DataTester getTester(CLDRLocale loc) {
+            	Vetting.DataTester tester = testMap.get(loc);
             	if(tester==null) {
-                    BallotBox<User> ballotBox = getBox(sm,loc);
-            		//tester = getTester(ballotBox);
+                	final XMLSource fac = sm.dbsrcfac.getInstance(loc);
+                	entry.add(fac);
+            		tester = sm.vet.getTester(fac);
             		testMap.put(loc, tester);
             	}
             	return tester;
@@ -446,16 +449,61 @@ public class VettingViewerQueue {
             public String getWinningValueForUsersOrganization(
                     CLDRFile cldrFile, String path, VoteResolver.Organization user) {
                 CLDRLocale loc = CLDRLocale.getInstance(cldrFile.getLocaleID());
-                BallotBox<User> ballotBox = getBox(sm,loc);
-                return ballotBox.getResolver(path).getOrgVote(user);
+                int base_xpath = sm.xpt.xpathToBaseXpathId(path);
+                Race r;
+                Connection conn = null;
+                try { 
+                	if(entry!=null) {
+                		conn = entry.getConnectionAlias();
+                	} else {
+                		conn = sm.dbUtils.getDBConnection();
+                	}
+                	Vetting.DataTester tester = getTester(loc);
+                	
+                	r = sm.vet.getRace(loc, base_xpath, conn, tester);
+                    VoteResolver.Organization org = (Organization) user;
+                    Race.Chad c =  r.getOrgVote(org);
+                    if(c==null) {
+                        //System.err.println("Error: organization " + org + " vote null for " + path + " [#"+base_xpath+"]");
+                        return null;
+                    }
+                    return c.value;
+                }catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                	if(entry==null) {
+                		DBUtils.closeDBConnection(conn);
+                	}
+                }
+
             }
             
             //@Override
             public VoteStatus getStatusForUsersOrganization(CLDRFile cldrFile, String path, VoteResolver.Organization orgOfUser) {
                 CLDRLocale loc = CLDRLocale.getInstance(cldrFile.getLocaleID());
-                BallotBox<User> ballotBox = getBox(sm,loc);
-                return ballotBox.getResolver(path).getStatusForOrganization(orgOfUser);
+                int base_xpath = sm.xpt.xpathToBaseXpathId(path);
+                Race r;
+                Connection conn = null;
+                try { 
+                	if(entry==null) {
+                		conn = sm.dbUtils.getDBConnection();
+                	} else {
+                		conn = entry.getConnectionAlias();
+                	}
+                	Vetting.DataTester tester = getTester(loc);
+                	
+                	r = sm.vet.getRace(loc, base_xpath, conn, tester);
+                    return r.getStatusForOrganization(orgOfUser);
+                }catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                	if(entry==null) {
+                		DBUtils.closeDBConnection(conn);
+                	}
+                }
+
             }
+
         };
     }
     

@@ -19,10 +19,7 @@ import com.ibm.icu.text.MessageFormat;
 public class PathDescription {
 
     public enum ErrorHandling {SKIP, CONTINUE}
-    // BE sure to sync with the list in xmbSkip!
-    public static final Set<String> EXTRA_LANGUAGES = new TreeSet<String>(Arrays.asList(
-            "ach|af|ak|ak|am|ar|az|be|bem|bg|bh|bn|br|bs|ca|chr|ckb|co|crs|cs|cy|da|de|de_AT|de_CH|ee|el|en|en_AU|en_CA|en_GB|en_US|eo|es|es_419|es_ES|et|eu|fa|fi|fil|fo|fr|fr_CA|fr_CH|fy|ga|gaa|gd|gl|gn|gsw|gu|ha|haw|he|hi|hr|ht|hu|hy|ia|id|ig|is|it|ja|jv|ka|kg|kk|km|kn|ko|kri|ku|ky|la|lg|ln|lo|loz|lt|lua|lv|mfe|mg|mi|mk|ml|mn|mr|ms|mt|my|nb|ne|nl|nl_BE|nn|nso|ny|nyn|oc|om|or|pa|pcm|pl|ps|pt|pt_BR|pt_PT|qu|rm|rn|ro|ro|ro_MD|ru|rw|sd|si|sk|sl|sn|so|sq|sr|sr_Latn|sr_ME|st|su|sv|sw|ta|te|tg|th|ti|tk|tlh|tn|to|tr|tt|tum|ug|uk|und|ur|uz|vi|wo|xh|yi|yo|zh|zh_Hans|zh_Hant|zh_HK|zu|zxx"
-            .split("|")));
+    public static final Set<String> EXTRA_LANGUAGES = new TreeSet<String>(Arrays.asList("ace en zh ja de ru es ko fr pl ar pt it tr nl cs id th sv vi ro nb hu fi he bg da et sk sr el lt hr lv fa sl uk ca is ms fil az sq eu ka gl hi be af mk la hy mn fy kk ta bn kn mt lb ur uz eo si km ky cy ne ku sw oc mi fo jv te ml ug pa mr ga ps gu my lo yo su tg ht am tt gd qu bo dv to sd sa iu or bho gn".split(" ")));
 
     private static final Pattern METAZONE_PATTERN = Pattern.compile("//ldml/dates/timeZoneNames/metazone\\[@type=\"([^\"]*)\"]/(.*)/(.*)");
     private static final Pattern STAR_ATTRIBUTE_PATTERN = Pattern.compile("=\"([^\"]*)\"");

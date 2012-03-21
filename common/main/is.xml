@@ -1837,17 +1837,17 @@
 			</metazone>
 			<metazone type="Indonesia_Central">
 				<long>
-					<standard>Tími í Mið-Indónesíu</standard>
+					<generic>Tími í Mið-Indónesíu</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Eastern">
 				<long>
-					<standard>Tími í Austur-Indónesíu</standard>
+					<generic>Tími í Austur-Indónesíu</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Western">
 				<long>
-					<standard>Tími í Vestur-Indónesíu</standard>
+					<generic>Tími í Vestur-Indónesíu</generic>
 				</long>
 			</metazone>
 			<metazone type="Irkutsk">

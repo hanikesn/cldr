@@ -3,8 +3,6 @@
 package org.unicode.cldr.web;
 
 import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.unicode.cldr.web.DataSection.DataRow;
 import org.unicode.cldr.web.Partition.Membership;
@@ -24,12 +22,12 @@ public abstract class SortMode {
 	    return sortMode;
 	}
 
-	public static String getSortMode(WebContext ctx, DataSection section) {
+	static String getSortMode(WebContext ctx, DataSection section) {
 	    return getSortMode(ctx, section.xpathPrefix);
 	}
 	
 	
-	public static SortMode getInstance(String mode) {
+	static SortMode getInstance(String mode) {
 		if(mode.equals(CodeSortMode.name)) {
 			return new CodeSortMode();
 		} else if(mode.equals(CalendarSortMode.name)) {
@@ -43,18 +41,6 @@ public abstract class SortMode {
 		} else {
 			return new CodeSortMode();
 		}
-	}
-	
-	public static List<String> getSortModesFor(String xpath) {
-		List<String> list = new LinkedList<String>();
-		list.add(CodeSortMode.name);
-		list.add(InterestSort.name);
-		list.add(NameSort.name);
-		if(xpath.contains("/calendars")) 
-			list.add(CalendarSortMode.name);
-		if(xpath.contains("zone")) 
-			list.add(MetazoneSortMode.name);
-		return list;
 	}
 
 	/**
@@ -79,7 +65,6 @@ public abstract class SortMode {
 	 */
 	abstract String getName();
 	
-	abstract String getDisplayName();
 	/**
 	 * 
 	 * @return
@@ -95,10 +80,10 @@ public abstract class SortMode {
 	public String getDisplayName(DataRow p) {
 		if(p==null) {
 			return "(null)";
-		} else if(p.getDisplayName() != null) {
-			return p.getDisplayName();
+		} else if(p.displayName != null) {
+			return p.displayName;
 		} else {
-			return p.prettyPath;
+			return p.type;
 		}
 	}
 

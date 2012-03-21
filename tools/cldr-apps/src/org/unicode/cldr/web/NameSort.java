@@ -54,20 +54,20 @@ public class NameSort extends SortMode {
 		        if(p1==p2) { 
 		          return 0;
 		        }
-		        String p1d = p1.getDisplayName();
-		        if(p1.getDisplayName() == null ) {
-		          p1d = p1.prettyPath;
+		        String p1d = p1.displayName;
+		        if(p1.displayName == null ) {
+		          p1d = p1.type;
 		          //                                throw new InternalError("item p1 w/ null display: " + p1.type);
 		        }
-		        String p2d = p2.getDisplayName();
-		        if(p2.getDisplayName() == null ) {
-		          p2d = p2.prettyPath;
+		        String p2d = p2.displayName;
+		        if(p2.displayName == null ) {
+		          p2d = p2.type;
 		          //                                throw new InternalError("item p2 w/ null display: " + p2.type);
 		        }
 		        int rv = myCollator.compare(p1d, p2d);
 		        if(rv == 0) {
-		          p1d  = p1.prettyPath;
-		          p2d  = p2.prettyPath;
+		          p1d  = p1.type;
+		          p2d  = p2.type;
 		          if(p1d == null ) {
 		            p1d = "(null)";
 		          }
@@ -80,10 +80,5 @@ public class NameSort extends SortMode {
 		      }
 		    };
 		}
-
-	@Override
-	String getDisplayName() {
-		return SurveyMain.BASELINE_LOCALE.getDisplayLanguage() + " Name";
-	}
 
 }

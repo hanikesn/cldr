@@ -2888,17 +2888,17 @@
 			</metazone>
 			<metazone type="Indonesia_Central">
 				<long>
-					<standard draft="contributed">Středoindonéský čas</standard>
+					<generic draft="contributed">Středoindonéský čas</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Eastern">
 				<long>
-					<standard draft="contributed">Východoindonéský čas</standard>
+					<generic draft="contributed">Východoindonéský čas</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Western">
 				<long>
-					<standard draft="contributed">Západoindonéský čas</standard>
+					<generic draft="contributed">Západoindonéský čas</generic>
 				</long>
 			</metazone>
 			<metazone type="Irkutsk">
@@ -2955,7 +2955,7 @@
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard draft="contributed">Macquarijský čas</standard>
+					<generic draft="contributed">Macquarijský čas</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">

@@ -2363,12 +2363,16 @@
 			</metazone>
 			<metazone type="Kazakhstan_Eastern">
 				<long>
-					<standard>የምዕራብ ካዛኪስታን ሰዓት አቆጣጠር</standard>
+					<generic>የምዕራብ ካዛኪስታን ሰዓት አቆጣጠር</generic>
+					<standard>የምዕራብ ካዛኪስታን መደበኛ የሰዓት አቆጣጠር</standard>
+					<daylight>የካዛኪስታን ምዕራባዊ የበጋ ሰዓት አቆጣጠር</daylight>
 				</long>
 			</metazone>
 			<metazone type="Kazakhstan_Western">
 				<long>
-					<standard>የምስራቅ ካዛኪስታን ሰዓት አቆጣጠር</standard>
+					<generic>የምስራቅ ካዛኪስታን ሰዓት አቆጣጠር</generic>
+					<standard>የምስራቅ ካዛኪስታን መደበኛ የሰዓት አቆጣጠር</standard>
+					<daylight>የካዛኪስታን ምስራቃዊ የበጋ ሰዓት አቆጣጠር</daylight>
 				</long>
 			</metazone>
 			<metazone type="Krasnoyarsk">

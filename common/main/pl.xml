@@ -3727,7 +3727,7 @@
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard draft="contributed">Czas Macquarie</standard>
+					<generic draft="contributed">Czas Macquarie</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">
@@ -3747,8 +3747,8 @@
 			<metazone type="Moscow">
 				<long>
 					<generic>Czas moskiewski</generic>
-					<standard>Czas standardowy moskiewski</standard>
-					<daylight>Czas moskiewski letni</daylight>
+					<standard draft="contributed">Czas standardowy moskiewski</standard>
+					<daylight draft="contributed">Czas moskiewski letni</daylight>
 				</long>
 			</metazone>
 			<metazone type="Newfoundland">

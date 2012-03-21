@@ -2356,9 +2356,7 @@
 			</metazone>
 			<metazone type="Bangladesh">
 				<long>
-					<generic draft="contributed">Bengalese tijd</generic>
-					<standard draft="contributed">Bengalese standaardtijd</standard>
-					<daylight draft="contributed">Bengalese zomertijd</daylight>
+					<standard draft="contributed">Bengalese tijd</standard>
 				</long>
 			</metazone>
 			<metazone type="Bering">
@@ -2859,9 +2857,7 @@
 			</metazone>
 			<metazone type="Mauritius">
 				<long>
-					<generic draft="contributed">Mauritiaanse tijd</generic>
-					<standard draft="contributed">Mauritiaanse standaardtijd</standard>
-					<daylight draft="contributed">Mauritiaanse zomertijd</daylight>
+					<standard draft="contributed">Mauritiaanse tijd</standard>
 				</long>
 			</metazone>
 			<metazone type="Mawson">

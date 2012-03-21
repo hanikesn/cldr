@@ -3063,17 +3063,17 @@
 			</metazone>
 			<metazone type="Indonesia_Central">
 				<long>
-					<standard draft="contributed">Κεντρική ώρα Ινδονησίας</standard>
+					<generic draft="contributed">Κεντρική ώρα Ινδονησίας</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Eastern">
 				<long>
-					<standard draft="contributed">Ανατολική ώρα Ινδονησίας</standard>
+					<generic draft="contributed">Ανατολική ώρα Ινδονησίας</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Western">
 				<long>
-					<standard draft="contributed">Δυτική ώρα Ινδονησίας</standard>
+					<generic draft="contributed">Δυτική ώρα Ινδονησίας</generic>
 				</long>
 			</metazone>
 			<metazone type="Irkutsk">
@@ -3116,7 +3116,7 @@
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard draft="contributed">Ώρα Μακουάρι</standard>
+					<generic draft="contributed">Ώρα Μακουάρι</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">

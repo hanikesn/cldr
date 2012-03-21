@@ -3277,9 +3277,7 @@
 			</metazone>
 			<metazone type="Bangladesh">
 				<long>
-					<generic>Bangladeshin aika</generic>
-					<standard>Bangladeshin normaaliaika</standard>
-					<daylight>Bangladeshin kesäaika</daylight>
+					<standard>Bangladeshin aika</standard>
 				</long>
 			</metazone>
 			<metazone type="Bering">
@@ -3607,14 +3605,12 @@
 			</metazone>
 			<metazone type="Macau">
 				<long>
-					<generic>Macaon aika</generic>
-					<standard>Macaon normaaliaika</standard>
 					<daylight>Macaon kesäaika</daylight>
 				</long>
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard draft="contributed">Macquarien aika</standard>
+					<generic draft="contributed">Macquarien aika</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">
@@ -3636,9 +3632,7 @@
 			</metazone>
 			<metazone type="Mauritius">
 				<long>
-					<generic>Mauritiuksen aika</generic>
-					<standard>Mauritiuksen normaaliaika</standard>
-					<daylight>Mauritiuksen kesäaika</daylight>
+					<standard>Mauritiuksen aika</standard>
 				</long>
 			</metazone>
 			<metazone type="Mawson">
@@ -3788,9 +3782,7 @@
 			</metazone>
 			<metazone type="Tbilisi">
 				<long>
-					<generic>Tbilisin aika</generic>
-					<standard>Tbilisin normaaliaika</standard>
-					<daylight>Tbilisin kesäaika</daylight>
+					<standard>Tbilisin aika</standard>
 				</long>
 			</metazone>
 			<metazone type="Turkey">

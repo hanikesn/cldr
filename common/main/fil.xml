@@ -1115,17 +1115,17 @@
 			</metazone>
 			<metazone type="Indonesia_Central">
 				<long>
-					<standard>Oras sa Central ng Indonesia</standard>
+					<generic>Oras sa Central ng Indonesia</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Eastern">
 				<long>
-					<standard>Oras sa Silangan ng Indonesia</standard>
+					<generic>Oras sa Silangan ng Indonesia</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Western">
 				<long>
-					<standard>Oras sa Kanluran ng Indonesia</standard>
+					<generic>Oras sa Kanluran ng Indonesia</generic>
 				</long>
 			</metazone>
 			<metazone type="Irkutsk">
@@ -1168,7 +1168,7 @@
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard>Oras sa Macquarie</standard>
+					<generic>Oras sa Macquarie</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">

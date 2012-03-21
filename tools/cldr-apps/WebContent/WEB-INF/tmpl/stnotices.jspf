@@ -1,5 +1,4 @@
 <%@ page import="org.unicode.cldr.web.*" %>
-<!--  stnotices.jspf -->
 <div class='topnotices'>
 <% 
 //        if(/*!isUnofficial && */ 
@@ -8,20 +7,12 @@
 //            ctx.print("<span class='admin' title='You're an admin!'>");
 //            ctx.printHelpLink("/Admin",ctx.iconHtml("warn","Admin!")+"Administrator");
 //            ctx.println("</span>");
-//        }%>
-<%
+//        }%><%
         if(SurveyMain.isUnofficial) { %>
 		    <div class='unofficial' title='Not an official SurveyTool' >
 		        <%= WebContext.iconHtml(request,"warn","Unofficial Site") %>Unofficial
 		    </div>
        <% } %>
-<div id='stchanged' style='display:none;' class='stchanged' title='st has changed'>
-    <%= WebContext.iconHtml(request,"warn","Locale Changed") %>
-    The locale, <span id='stchanged_loc'>YOUR LOCALE</span>, has changed due to your or other's actions. Please <a href='javascript:window.location.reload(true);'>refresh</a> the page to 
-    view the new changes..
-    <button id='stchanged_btn' type='button' onclick='window.location.reload(true)'>Refresh</button>
-    <button id='stchanged_btn' type='button' onclick='dismissChangeNotice()'>Close</button>
-</div>
        <% if(SurveyMain.isPhaseBeta()) { %>
                 <div class='beta' title='Survey Tool is in Beta' >
                     <%= WebContext.iconHtml(request,"warn","beta") %>
@@ -30,28 +21,6 @@
        <% } %>
 </div>
 <div id='st_err'><!-- for ajax errs --></div>
-
-<%-- unobtrusive status box --%>
-<div id='progress' class='progress-connecting'>
-	<span id='progress_oneword' class='oneword'>
-		Online
-	</span>
-	<span id='progress_ajax' class='ajaxword'>
-	&nbsp;
-	</span>
-	<button id='progress-refresh' onclick='javascript:window.location.reload(true);'>Refresh</button>
-</div>
-
-<%-- pop-up stuff. --%>
-<div id='pu-outer'>
-	<div id='pu-peak'></div>
-	<div id='pu-body'>
-		<div id='pu-content'></div>
-	</div>
-</div>
-
+<span id='progress'>
+</span>
 <%= SurveyMain.SHOWHIDE_SCRIPT %>
-<!--  end stnotices.jspf -->
-<div style='display: none' id='hidden-stuff'>
-<%@ include file='/WEB-INF/tmpl/hidden.html' %>
-</div>

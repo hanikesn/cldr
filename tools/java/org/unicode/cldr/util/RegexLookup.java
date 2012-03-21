@@ -2,7 +2,6 @@ package org.unicode.cldr.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -80,16 +79,6 @@ public class RegexLookup<T> implements Iterable<Row.R2<Finder, T>>{
     };
 
     /**
-     * The same as a RegexFinderTransform, except that [@ is changed to \[@, to work better with XPaths.
-     */
-    public static Transform<String, RegexFinder> RegexFinderTransformPath = new Transform<String, RegexFinder>() {
-        public RegexFinder transform(String source) {
-            final String newSource = source.replace("[@", "\\[@");
-            return new RegexFinder(newSource);
-        }
-    };
-
-    /**
      * Allows for merging items of the same type.
      * @param <T>
      */
@@ -147,31 +136,7 @@ public class RegexLookup<T> implements Iterable<Row.R2<Finder, T>>{
         }
         return null;
     }
-
-    /**
-     * Returns all results of a regex lookup, with the group arguments that matched. Supplies failure cases for debugging.
-     * @param source
-     * @param context TODO
-     * @return
-     */
-    public List<T> getAll(String source, Object context, List<Finder> matcherList, List<String> failures) {
-        List<T> matches = new ArrayList<T>();
-        for (R2<Finder, T> entry : entries.values()) {
-            Finder matcher = entry.get0();
-            if (matcher.find(source, context)) {
-                if (matcherList != null) {
-                    matcherList.add(matcher);
-                }
-                matches.add(entry.get1());
-            } else if (failures != null) {
-                int failPoint = matcher.getFailPoint(source);
-                String show = source.substring(0,failPoint) + "☹" + source.substring(failPoint) + "\t" + matcher.toString();
-                failures.add(show);
-            }
-        }
-        return matches;
-    }
-
+    
     /**
      * Find the patterns that haven't been matched. Requires the caller to collect the patterns that have, using matcherFound.
      * @return outputUnmatched
@@ -314,7 +279,7 @@ public class RegexLookup<T> implements Iterable<Row.R2<Finder, T>>{
         return Collections.unmodifiableCollection(entries.values()).iterator();
     }
 
-    public static String replace(String lookup, String... arguments) {
+    public String replace(String lookup, String... arguments) {
         StringBuilder result = new StringBuilder();
         int last = 0;
         while (true) {
@@ -325,11 +290,7 @@ public class RegexLookup<T> implements Iterable<Row.R2<Finder, T>>{
             }
             result.append(lookup.substring(last, pos));
             final int arg = lookup.charAt(pos+1)-'0';
-            try {
-                result.append(arguments[arg]);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Replacing $" + arg + " in <" + lookup + ">, but too few arguments supplied.");
-            }
+            result.append(arguments[arg]);
             last = pos + 2;
         }
         return result.toString();

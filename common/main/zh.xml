@@ -4869,8 +4869,7 @@
 			</metazone>
 			<metazone type="Uruguay">
 				<long>
-					<generic>乌拉圭时间</generic>
-					<standard>乌拉圭标准时间</standard>
+					<standard>乌拉圭时间</standard>
 					<daylight>乌拉圭夏令时间</daylight>
 				</long>
 			</metazone>

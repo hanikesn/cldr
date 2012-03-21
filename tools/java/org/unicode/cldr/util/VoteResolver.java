@@ -79,8 +79,8 @@ public class VoteResolver<T> {
    * so that we know when new ones show up.
    */
   public enum Organization {
-    // adobe, afrigen, apple, breton, cherokee, gnome, google, guest, ibm, india, iran_hci, kotoistus, lisa, openoffice_org, pakistan, sil, srilanka, sun, surveytool, utilika, wikimedia, yahoo;
-    adobe, afrigen, apple, breton, cherokee, gnome, google, guest, ibm, india, iran_hci, kotoistus, lisa, openoffice_org, pakistan, sil, srilanka, sun, surveytool, utilika, wikimedia, yahoo;
+    // adobe, afrigen, apple, breton, gnome, google, guest, ibm, india, iran_hci, kotoistus, lisa, openoffice_org, pakistan, sil, srilanka, sun, surveytool, utilika, yahoo;
+    adobe, afrigen, apple, breton, gnome, google, guest, ibm, india, iran_hci, kotoistus, lisa, openoffice_org, pakistan, sil, srilanka, sun, surveytool, utilika, yahoo;
     
     public static Organization fromString(String name) {
     	name = name.toLowerCase().replace('-', '_').replace('.', '_');
@@ -465,14 +465,21 @@ public class VoteResolver<T> {
     Iterator<T> iterator = sortedValues.iterator();
     // if there are no (unconflicted) votes, return lastRelease
     if (sortedValues.size() == 0) {
+      // if there *was* a real winning status, then return it.
+      if (lastReleaseStatus != Status.missing) {
         winningStatus = lastReleaseStatus;
         winningValue = lastReleaseValue;
         valuesWithSameVotes.add(winningValue);
         return;
-    }
-    // otherwise pick the smallest value.
-    if (values.size() == 0) {
+      }
+      // otherwise pick the smallest value.
+      if (values.size() == 0) {
         throw new IllegalArgumentException("No values added to resolver");
+      }
+      winningStatus = Status.unconfirmed;
+      winningValue = values.iterator().next();
+      valuesWithSameVotes.addAll(values);
+      return;
     }
     // get the optimal value, and the penoptimal value
     long weight1 = 0;

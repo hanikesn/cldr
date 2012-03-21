@@ -3405,9 +3405,7 @@
 			</metazone>
 			<metazone type="Bangladesh">
 				<long>
-					<generic draft="provisional">เวลาบังกลาเทศ</generic>
-					<standard draft="provisional">เวลามาตรฐานบังกลาเทศ</standard>
-					<daylight draft="provisional">เวลาฤดูร้อนบังกลาเทศ</daylight>
+					<standard draft="provisional">เวลาบังกลาเทศ</standard>
 				</long>
 			</metazone>
 			<metazone type="Bering">

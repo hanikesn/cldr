@@ -549,6 +549,8 @@ public class GenerateNormalizeForMatch {
       } catch (IllegalArgumentException e) {
         if (HEXFORM.reset(target).matches()) {
           target = fromHex(target);
+        } else {
+          target = target;
         }
       }
     }

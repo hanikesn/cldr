@@ -1799,17 +1799,17 @@
 			</metazone>
 			<metazone type="Indonesia_Central">
 				<long>
-					<standard>Indoneesia keskvööndiaeg</standard>
+					<generic>Indoneesia keskvööndiaeg</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Eastern">
 				<long>
-					<standard>Indoneesia idaaeg</standard>
+					<generic>Indoneesia idaaeg</generic>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Western">
 				<long>
-					<standard>Indoneesia lääneaeg</standard>
+					<generic>Indoneesia lääneaeg</generic>
 				</long>
 			</metazone>
 			<metazone type="Irkutsk">
@@ -1828,12 +1828,16 @@
 			</metazone>
 			<metazone type="Kazakhstan_Eastern">
 				<long>
-					<standard>Ida-Kasahstani aeg</standard>
+					<generic>Ida-Kasahstani aeg</generic>
+					<standard>Ida-Kasahstani standardaeg</standard>
+					<daylight>Ida-Kasahstani suveaeg</daylight>
 				</long>
 			</metazone>
 			<metazone type="Kazakhstan_Western">
 				<long>
-					<standard>Lääne-Kasahstani aeg</standard>
+					<generic>Lääne-Kasahstani aeg</generic>
+					<standard>Lääne-Kasahstani standardaeg</standard>
+					<daylight>Lääne-Kasahstani suveaeg</daylight>
 				</long>
 			</metazone>
 			<metazone type="Kosrae">
@@ -1844,14 +1848,13 @@
 			<metazone type="Krasnoyarsk">
 				<long>
 					<generic>Krasnojarski aeg</generic>
-					<standard>Krasnojarski standardaeg</standard>
+					<standard>Krasnojarski aeg</standard>
 					<daylight>Krasnojarski suveaeg</daylight>
 				</long>
 			</metazone>
 			<metazone type="Kuybyshev">
 				<long>
-					<generic>Kuibõševi aeg</generic>
-					<standard>Kuibõševi standardaeg</standard>
+					<standard>Kuibõševi aeg</standard>
 					<daylight>Kuibõševi suveaeg</daylight>
 				</long>
 			</metazone>
@@ -1874,7 +1877,7 @@
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard>Macquarie aeg</standard>
+					<generic>Macquarie aeg</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">

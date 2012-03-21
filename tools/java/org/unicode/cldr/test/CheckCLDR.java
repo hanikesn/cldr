@@ -137,12 +137,7 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
           "|localizedPatternChars" + // deprecated
           "|abbreviationFallback" + // deprecated
           "|default" + // deprecated
-          "|inText" + // internal use only
-          "|inList" + // internal use only
           "|mapping" + // deprecated
-          "|zone/long" + 
-          "|zone/short" + 
-          "|zone/commonlyUsed" + 
           "|measurementSystem" + // deprecated
           "|preferenceOrdering" + // deprecated
           ")((\\[|/).*)?", Pattern.COMMENTS); // the last bit is to ensure whole element
@@ -212,7 +207,7 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
       illegalDatePattern, missingMainExemplars, discouragedCharactersInTranslation, mustNotStartOrEndWithSpace,
       illegalCharactersInNumberPattern, numberPatternNotCanonical, currencyPatternMissingCurrencySymbol, badNumericType,
       percentPatternMissingPercentSymbol, illegalNumberFormat, unexpectedAttributeValue, metazoneContainsDigit,
-      sameAsEnglishOrCode, dateSymbolCollision, missingMetazoneString, extraMetazoneString, inconsistentDraftStatus;
+      sameAsEnglishOrCode, dateSymbolCollision;
     public String toString() {
       return TO_STRING.matcher(name()).replaceAll(" $1").toLowerCase();
     }
@@ -506,7 +501,7 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
   static class CompoundCheckCLDR extends CheckCLDR {
     private Matcher filter;
     private List checkList = new ArrayList();
-    private List<CheckCLDR> filteredCheckList = new ArrayList<CheckCLDR>();
+    private List filteredCheckList = new ArrayList();
 
     public CompoundCheckCLDR add(CheckCLDR item) {
         checkList.add(item);
@@ -614,9 +609,6 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
     
     public String getFilteredTests() {
         return filteredCheckList.toString();
-    }
-    public List<CheckCLDR> getFilteredTestList() {
-        return filteredCheckList;
     }
   }
 

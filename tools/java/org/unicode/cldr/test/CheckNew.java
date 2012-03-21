@@ -3,7 +3,6 @@ package org.unicode.cldr.test;
 import java.util.List;
 import java.util.Map;
 
-import org.unicode.cldr.test.CheckCLDR.Phase;
 import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
 import org.unicode.cldr.util.CLDRFile;
 
@@ -13,15 +12,8 @@ public class CheckNew extends CheckCLDR {
 
     @Override
     public CheckCLDR setCldrFileToCheck(CLDRFile cldrFileToCheck, Map<String, String> options, List<CheckStatus> possibleErrors) {
-        if (cldrFileToCheck == null) {
+        if (cldrFileToCheck == null)
             return this;
-        }
-        if (Phase.VETTING == getPhase()) {
-            setSkipTest(false); // ok
-        } else {
-            setSkipTest(true);
-            return this;
-        }
 
         super.setCldrFileToCheck(cldrFileToCheck, options, possibleErrors);
         return this;

@@ -2204,7 +2204,7 @@
 			</metazone>
 			<metazone type="Alaska">
 				<long>
-					<generic>Ora dell'Alaska</generic>
+					<generic draft="contributed">Ora dell'Alaska</generic>
 					<standard>Ora standard Alaska</standard>
 					<daylight>Ora legale Alaska</daylight>
 				</long>
