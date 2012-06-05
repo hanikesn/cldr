@@ -13,33 +13,23 @@
 	if (stat == null)
 		stat = "s";
 
-	if (false|| stat.equals("v")) {
+	if (stat.equals("v")) {
 		doingByLocaleVote = true;
 		title = "Locales by Vote";
 		theSql = "select  locale,count(*) as count from cldr_vet  where submitter is not null group by locale order by count desc ";
 	} else {
-		theSql = "select  locale,count(*) as count from cldr_votevalue group by locale order by count desc ";
+		theSql = "select  locale,count(*) as count from cldr_data  where submitter is not null group by locale order by count desc ";
 		title = "Locales by Submitted Data";
 		doingByLocaleSubmit = true;
 	}
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SurveyTool Statistics | <%=title%></title>
-<link rel='stylesheet' type='text/css' href='./surveytool.css' />
-<script type='text/javascript' src='js/raphael.js' ></script>
-<script type='text/javascript' src='js/g.raphael.js' ></script>
-<script type='text/javascript' src='js/g.line.js' ></script>
-<script type='text/javascript' src='js/g.bar.js' ></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/tmpl/stnotices.jspf" %>
-<span id="visitors"></span>
-<hr>
-
-<%@ include file="/WEB-INF/tmpl/ajax_status.jsp" %>
 
 <a href="<%=request.getContextPath()%>/survey">Return to the SurveyTool <img src='STLogo.png' style='float:right;' /></a>
-<!-- 	| <a class='notselected' href="statistics-org.jsp">by Organization</a> -->
+	| <a class='notselected' href="statistics-org.jsp">by Organization</a>
 
 <br>
 <!-- 
@@ -67,16 +57,20 @@ Switch to:
 %>
 	<h1>SurveyTool Statistics: <%=title%></h1>
 
-	Total Items Submitted: <%=dbUtils
+	Total New/Changed Submitted: <%=dbUtils
 						.sqlQuery(conn,
-								"select count(*) from cldr_votevalue where submitter is not null")%> <br/>
+								"select count(*) from cldr_data where submitter is not null")%> <br/>
+	Total Votes Cast: <%=dbUtils
+						.sqlQuery(conn,
+								"select count(*) from cldr_vet where submitter is not null")%> <br/>
 
 
 
 	<%
-		String theSqlVet = "select  locale,count(*) as count from cldr_votevalue  where submitter is not null "
+		String theSqlVet = "select  locale,count(*) as count from cldr_vet  where submitter is not null "
 					+ limit + " group by locale ";
-			String theSqlData = theSqlVet;
+			String theSqlData = "select  locale,count(*) as count from cldr_data  where submitter is not null "
+					+ limit + " group by locale  ";
 
 			String[][] submitsV = dbUtils.sqlQueryArrayArray(conn,
 					theSqlVet);
@@ -89,14 +83,15 @@ Switch to:
 
 	<h2><%=title%></h2>
 	<table style='border: 1px solid black; cell-padding: 3px;'> 
-		<tr><th>Locale</th><th>Data</th>
+		<tr><th>Locale</th><th>Data</th><th>Votes</th>
 		<%
 			for (String[] r : submits) {
 		%>
 			
 	<tr>
-		<th style='background-color: #ddd; text-align: left;'><a href='survey?_=<%=r[0]%>'><%=r[0] + ": " + new ULocale(r[0]).getDisplayName()%></a></th>
+		<th style='background-color: #ddd; text-align: left;'><%=r[0] + ": " + new ULocale(r[0]).getDisplayName()%></th>
 		<td><%=r[1]%></td>
+		<td><%=r[2]%></td>
 	</tr>
 	<%
 		}
@@ -125,13 +120,14 @@ Switch to:
  					
         		%>
 
-<hr>
+<script type='text/javascript' src='js/raphael.js' ></script>
+<script type='text/javascript' src='js/g.raphael.js' ></script>
+<script type='text/javascript' src='js/g.line.js' ></script>
+<script type='text/javascript' src='js/g.bar.js' ></script>
 	<script type="text/javascript">
-	var wid = <%= wid %>;
-	var hei = <%= hei %>;
 		var r = Raphael("holder");
-		var barchart = r.g.barchart(<%=offh%>, <%=offv%>, wid,hei, 
-				[ [ <%for (String[] r : submits) {%><%=r[1]%>, <%}%> ]]);
+		var barchart = r.g.barchart(<%=offh%>, <%=offv%>, <%=wid%>, <%=hei%>, 
+				[ [ <%for (String[] r : submits) {%><%=r[1]%>, <%}%> ], [ <%for (String[] r : submits) {%><%=r[2]%>, <%}%> ]]);
 		<%int ii = 0;
 					int ea = wid / submits.length;
 					for (String[] r : submits) {
@@ -139,9 +135,9 @@ Switch to:
 						int h = ((ea) * (ii - 1)) + offh + (ea / 2);
 						int v = hei + offv;%>
 			var t<%=ii%> = r.text(<%=h%>,<%=v%>, "<%=r[0]%>");
-			var n<%=ii%> = r.text(<%=h%>,<%=v + 20%>, "<%=r[1]%>");
+			var n<%=ii%> = r.text(<%=h%>,<%=v + 20%>, "<%=r[1]%>\n<%=r[2]%>");
 		<%}%>
-		var nxx = r.text(<%=offh-4%>,<%=hei+offv + 20%>, "v");
+		var nxx = r.text(<%=offh-4%>,<%=hei+offv + 20%>, "d\nv");
 	</script>
 <%
 	}
@@ -155,36 +151,13 @@ Switch to:
 	}
 %>
 
+<hr/>
 <p>
  Note: Sort is by D, the total number of new proposed data items submitted.
  there can be more submissions than votes (if multiple proposals are made for a single item), and there may be more votes than submissions (if multiple people voted for a single proposal).
 </p>
-<hr>
-
-<%-- OLD CRUFT ABOVE. 
-  NEW STUFF...  ----------------------------------------------------- --%>
-	<h3>Submits by day</h3>
-	<div id="dholder-holder">
-	        <div id="dholder" style="width: 600px; height: 800px;"></div>
-	</div>        
-	
-<script>
-showstats("dholder");
-</script>
-
-
 
 <i>Graphs by <a href='http://g.raphaeljs.com/'>gRaphaël</a></i>
-<hr>
-<h3>Recently submitted items</h3>
-
-<div id='submitItems'>
-</div>
-...
-
-<script>
-showRecent('submitItems')
-</script>
 
 <hr>
 <a href="<%=request.getContextPath()%>/survey">Return to the SurveyTool</a>

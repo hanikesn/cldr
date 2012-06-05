@@ -718,6 +718,7 @@
 			<territory type="CO">Kolumbija</territory>
 			<territory type="CP">Otok Clipperton</territory>
 			<territory type="CR">Kostarika</territory>
+			<territory type="CS">Srbija in Črna gora</territory>
 			<territory type="CU">Kuba</territory>
 			<territory type="CV">Zelenortski otoki</territory>
 			<territory type="CX">Božični otok</territory>
@@ -884,7 +885,6 @@
 			<territory type="SN">Senegal</territory>
 			<territory type="SO">Somalija</territory>
 			<territory type="SR">Surinam</territory>
-			<territory type="SS" draft="provisional">Južni Sudan</territory>
 			<territory type="ST">Sao Tome in Principe</territory>
 			<territory type="SV">Salvador</territory>
 			<territory type="SY">Sirija</territory>
@@ -2159,30 +2159,18 @@
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one" draft="contributed">0.0 tis'.'</pattern>
-					<pattern type="1000" count="other" draft="contributed">0.0 tis'.'</pattern>
-					<pattern type="10000" count="one" draft="contributed">00 tis'.'</pattern>
-					<pattern type="10000" count="other" draft="contributed">00 tis'.'</pattern>
-					<pattern type="100000" count="one" draft="contributed">000 tis'.'</pattern>
-					<pattern type="100000" count="other" draft="contributed">000 tis'.'</pattern>
-					<pattern type="1000000" count="one" draft="contributed">0.0 mio'.'</pattern>
-					<pattern type="1000000" count="other" draft="contributed">0.0 mio'.'</pattern>
-					<pattern type="10000000" count="one" draft="contributed">00 mio'.'</pattern>
-					<pattern type="10000000" count="other" draft="contributed">00 mio'.'</pattern>
-					<pattern type="100000000" count="one" draft="contributed">000 mio'.'</pattern>
-					<pattern type="100000000" count="other" draft="contributed">000 mio'.'</pattern>
-					<pattern type="1000000000" count="one" draft="contributed">0.0 mrd'.'</pattern>
-					<pattern type="1000000000" count="other" draft="contributed">0.0 mrd'.'</pattern>
-					<pattern type="10000000000" count="one" draft="contributed">00 mrd'.'</pattern>
-					<pattern type="10000000000" count="other" draft="contributed">00 mrd'.'</pattern>
-					<pattern type="100000000000" count="one" draft="contributed">000 mrd'.'</pattern>
-					<pattern type="100000000000" count="other" draft="contributed">000 mrd'.'</pattern>
-					<pattern type="1000000000000" count="one" draft="contributed">0.0 bil'.'</pattern>
-					<pattern type="1000000000000" count="other" draft="contributed">0.0 bil'.'</pattern>
-					<pattern type="10000000000000" count="one" draft="contributed">00 bil'.'</pattern>
-					<pattern type="10000000000000" count="other" draft="contributed">00 bil'.'</pattern>
-					<pattern type="100000000000000" count="one" draft="contributed">000 bil'.'</pattern>
-					<pattern type="100000000000000" count="other" draft="contributed">000 bil'.'</pattern>
+					<pattern type="1000" draft="contributed">0.0 tis'.'</pattern>
+					<pattern type="10000" draft="contributed">00 tis'.'</pattern>
+					<pattern type="100000" draft="contributed">000 tis'.'</pattern>
+					<pattern type="1000000" draft="contributed">0.0 mio'.'</pattern>
+					<pattern type="10000000" draft="contributed">00 mio'.'</pattern>
+					<pattern type="100000000" draft="contributed">000 mio'.'</pattern>
+					<pattern type="1000000000" draft="contributed">0.0 mrd'.'</pattern>
+					<pattern type="10000000000" draft="contributed">00 mrd'.'</pattern>
+					<pattern type="100000000000" draft="contributed">000 mrd'.'</pattern>
+					<pattern type="1000000000000" draft="contributed">0.0 bil'.'</pattern>
+					<pattern type="10000000000000" draft="contributed">00 bil'.'</pattern>
+					<pattern type="100000000000000" draft="contributed">000 bil'.'</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>

@@ -476,6 +476,7 @@ public class ICU2LDMLWriter extends CLDRConverterTool
 
 		curXPath += SEP + outerTagName;
 		
+		//TODO get the <exemplarCharacters type="currencySymbol"> data?
 		try
 		{
 			if(bund.isAlias(exempCharResName))

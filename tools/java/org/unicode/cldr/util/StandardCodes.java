@@ -9,7 +9,6 @@
 package org.unicode.cldr.util;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +28,6 @@ import org.unicode.cldr.util.Iso639Data.Type;
 
 import com.ibm.icu.dev.test.util.BagFormatter;
 import com.ibm.icu.dev.test.util.TransliteratorUtilities;
-import com.ibm.icu.impl.Row;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.UnicodeSet;
 
@@ -38,8 +36,6 @@ import com.ibm.icu.text.UnicodeSet;
  * tzids
  */
 public class StandardCodes {
-    public static final String DESCRIPTION_SEPARATOR = "\u25AA";
-
     public static final String NO_COUNTRY = "001";
 
     private static StandardCodes singleton;
@@ -201,12 +197,6 @@ public class StandardCodes {
                         it.remove();
                     }
                 }
-            } else if (type.equals("language")) {
-                SupplementalDataInfo sd = SupplementalDataInfo.getInstance();
-                return sd.getCLDRLanguageCodes();
-            } else if (type.equals("script")) {
-                SupplementalDataInfo sd = SupplementalDataInfo.getInstance();
-                return sd.getCLDRScriptCodes();
             } else if (!type.equals("tzid")) {
                 for (Iterator it = result.iterator(); it.hasNext();) {
                     String code = (String) it.next();
@@ -281,7 +271,6 @@ public class StandardCodes {
 
     /**
      * Returns coverage level of locale according to organization. Returns Level.UNDETERMINED if information is missing.
-     * A locale of "*" in the data means "everything else".
      */
     public Level getLocaleCoverageLevel(String organization, String desiredLocale) {
         synchronized (StandardCodes.class) {
@@ -299,13 +288,6 @@ public class StandardCodes {
             desiredLocale = LocaleIDParser.getParent(desiredLocale);
         }
         return Level.UNDETERMINED;
-    }
-
-    /**
-     * Returns coverage level of locale according to organization. Returns Level.UNDETERMINED if information is missing.
-     */
-    public Level getDefaultLocaleCoverageLevel(String organization) {
-        return getLocaleCoverageLevel(organization, "*");
     }
 
     public Set<String> getLocaleCoverageOrganizations() {
@@ -329,8 +311,6 @@ public class StandardCodes {
     private void loadPlatformLocaleStatus() {
         LocaleIDParser parser = new LocaleIDParser();
         platform_locale_level = new TreeMap(caseless);
-        SupplementalDataInfo sd = SupplementalDataInfo.getInstance();
-        Set<String> defaultContentLocales = sd.getDefaultContentLocales();
         String line;
         try {
             BufferedReader lstreg = CldrUtility.getUTF8Data("Locales.txt");
@@ -345,26 +325,7 @@ public class StandardCodes {
                     continue;
                 List stuff = CldrUtility.splitList(line, ';', true);
                 String organization = (String) stuff.get(0);
-                
-                // verify that the organization is valid
-                VoteResolver.Organization.valueOf(organization.toLowerCase(Locale.ENGLISH));
-                
-                // verify that the locale is valid BCP47
                 String locale = (String) stuff.get(1);
-                if (!locale.equals("*")) {
-                    parser.set(locale);
-                    String valid = validate(parser);
-                    if (valid.length() != 0) {
-                        throw new IllegalArgumentException("Cannot invalid locale in Locales.txt: " + line);
-                    }
-                    locale = parser.toString(); // normalize
-
-                    // verify that the locale is not a default content locale
-                    if (defaultContentLocales.contains(locale)) {
-                        throw new IllegalArgumentException("Cannot have default content locale in Locales.txt: " + line);
-                    }
-                }
-
                 Level status = Level.get((String) stuff.get(2));
                 if (status == Level.UNDETERMINED) {
                     System.out.println("Warning: Level unknown on: " + line);
@@ -373,6 +334,12 @@ public class StandardCodes {
                 if (locale_status == null) {
                     platform_locale_level.put(organization, locale_status = new TreeMap());
                 }
+                parser.set(locale);
+                String valid = validate(parser);
+                if (valid.length() != 0) {
+                    System.out.println("Warning: " + valid + "; " + line);
+                }
+                locale = parser.toString(); // normalize
                 locale_status.put(locale, status);
                 String scriptLoc = parser.getLanguageScript();
                 if (locale_status.get(scriptLoc) == null)
@@ -831,14 +798,6 @@ public class StandardCodes {
         // "CLDR", "True", "Deprecated", "True"},
     };
 
-    static final String registryName = CldrUtility.getProperty("registry", "language-subtag-registry");
-
-    /**
-     * Returns a map like {extlang={aao={Added=2009-07-29, Description=Algerian Saharan Arabic, ...<br>
-     * That is, type => subtype => map<tag,value>. Descriptions are concatenated together, separated by
-     * DESCRIPTION_SEPARATOR.
-     * @return
-     */
     public static Map<String,Map<String,Map<String,String>>> getLStreg() {
 
         Map<String,Map<String,Map<String,String>>> result = new TreeMap();
@@ -847,6 +806,7 @@ public class StandardCodes {
 
         Set funnyTags = new TreeSet();
         String line;
+        String registryName = CldrUtility.getProperty("registry", "language-subtag-registry");
         try {
             BufferedReader lstreg = CldrUtility.getUTF8Data(registryName);
             boolean started = false;
@@ -936,7 +896,7 @@ public class StandardCodes {
                     lastRest = TransliteratorUtilities.fromXML.transliterate(rest);
                     String oldValue = (String) currentData.get(lastLabel);
                     if (oldValue != null) {
-                        lastRest = oldValue + DESCRIPTION_SEPARATOR + lastRest;
+                        lastRest = oldValue + "\u25AA" + lastRest;
                     }
                     currentData.put(lastLabel, lastRest);
                 }

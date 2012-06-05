@@ -745,6 +745,7 @@
 			<territory type="CO">കൊളംബിയ</territory>
 			<territory type="CP" draft="contributed">ക്ലിപ്പെര്‍ട്ടന്‍ ദ്വീപ്</territory>
 			<territory type="CR">കോസ്റ്ററിക്ക</territory>
+			<territory type="CS">സെര്‍ബിയയും മോണ്ടനേഗ്രോയും</territory>
 			<territory type="CU">ക്യൂബ</territory>
 			<territory type="CV">കേപ്പ് വെര്‍ഡെ</territory>
 			<territory type="CX">ക്രിസ്മസ് ദ്വീപ്</territory>
@@ -910,7 +911,6 @@
 			<territory type="SN">സെനഗല്‍</territory>
 			<territory type="SO">സോമാലിയ</territory>
 			<territory type="SR">സുറിനാം</territory>
-			<territory type="SS" draft="provisional">ദക്ഷിണ സുഡാൻ</territory>
 			<territory type="ST">സാവോ റ്റമെ ആന്‍ഡ് പ്രിന്‍സിപ്പി</territory>
 			<territory type="SV">എല്‍ സാല്‍വദോര്‍</territory>
 			<territory type="SY">സിറിയ</territory>
@@ -1059,7 +1059,7 @@
 		</codePatterns>
 	</localeDisplayNames>
 	<characters>
-		<exemplarCharacters>[\u200C\u200D ഃ അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ എ ഏ ഐ ഒ ഓ ഔ ക ഖ ഗ ഘ ങ ച ഛ ജ ഝ ഞ ട ഠ ഡ ഢ ണ ത ഥ ദ ധ ന പ ഫ ബ ഭ മ ം യ ര ല വ ശ ഷ സ ഹ ള ഴ റ ാ ി ീ \u0D41 \u0D42 \u0D43 െ േ ൈ ൊ ോ ൗ ൌ \u0D4D ൺ ൻ ർ ൽ ൾ ൿ]</exemplarCharacters>
+		<exemplarCharacters>[\u200C\u200D ഃ അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ എ ഏ ഐ ഒ ഓ ഔ ക ഖ ഗ ഘ ങ ച ഛ ജ ഝ ഞ ട ഠ ഡ ഢ ണ ത ഥ ദ ധ ന പ ഫ ബ ഭ മ ം യ ര ല വ ശ ഷ സ ഹ ള ഴ റ ാ ി ീ \u0D41 \u0D42 \u0D43 െ േ ൈ ൊ ോ ൗ ൌ \u0D4D]</exemplarCharacters>
 		<exemplarCharacters type="auxiliary">[]</exemplarCharacters>
 		<exemplarCharacters type="currencySymbol">[a b c d e f g h i j k l m n o p q r s t u v w x y z]</exemplarCharacters>
 		<exemplarCharacters type="index" draft="contributed">[അ ആ ഇ ഈ ഉ ഊ ഋ എ ഏ ഐ ഒ ഓ ഔ ക ഖ ഗ ഘ ങ ച ഛ ജ ഝ ഞ ട ഠ ഡ ഢ ണ ത ഥ ദ ധ ന പ ഫ ബ ഭ മ യ ര ല വ ശ ഷ സ ഹ ള ഴ റ]</exemplarCharacters>
@@ -3839,30 +3839,18 @@
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one" draft="contributed">0.0K</pattern>
-					<pattern type="1000" count="other" draft="contributed">0.0K</pattern>
-					<pattern type="10000" count="one" draft="contributed">00K</pattern>
-					<pattern type="10000" count="other" draft="contributed">00K</pattern>
-					<pattern type="100000" count="one" draft="contributed">000K</pattern>
-					<pattern type="100000" count="other" draft="contributed">000K</pattern>
-					<pattern type="1000000" count="one" draft="contributed">0.0M</pattern>
-					<pattern type="1000000" count="other" draft="contributed">0.0M</pattern>
-					<pattern type="10000000" count="one" draft="contributed">00M</pattern>
-					<pattern type="10000000" count="other" draft="contributed">00M</pattern>
-					<pattern type="100000000" count="one" draft="contributed">000M</pattern>
-					<pattern type="100000000" count="other" draft="contributed">000M</pattern>
-					<pattern type="1000000000" count="one" draft="contributed">0.0B</pattern>
-					<pattern type="1000000000" count="other" draft="contributed">0.0B</pattern>
-					<pattern type="10000000000" count="one" draft="contributed">00B</pattern>
-					<pattern type="10000000000" count="other" draft="contributed">00B</pattern>
-					<pattern type="100000000000" count="one" draft="contributed">000B</pattern>
-					<pattern type="100000000000" count="other" draft="contributed">000B</pattern>
-					<pattern type="1000000000000" count="one" draft="contributed">0.0T</pattern>
-					<pattern type="1000000000000" count="other" draft="contributed">0.0T</pattern>
-					<pattern type="10000000000000" count="one" draft="contributed">00T</pattern>
-					<pattern type="10000000000000" count="other" draft="contributed">00T</pattern>
-					<pattern type="100000000000000" count="one" draft="contributed">000T</pattern>
-					<pattern type="100000000000000" count="other" draft="contributed">000T</pattern>
+					<pattern type="1000" draft="contributed">0.0K</pattern>
+					<pattern type="10000" draft="contributed">00K</pattern>
+					<pattern type="100000" draft="contributed">000K</pattern>
+					<pattern type="1000000" draft="contributed">0.0M</pattern>
+					<pattern type="10000000" draft="contributed">00M</pattern>
+					<pattern type="100000000" draft="contributed">000M</pattern>
+					<pattern type="1000000000" draft="contributed">0.0B</pattern>
+					<pattern type="10000000000" draft="contributed">00B</pattern>
+					<pattern type="100000000000" draft="contributed">000B</pattern>
+					<pattern type="1000000000000" draft="contributed">0.0T</pattern>
+					<pattern type="10000000000000" draft="contributed">00T</pattern>
+					<pattern type="100000000000000" draft="contributed">000T</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>

@@ -308,6 +308,7 @@
 			<territory type="CO">Cô-lôm-bi-a</territory>
 			<territory type="CP">Đảo Clipperton</territory>
 			<territory type="CR">Cốt-xta Ri-ca</territory>
+			<territory type="CS">Séc-bia</territory>
 			<territory type="CU">Cu Ba</territory>
 			<territory type="CV">Cáp-ve</territory>
 			<territory type="CX">Đảo Giáng Sinh</territory>
@@ -470,7 +471,6 @@
 			<territory type="SN">Xê-nê-gan</territory>
 			<territory type="SO">Xô-ma-li</territory>
 			<territory type="SR">Xu-ri-nam</territory>
-			<territory type="SS" draft="provisional">Nam Sudan</territory>
 			<territory type="ST">Xao Tô-mê và Prin-xi-pê</territory>
 			<territory type="SV">En-san-va-đo</territory>
 			<territory type="SY">Xi-ri</territory>
@@ -2985,30 +2985,18 @@
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one" draft="contributed">0.0 N</pattern>
-					<pattern type="1000" count="other" draft="contributed">0.0 N</pattern>
-					<pattern type="10000" count="one" draft="contributed">00 N</pattern>
-					<pattern type="10000" count="other" draft="contributed">00 N</pattern>
-					<pattern type="100000" count="one" draft="contributed">000 N</pattern>
-					<pattern type="100000" count="other" draft="contributed">000 N</pattern>
-					<pattern type="1000000" count="one" draft="contributed">0.0 Tr</pattern>
-					<pattern type="1000000" count="other" draft="contributed">0.0 Tr</pattern>
-					<pattern type="10000000" count="one" draft="contributed">00 Tr</pattern>
-					<pattern type="10000000" count="other" draft="contributed">00 Tr</pattern>
-					<pattern type="100000000" count="one" draft="contributed">000 Tr</pattern>
-					<pattern type="100000000" count="other" draft="contributed">000 Tr</pattern>
-					<pattern type="1000000000" count="one" draft="contributed">0.0 Tỷ</pattern>
-					<pattern type="1000000000" count="other" draft="contributed">0.0 Tỷ</pattern>
-					<pattern type="10000000000" count="one" draft="contributed">00 Tỷ</pattern>
-					<pattern type="10000000000" count="other" draft="contributed">00 Tỷ</pattern>
-					<pattern type="100000000000" count="one" draft="contributed">000 Tỷ</pattern>
-					<pattern type="100000000000" count="other" draft="contributed">000 Tỷ</pattern>
-					<pattern type="1000000000000" count="one" draft="contributed">0.0 NT</pattern>
-					<pattern type="1000000000000" count="other" draft="contributed">0.0 NT</pattern>
-					<pattern type="10000000000000" count="one" draft="contributed">00 NT</pattern>
-					<pattern type="10000000000000" count="other" draft="contributed">00 NT</pattern>
-					<pattern type="100000000000000" count="one" draft="contributed">000 NT</pattern>
-					<pattern type="100000000000000" count="other" draft="contributed">000 NT</pattern>
+					<pattern type="1000" draft="contributed">0.0 N</pattern>
+					<pattern type="10000" draft="contributed">00 N</pattern>
+					<pattern type="100000" draft="contributed">000 N</pattern>
+					<pattern type="1000000" draft="contributed">0.0 Tr</pattern>
+					<pattern type="10000000" draft="contributed">00 Tr</pattern>
+					<pattern type="100000000" draft="contributed">000 Tr</pattern>
+					<pattern type="1000000000" draft="contributed">0.0 Tỷ</pattern>
+					<pattern type="10000000000" draft="contributed">00 Tỷ</pattern>
+					<pattern type="100000000000" draft="contributed">000 Tỷ</pattern>
+					<pattern type="1000000000000" draft="contributed">0.0 NT</pattern>
+					<pattern type="10000000000000" draft="contributed">00 NT</pattern>
+					<pattern type="100000000000000" draft="contributed">000 NT</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>

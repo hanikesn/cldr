@@ -10,7 +10,6 @@ import org.unicode.cldr.test.CheckCLDR.CheckStatus.Subtype;
 import org.unicode.cldr.util.Builder;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRFile.Status;
-import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.Factory;
 import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.RegexLookup;
@@ -23,8 +22,6 @@ import com.ibm.icu.lang.CharSequences;
 import com.ibm.icu.text.UnicodeSet;
 
 public class CheckForCopy extends FactoryCheckCLDR {
-
-    private static final boolean DEBUG = CldrUtility.getProperty("DEBUG", false);
 
     XPathParts parts = new XPathParts();
     //CLDRFile.Status status = new CLDRFile.Status();
@@ -52,7 +49,6 @@ public class CheckForCopy extends FactoryCheckCLDR {
             "|pattern" +
             "|field\\[@type=\"dayperiod\"]" +
             "|defaultNumberingSystem" +
-            "|otherNumberingSystems" +
             "|exemplarCharacters" +
             ")", true)
             .add("^//ldml/dates/calendars/calendar\\[@type=\"gregorian\"]", false)
@@ -192,12 +188,12 @@ public class CheckForCopy extends FactoryCheckCLDR {
         case same_as_english:
             result.add(new CheckStatus().setCause(this).setMainType(CheckStatus.warningType).setSubtype(Subtype.sameAsEnglishOrCode)
                     .setCheckOnSubmit(false)
-                    .setMessage("The value is the same as in English: see <a target='CLDR-ST-DOCS' href='http://cldr.org/translation/fixing-errors'>Fixing Errors and Warnings</a>.", new Object[]{}));
+                    .setMessage("The value is the same as in English. For what to do, see <a target='CLDR-ST-DOCS' href='http://cldr.org/translation/fixing-errors'>Fixing Errors and Warnings</a>.", new Object[]{}));
             break;
         case same_as_code:
             result.add(new CheckStatus().setCause(this).setMainType(CheckStatus.warningType).setSubtype(Subtype.sameAsEnglishOrCode)
                     .setCheckOnSubmit(false)
-                    .setMessage("The value is the same as the 'code': see <a target='CLDR-ST-DOCS' href='http://cldr.org/translation/fixing-errors'>Fixing Errors and Warnings</a>.", new Object[]{}));
+                    .setMessage("The value is the same as the 'code'. For what to do, see <a target='CLDR-ST-DOCS' href='http://cldr.org/translation/fixing-errors'>Fixing Errors and Warnings</a>.", new Object[]{}));
             break;
         }
         return this;
@@ -212,7 +208,7 @@ public class CheckForCopy extends FactoryCheckCLDR {
         UnicodeSet exemplars = cldrFileToCheck.getExemplarSet("main", CLDRFile.WinningChoice.WINNING);
         if (lang.equals("en") || lang.equals("root") || exemplars != null && ASCII_LETTER.containsNone(exemplars)) { // skip non-Latin, because the exemplar set will check
             setSkipTest(true);
-            if(DEBUG) System.out.println("CheckForCopy: Skipping: " + localeID);
+            System.out.println("Skipping: " + localeID);
             return this;
         }
         

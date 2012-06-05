@@ -15,7 +15,7 @@ Except as contained in this notice, the name of a copyright holder shall not be 
 
 <!ELEMENT version EMPTY >
 <!ATTLIST version number CDATA #REQUIRED >
-<!ATTLIST version cldrVersion CDATA #FIXED "22.0" >
+<!ATTLIST version cldrVersion CDATA #FIXED "21.0" >
 
 <!ELEMENT generation EMPTY >
 <!ATTLIST generation date CDATA #REQUIRED >
@@ -58,7 +58,7 @@ Except as contained in this notice, the name of a copyright holder shall not be 
 <!ATTLIST group grouping ( true | false )  #IMPLIED >
 <!ATTLIST group draft ( approved | contributed | provisional | unconfirmed | true | false ) #IMPLIED > <!-- true and false are deprecated. -->
 <!ATTLIST group references CDATA #IMPLIED >
-<!ATTLIST group status ( deprecated | grouping ) #IMPLIED >
+<!ATTLIST group status ( deprecated ) #IMPLIED >
 
 <!ELEMENT languageData ( language* ) >
 <!ELEMENT language EMPTY >
@@ -468,11 +468,7 @@ Except as contained in this notice, the name of a copyright holder shall not be 
 <!ATTLIST zoneItem references CDATA #IMPLIED >
 
 <!-- Coverage levels -->
-<!ELEMENT coverageLevels ( coverageVariable*, coverageLevel* ) >
-
-<!ELEMENT coverageVariable EMPTY >
-<!ATTLIST coverageVariable key CDATA #REQUIRED >
-<!ATTLIST coverageVariable value CDATA #REQUIRED >
+<!ELEMENT coverageLevels ( coverageLevel* ) >
 
 <!ELEMENT coverageLevel EMPTY >
 <!ATTLIST coverageLevel inLanguage CDATA #IMPLIED >

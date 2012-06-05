@@ -1,4 +1,4 @@
-/* Copyright (C) 2005-2012, International Business Machines Corporation and   *
+/* Copyright (C) 2005-2010, International Business Machines Corporation and   *
  * others. All Rights Reserved.                                               */
 //
 //  CookieSession.java
@@ -10,8 +10,6 @@
 
 package org.unicode.cldr.web;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -22,9 +20,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.unicode.cldr.util.Level;
-import org.unicode.cldr.util.StandardCodes;
 
 /**
  * Instances of this class represent the session-persistent data kept on a per-user basis.
@@ -37,9 +32,6 @@ public class CookieSession {
     public Hashtable stuff = new Hashtable();  // user data
     public Hashtable prefs = new Hashtable(); // user prefs
     public UserRegistry.User user = null;
-    /**
-     * @deprecated need to refactor anything that uses this.
-     */
     public static SurveyMain sm = null;
     
     private Connection conn = null;
@@ -50,7 +42,7 @@ public class CookieSession {
     
     public Connection db(SurveyMain sm) {
         if(conn == null) {
-            conn = DBUtils.getInstance().getDBConnection();
+            conn = sm.dbUtils.getDBConnection();
         }
         return conn;
     }
@@ -71,12 +63,8 @@ public class CookieSession {
      * @return iterator over all sessions.
      **/
     public static Iterator getAll() {
-        return getAllSet().iterator();
-    }
-    
-    public static Set<CookieSession> getAllSet() {
         synchronized(gHash) {
-            TreeSet<CookieSession> sessSet = new TreeSet<CookieSession>(new Comparator<Object>() {
+            TreeSet sessSet = new TreeSet(new Comparator() {
                   public int compare(Object a, Object b) {
                     CookieSession aa = (CookieSession)a;
                     CookieSession bb = (CookieSession)b;
@@ -88,10 +76,11 @@ public class CookieSession {
                 });
     //      sessSet.addAll(uHash.values()); // all users (reg'd)
             sessSet.addAll(gHash.values()); // ALL sessions
-            return sessSet;
+            return sessSet.iterator();
             //return uHash.values().iterator();
         }
     }
+    
     /** 
      * Fetch a specific session.  'touch' it (mark it as recently active) if found.
      * @return session or null
@@ -407,8 +396,7 @@ public class CookieSession {
      * @return string
      */
     public static String cheapEncode(byte b[]) {
-        @SuppressWarnings("restriction")
-        StringBuffer sb = new StringBuffer(base64.encode(b));
+        StringBuffer sb = new StringBuffer(new sun.misc.BASE64Encoder().encode(b));
         for(int i=0;i<sb.length();i++) {
             char c = sb.charAt(i);
             if(c == '=') {
@@ -420,51 +408,6 @@ public class CookieSession {
             }
         }
         return sb.toString();
-    }
-    
-    static final Charset utf8 = Charset.forName("UTF-8");
-    @SuppressWarnings("restriction")
-    static final sun.misc.BASE64Encoder base64 = new sun.misc.BASE64Encoder();
-    @SuppressWarnings("restriction")
-    static final sun.misc.BASE64Decoder base64d = new sun.misc.BASE64Decoder();
-    @SuppressWarnings("restriction")
-    public static String cheapEncodeString(String s) {
-        StringBuffer sb = new StringBuffer(base64.encode(s.getBytes(utf8)));
-        for(int i=0;i<sb.length();i++) {
-            char c = sb.charAt(i);
-            if(c == '=') {
-                sb.setCharAt(i,',');
-            } else if(c == '/') {
-                sb.setCharAt(i,'.');
-            } else if(c == '+') {
-                sb.setCharAt(i,'_');
-            }
-        }
-        return sb.toString();
-    }
-    @SuppressWarnings("restriction")
-    public static String cheapDecodeString(String s) {
-        StringBuffer sb = new StringBuffer(s);
-        for(int i=0;i<sb.length();i++) {
-            char c = sb.charAt(i);
-            if(c == ',') {
-                sb.setCharAt(i,'=');
-            } else if(c == '.') {
-                sb.setCharAt(i,'/');
-            } else if(c == '_') {
-                sb.setCharAt(i,'+');
-            }
-        }
-        byte b[];
-        try {
-            b = base64d.decodeBuffer(sb.toString());
-        } catch (IOException e) {
-            SurveyLog.logException(e);
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
-        return new String(b,utf8);
     }
     
     
@@ -614,14 +557,13 @@ public class CookieSession {
 
     public static synchronized CookieSession checkForAbuseFrom(String userIP,
             Hashtable<String, Object> BAD_IPS, String userAgent) {
-        if(userAgent==null) userAgent="X-None";
         if(BAD_IPS.containsKey(userIP)) {
             BadUserRecord bur = (BadUserRecord)BAD_IPS.get(userIP);
             bur.hit(userAgent);
             return getSpecialGuest();
         }
         
-        if(SurveyMain.isUnofficial()) {
+        if(SurveyMain.isUnofficial) {
             return null; // OK.
         }
         
@@ -672,45 +614,5 @@ public class CookieSession {
             kickCount++;
             return "banned and kicked this session";
         }
-    }
-
-    /**
-     * User's organization or null.
-     * @return
-     */
-    public String getUserOrg() {
-    	if(user != null) {
-    		return user.org;
-    	} else {
-    		return null;
-    	}
-    }
-
-    /**
-     * @param locale
-     * @return
-     */
-    String getOrgCoverageLevel(String locale) {
-        String level;
-        String  myOrg = getUserOrg();
-        if((myOrg == null) || !WebContext.isCoverageOrganization(myOrg)) {
-        	level = WebContext.COVLEV_DEFAULT_RECOMMENDED_STRING;
-        } else {
-        	org.unicode.cldr.util.Level l = StandardCodes.make().getLocaleCoverageLevel(myOrg, locale);
-        	if(l==Level.UNDETERMINED) {
-        	    l = WebContext.COVLEVEL_DEFAULT_RECOMMENDED;
-        	}
-        	level = l.toString();
-        }
-        return level;
-    }
-
-    public String getEffectiveCoverageLevel( String locale) {
-        String level = sm.getListSetting(settings ,SurveyMain.PREF_COVLEV,WebContext.PREF_COVLEV_LIST,false);
-        if((level == null) || (level.equals(WebContext.COVLEV_RECOMMENDED))||(level.equals("default"))) {
-            // fetch from org
-            level = getOrgCoverageLevel(locale);
-        }
-        return level;
     }
 }

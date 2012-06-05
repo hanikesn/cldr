@@ -421,18 +421,8 @@ public class ICUServiceBuilder {
   }
   
   public DecimalFormat getNumberFormat(int index) {
-      //CLDRFile cldrFile = cldrFactory.make(localeID, true);
-      return _getNumberFormat(NumberNames[index], OTHER_KEY, null);
-    }
-
-  public NumberFormat getGenericNumberFormat(String ns) {
-      //CLDRFile cldrFile = cldrFactory.make(localeID, true);
-      NumberFormat result = (NumberFormat) cacheNumberFormats.get(cldrFile.getLocaleID()+"@numbers="+ns);
-      if (result != null) return result;
-      ULocale ulocale = new ULocale(cldrFile.getLocaleID()+"@numbers="+ns);
-      result = NumberFormat.getInstance(ulocale);
-      cacheNumberFormats.put(cldrFile.getLocaleID()+"@numbers="+ns, result);
-      return result;
+    //CLDRFile cldrFile = cldrFactory.make(localeID, true);
+    return _getNumberFormat(NumberNames[index], OTHER_KEY, null);
   }
   
   public DecimalFormat getNumberFormat(String pattern) {
@@ -623,9 +613,7 @@ public class ICUServiceBuilder {
     try {
       numsys = cldrFile.getWinningValue("//ldml/numbers/defaultNumberingSystem"); 
       value = cldrFile.getWinningValue("//ldml/numbers/symbols[@numberSystem='" + numsys + "']/" + key);
-      if (value == null || value.length() < 1) {
-          throw new RuntimeException();
-      }
+      value.charAt(0); // just throw error if not big enough or null
       return value;
     } catch (RuntimeException e) {
       throw new IllegalArgumentException("Illegal value <" + value + "> at " + "//ldml/numbers/symbols[@numberSystem='" + numsys + "']/" + key);

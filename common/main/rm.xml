@@ -729,6 +729,7 @@
 			<territory type="CN" draft="contributed">China</territory>
 			<territory type="CO" draft="contributed">Columbia</territory>
 			<territory type="CR" draft="contributed">Costa Rica</territory>
+			<territory type="CS" draft="contributed">Serbia e Montenegro</territory>
 			<territory type="CU" draft="contributed">Cuba</territory>
 			<territory type="CV" draft="contributed">Cap Verd</territory>
 			<territory type="CX" draft="contributed">Insla da Christmas</territory>
@@ -890,7 +891,6 @@
 			<territory type="SN" draft="contributed">Senegal</territory>
 			<territory type="SO" draft="contributed">Somalia</territory>
 			<territory type="SR" draft="contributed">Surinam</territory>
-			<territory type="SS" draft="provisional">Sudan dal Sid</territory>
 			<territory type="ST" draft="contributed">São Tomé e Principe</territory>
 			<territory type="SU" draft="contributed">Uniun Sovietica</territory>
 			<territory type="SV" draft="contributed">El Salvador</territory>

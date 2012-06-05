@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2004-2012 IBM Corporation and Others. All Rights Reserved.
+ * Copyright (C) 2004-2011 IBM Corporation and Others. All Rights Reserved.
  */
 package org.unicode.cldr.web;
 
@@ -8,10 +8,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +19,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -28,15 +27,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.apache.derby.impl.sql.compile.GetCurrentConnectionNode;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.unicode.cldr.util.CLDRConfig;
-import org.unicode.cldr.util.CLDRConfigImpl;
 import org.unicode.cldr.util.CLDRLocale;
-import org.unicode.cldr.util.StackTracker;
+import org.unicode.cldr.util.CldrUtility;
 
 import com.ibm.icu.text.UnicodeSet;
 
@@ -63,12 +55,12 @@ public class DBUtils {
 	public static String CLDR_DB_P = null;
 	public static String cldrdb_u = null;
 	public static String CLDR_DB;
-//	public static String cldrdb = null;
+	public static String cldrdb = null;
 	public static String CLDR_DB_CREATESUFFIX = null;
 	public static String CLDR_DB_SHUTDOWNSUFFIX = null;
 	public static boolean db_Derby = false;
 	public static boolean db_Mysql = false;
-	// === DB workarounds :( - derby by default
+	// === DB workarounds :(
 	public static String DB_SQL_IDENTITY = "GENERATED ALWAYS AS IDENTITY";
 	public static String DB_SQL_VARCHARXPATH = "varchar(1024)";
 	public static String DB_SQL_WITHDEFAULT = "WITH DEFAULT";
@@ -76,14 +68,13 @@ public class DBUtils {
 	public static String DB_SQL_CURRENT_TIMESTAMP0 = "CURRENT_TIMESTAMP";
 	public static String DB_SQL_MIDTEXT = "VARCHAR(1024)";
 	public static String DB_SQL_BIGTEXT = "VARCHAR(16384)";
-	public static String DB_SQL_UNICODE = "VARCHAR(16384)"; // unicode type string
-    public static  String DB_SQL_LAST_MOD =  " last_mod TIMESTAMP NOT NULL WITH DEFAULT CURRENT_TIMESTAMP  ";
+	public static String DB_SQL_UNICODE = "VARCHAR(16384)"; // unicode type
+															// string
 	public static String DB_SQL_ALLTABLES = "select tablename from SYS.SYSTABLES where tabletype='T'";
 	public static String DB_SQL_BINCOLLATE = "";
 	public static String DB_SQL_BINTRODUCER = "";
 	public static int db_number_open = 0;
 	public static int db_number_used = 0;
-	private static int db_UnicodeType =             java.sql.Types.VARCHAR; /* for setNull  - see java.sql.Types */
 	private static final StackTracker tracker = DEBUG?new StackTracker():null; // new StackTracker(); - enable, to track unclosed connections
 	
 	public Appendable stats(Appendable output) throws IOException {
@@ -98,7 +89,7 @@ public class DBUtils {
 	
 	public static void closeDBConnection(Connection conn) {
 		if (conn != null) {
-		    if(SurveyMain.isUnofficial() && tracker!=null) {
+		    if(SurveyMain.isUnofficial && tracker!=null) {
 		        tracker.remove(conn);
 		    }
 			try {
@@ -236,7 +227,7 @@ public class DBUtils {
 		return instance;
 	}
 
-	public synchronized static void makeInstanceFrom(DataSource dataSource2) {
+	public static void makeInstanceFrom(DataSource dataSource2) {
 		if(instance==null) {
 			instance = new DBUtils(dataSource2);
 		} else {
@@ -247,12 +238,9 @@ public class DBUtils {
 	public static final String getStringUTF8(ResultSet rs, int which)
 			throws SQLException {
 		if (db_Derby) { // unicode
-			String str =  rs.getString(which);
-			if(rs.wasNull()) return null;
-			return str;
+			return rs.getString(which);
 		}
 		byte rv[] = rs.getBytes(which);
-		if(rs.wasNull()) return null;
 		if (rv != null) {
 			String unicode;
 			try {
@@ -285,7 +273,7 @@ public class DBUtils {
 				// System.err.println("table " + canonName + " did exist.");
 				return true;
 			} else {
-				SurveyLog.debug("table " + canonName + " did not exist.");
+				System.err.println("table " + canonName + " did not exist.");
 				return false;
 			}
 		} catch (SQLException se) {
@@ -296,9 +284,6 @@ public class DBUtils {
 
 	public static final void setStringUTF8(PreparedStatement s, int which,
 			String what) throws SQLException {
-		if(what==null) {
-			s.setNull(which,db_UnicodeType);
-		}
 		if (db_Derby) {
 			s.setString(which, what);
 		} else {
@@ -355,11 +340,11 @@ public class DBUtils {
 		return rv;
 	}
 	
-	public static String[] sqlQueryArray(Connection conn, String str) throws SQLException {
+	public String[] sqlQueryArray(Connection conn, String str) throws SQLException {
 		return sqlQueryArrayArray(conn,str)[0];
 	}
 	
-	public static String[][] sqlQueryArrayArray(Connection conn, String str) throws SQLException {
+	public String[][] sqlQueryArrayArray(Connection conn, String str) throws SQLException {
 		Statement s  = null;
 		ResultSet rs  = null;
 		try {
@@ -388,12 +373,12 @@ public class DBUtils {
 //		}
 //		return ret;
 //	}
-	public  static String sqlQuery(Connection conn, String str) throws SQLException {
+	public String sqlQuery(Connection conn, String str) throws SQLException {
 		return sqlQueryArray(conn,str)[0];
 	}
 	
 
-	public static int sqlUpdate(WebContext ctx, Connection conn, PreparedStatement ps) {
+	static int sqlUpdate(WebContext ctx, Connection conn, PreparedStatement ps) {
 		int rv = -1;
 		try {
 			rv = ps.executeUpdate();
@@ -427,6 +412,7 @@ public class DBUtils {
 	}
 
 	File dbDir = null;
+
 	// File dbDir_u = null;
 	static String dbInfo = null;
 	
@@ -438,8 +424,7 @@ public class DBUtils {
 		// Initialize DB context
 		try {
 			Context initialContext = new InitialContext();
-                        Context eCtx = (Context) initialContext.lookup("java:comp/env");
-			datasource = (DataSource) eCtx.lookup(JDBC_SURVEYTOOL);
+			datasource = (DataSource) initialContext.lookup("java:comp/env/" + JDBC_SURVEYTOOL);
 			//datasource = (DataSource) envContext.lookup("ASDSDASDASDASD");
 			
 			if(datasource!=null) {
@@ -451,8 +436,8 @@ public class DBUtils {
 					c = datasource.getConnection();
 					DatabaseMetaData dmd = c.getMetaData();
 					dbInfo = dmd.getDatabaseProductName()+" v"+dmd.getDatabaseProductVersion();
-					setupSqlForServerType();
-					SurveyLog.debug("Metadata: "+ dbInfo);
+					loadSqlHacks();
+					System.err.println("Metadata: "+ dbInfo);
 				}
 			} catch (SQLException  t) {
                 datasource = null;
@@ -487,7 +472,7 @@ public class DBUtils {
 				c = datasource.getConnection();
 				DatabaseMetaData dmd = c.getMetaData();
 				dbInfo = dmd.getDatabaseProductName()+" v"+dmd.getDatabaseProductVersion();
-				setupSqlForServerType();
+				loadSqlHacks();
 				if(db_Derby) {
 					c.setAutoCommit(false);
 				}
@@ -495,7 +480,7 @@ public class DBUtils {
 				if(autoCommit==true) {
 					throw new IllegalArgumentException("autoCommit was true, expected false. Check your configuration.");
 				}
-				SurveyLog.debug("Metadata: "+ dbInfo + ", autocommit: " + autoCommit);
+				System.err.println("Metadata: "+ dbInfo + ", autocommit: " + autoCommit);
 			}
 		} catch (SQLException  t) {
             datasource = null;
@@ -514,12 +499,11 @@ public class DBUtils {
 				}
 		}
 	}
-	private void setupSqlForServerType() {
-		SurveyLog.debug("setting up SQL for database type " + dbInfo);
+	private void loadSqlHacks() {
+	    System.err.println("Loading hacks for " + dbInfo);
         if (dbInfo.contains("Derby")) {
             db_Derby = true;
-            SurveyLog.debug("Note: derby mode");
-            db_UnicodeType =             java.sql.Types.VARCHAR;
+            System.err.println("Note: derby mode");
         } else if (dbInfo.contains("MySQL")) {
             System.err.println("Note: mysql mode");
             db_Mysql = true;
@@ -530,12 +514,10 @@ public class DBUtils {
             DB_SQL_BINTRODUCER = "_latin1";
             DB_SQL_WITHDEFAULT = "DEFAULT";
             DB_SQL_TIMESTAMP0 = "DATETIME";
-            DB_SQL_LAST_MOD = " last_mod TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ";
             DB_SQL_CURRENT_TIMESTAMP0 = "'1999-12-31 23:59:59'"; // NOW?
             DB_SQL_MIDTEXT = "TEXT(1024)";
             DB_SQL_BIGTEXT = "TEXT(16384)";
             DB_SQL_UNICODE = "BLOB";
-            db_UnicodeType =             java.sql.Types.BLOB;
             DB_SQL_ALLTABLES = "show tables";
         } else {
             System.err.println("*** WARNING: Don't know what kind of database is "
@@ -543,17 +525,7 @@ public class DBUtils {
         }
     }
     public void doShutdown() throws SQLException {
-        if(datasource!=null && datasource instanceof BasicDataSource) {
-            ((BasicDataSource)datasource).close();
-        }
 		datasource = null;
-		if(db_Derby) {
-		    try {
-		        DriverManager.getConnection("jdbc:derby:;shutdown=true");
-		    } catch(Throwable t) {
-		        //ignore
-		    }
-		}
 		if(this.db_number_open>0) {
 		    System.err.println("DBUtils: removing my instance. " + this.db_number_open + " still open?\n"+tracker);
 		}
@@ -600,7 +572,7 @@ public class DBUtils {
 			if(db_Derby) {
 				c.setAutoCommit(false);
 			}
-			if(SurveyMain.isUnofficial()&&tracker!=null) tracker.add(c);
+			if(SurveyMain.isUnofficial&&tracker!=null) tracker.add(c);
 			return c;
 		} catch (SQLException se) {
 			se.printStackTrace();
@@ -609,19 +581,19 @@ public class DBUtils {
 		}
 	}
 
-	void setupDBProperties(SurveyMain surveyMain, CLDRConfig survprops) {
+	void setupDBProperties(SurveyMain surveyMain, Properties cldrprops) {
 //		db_driver = cldrprops.getProperty("CLDR_DB_DRIVER",
 //				"org.apache.derby.jdbc.EmbeddedDriver");
 //		db_protocol = cldrprops.getProperty("CLDR_DB_PROTOCOL", "jdbc:derby:");
 //		CLDR_DB_U = cldrprops.getProperty("CLDR_DB_U", null);
 //		CLDR_DB_P = cldrprops.getProperty("CLDR_DB_P", null);
-//		CLDR_DB = survprops.getProperty("CLDR_DB", "cldrdb");
-//		dbDir = new File(SurveyMain.cldrHome, CLDR_DB);
-//		cldrdb = survprops.getProperty("CLDR_DB_LOCATION",
-//				dbDir.getAbsolutePath());
-		CLDR_DB_CREATESUFFIX = survprops.getProperty("CLDR_DB_CREATESUFFIX",
+		CLDR_DB = cldrprops.getProperty("CLDR_DB", "cldrdb");
+		dbDir = new File(SurveyMain.cldrHome, CLDR_DB);
+		cldrdb = cldrprops.getProperty("CLDR_DB_LOCATION",
+				dbDir.getAbsolutePath());
+		CLDR_DB_CREATESUFFIX = cldrprops.getProperty("CLDR_DB_CREATESUFFIX",
 				";create=true");
-		CLDR_DB_SHUTDOWNSUFFIX = survprops.getProperty(
+		CLDR_DB_SHUTDOWNSUFFIX = cldrprops.getProperty(
 				"CLDR_DB_SHUTDOWNSUFFIX", "jdbc:derby:;shutdown=true");
 	}
 
@@ -629,10 +601,9 @@ public class DBUtils {
 			CLDRProgressIndicator.CLDRProgressTask progress) {
 	    System.err.println("StartupDB: datasource="+ datasource);
 	    if(datasource == null) {
-	        throw new RuntimeException(" - JNDI required:  " + getDbBrokenMessage() );
+	        throw new RuntimeException("JNDI required: http://cldr.unicode.org/development/running-survey-tool/cldr-properties/db");
 	    }
 
-	    
 		progress.update("Using datasource..."+dbInfo); // restore
 
 	}
@@ -741,7 +712,7 @@ public class DBUtils {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static PreparedStatement prepareStatementWithArgs(Connection conn, String sql,
+	public PreparedStatement prepareStatementWithArgs(Connection conn, String sql,
 			Object... args) throws SQLException {
 		PreparedStatement ps;
 		ps = conn.prepareStatement(sql);
@@ -749,16 +720,7 @@ public class DBUtils {
 //		while (args!=null&&args.length==1&&args[0] instanceof Object[]) {
 //			System.err.println("Unwrapping " + args + " to " + args[0]);
 //		}
-		setArgs(ps, args);
-		return ps;
-	}
-    /**
-     * @param ps
-     * @param args
-     * @throws SQLException
-     */
-    private static void setArgs(PreparedStatement ps, Object... args) throws SQLException {
-        if(args!=null) {
+		if(args!=null&&args.length>0) {
 			for(int i=0;i<args.length;i++) {
 				Object o = args[i];
 				if(o instanceof String) {
@@ -766,23 +728,24 @@ public class DBUtils {
 				} else if(o instanceof Integer) {
 					ps.setInt(i+1, (Integer)o);
 				} else if(o instanceof CLDRLocale) { /* toString compatible things */
-					ps.setString(i+1, ((CLDRLocale) o).getBaseName());
+					ps.setString(i+1, o.toString());
 				} else {
 					System.err.println("DBUtils: Warning: using toString for unknown object " + o.getClass().getName());
 					ps.setString(i+1, o.toString());
 				}
 			}
 		}
-    }
+		return ps;
+	}
     
-	public static String[][] resultToArrayArray(ResultSet rs) throws SQLException {
+    private String[][] resultToArrayArray(ResultSet rs) throws SQLException {
 		ArrayList<String[]> al = new ArrayList<String[]>();
 		while(rs.next()) {
 			al.add(arrayOfResult(rs));
 		}
 		return al.toArray(new String[al.size()][]);
 	}
-	public static Object[][] resultToArrayArrayObj(ResultSet rs) throws SQLException {
+    private Object[][] resultToArrayArrayObj(ResultSet rs) throws SQLException {
 		ArrayList<Object[]> al = new ArrayList<Object[]>();
 		ResultSetMetaData rsm = rs.getMetaData();
 		int colCount =rsm.getColumnCount();
@@ -806,45 +769,30 @@ public class DBUtils {
 		Map<String,Object> m = new HashMap<String,Object>(rsm.getColumnCount());
 		
 		for(int i=1;i<=rsm.getColumnCount();i++) {
-			Object obj = extractObject(rs, rsm, i);
+			Object obj = null;
+			
+			if(rsm.getColumnType(i)==java.sql.Types.BLOB) {
+				obj=DBUtils.getStringUTF8(rs, i);
+			} else {
+				obj=rs.getObject(i);
+				if(obj!=null && obj.getClass().isArray()) {
+					obj=DBUtils.getStringUTF8(rs, i);
+				}
+			}
 			m.put(rsm.getColumnName(i), obj);
 		}
 		
 		return m;
 	}
-    /**
-     * @param rs
-     * @param rsm
-     * @param i
-     * @return
-     * @throws SQLException
-     */
-    private static Object extractObject(ResultSet rs, ResultSetMetaData rsm, int i) throws SQLException {
-        Object obj = null;
-        int colType = rsm.getColumnType(i);
-        if(colType==java.sql.Types.BLOB) {
-        	obj=DBUtils.getStringUTF8(rs, i);
-        } else if(colType == java.sql.Types.TIMESTAMP) {
-            obj=rs.getTimestamp(i);
-        } else if(colType == java.sql.Types.DATE) {
-            obj=rs.getDate(i);
-        } else { // generic
-        	obj=rs.getObject(i);
-        	if(obj!=null && obj.getClass().isArray()) {
-        		obj=DBUtils.getStringUTF8(rs, i);
-        	}
-        }
-        return obj;
-    }
 
-	public static String sqlQuery(Connection conn, String sql, Object... args) throws SQLException {
+	public String sqlQuery(Connection conn, String sql, Object... args) throws SQLException {
 		return sqlQueryArray(conn,sql,args)[0];
 	}
 
-	public static String[] sqlQueryArray(Connection conn, String sql, Object... args) throws SQLException {
+	public String[] sqlQueryArray(Connection conn, String sql, Object... args) throws SQLException {
 		return sqlQueryArrayArray(conn,sql,args)[0];
 	}
-	public static String[][] sqlQueryArrayArray(Connection conn, String str, Object... args) throws SQLException {
+	public String[][] sqlQueryArrayArray(Connection conn, String str, Object... args) throws SQLException {
 		PreparedStatement ps= null;
 		ResultSet rs  = null;
 		try {
@@ -856,7 +804,7 @@ public class DBUtils {
 			DBUtils.close(rs,ps);
 		}
 	}
-	public static Object[][] sqlQueryArrayArrayObj(Connection conn, String str, Object... args) throws SQLException {
+	public Object[][] sqlQueryArrayArrayObj(Connection conn, String str, Object... args) throws SQLException {
 		PreparedStatement ps= null;
 		ResultSet rs  = null;
 		try {
@@ -868,7 +816,7 @@ public class DBUtils {
 			DBUtils.close(rs,ps);
 		}
 	}
-	public static int sqlUpdate(Connection conn, String str, Object... args) throws SQLException {
+	public int sqlUpdate(Connection conn, String str, Object... args) throws SQLException {
 		PreparedStatement ps= null;
 		try {
 			ps = prepareStatementWithArgs(conn, str, args);
@@ -892,7 +840,7 @@ public class DBUtils {
 			DBUtils.close(rs,ps);
 		}
 	}		
-	private static String[] arrayOfResult(ResultSet rs) throws SQLException {
+	private String[] arrayOfResult(ResultSet rs) throws SQLException {
 		ResultSetMetaData rsm = rs.getMetaData();
 		String ret[] = new String[rsm.getColumnCount()];
 		for(int i=0;i<ret.length;i++) {
@@ -900,11 +848,17 @@ public class DBUtils {
 		}
 		return ret;
 	}
-	private static Object[] arrayOfResultObj(ResultSet rs, int colCount, ResultSetMetaData rsm) throws SQLException {
+	private Object[] arrayOfResultObj(ResultSet rs, int colCount, ResultSetMetaData rsm) throws SQLException {
 		Object ret[] = new Object[colCount];
 		for(int i=0;i<ret.length;i++) {
-		    Object obj = extractObject(rs,rsm,i+1);
-		    ret[i]=obj;
+			if(rsm.getColumnType(i+1)==java.sql.Types.BLOB) {
+				ret[i]=DBUtils.getStringUTF8(rs, i+1);
+			} else if(ret[i]!=null) {
+				ret[i]=rs.getObject(i+1);
+				if(ret[i].getClass().isArray()) {
+					ret[i]=DBUtils.getStringUTF8(rs, i+1);
+				}
+			}
 		}
 		return ret;
 	}
@@ -931,167 +885,4 @@ public class DBUtils {
 		 */
 		public void close() throws SQLException;
 	}
-	
-	public static void writeCsv(ResultSet rs, Writer out) throws SQLException, IOException {
-        ResultSetMetaData rsm = rs.getMetaData();
-        int cc = rsm.getColumnCount();
-        for(int i=1;i<=cc;i++) {
-        	if(i>1) {
-				out.write(',');
-        	}
-			WebContext.csvWrite(out, rsm.getColumnName(i).toUpperCase());
-        }
-		out.write('\r');
-		out.write('\n');
-		
-		while(rs.next()) {
-            for(int i=1;i<=cc;i++) {
-            	if(i>1) {
-    				out.write(',');
-            	}
-                String v;
-                try {
-                    v = rs.getString(i);
-                } catch(SQLException se) {
-                    if(se.getSQLState().equals("S1009")) {
-                        v="0000-00-00 00:00:00";
-                    } else {
-                    	throw se;
-                    }
-                }
-                if(v != null) {
-                    if(rsm.getColumnType(i)==java.sql.Types.LONGVARBINARY) {
-                        String uni = DBUtils.getStringUTF8(rs, i);
-                        WebContext.csvWrite(out, uni);
-                    } else {
-                        WebContext.csvWrite(out, v);
-                    }
-                }
-            }
-    		out.write('\r');
-    		out.write('\n');
-        }
-	}
-    public static JSONObject getJSON(ResultSet rs) throws SQLException, IOException, JSONException {
-        ResultSetMetaData rsm = rs.getMetaData();
-        int cc = rsm.getColumnCount();
-        JSONObject ret = new JSONObject();
-        JSONObject header = new JSONObject();
-        JSONArray data  = new JSONArray();
-        
-        int hasxpath = -1;
-        int haslocale = -1;
-        
-        for(int i=1;i<=cc;i++) {
-            String colname = rsm.getColumnName(i).toUpperCase();
-            if(colname.equals("XPATH")) hasxpath=i;
-            if(colname.equals("LOCALE")) haslocale=i;
-            header.put(colname, i-1);
-        }
-        int cn=cc;
-        if(hasxpath>=0) {
-            header.put("XPATH_STRHASH",cn++);
-            header.put("XPATH_CODE",cn++);
-        }
-        if(haslocale>=0) {
-            header.put("LOCALE_NAME",cn++);
-        }
-        
-        ret.put("header", header);
-        
-        while(rs.next()) {
-            JSONArray item = new JSONArray();
-            String xpath = null;
-            String locale_name = null;
-            for(int i=1;i<=cc;i++) {
-                String v;
-                try {
-                    v = rs.getString(i);
-                    if(i==hasxpath) {
-                        xpath = v;
-                    }
-                    if(i==haslocale) {
-                        locale_name = CLDRLocale.getInstance(v).getDisplayName();
-                    }
-                } catch(SQLException se) {
-                    if(se.getSQLState().equals("S1009")) {
-                        v="0000-00-00 00:00:00";
-                    } else {
-                        throw se;
-                    }
-                }
-                if(v != null) {
-                    if(rsm.getColumnType(i)==java.sql.Types.LONGVARBINARY) {
-                        String uni = DBUtils.getStringUTF8(rs, i);
-                        item.put(uni);
-                    } else {
-                        item.put(v);
-                    }
-                } else {
-                    item.put(false);
-                }
-            }
-            if(hasxpath>=0 && xpath!=null) {
-                item.put(XPathTable.getStringIDString(xpath)); // add XPATH_STRHASH column
-                item.put(CookieSession.sm.getSTFactory().getPathHeader(xpath).toString()); // add XPATH_CODE
-            }
-            if(haslocale>=0 && locale_name!=null) {
-                item.put(locale_name); // add XPATH_STRHASH column
-            }
-            data.put(item);
-        }
-        ret.put("data",data);
-        return ret;
-    }
-    public static JSONObject queryToJSON(String string, Object... args) throws SQLException, IOException, JSONException {
-        Connection conn = null;
-        PreparedStatement s = null;
-        ResultSet rs = null;
-        try {
-            conn = getInstance().getDBConnection();
-            s = DBUtils.prepareForwardReadOnly(conn, string);
-            setArgs(s, args);
-            rs = s.executeQuery();
-            return getJSON(rs);
-        } finally {
-            close(rs,s,conn);
-        }
-    }
-    public static String getDbBrokenMessage() {
-        final File homeFile = CLDRConfigImpl.homeFile;
-        StringBuilder sb = new StringBuilder("see <a href='http://cldr.unicode.org/development/running-survey-tool/cldr-properties/db'> http://cldr.unicode.org/development/running-survey-tool/cldr-properties/db </a>");
-        
-        if(homeFile==null) {
-            sb.insert(0, "(can't find our home directory, either) ");
-        } else {
-                final File cldrDb = new File(homeFile,"cldrdb");
-                try {
-                    String connectURI = "jdbc:derby:" + ( cldrDb.getCanonicalPath().replace(System.getProperty("file.separator").charAt(0), '/'));
-                    
-                    if(!cldrDb.exists()) {
-                        // Easier to create it for them than to explain it.
-                        String createURI = connectURI+";create=true";
-                        System.err.println("Attempting to create a DB at " + createURI);
-                       Driver drv = (Driver)Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
-                        DriverManager.registerDriver(drv);
-                        Connection conn = DriverManager.getConnection(createURI); 
-                        conn.close();
-                    }
-                    
-                    // Try to print something helpful
-                    sb.insert(0, "</pre>Read the rest of this exception - but, you may be able to add the following to your <b>context.xml</b> file:  <br><br><pre class='graybox adminExceptionLogsite'>" +
-                            "&lt;Resource name=\"jdbc/SurveyTool\" type=\"javax.sql.DataSource\" auth=\"Container\" \n" +
-                            "description=\"database for ST\" maxActive=\"100\" maxIdle=\"30\" maxWait=\"10000\" \n" + 
-                            " username=\"\" password=\"\" driverClassName=\"org.apache.derby.jdbc.EmbeddedDriver\" \n" +
-                            " url=\"<u>"  + connectURI + "</u>\" /&gt;\n</pre>\n" +
-                            " <i>Note: if you are on a Windows system, you may have to adjust the path somewhat.</i><br><pre>");
-                    
-                } catch (Throwable e) {
-                    SurveyLog.logException(e, "Trying to help the user out with SQL stuff in " + cldrDb.getAbsolutePath());
-                    sb.insert(0, "(sorry, "+e.toString() +" trying to get you some better help text. )  ");
-                }
-        }
-        
-        return sb.toString();
-    }
 }

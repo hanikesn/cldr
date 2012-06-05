@@ -182,6 +182,7 @@
 			<territory type="CN">Shiinaha</territory>
 			<territory type="CO">Kolombiya</territory>
 			<territory type="CR">Kosta Riika</territory>
+			<territory type="CS">serbiya iyo Monteneegro</territory>
 			<territory type="CU">Kuuba</territory>
 			<territory type="CV">Cape Verde Islands</territory>
 			<territory type="CY">Qubrus</territory>
@@ -324,7 +325,6 @@
 			<territory type="SN">Sinigaal</territory>
 			<territory type="SO">Soomaaliya</territory>
 			<territory type="SR">Suriname</territory>
-			<territory type="SS" draft="provisional">Koonfur Suudaan</territory>
 			<territory type="ST">São Tomé and Príncipe</territory>
 			<territory type="SV">El Salvador</territory>
 			<territory type="SY">Suuriya</territory>

@@ -341,6 +341,7 @@
 			<territory type="CO" draft="contributed">Colombia</territory>
 			<territory type="CP">Illa Clipperton</territory>
 			<territory type="CR" draft="contributed">Costa Rica</territory>
+			<territory type="CS" draft="contributed">Serbia e Montenegro</territory>
 			<territory type="CU" draft="contributed">Cuba</territory>
 			<territory type="CV" draft="contributed">Cabo Verde</territory>
 			<territory type="CX" draft="contributed">Illa Christmas</territory>
@@ -506,7 +507,6 @@
 			<territory type="SN" draft="contributed">Senegal</territory>
 			<territory type="SO" draft="contributed">Somalia</territory>
 			<territory type="SR" draft="contributed">Surinam</territory>
-			<territory type="SS" draft="provisional">Sudán do Sur</territory>
 			<territory type="ST" draft="contributed">Santo Tomé e Príncipe</territory>
 			<territory type="SV" draft="contributed">El Salvador</territory>
 			<territory type="SY" draft="contributed">Siria</territory>
@@ -1473,30 +1473,18 @@
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one" draft="contributed">0000</pattern>
-					<pattern type="1000" count="other" draft="contributed">0000</pattern>
-					<pattern type="10000" count="one" draft="contributed">00k</pattern>
-					<pattern type="10000" count="other" draft="contributed">00k</pattern>
-					<pattern type="100000" count="one" draft="contributed">000k</pattern>
-					<pattern type="100000" count="other" draft="contributed">000k</pattern>
-					<pattern type="1000000" count="one" draft="contributed">0.0 M</pattern>
-					<pattern type="1000000" count="other" draft="contributed">0.0 M</pattern>
-					<pattern type="10000000" count="one" draft="contributed">00 M</pattern>
-					<pattern type="10000000" count="other" draft="contributed">00 M</pattern>
-					<pattern type="100000000" count="one" draft="contributed">000 M</pattern>
-					<pattern type="100000000" count="other" draft="contributed">000 M</pattern>
-					<pattern type="1000000000" count="one" draft="contributed">0000 M</pattern>
-					<pattern type="1000000000" count="other" draft="contributed">0000 M</pattern>
-					<pattern type="10000000000" count="one" draft="contributed">00k M</pattern>
-					<pattern type="10000000000" count="other" draft="contributed">00k M</pattern>
-					<pattern type="100000000000" count="one" draft="contributed">000k M</pattern>
-					<pattern type="100000000000" count="other" draft="contributed">000k M</pattern>
-					<pattern type="1000000000000" count="one" draft="contributed">0.0 B</pattern>
-					<pattern type="1000000000000" count="other" draft="contributed">0.0 B</pattern>
-					<pattern type="10000000000000" count="one" draft="contributed">00 B</pattern>
-					<pattern type="10000000000000" count="other" draft="contributed">00 B</pattern>
-					<pattern type="100000000000000" count="one" draft="contributed">000 B</pattern>
-					<pattern type="100000000000000" count="other" draft="contributed">000 B</pattern>
+					<pattern type="1000" draft="contributed">0000</pattern>
+					<pattern type="10000" draft="contributed">00k</pattern>
+					<pattern type="100000" draft="contributed">000k</pattern>
+					<pattern type="1000000" draft="contributed">0.0 M</pattern>
+					<pattern type="10000000" draft="contributed">00 M</pattern>
+					<pattern type="100000000" draft="contributed">000 M</pattern>
+					<pattern type="1000000000" draft="contributed">0000 M</pattern>
+					<pattern type="10000000000" draft="contributed">00k M</pattern>
+					<pattern type="100000000000" draft="contributed">000k M</pattern>
+					<pattern type="1000000000000" draft="contributed">0.0 B</pattern>
+					<pattern type="10000000000000" draft="contributed">00 B</pattern>
+					<pattern type="100000000000000" draft="contributed">000 B</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
@@ -1751,7 +1739,7 @@
 				<displayName draft="contributed">Peseta española (conta convertible)</displayName>
 			</currency>
 			<currency type="ESP">
-				<pattern>#,##0 ¤</pattern>
+				<pattern>#,##0 ¤;-#,##0 ¤</pattern>
 				<displayName draft="contributed">Peseta española</displayName>
 				<displayName count="one" draft="contributed">peseta</displayName>
 				<displayName count="other" draft="contributed">pesetas</displayName>

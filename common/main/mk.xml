@@ -644,6 +644,7 @@
 			<territory type="CO">Колумбија</territory>
 			<territory type="CP">Остров Клипертон</territory>
 			<territory type="CR">Костарика</territory>
+			<territory type="CS">Србија и Црна Гора</territory>
 			<territory type="CU">Куба</territory>
 			<territory type="CV">Зеленортски Острови</territory>
 			<territory type="CX">Божиќни Острови</territory>
@@ -809,7 +810,6 @@
 			<territory type="SN">Сенегал</territory>
 			<territory type="SO">Сомалија</territory>
 			<territory type="SR">Суринам</territory>
-			<territory type="SS" draft="provisional">Јужен Судан</territory>
 			<territory type="ST">Сао Томе и Принчипе</territory>
 			<territory type="SV">Ел Салвадор</territory>
 			<territory type="SY">Сирија</territory>
@@ -2015,8 +2015,7 @@
 			</metazone>
 			<metazone type="Mauritius">
 				<long>
-					<generic>Време на Маурициус</generic>
-					<standard>стандардно Време на Маурициус</standard>
+					<standard>Време на Маурициус</standard>
 					<daylight>Летно сметање на времето на Маурициус</daylight>
 				</long>
 			</metazone>

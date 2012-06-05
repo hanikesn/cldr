@@ -734,6 +734,7 @@
 			<territory type="CO">Kolumbija</territory>
 			<territory type="CP" draft="provisional">Ostrvo Kliperton</territory>
 			<territory type="CR">Kostarika</territory>
+			<territory type="CS">Srbija i Crna Gora</territory>
 			<territory type="CU">Kuba</territory>
 			<territory type="CV">Kape Verde</territory>
 			<territory type="CX">Božićna Ostrva</territory>
@@ -899,7 +900,6 @@
 			<territory type="SN">Senegal</territory>
 			<territory type="SO">Somalija</territory>
 			<territory type="SR">Surinam</territory>
-			<territory type="SS" draft="provisional">Južni Sudan</territory>
 			<territory type="ST">Sao Tome i Principe</territory>
 			<territory type="SV">Salvador</territory>
 			<territory type="SY">Sirija</territory>

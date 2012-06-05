@@ -4,6 +4,8 @@
 package org.unicode.cldr.web;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,21 +14,20 @@ import java.util.TreeMap;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRLocale;
 import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.Factory;
 import org.unicode.cldr.util.Level;
-import org.unicode.cldr.util.LruMap;
 import org.unicode.cldr.util.VettingViewer;
 import org.unicode.cldr.util.VettingViewer.UsersChoice;
 import org.unicode.cldr.util.VettingViewer.VoteStatus;
 import org.unicode.cldr.util.VoteResolver;
 import org.unicode.cldr.util.VoteResolver.Organization;
-import org.unicode.cldr.web.UserRegistry.User;
+import org.unicode.cldr.util.XMLSource;
+import org.unicode.cldr.web.CLDRDBSourceFactory.DBEntry;
+import org.unicode.cldr.web.CLDRDBSourceFactory.SubFactory;
+import org.unicode.cldr.web.CLDRProgressIndicator.CLDRProgressTask;
 
 import com.ibm.icu.dev.test.util.ElapsedTimer;
-import com.ibm.icu.text.DurationFormat;
-import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.util.ULocale;
-import java.util.*;
-import org.unicode.cldr.util.*;
 
 /**
  * @author srl
@@ -113,31 +114,16 @@ public class VettingViewerQueue {
     	FORCERESTART,
     };
     
-    private static class VVOutput {
-        public VVOutput(StringBuffer s) {
-            output = s;
-        }
-        private StringBuffer output = new StringBuffer();
-        long start = System.currentTimeMillis();
-        public String getAge() {
-            long now = System.currentTimeMillis();
-            return "<span class='age'>Last generated " +
-                    DurationFormat.getInstance(SurveyMain.BASELINE_LOCALE).formatDurationFromNow(start - now)
-                    +"</span>";
-        }
-    }
-    
     private static class QueueEntry {
     	public Task currentTask=null;
-    	public Map<Pair<CLDRLocale,Organization>,VVOutput> output = new TreeMap<Pair<CLDRLocale,Organization>,VVOutput>();
+    	public Map<CLDRLocale,StringBuffer> output = new TreeMap<CLDRLocale,StringBuffer>();
     }
     
     public static QueueEntry summaryEntry = null;
     
-    private static final Object OnlyOneVetter=new Object(){}; // TODO: remove.
-    
 	public class Task extends SurveyThread.SurveyTask {
 		
+		private static final String OnlyOneVetter="1";
 		
 		public CLDRLocale locale;
 		private QueueEntry entry;
@@ -149,7 +135,6 @@ public class VettingViewerQueue {
 		public long start =-1;
 		public long last;
 		public long rem = -1;
-                private final String st_org;
 		final Level usersLevel;
 		final Organization usersOrg;
 		String status = "(Waiting for other users)";
@@ -163,7 +148,7 @@ public class VettingViewerQueue {
 		}
 		StringBuffer aBuffer = new StringBuffer();
 		private String baseUrl;
-		public Task(QueueEntry entry, CLDRLocale locale, SurveyMain sm, String baseUrl, Level usersLevel, VoteResolver.Organization usersOrg, final String st_org) {
+		public Task(QueueEntry entry, CLDRLocale locale, SurveyMain sm, String baseUrl, Level usersLevel, VoteResolver.Organization usersOrg) {
 			super("VettingTask:"+locale.toString());
 			if(DEBUG) System.err.println("Creating task " + locale.toString());
 			
@@ -172,9 +157,8 @@ public class VettingViewerQueue {
 				isSummary=true;
 				maxn=0;
 				// use the hack set
-                                
 				for(CLDRLocale l : sm.getLocalesSet()) {
-					if(getLocalesWithVotes(st_org).is(l.toString())) {
+					if(VettingViewer.HackIncludeLocalesWithVotes.is(l.toString())) {
 						maxn += baseMax;
 					}
 				}
@@ -182,7 +166,6 @@ public class VettingViewerQueue {
 				maxn = baseMax;
 			}
 			this.locale = locale;
-                        this.st_org = st_org;
 			this.entry = entry;
 			this.sm = sm;
 			this.baseUrl = baseUrl;
@@ -195,6 +178,7 @@ public class VettingViewerQueue {
 			statusCode = Status.WAITING;
 			final CLDRProgressTask progress = openProgress("vv:"+locale,maxn+100);
 			
+			DBEntry dbEntry = null;
 			VettingViewer<VoteResolver.Organization> vv = null;
 			
 			if(DEBUG) System.err.println("Starting up vv task:"+locale);
@@ -209,10 +193,12 @@ public class VettingViewerQueue {
 						return;
 					}
 					status="Beginning Process, Calculating";
+		            SubFactory ourFactory = sm.dbsrcfac.getFactory(false);
+		            dbEntry = sm.dbsrcfac.openEntry(ourFactory);
 		            
 		            vv = new VettingViewer<VoteResolver.Organization>(
-		                    sm.getSupplementalDataInfo(), sm.getSTFactory(), sm.getOldFactory(),
-		                    getUsersChoice(sm), "CLDR "+sm.getOldVersion(), "Winning "+sm.getNewVersion());
+		                    sm.getSupplementalDataInfo(), ourFactory, sm.getOldFactory(),
+		                    getUsersChoice(sm, dbEntry), "CLDR "+sm.getOldVersion(), "Winning "+sm.getNewVersion());
 		            vv.setBaseUrl(baseUrl);
 					progress.update("Got VettingViewer");
 					statusCode = Status.PROCESSING;
@@ -271,16 +257,18 @@ public class VettingViewerQueue {
 						vv.generateHtmlErrorTables(aBuffer, choiceSet, locale.getBaseName(), usersOrg, usersLevel, true);
 					} else {
 						if(DEBUG) System.err.println("Starting summary gen..");
-						vv.generateSummaryHtmlErrorTables(aBuffer, choiceSet, getLocalesWithVotes(st_org),usersOrg);
+						vv.generateSummaryHtmlErrorTables(aBuffer, choiceSet, VettingViewer.HackIncludeLocalesWithVotes);
 					}
 					if(running()) {
 						aBuffer.append("<hr/>"+PRE+"Processing time: "+ElapsedTimer.elapsedTime(start)+POST );
-						entry.output.put(new Pair<CLDRLocale,Organization>(locale,usersOrg), new VVOutput(aBuffer));
+						entry.output.put(locale, aBuffer);
 					}
 				}
 			} catch (RuntimeException re) {
 				// We're done.
 			} finally {
+				if(dbEntry!=null) dbEntry.close();
+				dbEntry=null;
 				if(progress!=null) progress.close();
 				vv=null; // release vv
 			}
@@ -291,72 +279,8 @@ public class VettingViewerQueue {
 			return status + bar;
 		}
 
-                Predicate<String> fLocalesWithVotes = null;
-                
-                private synchronized Predicate<String> getLocalesWithVotes(String st_org) {
-                    if(fLocalesWithVotes==null) {
-                        fLocalesWithVotes = createLocalesWithVotes(st_org);
-                    }
-                    return fLocalesWithVotes;
-                }
-
 	}
-
-        private Predicate<String> createLocalesWithVotes(String st_org) {
-            final Set<CLDRLocale> allLocs = SurveyMain.getLocalesSet();
-            /*
-                a. Any locale in Locales.txt for organization (excluding *). Use
-                StandardCodes.make().getLocaleCoverageLocales(String organization).
-                b. All locales listed in the user-languages of any user in the
-                organization
-                c. Any locale with at least one vote by a user in that organization
-            */
-            final VoteResolver.Organization vr_org = CookieSession.sm.reg.computeVROrganization(st_org); /* VoteResolver organization name */
-            final Set<String> covOrgs = StandardCodes.make().getLocaleCoverageOrganizations();
-            
-            final Set<String> aLocs =new HashSet<String>();
-            if(covOrgs.contains(vr_org.name())) {
-               aLocs.addAll(StandardCodes.make().getLocaleCoverageLocales( vr_org.name()));
-               System.err.println("localesWithVotes st_org="+st_org+", vr_org="+vr_org+", aLocs="+aLocs.size());
-            } else {
-               System.err.println("localesWithVotes st_org="+st_org+", vr_org="+vr_org+", aLocs= (not a cov org)");
-            }
-            
-            // b - 
-            // select distinct cldr_interest.forum from cldr_interest where exists (select * from cldr_users  where cldr_users.id=cldr_interest.uid 	and cldr_users.org='SurveyTool');
-            final Set<String> covGroupsForOrg = UserRegistry.getCovGroupsForOrg(st_org);
-            
-            // c. any locale with at least 1 vote by a user in that org
-            final Set<CLDRLocale> anyVotesFromOrg = UserRegistry.anyVotesForOrg(st_org);
-            
-            System.err.println("CovGroupsFor " + st_org + "="+covGroupsForOrg.size() + ", anyVotes="+anyVotesFromOrg.size() + "  - " + SurveyMain.freeMem());
-            
-            Predicate<String> localesWithVotes = new Predicate<String>() {
-                final boolean THRASH_ALL_LOCALES = CldrUtility.getProperty("THRASH_ALL_LOCALES", false);
-                @Override
-                public boolean is(String item) {
-                    if(THRASH_ALL_LOCALES) return true;
-                    CLDRLocale loc = CLDRLocale.getInstance(item);
-                    return (aLocs.contains(item) ||                         // a
-                            covGroupsForOrg.contains(loc.getBaseName()) ||  // b
-                            anyVotesFromOrg.contains(loc));                 // c
-                }
-            };
-            
-            int lcount = 0;
-            StringBuilder sb = new StringBuilder();
-            for(CLDRLocale l : allLocs) {
-                if(localesWithVotes.is(l.getBaseName())) {
-                    lcount++;
-                    sb.append(l+" ");
-                }
-            }
-            System.err.println("CovGroupsFor " + st_org + "= union = " + lcount +  " - " + sb);
-
-            
-            return localesWithVotes;
-        }
-
+	
 	private static final String PRE = "<DIV class='pager'>";
 	private static final String POST = "</DIV>";
 	
@@ -377,48 +301,6 @@ public class VettingViewerQueue {
 	        output.append(str);
 	    }
 	}
-        
-        public void writeVettingViewerOutput(CLDRLocale locale, StringBuffer aBuffer, WebContext ctx, CookieSession sess) {
-		String baseUrl = "http://example.com";
-		Level usersLevel;
-		Organization usersOrg;
-		if(ctx!=null) {
-			baseUrl = ctx.base();
-			usersLevel =  Level.get(ctx.getEffectiveCoverageLevel(ctx.getLocale().toString()));
-                        sess = ctx.session;
-		} else {
-			baseUrl = (String)sess.get("BASE_URL");
-			String levelString = sess.settings().get(SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST[0]);;
-			usersLevel = Level.get(levelString);
-		}
-		usersOrg = VoteResolver.Organization.fromString(sess.user.voterOrg());
-                
-                writeVettingViewerOutput(locale, baseUrl, aBuffer, usersOrg, usersLevel, sess.user.org);
-        }
-        
-        public void writeVettingViewerOutput(CLDRLocale locale, String baseUrl, StringBuffer aBuffer, VoteResolver.Organization usersOrg, Level usersLevel, final String st_org) {
-            SurveyMain sm = CookieSession.sm;
-	    VettingViewer            vv = new VettingViewer<VoteResolver.Organization>(
-		                    sm.getSupplementalDataInfo(), sm.getSTFactory(), sm.getOldFactory(),
-		                    getUsersChoice(sm), "CLDR "+sm.getOldVersion(), "Winning "+sm.getNewVersion());
-		            vv.setBaseUrl(baseUrl);
-					//progress.update("Got VettingViewer");
-					//statusCode = Status.PROCESSING;
-					final long start = System.currentTimeMillis();
-					
-					EnumSet <VettingViewer.Choice> choiceSet = EnumSet.allOf(VettingViewer.Choice.class);
-
-					if(locale != SUMMARY_LOCALE) {
-						vv.generateHtmlErrorTables(aBuffer, choiceSet, locale.getBaseName(), usersOrg, usersLevel, true);
-					} else {
-						if(DEBUG) System.err.println("Starting summary gen..");
-						vv.generateSummaryHtmlErrorTables(aBuffer, choiceSet, createLocalesWithVotes(st_org));
-					}
-					/*if(running()) {
-						aBuffer.append("<hr/>"+PRE+"Processing time: "+ElapsedTimer.elapsedTime(start)+POST );
-						entry.output.put(locale, aBuffer);
-					}*/
-        }
 	
 	/**
 	 * Return the status of the vetting viewer output request. 
@@ -433,7 +315,6 @@ public class VettingViewerQueue {
 			LoadingPolicy forceRestart, Appendable output) throws IOException {
 		if(sess==null) sess = ctx.session;
 		SurveyMain sm = sess.sm;
-                Pair<CLDRLocale,Organization> key = new Pair<CLDRLocale,Organization>(locale, sess.user.vrOrg());
 		boolean isSummary = locale.toString().length()==0;
 		QueueEntry entry = null;
 		if(!isSummary) {
@@ -443,19 +324,17 @@ public class VettingViewerQueue {
 		}
 		if(status==null) status = new Status[1];
 		if(forceRestart!=LoadingPolicy.FORCERESTART) {
-		    VVOutput res = entry.output.get(key);
+			StringBuffer res = entry.output.get(locale);
 			if(res != null) {
 				status[0]=Status.READY;
 				if(output!=null) {
-				          output.append(res.getAge())
-				          .append("<br>")
-				          .append(res.output);
+				    output.append(res);
 				}
 				return null;
 			}
 		} else { /* force restart */
 			stop(ctx, locale, entry);
-	    	entry.output.remove(key);
+	    	entry.output.remove(locale);
 		}
 		
 		Task t = entry.currentTask;
@@ -498,15 +377,15 @@ public class VettingViewerQueue {
 		Organization usersOrg;
 		if(ctx!=null) {
 			baseUrl = ctx.base();
-			usersLevel =  Level.get(ctx.getEffectiveCoverageLevel(ctx.getLocale().toString()));
+			usersLevel =  Level.get(ctx.getEffectiveCoverageLevel());
 		} else {
 			baseUrl = (String)sess.get("BASE_URL");
 			String levelString = sess.settings().get(SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST[0]);;
 			usersLevel = Level.get(levelString);
 		}
-		usersOrg =   sess.user.vrOrg();
+		usersOrg = VoteResolver.Organization.fromString(sess.user.voterOrg());
 
-		t = entry.currentTask = new Task(entry, locale, sm,baseUrl,usersLevel,usersOrg,sess.user.org);
+		t = entry.currentTask = new Task(entry, locale, sm,baseUrl,usersLevel,usersOrg);
 		sm.startupThread.addTask(entry.currentTask);
 		
 		status[0] = Status.PROCESSING;
@@ -542,7 +421,7 @@ public class VettingViewerQueue {
     	return entry;
 	}
 	
-	private synchronized QueueEntry getSummaryEntry() {
+	private QueueEntry getSummaryEntry() {
     	QueueEntry entry = summaryEntry;
     	if(summaryEntry==null) {
     		entry=summaryEntry = new QueueEntry();
@@ -551,30 +430,16 @@ public class VettingViewerQueue {
 	}
 
     
-    LruMap<CLDRLocale, BallotBox<UserRegistry.User>> ballotBoxes = new LruMap<CLDRLocale, BallotBox<User>>(8);
-    BallotBox<UserRegistry.User> getBox(SurveyMain sm, CLDRLocale loc) {
-        BallotBox<User> box = ballotBoxes.get(loc);
-        if(box==null) {
-            box = sm.getSTFactory().ballotBoxForLocale(loc);
-            ballotBoxes.put(loc, box);
-        }
-        return box;
-    }
-    private UsersChoice<VoteResolver.Organization> getUsersChoice(final SurveyMain sm) {
-        return new STUsersChoice(sm);
-    }
-    
-    private class STUsersChoice implements UsersChoice<VoteResolver.Organization> {
-        private final SurveyMain sm;
-        STUsersChoice(final SurveyMain msm) {
-            this.sm = msm;
-        }
-    	final Map<CLDRLocale,DataTester> testMap = new HashMap<CLDRLocale,DataTester>();
-            private DataTester getTester(CLDRLocale loc) {
-            	DataTester tester = testMap.get(loc);
+    private UsersChoice<VoteResolver.Organization> getUsersChoice(final SurveyMain sm, final CLDRDBSourceFactory.DBEntry entry) { 
+    	final Map<CLDRLocale,Vetting.DataTester> testMap = new HashMap<CLDRLocale,Vetting.DataTester>();
+    	
+        return new UsersChoice<VoteResolver.Organization>() {
+            private Vetting.DataTester getTester(CLDRLocale loc) {
+            	Vetting.DataTester tester = testMap.get(loc);
             	if(tester==null) {
-                    BallotBox<User> ballotBox = getBox(sm,loc);
-            		//tester = getTester(ballotBox);
+                	final XMLSource fac = sm.dbsrcfac.getInstance(loc);
+                	entry.add(fac);
+            		tester = sm.vet.getTester(fac);
             		testMap.put(loc, tester);
             	}
             	return tester;
@@ -584,19 +449,65 @@ public class VettingViewerQueue {
             public String getWinningValueForUsersOrganization(
                     CLDRFile cldrFile, String path, VoteResolver.Organization user) {
                 CLDRLocale loc = CLDRLocale.getInstance(cldrFile.getLocaleID());
-                BallotBox<User> ballotBox = getBox(sm,loc);
-                return ballotBox.getResolver(path).getOrgVote(user);
+                int base_xpath = sm.xpt.xpathToBaseXpathId(path);
+                Race r;
+                Connection conn = null;
+                try { 
+                	if(entry!=null) {
+                		conn = entry.getConnectionAlias();
+                	} else {
+                		conn = sm.dbUtils.getDBConnection();
+                	}
+                	Vetting.DataTester tester = getTester(loc);
+                	
+                	r = sm.vet.getRace(loc, base_xpath, conn, tester);
+                    VoteResolver.Organization org = (Organization) user;
+                    Race.Chad c =  r.getOrgVote(org);
+                    if(c==null) {
+                        //System.err.println("Error: organization " + org + " vote null for " + path + " [#"+base_xpath+"]");
+                        return null;
+                    }
+                    return c.value;
+                }catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                	if(entry==null) {
+                		DBUtils.closeDBConnection(conn);
+                	}
+                }
+
             }
             
-            @Override
+            //@Override
             public VoteStatus getStatusForUsersOrganization(CLDRFile cldrFile, String path, VoteResolver.Organization orgOfUser) {
                 CLDRLocale loc = CLDRLocale.getInstance(cldrFile.getLocaleID());
-                BallotBox<User> ballotBox = getBox(sm,loc);
-                return ballotBox.getResolver(path).getStatusForOrganization(orgOfUser);
+                int base_xpath = sm.xpt.xpathToBaseXpathId(path);
+                Race r;
+                Connection conn = null;
+                try { 
+                	if(entry==null) {
+                		conn = sm.dbUtils.getDBConnection();
+                	} else {
+                		conn = entry.getConnectionAlias();
+                	}
+                	Vetting.DataTester tester = getTester(loc);
+                	
+                	r = sm.vet.getRace(loc, base_xpath, conn, tester);
+                    return r.getStatusForOrganization(orgOfUser);
+                }catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                	if(entry==null) {
+                		DBUtils.closeDBConnection(conn);
+                	}
+                }
+
             }
+
+        };
     }
     
     private static int totalUsersWaiting(SurveyThread st) {
     	return (st.tasksRemaining(Task.class));
     }
-} 
+}

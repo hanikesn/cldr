@@ -445,6 +445,7 @@
 			<territory type="CO">קולומביה</territory>
 			<territory type="CP" draft="contributed">האי קליפרטון</territory>
 			<territory type="CR">קוסטה ריקה</territory>
+			<territory type="CS">סרביה ומונטנגרו</territory>
 			<territory type="CU">קובה</territory>
 			<territory type="CV">כף ורדה</territory>
 			<territory type="CX">איי כריסטמס</territory>
@@ -610,7 +611,6 @@
 			<territory type="SN">סנגל</territory>
 			<territory type="SO">סומליה</territory>
 			<territory type="SR">סורינם</territory>
-			<territory type="SS" draft="provisional">דרום סודאן</territory>
 			<territory type="ST">סאו טומה ופרינסיפה</territory>
 			<territory type="SV">אל סלבדור</territory>
 			<territory type="SY">סוריה</territory>
@@ -2628,21 +2628,21 @@
 			<metazone type="America_Eastern">
 				<long>
 					<generic>שעון החוף המזרחי</generic>
-					<standard>שעון רגיל של החוף המזרחי</standard>
+					<standard draft="contributed">שעון רגיל של החוף המזרחי</standard>
 					<daylight>שעון קיץ מזרח ארה״ב</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Mountain">
 				<long>
 					<generic>שעון אזור ההרים בארה״ב (דנוור)</generic>
-					<standard>שעון רגיל אזור ההרים</standard>
+					<standard draft="contributed">שעון רגיל אזור ההרים</standard>
 					<daylight>שעון קיץ, אזור ההרים בארה״ב</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Pacific">
 				<long>
 					<generic>שעון מערב ארה״ב (לוס אנג׳לס)</generic>
-					<standard>שעון רגיל האוקיינוס השקט</standard>
+					<standard draft="contributed">שעון רגיל האוקיינוס השקט</standard>
 					<daylight>שעון קיץ, מערב ארה״ב (לוס אנג׳לס)</daylight>
 				</long>
 			</metazone>
@@ -2806,9 +2806,7 @@
 			</metazone>
 			<metazone type="Japan">
 				<long>
-					<generic draft="provisional">שעון יפן</generic>
-					<standard draft="provisional">שעון רגיל יפן</standard>
-					<daylight draft="provisional">שעון קיץ יפן</daylight>
+					<standard draft="provisional">שעון יפן</standard>
 				</long>
 			</metazone>
 			<metazone type="Kamchatka">
@@ -2980,30 +2978,18 @@
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one" draft="contributed">0.0K</pattern>
-					<pattern type="1000" count="other" draft="contributed">0.0K</pattern>
-					<pattern type="10000" count="one" draft="contributed">00K</pattern>
-					<pattern type="10000" count="other" draft="contributed">00K</pattern>
-					<pattern type="100000" count="one" draft="contributed">000K</pattern>
-					<pattern type="100000" count="other" draft="contributed">000K</pattern>
-					<pattern type="1000000" count="one" draft="contributed">0.0M</pattern>
-					<pattern type="1000000" count="other" draft="contributed">0.0M</pattern>
-					<pattern type="10000000" count="one" draft="contributed">00M</pattern>
-					<pattern type="10000000" count="other" draft="contributed">00M</pattern>
-					<pattern type="100000000" count="one" draft="contributed">000M</pattern>
-					<pattern type="100000000" count="other" draft="contributed">000M</pattern>
-					<pattern type="1000000000" count="one" draft="contributed">0.0B</pattern>
-					<pattern type="1000000000" count="other" draft="contributed">0.0B</pattern>
-					<pattern type="10000000000" count="one" draft="contributed">00B</pattern>
-					<pattern type="10000000000" count="other" draft="contributed">00B</pattern>
-					<pattern type="100000000000" count="one" draft="contributed">000B</pattern>
-					<pattern type="100000000000" count="other" draft="contributed">000B</pattern>
-					<pattern type="1000000000000" count="one" draft="contributed">0.0T</pattern>
-					<pattern type="1000000000000" count="other" draft="contributed">0.0T</pattern>
-					<pattern type="10000000000000" count="one" draft="contributed">00T</pattern>
-					<pattern type="10000000000000" count="other" draft="contributed">00T</pattern>
-					<pattern type="100000000000000" count="one" draft="contributed">000T</pattern>
-					<pattern type="100000000000000" count="other" draft="contributed">000T</pattern>
+					<pattern type="1000" draft="contributed">0.0K</pattern>
+					<pattern type="10000" draft="contributed">00K</pattern>
+					<pattern type="100000" draft="contributed">000K</pattern>
+					<pattern type="1000000" draft="contributed">0.0M</pattern>
+					<pattern type="10000000" draft="contributed">00M</pattern>
+					<pattern type="100000000" draft="contributed">000M</pattern>
+					<pattern type="1000000000" draft="contributed">0.0B</pattern>
+					<pattern type="10000000000" draft="contributed">00B</pattern>
+					<pattern type="100000000000" draft="contributed">000B</pattern>
+					<pattern type="1000000000000" draft="contributed">0.0T</pattern>
+					<pattern type="10000000000000" draft="contributed">00T</pattern>
+					<pattern type="100000000000000" draft="contributed">000T</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
@@ -3703,129 +3689,115 @@
 	</numbers>
 	<units>
 		<unit type="day">
-			<unitPattern count="one">יום</unitPattern>
-			<unitPattern count="two">יומיים</unitPattern>
-			<unitPattern count="many">{0} יום</unitPattern>
+			<unitPattern count="one">{0} יום</unitPattern>
+			<unitPattern count="one" alt="short">{0} יום</unitPattern>
 			<unitPattern count="other">{0} ימים</unitPattern>
+			<unitPattern count="other" alt="short">{0} ימים</unitPattern>
 		</unit>
 		<unit type="day-future">
-			<unitPattern count="one">בעוד 24 שעות</unitPattern>
-			<unitPattern count="two">בעוד יומיים</unitPattern>
-			<unitPattern count="many">בעוד {0} יום</unitPattern>
+			<unitPattern count="0">עוד 0 ימים</unitPattern>
+			<unitPattern count="1">עוד יום</unitPattern>
 			<unitPattern count="other">בעוד {0} ימים</unitPattern>
 		</unit>
 		<unit type="day-past">
-			<unitPattern count="one">לפני 24 שעות</unitPattern>
-			<unitPattern count="two">לפני יומיים</unitPattern>
-			<unitPattern count="many">לפני {0} יום</unitPattern>
+			<unitPattern count="0">לפני 0 ימים</unitPattern>
+			<unitPattern count="1">לפני יום</unitPattern>
 			<unitPattern count="other">לפני {0} ימים</unitPattern>
 		</unit>
 		<unit type="hour">
-			<unitPattern count="one">שעה</unitPattern>
-			<unitPattern count="two">שעתיים</unitPattern>
-			<unitPattern count="many">{0} שעות</unitPattern>
+			<unitPattern count="one">{0} שעה</unitPattern>
+			<unitPattern count="one" alt="short">{0} שעה</unitPattern>
 			<unitPattern count="other">{0} שעות</unitPattern>
+			<unitPattern count="other" alt="short">{0} שעות</unitPattern>
 		</unit>
 		<unit type="hour-future">
-			<unitPattern count="one">בעוד שעה</unitPattern>
-			<unitPattern count="two">בעוד שעתיים</unitPattern>
-			<unitPattern count="many">בעוד {0} שעות</unitPattern>
+			<unitPattern count="0">עוד 0 שעות</unitPattern>
+			<unitPattern count="1">עוד שעה</unitPattern>
 			<unitPattern count="other">בעוד {0} שעות</unitPattern>
 		</unit>
 		<unit type="hour-past">
-			<unitPattern count="one">לפני שעה</unitPattern>
-			<unitPattern count="two">לפני שעתיים</unitPattern>
-			<unitPattern count="many">לפני {0} שעות</unitPattern>
+			<unitPattern count="0">לפני 0 שעות</unitPattern>
+			<unitPattern count="1">לפני שעה</unitPattern>
 			<unitPattern count="other">לפני {0} שעות</unitPattern>
 		</unit>
 		<unit type="minute">
-			<unitPattern count="one">דקה</unitPattern>
-			<unitPattern count="two">שתי דקות</unitPattern>
-			<unitPattern count="many">{0} דקות</unitPattern>
+			<unitPattern count="one">{0} דקה</unitPattern>
+			<unitPattern count="one" alt="short">{0} דק׳</unitPattern>
 			<unitPattern count="other">{0} דקות</unitPattern>
+			<unitPattern count="other" alt="short">{0} דק׳</unitPattern>
 		</unit>
 		<unit type="minute-future">
-			<unitPattern count="one">בעוד דקה</unitPattern>
-			<unitPattern count="two">בעוד שתי דקות</unitPattern>
-			<unitPattern count="many">בעוד {0} דקות</unitPattern>
+			<unitPattern count="0">עוד 0 דקות</unitPattern>
+			<unitPattern count="1">עוד דקה</unitPattern>
 			<unitPattern count="other">בעוד {0} דקות</unitPattern>
 		</unit>
 		<unit type="minute-past">
-			<unitPattern count="one">לפני דקה</unitPattern>
-			<unitPattern count="two">לפני שתי דקות</unitPattern>
-			<unitPattern count="many">לפני {0} דקות</unitPattern>
+			<unitPattern count="0">לפני 0 דקות</unitPattern>
+			<unitPattern count="1">לפני דקה</unitPattern>
 			<unitPattern count="other">לפני {0} דקות</unitPattern>
 		</unit>
 		<unit type="month">
-			<unitPattern count="one">חודש</unitPattern>
-			<unitPattern count="two">חודשיים</unitPattern>
-			<unitPattern count="many">{0} חודשים</unitPattern>
+			<unitPattern count="one">{0} חודש</unitPattern>
+			<unitPattern count="one" alt="short">{0} חודש</unitPattern>
 			<unitPattern count="other">{0} חודשים</unitPattern>
+			<unitPattern count="other" alt="short">{0} חודשים</unitPattern>
 		</unit>
 		<unit type="month-future">
-			<unitPattern count="one">בעוד חודש</unitPattern>
-			<unitPattern count="two">בעוד חודשיים</unitPattern>
-			<unitPattern count="many">בעוד {0} חודשים</unitPattern>
+			<unitPattern count="0">עוד 0 חודשים</unitPattern>
+			<unitPattern count="1">עוד חודש</unitPattern>
 			<unitPattern count="other">בעוד {0} חודשים</unitPattern>
 		</unit>
 		<unit type="month-past">
-			<unitPattern count="one">לפני חודש</unitPattern>
-			<unitPattern count="two">לפני חודשיים</unitPattern>
-			<unitPattern count="many">לפני {0} חודשים</unitPattern>
+			<unitPattern count="0">לפני 0 חודשים</unitPattern>
+			<unitPattern count="1">לפני חודש</unitPattern>
 			<unitPattern count="other">לפני {0} חודשים</unitPattern>
 		</unit>
 		<unit type="second">
-			<unitPattern count="one">שניה</unitPattern>
-			<unitPattern count="two">שתי שניות</unitPattern>
-			<unitPattern count="many">{0} שניות</unitPattern>
+			<unitPattern count="one">{0} שניה</unitPattern>
+			<unitPattern count="one" alt="short">{0} שנ׳</unitPattern>
 			<unitPattern count="other">{0} שניות</unitPattern>
+			<unitPattern count="other" alt="short">{0} שנ׳</unitPattern>
 		</unit>
 		<unit type="second-future">
-			<unitPattern count="one">בעוד שניה</unitPattern>
-			<unitPattern count="two">בעוד שתי שניות</unitPattern>
-			<unitPattern count="many">בעוד {0} שניות</unitPattern>
+			<unitPattern count="0">עוד 0 שניות</unitPattern>
+			<unitPattern count="1">עוד שנייה</unitPattern>
 			<unitPattern count="other">בעוד {0} שניות</unitPattern>
 		</unit>
 		<unit type="second-past">
-			<unitPattern count="one">לפני שניה</unitPattern>
-			<unitPattern count="two">לפני שתי שניות</unitPattern>
-			<unitPattern count="many">לפני {0} שניות</unitPattern>
+			<unitPattern count="0">לפני 0 שניות</unitPattern>
+			<unitPattern count="1">לפני שנייה</unitPattern>
 			<unitPattern count="other">לפני {0} שניות</unitPattern>
 		</unit>
 		<unit type="week">
-			<unitPattern count="one">שבוע</unitPattern>
-			<unitPattern count="two">שבועיים</unitPattern>
-			<unitPattern count="many">{0} שבועות</unitPattern>
+			<unitPattern count="one">{0} שבוע</unitPattern>
+			<unitPattern count="one" alt="short">{0} שבוע</unitPattern>
 			<unitPattern count="other">{0} שבועות</unitPattern>
+			<unitPattern count="other" alt="short">{0} שבועות</unitPattern>
 		</unit>
 		<unit type="week-future">
-			<unitPattern count="one">בעוד שבוע</unitPattern>
-			<unitPattern count="two">בעוד שבועיים</unitPattern>
-			<unitPattern count="many">בעוד {0} שבועות</unitPattern>
+			<unitPattern count="0">עוד 0 שבועות</unitPattern>
+			<unitPattern count="1">עוד שבוע</unitPattern>
 			<unitPattern count="other">בעוד {0} שבועות</unitPattern>
 		</unit>
 		<unit type="week-past">
-			<unitPattern count="one">לפני שבוע</unitPattern>
-			<unitPattern count="two">לפני שבועיים</unitPattern>
-			<unitPattern count="many">לפני {0} שבועות</unitPattern>
+			<unitPattern count="0">לפני 0 שבועות</unitPattern>
+			<unitPattern count="1">לפני שבוע</unitPattern>
 			<unitPattern count="other">לפני {0} שבועות</unitPattern>
 		</unit>
 		<unit type="year">
-			<unitPattern count="one">שנה</unitPattern>
-			<unitPattern count="two">שנתיים</unitPattern>
-			<unitPattern count="many">{0} שנה</unitPattern>
+			<unitPattern count="one">{0} שנה</unitPattern>
+			<unitPattern count="one" alt="short">{0} שנה</unitPattern>
 			<unitPattern count="other">{0} שנים</unitPattern>
+			<unitPattern count="other" alt="short">{0} שנים</unitPattern>
 		</unit>
 		<unit type="year-future">
-			<unitPattern count="one">בעוד שנה</unitPattern>
-			<unitPattern count="two">בעוד שנתיים</unitPattern>
-			<unitPattern count="many">בעוד {0} שנה</unitPattern>
+			<unitPattern count="0">עוד 0 שנים</unitPattern>
+			<unitPattern count="1">עוד שנה</unitPattern>
 			<unitPattern count="other">בעוד {0} שנים</unitPattern>
 		</unit>
 		<unit type="year-past">
-			<unitPattern count="one">לפני שנה</unitPattern>
-			<unitPattern count="two">לפני שנתיים</unitPattern>
-			<unitPattern count="many">לפני {0} שנה</unitPattern>
+			<unitPattern count="0">לפני 0 שנים</unitPattern>
+			<unitPattern count="1">לפני שנה</unitPattern>
 			<unitPattern count="other">לפני {0} שנים</unitPattern>
 		</unit>
 	</units>

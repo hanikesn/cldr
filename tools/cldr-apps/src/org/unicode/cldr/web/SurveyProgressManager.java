@@ -123,38 +123,6 @@ public class SurveyProgressManager implements CLDRProgressIndicator {
     public CLDRProgressTask openProgress(String what) {
         return openProgress(what,-100);
     }
-    
-    public static CLDRProgressTask openConsoleProgress(final String what0) {
-        return new CLDRProgressTask() {
-            ElapsedTimer et = new ElapsedTimer("Progress "+what0);
-            long startTime = System.currentTimeMillis();
-            @Override
-            public void close() {
-                System.out.println(et + ":  close");
-            }
-
-            @Override
-            public void update(int count) {
-                System.out.println(et + ":  Update #"+count);
-            }
-
-            @Override
-            public void update(int count, String what) {
-                System.out.println(et + ":  Update "+what+" #"+count);
-            }
-
-            @Override
-            public void update(String what) {
-                System.out.println(et + ":  Update "+what);
-            }
-
-            @Override
-            public long startTime() {
-                return startTime;
-            }
-            
-        };
-    }
 
 	/* (non-Javadoc)
      * @see org.unicode.cldr.web.CLDRProgressIndicator#openProgress(java.lang.String, int)
@@ -163,7 +131,7 @@ public class SurveyProgressManager implements CLDRProgressIndicator {
     public CLDRProgressTask openProgress(String what, int max) {
         SurveyProgressTask t = new SurveyProgressTask(what,max);
         tasks.addLast(t);
-        if(SurveyMain.isUnofficial() && DEBUG_PROGRESS)  System.err.println("Progress (" + what + ") BEGIN");
+        if(SurveyMain.isUnofficial && DEBUG_PROGRESS)  System.err.println("Progress (" + what + ") BEGIN");
         return t;
     }
 
@@ -183,11 +151,11 @@ public class SurveyProgressManager implements CLDRProgressIndicator {
         buf.append("<table id='progress-list' border=0 class='progress-list"+(orderedTasks.isEmpty()?" progress-idle":" progress-busy")+"'><tr>");
         buf.append("<th>");
         if(orderedTasks.isEmpty()) {
-            buf.append("<span id='busy0' onclick='document.getElementById(\"progress\").className=\"popout\";'><!-- idle -->\u00BB</span>");
+            buf.append("<span id='busy0' onclick='document.getElementById(\"progress\").className=\"popout\";'>Idle\u00BB</span>");
         } else {
-            buf.append("<span id='busy0' onclick='document.getElementById(\"progress\").className=\"popout\";'><!-- busy -->\u00BB</span>");
+            buf.append("<span id='busy0' onclick='document.getElementById(\"progress\").className=\"popout\";'>Busy\u00BB</span>");
         }
-        buf.append("<span id='busy1' onclick='document.getElementById(\"progress\").className=\"\";'><!-- hide -->\u00AB</span>" +
+        buf.append("<span id='busy1' onclick='document.getElementById(\"progress\").className=\"\";'>Hide\u00AB</span>" +
                 "</th>");
         for(SurveyProgressTask t : orderedTasks) {
             buf.append("<td>");

@@ -226,7 +226,11 @@ public class SurveyThread extends Thread {
 		    } catch(Throwable t) {
 				if(DEBUG) System.err.println("SurveyThread(count:"+tasksRemaining()+"): Got exception on: "+current + " - "+t.toString());
 		        t.printStackTrace();
-		        SurveyMain.busted("While working on task " + current + " - "+t.toString(), t);
+		        if(SurveyMain.specialHeader == null) {
+		            SurveyMain.specialHeader = "";
+		        }
+		        SurveyMain.specialHeader = "<div class='ferrbox'>While working on task " + current + " - "+t.toString() + "</div>" + SurveyMain.specialHeader;
+//		        SurveyMain.busted("While working on task " + current + " - "+t.toString(), t);
 		    }
 			current = null; /* done. */
 			setName();

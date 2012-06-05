@@ -46,7 +46,7 @@ public class CodeSortMode extends SortMode {
 		        if(p1==p2) { 
 		          return 0;
 		        }
-		        return myCollator.compare(p1.getPrettyPath(), p2.getPrettyPath());
+		        return myCollator.compare(p1.type, p2.type);
 		      }
 		    };
 	}
@@ -60,11 +60,7 @@ public class CodeSortMode extends SortMode {
 
     @Override
 	public String getDisplayName(DataRow p) {
-    	return p.getPrettyPath(); // always code.
+    	return p.type; // always code.
     }
-	@Override
-	String getDisplayName() {
-		return "Code";
-	}
 
 }

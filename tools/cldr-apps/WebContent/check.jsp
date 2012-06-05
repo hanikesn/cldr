@@ -77,22 +77,12 @@
 	
 	boolean isSubmit = fields.containsKey("submit");
 	boolean isBulk = fields.containsKey("bulk");
-        String email = fields.get("email");
 	String sid = fields.get("s");
 	CookieSession cs = CookieSession.retrieve(sid);
-	if(cs==null || cs.user==null) {
+	if(cs==null) {
 		response.sendRedirect(request.getContextPath()+"/survey");
 		return;
 	}
-	if(email==null||email.trim().isEmpty()) {
-		response.sendRedirect(request.getContextPath()+"/upload.jsp?s="+sid);
-		return;
-	}
-        UserRegistry.User theirU = cs.sm.reg.get(email.trim());
-        if(theirU==null || (!theirU.equals(cs.user) && !cs.user.isAdminFor(theirU))) {
-		response.sendRedirect(request.getContextPath()+"/upload.jsp?s="+sid+"&email="+email.trim()+"&emailbad=t");
-		return;
-        }
 	String title = isSubmit ? "Submitted As You"
 			: "Submitted As Your Org";
 %>
@@ -104,15 +94,9 @@
 </head>
 <body>
 
-<a href="upload.jsp?s=<%= sid %>&email=<%= email %>">Re-Upload File/Try Another</a> | <a href="<%=request.getContextPath()%>/survey">Return to the SurveyTool <img src='STLogo.png' style='float:right;' /></a>
+<a href="upload.jsp?s=<%= sid %>">Re-Upload File/Try Another</a> | <a href="<%=request.getContextPath()%>/survey">Return to the SurveyTool <img src='STLogo.png' style='float:right;' /></a>
 <hr/>
-<h3>SurveyTool File Check | <%=title%>  | Submitted as: <%= theirU.name %> </h3>
-
-	<div class='helpHtml'>
-		Your file is being tested.
-		<br>
-		For help, see: <a target='CLDR-ST-DOCS' href='http://cldr.unicode.org/index/survey-tool/upload'>Using Bulk Upload</a> 
-	</div>
+<h3>SurveyTool File Check | <%=title%>  | <%= cs.user.name %> </h3>
 
 <i>Checking upload...</i>
 
@@ -142,16 +126,15 @@ cs.stuff.remove("SubmitLocale");
  <tt class='codebox'><%= loc + "</tt> <br/>Name:  " + loc.getDisplayName(SurveyMain.BASELINE_LOCALE)  %><br/>
 <%
 if(!cs.sm.getLocalesSet().contains(loc)) {
-	%><h1 class='ferrbox'>Error: Locale doesn't exist in the Survey Tool.</h1><%
-} else if(!UserRegistry.userCanModifyLocale(theirU,loc)) {
-	%><h1 class='ferrbox'>Error: <%= theirU.name %>  (<%= theirU.email %>) not authorized to submit data for this locale</h1><%
+	%><h1>Error: Locale doesn't exist in the Survey Tool.</h1><%
+} else if(!UserRegistry.userCanModifyLocale(cs.user,loc)) {
+	%><h1>Error: <%= cs.user.name %> not authorized to submit data for this locale</h1><%
 } else {
 	cs.stuff.put("SubmitLocale",cf);
 %>
 <form action='<%= request.getContextPath()+"/submit.jsp" %>' method='POST'>
 <input  type='hidden' name='s' value='<%= sid %>'/>
-<input  type='hidden' name='email' value='<%= email %>'/>
-<input type='submit' value='Test <%= loc %> for submission...'/>
+<input type='submit' value='Submit <%= loc %>...'/>
 </form>
 
 <pre>

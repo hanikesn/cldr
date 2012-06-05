@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,7 +34,7 @@ import com.ibm.icu.lang.CharSequences;
 public class GenerateBirth {
     private static boolean DEBUG = false;
     enum Versions {
-        trunk, v21_0, v2_0_1, v1_9_1, v1_8_1, v1_7_2, v1_6_1, v1_5_1, v1_4_1, v1_3_0, v1_2_0, v1_1_1;
+        trunk, v1_9_0, v1_8_1, v1_7_2, v1_6_1, v1_5_1, v1_4_1, v1_3_0, v1_2_0, v1_1_1;
         public String toString() {
             return this == Versions.trunk ? name() : name().substring(1).replace('_', '.');
         };
@@ -44,7 +43,7 @@ public class GenerateBirth {
     static final Factory[] factories = new Factory[VERSIONS.length];
 
     final static Options myOptions = new Options()
-    .add("target", ".*", OutdatedPaths.OUTDATED_DIR, "The target directory for building the text files that show the results.")
+    .add("target", ".*", CldrUtility.UTIL_CODE_DIR + "test/", "The target directory for building the text files that show the results.")
     .add("log", ".*", CldrUtility.TMP_DIRECTORY + "dropbox/births/", "The target directory for building the text files that show the results.")
     .add("file", ".*", ".*", "Filter the information based on file name, using a regex argument. The '.xml' is removed from the file before filtering")
     .add("previous", "Stop after writing the English previous data.")
@@ -63,7 +62,7 @@ public class GenerateBirth {
         ArrayList<Factory> list = new ArrayList<Factory>();
         for (Versions version : VERSIONS) {
             Factory aFactory = Factory.make(CldrUtility.BASE_DIRECTORY 
-                    + (version == Versions.trunk ? "" : "../cldr-archive/cldr-" + version) 
+                    + (version == Versions.trunk ? "" : "../cldr-" + version) 
                     + "/common/main/", filePattern);
             list.add(aFactory);
         }
@@ -80,11 +79,11 @@ public class GenerateBirth {
         english.writeBirth(outputDirectory, "en", null);
         english.writeBirthValues(dataDirectory + "/" + OutdatedPaths.OUTDATED_ENGLISH_DATA);
 
-//        if (!myOptions.get("file").doesOccur()) {
-//            OutdatedPaths outdatedPaths = new OutdatedPaths(dataDirectory);
-//
-//            return;
-//        }
+        if (!myOptions.get("file").doesOccur()) {
+            OutdatedPaths outdatedPaths = new OutdatedPaths(dataDirectory);
+
+            return;
+        }
         // Set up the binary data file
 
         File file = new File(dataDirectory + "/" + OutdatedPaths.OUTDATED_DATA);
@@ -122,6 +121,8 @@ public class GenerateBirth {
         dataOut.writeUTF("$END$");
         dataOut.close();
 
+
+
         // Doublecheck the data
 
         OutdatedPaths outdatedPaths = new OutdatedPaths(dataDirectory);
@@ -137,24 +138,24 @@ public class GenerateBirth {
             for (String xpath : newer) {
                 boolean isOutdated = outdatedPaths.isRawOutdated(locale, xpath);
                 if (!isOutdated) {
-                    System.out.println("Error, broken locale: " + locale + "\t" + StringId.getId(xpath) + "\t" + xpath);
+                    System.out.println("broken: " + locale + "\t" + StringId.getId(xpath) + "\t" + xpath);
                     ++errorCount;
                 }
                 if (outdatedPaths.isSkipped(xpath)) {
                     continue;
                 }
                 String previous = outdatedPaths.getPreviousEnglish(xpath);
-                if (previous.isEmpty() != english.emptyPrevious.contains(xpath)) {
-                    System.out.println("previous.isEmpty() != original" + locale + "\t" + StringId.getId(xpath) + "\t" + xpath);
+                if (previous.isEmpty()) {
                     needPrevious.add(xpath);
                     ++errorCount;
                 }
             }
         }
+        if (needPrevious.size() != 0) {
+            System.out.println("NEED PREVIOUS!\n" + CollectionUtilities.join(needPrevious, "\n"));
+        }
         if (errorCount != 0) {
-            throw new IllegalArgumentException("Done, but " + errorCount + " errors");
-        } else {
-            System.out.println("Done, no errors");
+            throw new IllegalArgumentException("Failed with " + errorCount + " errors");
         }
     }
 
@@ -165,7 +166,6 @@ public class GenerateBirth {
         final String locale;
         static final Pattern TYPE = Pattern.compile("\\[@type=\"([^\"]*)\"");
         final Matcher typeMatcher = TYPE.matcher("");
-        Set<String> emptyPrevious = new HashSet<String>();
 
         Births(String file) {
             locale = file;
@@ -220,7 +220,7 @@ public class GenerateBirth {
 
         public void writeBirthValues(String file) throws IOException {
             DataOutputStream dataOut = new DataOutputStream(new FileOutputStream(file));
-            System.out.println("Writing data: " + new File(file).getCanonicalPath());
+            System.out.println(new File(file).getCanonicalPath());
             dataOut.writeInt(pathToBirthCurrentPrevious.size());
 
             // Load and process all the locales
@@ -232,18 +232,13 @@ public class GenerateBirth {
                 String previous = birthCurrentPrevious.get2();
                 long id = StringId.getId(path);
                 dataOut.writeLong(id);
-                final String previousString = previous == null ? "" : previous;
-                dataOut.writeUTF(previousString);
-                if (previousString.isEmpty()) {
-                    emptyPrevious.add(path);
-                }
+                dataOut.writeUTF(previous == null ? "" : previous);
                 if (DEBUG) {
                     System.out.println(id + "\t" + previous);
                 }
             }
             dataOut.writeUTF("$END$");
             dataOut.close();
-            emptyPrevious = Collections.unmodifiableSet(emptyPrevious);
         }
 
         Set<String> writeBirth(PrintWriter out, Births onlyNewer) {
@@ -281,14 +276,12 @@ public class GenerateBirth {
                     String value = fixNull(info.get1());
                     String olderValue = fixNull(info.get2());
 
-                    out.println(locale 
-                            + "\t" + version 
+                    out.println(locale + "\t" + version + "\t" + onlyNewerVersion 
+                            + "\t" + xpath 
                             + "\t" + value
                             + "\t" + olderValue
-                            + "\t" + onlyNewerVersion 
                             + "\t" + otherValue 
                             + "\t" + olderOtherValue 
-                            + "\t" + xpath 
                     );
 
                 }

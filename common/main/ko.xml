@@ -727,6 +727,7 @@
 			<territory type="CO">콜롬비아</territory>
 			<territory type="CP">클립퍼튼 섬</territory>
 			<territory type="CR">코스타리카</territory>
+			<territory type="CS">세르비아 및 몬테네그로</territory>
 			<territory type="CU">쿠바</territory>
 			<territory type="CV">까뽀베르데</territory>
 			<territory type="CX">크리스마스섬</territory>
@@ -892,7 +893,6 @@
 			<territory type="SN">세네갈</territory>
 			<territory type="SO">소말리아</territory>
 			<territory type="SR">수리남</territory>
-			<territory type="SS" draft="provisional">남수단</territory>
 			<territory type="ST">상투메 프린시페</territory>
 			<territory type="SV">엘살바도르</territory>
 			<territory type="SY">시리아</territory>
@@ -4352,30 +4352,18 @@
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one" draft="contributed">0000</pattern>
-					<pattern type="1000" count="other" draft="contributed">0000</pattern>
-					<pattern type="10000" count="one" draft="contributed">0.0만</pattern>
-					<pattern type="10000" count="other" draft="contributed">0.0만</pattern>
-					<pattern type="100000" count="one" draft="contributed">00만</pattern>
-					<pattern type="100000" count="other" draft="contributed">00만</pattern>
-					<pattern type="1000000" count="one" draft="contributed">000만</pattern>
-					<pattern type="1000000" count="other" draft="contributed">000만</pattern>
-					<pattern type="10000000" count="one" draft="contributed">0000만</pattern>
-					<pattern type="10000000" count="other" draft="contributed">0000만</pattern>
-					<pattern type="100000000" count="one" draft="contributed">0.0억</pattern>
-					<pattern type="100000000" count="other" draft="contributed">0.0억</pattern>
-					<pattern type="1000000000" count="one" draft="contributed">00억</pattern>
-					<pattern type="1000000000" count="other" draft="contributed">00억</pattern>
-					<pattern type="10000000000" count="one" draft="contributed">000억</pattern>
-					<pattern type="10000000000" count="other" draft="contributed">000억</pattern>
-					<pattern type="100000000000" count="one" draft="contributed">0000억</pattern>
-					<pattern type="100000000000" count="other" draft="contributed">0000억</pattern>
-					<pattern type="1000000000000" count="one" draft="contributed">0.0조</pattern>
-					<pattern type="1000000000000" count="other" draft="contributed">0.0조</pattern>
-					<pattern type="10000000000000" count="one" draft="contributed">00조</pattern>
-					<pattern type="10000000000000" count="other" draft="contributed">00조</pattern>
-					<pattern type="100000000000000" count="one" draft="contributed">000조</pattern>
-					<pattern type="100000000000000" count="other" draft="contributed">000조</pattern>
+					<pattern type="1000" draft="contributed">0000</pattern>
+					<pattern type="10000" draft="contributed">0.0만</pattern>
+					<pattern type="100000" draft="contributed">00만</pattern>
+					<pattern type="1000000" draft="contributed">000만</pattern>
+					<pattern type="10000000" draft="contributed">0000만</pattern>
+					<pattern type="100000000" draft="contributed">0.0억</pattern>
+					<pattern type="1000000000" draft="contributed">00억</pattern>
+					<pattern type="10000000000" draft="contributed">000억</pattern>
+					<pattern type="100000000000" draft="contributed">0000억</pattern>
+					<pattern type="1000000000000" draft="contributed">0.0조</pattern>
+					<pattern type="10000000000000" draft="contributed">00조</pattern>
+					<pattern type="100000000000000" draft="contributed">000조</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>

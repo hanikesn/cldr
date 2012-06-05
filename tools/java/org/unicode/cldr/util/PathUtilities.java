@@ -5,9 +5,6 @@ import java.util.Map;
 
 import org.unicode.cldr.icu.LDMLConstants;
 
-/**
- * @deprecated
- */
 public class PathUtilities {
 
   // ===== types of data and menu names

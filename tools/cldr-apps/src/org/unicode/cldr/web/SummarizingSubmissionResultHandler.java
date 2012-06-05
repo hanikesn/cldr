@@ -9,6 +9,7 @@ import org.unicode.cldr.test.CheckCLDR.CheckStatus;
 import org.unicode.cldr.web.DataSection.DataRow;
 import org.unicode.cldr.web.DataSection.DataRow.CandidateItem;
 import org.unicode.cldr.web.UserRegistry.User;
+import org.unicode.cldr.web.Vetting.DataSubmissionResultHandler;
 
 public class SummarizingSubmissionResultHandler implements
 		DataSubmissionResultHandler {
@@ -116,7 +117,7 @@ public class SummarizingSubmissionResultHandler implements
 	}
 
 	private ItemInfo getInfo(DataRow d) {
-		return getInfo(d.getXpath());
+		return getInfo(d.xpath());
 	}
 	private ItemInfo getInfo(String xpath) {
 		ItemInfo is = itemHash.get(xpath);
@@ -145,24 +146,21 @@ public class SummarizingSubmissionResultHandler implements
 	}
 	
 	public ItemInfo  infoFor(DataRow p) {
-		return infoFor(p.getXpath());
+		return infoFor(p.xpath());
 	}
 	public ItemInfo infoFor(String xpath) {
 		return itemHash.get(xpath);
 	}
 
-	@Override
 	public void handleEmptyChangeto(DataRow p) {
 		setError(p, "no data given");
 	}
 
-    @Override
 	public void handleError(DataRow p, CheckStatus status, String choice_v) {
 		setError(p, "error on '"+choice_v+"'");
 		setError(p, status);
 	}
 
-    @Override
 	public void handleNewValue(DataRow p, String choice_v, boolean hadFailures) {
 		if(!hadFailures) {
 			setOK(p, "New value: '"+choice_v+"'");
@@ -171,57 +169,46 @@ public class SummarizingSubmissionResultHandler implements
 		}
 	}
 
-    @Override
 	public void handleNoPermission(DataRow p, CandidateItem optionalItem,
 			String string) {
 		setError(p, "No permission: " + string);
 	}
 
-    @Override
 	public void handleRemoveItem(DataRow p, CandidateItem item, boolean b) {
 		// non event
 	}
 
-    @Override
 	public void handleRemoveVote(DataRow p, User voter, CandidateItem item) {
 		// non event
 	}
 
-    @Override
 	public void handleRemoved(DataRow p) {
 		//nonevnta
 	}
 
-    @Override
 	public void handleResultCount(int j) {
 		// non event
 	}
 
-    @Override
 	public void handleUnknownChoice(DataRow p, String choice) {
 		setError(p, "Internal error, bad choice: " + choice);
 	}
 
-    @Override
-	public void handleVote(DataRow p, String oldVote, String base_xpath) {
+	public void handleVote(DataRow p, int oldVote, int base_xpath) {
 		// non event
 	}
 
-    @Override
 	public void warnAcceptedAsVoteFor(DataRow p, CandidateItem item) {
 		// non event
 	}
 
-    @Override
 	public void warnAlreadyVotingFor(DataRow p, CandidateItem item) {
 		// non event
 	}
-    @Override
 	public boolean rejectErrorItem(DataRow p) {
 		return true;
 	}
 	
-	@Override
 	public void handleProposedValue(DataRow p, String choice_v) {
 		getInfo(p).setProposed(choice_v);
 	}	

@@ -1,3 +1,4 @@
+<%@page import="javax.net.ssl.SSLEngineResult.Status"%>
 <%@ include file="/WEB-INF/jspf/stcontext.jspf" %><%-- setup 'ctx' --%>
 <%@ include file="/WEB-INF/jspf/report.jspf"  %>
 <%@ page import="org.unicode.cldr.util.*" %>
@@ -34,33 +35,21 @@ if(subCtx.userId() == UserRegistry.NO_USER) {
     out.println("<i>You must be logged in to use this function.</i>");
 } else 
 {
-    
-    if(false) { // HIDE THE REFRESH BUTTON
 	%>
 		<form action="<%= topCtx.url() %>" method="POST">
 			<input type='hidden' value='t' name='VVFORCERESTART'/>
-			<label>To regenerate this page, click <input type='submit' value='Refresh Values'/> <i>You must do this to reflect changes to your coverage level.</i></label>
+			<label>To regenerate this page, click <input type='submit' value='Refresh Values'/></label>
 		</form>
 	<%
-           } // END THE REFRESH BUTTON
-    
+	
 	VettingViewerQueue.Status status[] = new VettingViewerQueue.Status[1];
 	boolean forceRestart = subCtx.hasField("VVFORCERESTART");
 	
 	
 	subCtx.println("<div id='vvupd'>");
-        
-       if(false) {    
-        VettingViewerQueue.getInstance().writeVettingViewerOutput(subCtx,null,subCtx.getLocale(),status, 
-                                    forceRestart?VettingViewerQueue.LoadingPolicy.FORCERESTART:VettingViewerQueue.LoadingPolicy.START,subCtx);
-
-
-        subCtx.println("<br/> Status: " + status[0]);
-       } else {
-            StringBuffer sb = new StringBuffer();
-            VettingViewerQueue.getInstance().writeVettingViewerOutput(subCtx.getLocale(), sb, subCtx, subCtx.session);
-            subCtx.println(sb.toString());
-       }
+    VettingViewerQueue.getInstance().writeVettingViewerOutput(subCtx,null,subCtx.getLocale(),status, 
+				forceRestart?VettingViewerQueue.LoadingPolicy.FORCERESTART:VettingViewerQueue.LoadingPolicy.START,subCtx);
+	subCtx.println("<br/> Status: " + status[0]);
 	subCtx.println("</div>");
 	if(status[0]==VettingViewerQueue.Status.PROCESSING || status[0]==VettingViewerQueue.Status.WAITING ) {
 	//	out.println("<meta http-equiv=\"refresh\" content=\"5\">");
@@ -119,7 +108,7 @@ if(!ctx.hasField("vloaded")) {
 </script>
 
 <hr/> 
-<% if(ctx.sm.isUnofficial()) { %>
+<% if(ctx.sm.isUnofficial) { %>
 <a href='<%= theUrl %>'><%= theUrl %></a>
 <% }%>
 <div id='vverr'></div>

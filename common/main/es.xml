@@ -732,6 +732,7 @@
 			<territory type="CO">Colombia</territory>
 			<territory type="CP">Isla Clipperton</territory>
 			<territory type="CR">Costa Rica</territory>
+			<territory type="CS">Serbia y Montenegro</territory>
 			<territory type="CU">Cuba</territory>
 			<territory type="CV">Cabo Verde</territory>
 			<territory type="CX">Isla Christmas</territory>
@@ -898,7 +899,6 @@
 			<territory type="SN">Senegal</territory>
 			<territory type="SO">Somalia</territory>
 			<territory type="SR">Surinam</territory>
-			<territory type="SS" draft="provisional">Sudán del Sur</territory>
 			<territory type="ST">Santo Tomé y Príncipe</territory>
 			<territory type="SV">El Salvador</territory>
 			<territory type="SY">Siria</territory>
@@ -2458,9 +2458,7 @@
 			</metazone>
 			<metazone type="Bangladesh">
 				<long>
-					<generic>Hora de Bangladesh</generic>
-					<standard>Hora estándar de Bangladesh</standard>
-					<daylight>Hora de verano de Bangladesh</daylight>
+					<standard>Hora de Bangladesh</standard>
 				</long>
 			</metazone>
 			<metazone type="Bering">
@@ -2822,7 +2820,7 @@
 			</metazone>
 			<metazone type="Macquarie">
 				<long>
-					<standard draft="contributed">Hora de Macquarie</standard>
+					<generic draft="contributed">Hora de Macquarie</generic>
 				</long>
 			</metazone>
 			<metazone type="Magadan">
@@ -3132,30 +3130,18 @@
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one" draft="contributed">0000</pattern>
-					<pattern type="1000" count="other" draft="contributed">0000</pattern>
-					<pattern type="10000" count="one" draft="contributed">00k</pattern>
-					<pattern type="10000" count="other" draft="contributed">00k</pattern>
-					<pattern type="100000" count="one" draft="contributed">000k</pattern>
-					<pattern type="100000" count="other" draft="contributed">000k</pattern>
-					<pattern type="1000000" count="one" draft="contributed">0.0 M</pattern>
-					<pattern type="1000000" count="other" draft="contributed">0.0 M</pattern>
-					<pattern type="10000000" count="one" draft="contributed">00 M</pattern>
-					<pattern type="10000000" count="other" draft="contributed">00 M</pattern>
-					<pattern type="100000000" count="one" draft="contributed">000 M</pattern>
-					<pattern type="100000000" count="other" draft="contributed">000 M</pattern>
-					<pattern type="1000000000" count="one" draft="contributed">0000 M</pattern>
-					<pattern type="1000000000" count="other" draft="contributed">0000 M</pattern>
-					<pattern type="10000000000" count="one" draft="contributed">00k M</pattern>
-					<pattern type="10000000000" count="other" draft="contributed">00k M</pattern>
-					<pattern type="100000000000" count="one" draft="contributed">000k M</pattern>
-					<pattern type="100000000000" count="other" draft="contributed">000k M</pattern>
-					<pattern type="1000000000000" count="one" draft="contributed">0.0 B</pattern>
-					<pattern type="1000000000000" count="other" draft="contributed">0.0 B</pattern>
-					<pattern type="10000000000000" count="one" draft="contributed">00 B</pattern>
-					<pattern type="10000000000000" count="other" draft="contributed">00 B</pattern>
-					<pattern type="100000000000000" count="one" draft="contributed">000 B</pattern>
-					<pattern type="100000000000000" count="other" draft="contributed">000 B</pattern>
+					<pattern type="1000" draft="contributed">0000</pattern>
+					<pattern type="10000" draft="contributed">00k</pattern>
+					<pattern type="100000" draft="contributed">000k</pattern>
+					<pattern type="1000000" draft="contributed">0.0 M</pattern>
+					<pattern type="10000000" draft="contributed">00 M</pattern>
+					<pattern type="100000000" draft="contributed">000 M</pattern>
+					<pattern type="1000000000" draft="contributed">0000 M</pattern>
+					<pattern type="10000000000" draft="contributed">00k M</pattern>
+					<pattern type="100000000000" draft="contributed">000k M</pattern>
+					<pattern type="1000000000000" draft="contributed">0.0 B</pattern>
+					<pattern type="10000000000000" draft="contributed">00 B</pattern>
+					<pattern type="100000000000000" draft="contributed">000 B</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>

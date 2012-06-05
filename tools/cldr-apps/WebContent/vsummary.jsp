@@ -9,7 +9,7 @@ if(!SurveyMain.isSetup ||
 		sid==null ||
 		(cs=CookieSession.retrieve(sid))==null || 
 		cs.user==null || 
-		(cs.user.userlevel>=UserRegistry.LOCKED) ) {
+		(cs.user.userlevel>UserRegistry.TC) ) {
 	response.sendRedirect(request.getContextPath()+"/survey?msg=login_first");
 	return;
 }
@@ -18,14 +18,14 @@ String doneurl = (request.getContextPath()+request.getServletPath())+"?s="+sid;
 String vloaded = doneurl+"&vloaded=t";
 boolean isVloaded = request.getParameter("vloaded")!=null;
 boolean needLoad = !isVloaded;
-String BASE_URL= request.getContextPath() + "/survey";
+String BASE_URL="http://unicode.org/cldr/apps/survey";
 cs.put("BASE_URL",BASE_URL);
 
 %><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>CLDR SurveyTool | Priority Items Summary</title>
+<title>CLDR SurveyTool | Vetting Summary</title>
 
 <% if(!isVloaded) { %>
 		<link rel='stylesheet' type='text/css' href='./surveytool.css' />
@@ -44,14 +44,14 @@ cs.put("BASE_URL",BASE_URL);
 <% } %>
 
 <a href="<%=(isVloaded?(BASE_URL):(request.getContextPath()+"/survey"))%>">Return to the SurveyTool <img alt='(Survey Tool Logo)' src='http://unicode.org/repos/cldr/trunk/tools/cldr-apps/WebContent/STLogo.png' style='float:right;'></a>
-<h2>Priority Items | <%= new java.util.Date() %></h2>
+<h2>Vetting Summary | <%= new java.util.Date() %></h2>
 
 
 <%
 	VettingViewerQueue vvq = VettingViewerQueue.getInstance();
 %>
 <% if(!isVloaded) { %>
-	<div  class='pager'>
+	<div  style='width: 20%;' class='pager'>
 		<form action="<%= request.getContextPath()+request.getServletPath() %>" method="POST">
 			<input type='hidden' value='t' name='VVFORCERESTART'/>
 			<input type='hidden' name='s' value='<%= sid %>'/>
@@ -99,7 +99,7 @@ function updateVv() {
             }
             
             if(json.status == "READY" ) {
-                //updateIf('vvupd',"<a href='<%= (request.getServletPath()+request.getContextPath()) %>&amp;vloaded=t'><i>Redirecting to your Priority Items View...</i></a>");
+                //updateIf('vvupd',"<a href='<%= (request.getServletPath()+request.getContextPath()) %>&amp;vloaded=t'><i>Redirecting to your Vetting View...</i></a>");
                 window.status= ('Done loading VV');
                 clearInterval(vvId);
                 vvId=-1;
@@ -136,8 +136,7 @@ function updateVv() {
 	} /* end 'still waiting' */
 	else  if(!isVloaded) {
 %>
-	<%--  <h1><a href='<%= vloaded.replaceAll("&","&amp;") %>'>LGTM, clean it up.</a></h1> --%>
-    <span id='visitors'></span>
+	<h1><a href='<%= vloaded.replaceAll("&","&amp;") %>'>LGTM, clean it up.</a></h1>
 <%
 	}
 %>

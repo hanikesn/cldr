@@ -735,6 +735,7 @@
 			<territory type="CO">Колумбия</territory>
 			<territory type="CP">Остров Клипертон</territory>
 			<territory type="CR">Коста Рика</territory>
+			<territory type="CS">Сърбия и Черна гора</territory>
 			<territory type="CU">Куба</territory>
 			<territory type="CV">Кабо Верде</territory>
 			<territory type="CX">Остров Кристмас</territory>
@@ -901,7 +902,6 @@
 			<territory type="SN">Сенегал</territory>
 			<territory type="SO">Сомалия</territory>
 			<territory type="SR">Суринам</territory>
-			<territory type="SS" draft="provisional">Южен Судан</territory>
 			<territory type="ST">Сао Томе и Принципе</territory>
 			<territory type="SV">Ел Салвадор</territory>
 			<territory type="SY">Сирийска арабска република</territory>
@@ -2763,28 +2763,28 @@
 			</metazone>
 			<metazone type="America_Central">
 				<long>
-					<generic>Централно време</generic>
+					<generic draft="contributed">Централно време</generic>
 					<standard>Американска централна часова зона</standard>
 					<daylight>Американска централна лятна часова зона</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Eastern">
 				<long>
-					<generic>Източно време</generic>
+					<generic draft="contributed">Източно време</generic>
 					<standard>Американска източна часова зона</standard>
 					<daylight>Американска източна лятна часова зона</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Mountain">
 				<long>
-					<generic>Планинско време</generic>
+					<generic draft="contributed">Планинско време</generic>
 					<standard>Американска планинска часова зона</standard>
 					<daylight>Американска планинска лятна часова зона</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Pacific">
 				<long>
-					<generic>Тихоокеанско време</generic>
+					<generic draft="contributed">Тихоокеанско време</generic>
 					<standard>Тихоокеанска часова зона</standard>
 					<daylight>Тихоокеанска лятна часова зона</daylight>
 				</long>
@@ -2819,7 +2819,7 @@
 			</metazone>
 			<metazone type="Atlantic">
 				<long>
-					<generic>Атлантическо време</generic>
+					<generic draft="contributed">Атлантическо време</generic>
 					<standard>Атлантическа часова зона</standard>
 					<daylight>Атлантическа лятна часова зона</daylight>
 				</long>
@@ -2861,9 +2861,7 @@
 			</metazone>
 			<metazone type="China">
 				<long>
-					<generic>Китайска часова зона</generic>
 					<standard>Китайска часова зона</standard>
-					<daylight>Китайска – лятно часово време</daylight>
 				</long>
 			</metazone>
 			<metazone type="Choibalsan">
@@ -2963,19 +2961,21 @@
 			</metazone>
 			<metazone type="Kazakhstan_Eastern">
 				<long>
-					<standard draft="contributed">Казахстан – източно време</standard>
+					<generic draft="contributed">Казахстан – източно време</generic>
+					<standard draft="contributed">Казахстан – източно стандартно време</standard>
+					<daylight draft="contributed">Казахстан – източно лятно часово време</daylight>
 				</long>
 			</metazone>
 			<metazone type="Kazakhstan_Western">
 				<long>
-					<standard draft="contributed">Казахстан – западно време</standard>
+					<generic draft="contributed">Казахстан – западно време</generic>
+					<standard draft="contributed">Казахстан – западно стандартно време</standard>
+					<daylight draft="contributed">Казахстан – западно лятно часово време</daylight>
 				</long>
 			</metazone>
 			<metazone type="Korea">
 				<long>
-					<generic draft="provisional">Корейска часова зона</generic>
 					<standard draft="provisional">Корейска часова зона</standard>
-					<daylight draft="provisional">Корейска – лятно часово време</daylight>
 				</long>
 			</metazone>
 			<metazone type="Krasnoyarsk">
@@ -3006,8 +3006,8 @@
 			</metazone>
 			<metazone type="Mongolia">
 				<long>
-					<generic draft="contributed">Улан Батор</generic>
-					<standard draft="contributed">Улан Батор – стандартно време</standard>
+					<generic draft="contributed">Монголия</generic>
+					<standard draft="contributed">Улан Батор</standard>
 					<daylight draft="contributed">Улан Батор – лятно часово време</daylight>
 				</long>
 			</metazone>
@@ -3020,7 +3020,7 @@
 			</metazone>
 			<metazone type="Newfoundland">
 				<long>
-					<generic>Нюфаундленд</generic>
+					<generic draft="contributed">Нюфаундленд</generic>
 					<standard>Часова зона Нюфаундленд</standard>
 					<daylight>Лятна часова зона Нюфаундленд</daylight>
 				</long>
@@ -3110,30 +3110,18 @@
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one" draft="contributed">0.0 Х</pattern>
-					<pattern type="1000" count="other" draft="contributed">0.0 Х</pattern>
-					<pattern type="10000" count="one" draft="contributed">00 Х</pattern>
-					<pattern type="10000" count="other" draft="contributed">00 Х</pattern>
-					<pattern type="100000" count="one" draft="contributed">000 Х</pattern>
-					<pattern type="100000" count="other" draft="contributed">000 Х</pattern>
-					<pattern type="1000000" count="one" draft="contributed">0.0 М</pattern>
-					<pattern type="1000000" count="other" draft="contributed">0.0 М</pattern>
-					<pattern type="10000000" count="one" draft="contributed">00 М</pattern>
-					<pattern type="10000000" count="other" draft="contributed">00 М</pattern>
-					<pattern type="100000000" count="one" draft="contributed">000 М</pattern>
-					<pattern type="100000000" count="other" draft="contributed">000 М</pattern>
-					<pattern type="1000000000" count="one" draft="contributed">0.0 Б</pattern>
-					<pattern type="1000000000" count="other" draft="contributed">0.0 Б</pattern>
-					<pattern type="10000000000" count="one" draft="contributed">00 Б</pattern>
-					<pattern type="10000000000" count="other" draft="contributed">00 Б</pattern>
-					<pattern type="100000000000" count="one" draft="contributed">000 Б</pattern>
-					<pattern type="100000000000" count="other" draft="contributed">000 Б</pattern>
-					<pattern type="1000000000000" count="one" draft="contributed">0.0 Т</pattern>
-					<pattern type="1000000000000" count="other" draft="contributed">0.0 Т</pattern>
-					<pattern type="10000000000000" count="one" draft="contributed">00 Т</pattern>
-					<pattern type="10000000000000" count="other" draft="contributed">00 Т</pattern>
-					<pattern type="100000000000000" count="one" draft="contributed">000 Т</pattern>
-					<pattern type="100000000000000" count="other" draft="contributed">000 Т</pattern>
+					<pattern type="1000" draft="contributed">0.0 Х</pattern>
+					<pattern type="10000" draft="contributed">00 Х</pattern>
+					<pattern type="100000" draft="contributed">000 Х</pattern>
+					<pattern type="1000000" draft="contributed">0.0 М</pattern>
+					<pattern type="10000000" draft="contributed">00 М</pattern>
+					<pattern type="100000000" draft="contributed">000 М</pattern>
+					<pattern type="1000000000" draft="contributed">0.0 Б</pattern>
+					<pattern type="10000000000" draft="contributed">00 Б</pattern>
+					<pattern type="100000000000" draft="contributed">000 Б</pattern>
+					<pattern type="1000000000000" draft="contributed">0.0 Т</pattern>
+					<pattern type="10000000000000" draft="contributed">00 Т</pattern>
+					<pattern type="100000000000000" draft="contributed">000 Т</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>

@@ -1169,39 +1169,38 @@ XXX Code for transations where no currency is involved
 -->
     </currencyData>
     <territoryContainment> <!-- based on UN data, at http://unstats.un.org/unsd/methods/m49/m49regin.htm -->
-        <group type="001" contains="019 002 150 142 009"/> <!--World -->
+        <group type="001" contains="002 009 019 142 150"/> <!--World -->
+        <group type="001" contains="003 419" status="deprecated"/> <!--World -->
         <group type="011" contains="BF BJ CI CV GH GM GN GW LR ML MR NE NG SH SL SN TG"/> <!--Western Africa -->
         <group type="013" contains="BZ CR GT HN MX NI PA SV"/> <!--Central America -->
         <group type="014" contains="BI DJ ER ET KE KM MG MU MW MZ RE RW SC SO TZ UG YT ZM ZW"/> <!--Eastern Africa -->
-        <group type="142" contains="145 143 030 034 035"/> <!--Asia -->
+        <group type="142" contains="030 035 143 145 034"/> <!--Asia -->
         <group type="143" contains="TM TJ KG KZ UZ"/> <!-- Central Asia -->
         <group type="145" contains="AE AM AZ BH CY GE IL IQ JO KW LB OM PS QA SA SY TR YE"/> <!--Western Asia -->
         <group type="145" contains="NT YD" status="deprecated"/> <!--Western Asia -->
         <group type="015" contains="DZ EG EH LY MA SD SS TN EA IC"/> <!--Northern Africa -->
-        <group type="150" contains="154 155 151 039"/> <!--Europe -->
-        <group type="150" contains="EU" status="grouping"/> <!--Europe -->
-        <group type="150" contains="QU" status="deprecated"/> <!--Europe -->
+        <group type="150" contains="039 151 154 155"/> <!--Europe -->
+        <group type="150" contains="QU EU" status="deprecated"/> <!--Europe -->
         <group type="151" contains="BG BY CZ HU MD PL RO RU SK UA"/> <!--Eastern Europe -->
         <group type="151" contains="SU" status="deprecated"/> <!--Eastern Europe -->
-        <group type="154" contains="GG IM JE AX DK EE FI FO GB IE IS LT LV NO SE SJ"/> <!--Northern Europe -->
+        <group type="154" contains="GG IM JE AX DK EE FI FO GB IE IM IS LT LV NO SE SJ"/> <!--Northern Europe -->
         <group type="155" contains="AT BE CH DE FR LI LU MC NL"/> <!--Western Europe -->
         <group type="155" contains="DD FX" status="deprecated"/> <!--Western Europe -->
         <group type="017" contains="AO CD CF CG CM GA GQ ST TD"/> <!--Middle Africa -->
         <group type="017" contains="ZR" status="deprecated"/> <!--Middle Africa -->
         <group type="018" contains="BW LS NA SZ ZA"/> <!--Southern Africa -->
         <group type="019" contains="021 013 029 005"/> <!--Americas -->
-        <group type="019" contains="003 419" status="grouping"/> <!--World -->
-        <group type="002" contains="015 011 017 014 018"/> <!--Africa -->
+        <group type="002" contains="011 014 015 017 018"/> <!--Africa -->
         <group type="021" contains="BM CA GL PM US"/> <!--Northern America -->
         <group type="029" contains="AG AI AW BB BL BQ BS CU CW DM DO GD GP HT JM KN KY LC MF MQ MS PR SX TC TT VC VG VI"/> <!--Caribbean -->
         <group type="029" contains="AN" status="deprecated"/> <!--Caribbean -->
-        <group type="003" contains="021 013 029" grouping="true"/> <!--North America -->
+        <group type="003" contains="013 021 029" grouping="true"/> <!--North America -->
         <group type="030" contains="CN HK JP KP KR MN MO TW"/> <!--Eastern Asia -->
         <group type="035" contains="BN ID KH LA MM MY PH SG TH TL VN"/> <!--South-Eastern Asia -->
         <group type="035" contains="BU TP" status="deprecated"/> <!--South-Eastern Asia -->
         <group type="039" contains="AD AL BA ES GI GR HR IT ME MK MT RS PT SI SM VA"/> <!--Southern Europe -->
         <group type="039" contains="CS YU" status="deprecated"/> <!--Southern Europe -->
-        <group type="419" contains="013 029 005" grouping="true"/> <!--Latin America and the Caribbean -->
+        <group type="419" contains="005 013 029" grouping="true"/> <!--Latin America and the Caribbean -->
         <group type="005" contains="AR BO BR CL CO EC FK GF GY PE PY SR UY VE"/> <!--South America -->
         <group type="053" contains="AU NF NZ"/> <!--Australia and New Zealand -->
         <group type="054" contains="FJ NC PG SB VU"/> <!--Melanesia -->
@@ -1228,7 +1227,7 @@ XXX Code for transations where no currency is involved
 		<language type="ady" territories="RU" alt="secondary"/>
 		<language type="ae" scripts="Avst" alt="secondary"/>
 		<language type="af" scripts="Latn" territories="NA ZA"/>
-		<language type="agq" scripts="Latn" territories="CM"/>
+		<language type="agq" scripts="Latn"/>
 		<language type="aii" scripts="Cyrl"/>
 		<language type="aii" scripts="Syrc" alt="secondary"/>
 		<language type="ain" scripts="Kana Latn" alt="secondary"/>
@@ -1265,7 +1264,7 @@ XXX Code for transations where no currency is involved
 		<language type="bal" territories="IR PK" alt="secondary"/>
 		<language type="ban" scripts="Latn"/>
 		<language type="ban" scripts="Bali" territories="ID" alt="secondary"/>
-		<language type="bas" scripts="Latn" territories="CM"/>
+		<language type="bas" scripts="Latn"/>
 		<language type="bax" scripts="Bamu" alt="secondary"/>
 		<language type="bbc" scripts="Latn"/>
 		<language type="bbc" scripts="Batk" territories="ID" alt="secondary"/>
@@ -1316,7 +1315,6 @@ XXX Code for transations where no currency is involved
 		<language type="brx" scripts="Deva"/>
 		<language type="brx" territories="IN" alt="secondary"/>
 		<language type="bs" scripts="Latn" territories="BA"/>
-		<language type="bss" scripts="Latn" territories="CM"/>
 		<language type="btv" scripts="Deva"/>
 		<language type="bua" scripts="Cyrl"/>
 		<language type="buc" scripts="Latn"/>
@@ -1393,7 +1391,7 @@ XXX Code for transations where no currency is involved
 		<language type="doi" scripts="Arab"/>
 		<language type="doi" territories="IN" alt="secondary"/>
 		<language type="dsb" scripts="Latn"/>
-		<language type="dua" scripts="Latn" territories="CM"/>
+		<language type="dua" scripts="Latn"/>
 		<language type="dv" scripts="Thaa" territories="MV"/>
 		<language type="dyo" scripts="Arab"/>
 		<language type="dyo" scripts="Latn" alt="secondary"/>
@@ -1420,7 +1418,7 @@ XXX Code for transations where no currency is involved
 		<language type="eu" scripts="Latn"/>
 		<language type="eu" territories="ES" alt="secondary"/>
 		<language type="evn" scripts="Cyrl"/>
-		<language type="ewo" scripts="Latn" territories="CM"/>
+		<language type="ewo" scripts="Latn"/>
 		<language type="fa" scripts="Arab" territories="AF IR"/>
 		<language type="fa" territories="PK" alt="secondary"/>
 		<language type="fan" scripts="Latn"/>
@@ -1541,7 +1539,6 @@ XXX Code for transations where no currency is involved
 		<language type="iu" scripts="Cans"/>
 		<language type="iu" scripts="Latn" territories="GL" alt="secondary"/>
 		<language type="ja" scripts="Jpan" territories="JP"/>
-		<language type="jgo" scripts="Latn" territories="CM"/>
 		<language type="jmc" scripts="Latn"/>
 		<language type="jpr" scripts="Hebr"/>
 		<language type="jrb" scripts="Hebr"/>
@@ -1564,7 +1561,6 @@ XXX Code for transations where no currency is involved
 		<language type="kdt" scripts="Thai"/>
 		<language type="kea" scripts="Latn"/>
 		<language type="kea" territories="CV" alt="secondary"/>
-		<language type="ken" scripts="Latn" territories="CM"/>
 		<language type="kfo" scripts="Latn"/>
 		<language type="kfr" scripts="Deva"/>
 		<language type="kfy" territories="IN" alt="secondary"/>
@@ -1582,7 +1578,6 @@ XXX Code for transations where no currency is involved
 		<language type="kjh" scripts="Cyrl"/>
 		<language type="kk" scripts="Cyrl" territories="KZ"/>
 		<language type="kk" scripts="Arab" territories="CN" alt="secondary"/>
-		<language type="kkj" scripts="Latn" territories="CM"/>
 		<language type="kl" scripts="Latn" territories="GL"/>
 		<language type="kl" territories="DK" alt="secondary"/>
 		<language type="kln" scripts="Latn"/>
@@ -1615,7 +1610,7 @@ XXX Code for transations where no currency is involved
 		<language type="ks" scripts="Arab Deva"/>
 		<language type="ks" territories="IN" alt="secondary"/>
 		<language type="ksb" scripts="Latn"/>
-		<language type="ksf" scripts="Latn" territories="CM"/>
+		<language type="ksf" scripts="Latn"/>
 		<language type="ksh" scripts="Latn"/>
 		<language type="ku" scripts="Latn Arab Cyrl"/>
 		<language type="ku" territories="TR IQ SY" alt="secondary"/>
@@ -1698,7 +1693,6 @@ XXX Code for transations where no currency is involved
 		<language type="mfe" territories="MU" alt="secondary"/>
 		<language type="mg" scripts="Latn" territories="MG"/>
 		<language type="mgh" scripts="Latn"/>
-		<language type="mgo" scripts="Latn" territories="CM"/>
 		<language type="mh" scripts="Latn" territories="MH"/>
 		<language type="mi" scripts="Latn" territories="NZ"/>
 		<language type="mic" scripts="Latn"/>
@@ -1723,7 +1717,7 @@ XXX Code for transations where no currency is involved
 		<language type="ms" scripts="Arab" territories="CC ID" alt="secondary"/>
 		<language type="mt" scripts="Latn" territories="MT"/>
 		<language type="mtr" territories="IN" alt="secondary"/>
-		<language type="mua" scripts="Latn" territories="CM"/>
+		<language type="mua" scripts="Latn"/>
 		<language type="mup" territories="IN" alt="secondary"/>
 		<language type="mus" scripts="Latn"/>
 		<language type="mwl" scripts="Latn"/>
@@ -1753,9 +1747,8 @@ XXX Code for transations where no currency is involved
 		<language type="nia" scripts="Latn"/>
 		<language type="niu" scripts="Latn" territories="NU"/>
 		<language type="nl" scripts="Latn" territories="AW BE NL SR"/>
-		<language type="nmg" scripts="Latn" territories="CM"/>
+		<language type="nmg" scripts="Latn"/>
 		<language type="nn" scripts="Latn" territories="NO"/>
-		<language type="nnh" scripts="Latn" territories="CM"/>
 		<language type="no" scripts="Latn"/>
 		<language type="nod" scripts="Lana" territories="TH" alt="secondary"/>
 		<language type="noe" territories="IN" alt="secondary"/>
@@ -2029,7 +2022,7 @@ XXX Code for transations where no currency is involved
 		<language type="xum" scripts="Ital Latn" alt="secondary"/>
 		<language type="yao" scripts="Latn"/>
 		<language type="yap" scripts="Latn" territories="FM"/>
-		<language type="yav" scripts="Latn" territories="CM"/>
+		<language type="yav" scripts="Latn"/>
 		<language type="yi" scripts="Hebr"/>
 		<language type="yo" scripts="Latn" territories="NG"/>
 		<language type="yrk" scripts="Cyrl"/>

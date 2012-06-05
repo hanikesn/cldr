@@ -672,7 +672,7 @@ public class TestBasic extends TestFmwk {
                 collations.add(localeID);
             }
         }
-        logln(collations.toString());
+        System.out.println(collations);
         
         Set<String> allLanguages = Builder.with(new TreeSet<String>()).addAll(collations).addAll(availableLanguages).freeze();
         

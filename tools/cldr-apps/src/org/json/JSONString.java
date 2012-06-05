@@ -13,7 +13,6 @@ public interface JSONString {
 	 * serialization. 
 	 * 
 	 * @return A strictly syntactically correct JSON text.
-	 * @throws JSONException 
 	 */
-	public String toJSONString() throws JSONException;
+	public String toJSONString();
 }

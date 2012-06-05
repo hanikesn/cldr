@@ -25,10 +25,6 @@ import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.Factory;
 import org.unicode.cldr.util.InternalCldrException;
-import org.unicode.cldr.util.Level;
-import org.unicode.cldr.util.PathHeader;
-import org.unicode.cldr.util.VoteResolver;
-import org.unicode.cldr.util.PathHeader.SurveyToolStatus;
 
 import com.ibm.icu.dev.test.util.ElapsedTimer;
 import com.ibm.icu.dev.test.util.TransliteratorUtilities;
@@ -58,65 +54,11 @@ abstract public class CheckCLDR {
   private boolean skipTest = false;
   private Phase phase;
 
-  public enum InputMethod {DIRECT, BULK}
-  
-  public enum StatusAction {
-      /**
-       * Allow everything, even suppress items.
-       */
-      ALLOW, 
-      /**
-       * Disallow (for various reasons)
-       */
-      FORBID_ERRORS, 
-      FORBID_READONLY, 
-      FORBID_COVERAGE
-      ;
-      /**
-       * @deprecated
-       */
-      public static final StatusAction FORBID = FORBID_READONLY;
-      }
-
-  public enum Phase {
+  enum Phase {
     SUBMISSION, VETTING, FINAL_TESTING;
 
-    public static Phase forString(String value) {
+    static Phase forString(String value) {
       return value == null ? null : Phase.valueOf(value.toUpperCase(Locale.ENGLISH));
-    }
-    
-    public StatusAction getAction(List<CheckStatus> statusList, VoteResolver.VoterInfo voterInfo, 
-            InputMethod inputMethod, PathHeader.SurveyToolStatus status, Level coverageLevel) {
-        // don't need phase or inputMethod yet, but might in the future.
-        
-        // always forbid deprecated items.
-        if (status == SurveyToolStatus.DEPRECATED) {
-            return StatusAction.FORBID_READONLY;
-        }
-        
-        // if TC+, allow anything else, even suppress items
-        if (voterInfo.getLevel().compareTo(VoteResolver.Level.tc) >= 0) {
-            return StatusAction.ALLOW;
-        }
-        
-        // if the coverage level is optional, disallow
-        if (coverageLevel.compareTo(Level.COMPREHENSIVE) > 0) {
-            return StatusAction.FORBID_COVERAGE;
-        }
-        
-        // check for errors (allowing collisions
-        for (CheckStatus item : statusList) {
-            if (item.getType().equals(CheckStatus.errorType)) {
-                if (item.getSubtype() != Subtype.dateSymbolCollision && item.getSubtype() != Subtype.displayCollision) {
-                    return StatusAction.FORBID_ERRORS;
-                }
-            }
-        }
-        // finally, allow if read-write, otherwise forbid
-        if (status == SurveyToolStatus.READ_WRITE) {
-            return StatusAction.ALLOW;
-        }
-        return StatusAction.FORBID_READONLY;
     }
   }
 
@@ -140,7 +82,7 @@ abstract public class CheckCLDR {
     .setFilter(Pattern.compile(nameMatcher,Pattern.CASE_INSENSITIVE).matcher(""))
     .add(new CheckAttributeValues(factory))
     .add(new CheckChildren(factory))
-    //.add(new CheckCoverage(factory)) // outmoded
+    .add(new CheckCoverage(factory))
     .add(new CheckDates(factory))
     .add(new CheckForCopy(factory))
     .add(new CheckDisplayCollisions(factory))
@@ -149,7 +91,6 @@ abstract public class CheckCLDR {
     .add(new CheckNumbers(factory))
     // .add(new CheckZones()) // this doesn't work; many spurious errors that user can't correct
     .add(new CheckMetazones())
-    .add(new CheckLogicalGroupings())
     .add(new CheckAlt())
     .add(new CheckCurrencies())
     .add(new CheckCasing())
@@ -196,12 +137,7 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
           "|localizedPatternChars" + // deprecated
           "|abbreviationFallback" + // deprecated
           "|default" + // deprecated
-          "|inText" + // internal use only
-          "|inList" + // internal use only
           "|mapping" + // deprecated
-          "|zone/long" + 
-          "|zone/short" + 
-          "|zone/commonlyUsed" + 
           "|measurementSystem" + // deprecated
           "|preferenceOrdering" + // deprecated
           ")((\\[|/).*)?", Pattern.COMMENTS); // the last bit is to ensure whole element
@@ -266,13 +202,12 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
 
       charactersNotInCurrencyExemplars, asciiCharactersNotInCurrencyExemplars,
       charactersNotInMainOrAuxiliaryExemplars, asciiCharactersNotInMainOrAuxiliaryExemplars,
-      missingPunctuationCharacters,
 
       narrowDateFieldTooWide, illegalCharactersInExemplars, orientationDisagreesWithExemplars,
       illegalDatePattern, missingMainExemplars, discouragedCharactersInTranslation, mustNotStartOrEndWithSpace,
       illegalCharactersInNumberPattern, numberPatternNotCanonical, currencyPatternMissingCurrencySymbol, badNumericType,
       percentPatternMissingPercentSymbol, illegalNumberFormat, unexpectedAttributeValue, metazoneContainsDigit,
-      sameAsEnglishOrCode, dateSymbolCollision, incompleteLogicalGroup, extraMetazoneString, inconsistentDraftStatus;
+      sameAsEnglishOrCode, dateSymbolCollision;
     public String toString() {
       return TO_STRING.matcher(name()).replaceAll(" $1").toLowerCase();
     }
@@ -566,7 +501,7 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
   static class CompoundCheckCLDR extends CheckCLDR {
     private Matcher filter;
     private List checkList = new ArrayList();
-    private List<CheckCLDR> filteredCheckList = new ArrayList<CheckCLDR>();
+    private List filteredCheckList = new ArrayList();
 
     public CompoundCheckCLDR add(CheckCLDR item) {
         checkList.add(item);
@@ -674,9 +609,6 @@ GaMjkHmsSEDFwWxhKzAeugXZvcL
     
     public String getFilteredTests() {
         return filteredCheckList.toString();
-    }
-    public List<CheckCLDR> getFilteredTestList() {
-        return filteredCheckList;
     }
   }
 

@@ -59,21 +59,17 @@
 			<language type="ban">Balinese</language>
 			<language type="bas">Basaa</language>
 			<language type="bat">Baltic Language</language>
-			<language type="bax">Bamun</language>
-			<language type="bbj">Ghomala</language>
 			<language type="be">Belarusian</language>
 			<language type="bej">Beja</language>
 			<language type="bem">Bemba</language>
 			<language type="ber">Berber</language>
 			<language type="bez">Bena</language>
-			<language type="bfd">Bafut</language>
 			<language type="bg">Bulgarian</language>
 			<language type="bh">Bihari</language>
 			<language type="bho">Bhojpuri</language>
 			<language type="bi">Bislama</language>
 			<language type="bik">Bikol</language>
 			<language type="bin">Bini</language>
-			<language type="bkm">Kom</language>
 			<language type="bla">Siksika</language>
 			<language type="bm">Bambara</language>
 			<language type="bn">Bengali</language>
@@ -83,13 +79,10 @@
 			<language type="bra">Braj</language>
 			<language type="brx">Bodo</language>
 			<language type="bs">Bosnian</language>
-			<language type="bss">Akoose</language>
 			<language type="btk">Batak</language>
 			<language type="bua">Buriat</language>
 			<language type="bug">Buginese</language>
-			<language type="bum">Bulu</language>
 			<language type="byn">Blin</language>
-			<language type="byv">Medumba</language>
 			<language type="ca">Catalan</language>
 			<language type="cad">Caddo</language>
 			<language type="cai">Central American Indian Language</language>
@@ -149,7 +142,6 @@
 			<language type="dyo">Jola-Fonyi</language>
 			<language type="dyu">Dyula</language>
 			<language type="dz">Dzongkha</language>
-			<language type="dzg">Dazaga</language>
 			<language type="ebu">Embu</language>
 			<language type="ee">Ewe</language>
 			<language type="efi">Efik</language>
@@ -166,7 +158,7 @@
 			<language type="eo">Esperanto</language>
 			<language type="es">Spanish</language>
 			<language type="es_419">Latin American Spanish</language>
-			<language type="es_ES">European Spanish</language>
+			<language type="es_ES">Iberian Spanish</language>
 			<language type="et">Estonian</language>
 			<language type="eu">Basque</language>
 			<language type="ewo">Ewondo</language>
@@ -230,7 +222,6 @@
 			<language type="hz">Herero</language>
 			<language type="ia">Interlingua</language>
 			<language type="iba">Iban</language>
-			<language type="ibb">Ibibio</language>
 			<language type="id">Indonesian</language>
 			<language type="ie">Interlingue</language>
 			<language type="ig">Igbo</language>
@@ -262,7 +253,6 @@
 			<language type="kar">Karen</language>
 			<language type="kaw">Kawi</language>
 			<language type="kbd">Kabardian</language>
-			<language type="kbl">Kanembu</language>
 			<language type="kcg">Tyap</language>
 			<language type="kde">Makonde</language>
 			<language type="kea">Kabuverdianu</language>
@@ -275,7 +265,6 @@
 			<language type="ki">Kikuyu</language>
 			<language type="kj">Kuanyama</language>
 			<language type="kk">Kazakh</language>
-			<language type="kkj">Kako</language>
 			<language type="kl">Kalaallisut</language>
 			<language type="kln">Kalenjin</language>
 			<language type="km">Khmer</language>
@@ -323,14 +312,12 @@
 			<language type="luy">Luyia</language>
 			<language type="lv">Latvian</language>
 			<language type="mad">Madurese</language>
-			<language type="maf">Mafa</language>
 			<language type="mag">Magahi</language>
 			<language type="mai">Maithili</language>
 			<language type="mak">Makasar</language>
 			<language type="man">Mandingo</language>
 			<language type="map">Austronesian Language</language>
 			<language type="mas">Masai</language>
-			<language type="mde">Maba</language>
 			<language type="mdf">Moksha</language>
 			<language type="mdr">Mandar</language>
 			<language type="men">Mende</language>
@@ -364,7 +351,6 @@
 			<language type="mwl">Mirandese</language>
 			<language type="mwr">Marwari</language>
 			<language type="my">Burmese</language>
-			<language type="mye">Myene</language>
 			<language type="myn">Mayan Language</language>
 			<language type="myv">Erzya</language>
 			<language type="na">Nauru</language>
@@ -385,7 +371,6 @@
 			<language type="nl_BE">Flemish</language>
 			<language type="nmg">Kwasio</language>
 			<language type="nn">Norwegian Nynorsk</language>
-			<language type="nnh">Ngiemboon</language>
 			<language type="no">Norwegian</language>
 			<language type="nog">Nogai</language>
 			<language type="non">Old Norse</language>
@@ -428,7 +413,7 @@
 			<language type="ps" alt="variant">Pushto</language>
 			<language type="pt">Portuguese</language>
 			<language type="pt_BR">Brazilian Portuguese</language>
-			<language type="pt_PT">European Portuguese</language>
+			<language type="pt_PT">Iberian Portuguese</language>
 			<language type="qu">Quechua</language>
 			<language type="raj">Rajasthani</language>
 			<language type="rap">Rapanui</language>
@@ -453,7 +438,6 @@
 			<language type="saq">Samburu</language>
 			<language type="sas">Sasak</language>
 			<language type="sat">Santali</language>
-			<language type="sba">Ngambay</language>
 			<language type="sbp">Sangu</language>
 			<language type="sc">Sardinian</language>
 			<language type="scn">Sicilian</language>
@@ -470,7 +454,6 @@
 			<language type="sgn">Sign Language</language>
 			<language type="sh">Serbo-Croatian</language>
 			<language type="shi">Tachelhit</language>
-			<language type="shu">Chadian Arabic</language>
 			<language type="shn">Shan</language>
 			<language type="si">Sinhala</language>
 			<language type="sid">Sidamo</language>
@@ -573,7 +556,6 @@
 			<language type="yao">Yao</language>
 			<language type="yap">Yapese</language>
 			<language type="yav">Yangben</language>
-			<language type="ybb">Yemba</language>
 			<language type="yi">Yiddish</language>
 			<language type="yo">Yoruba</language>
 			<language type="ypk">Yupik Language</language>
@@ -592,7 +574,6 @@
 			<language type="zza">Zaza</language>
 		</languages>
 		<scripts>
-			<script type="Afak">Afaka</script>
 			<script type="Arab">Arabic</script>
 			<script type="Arab" alt="variant">Perso-Arabic</script>
 			<script type="Armi">Imperial Aramaic</script>
@@ -600,7 +581,6 @@
 			<script type="Avst">Avestan</script>
 			<script type="Bali">Balinese</script>
 			<script type="Bamu">Bamum</script>
-			<script type="Bass">Bassa Vah</script>
 			<script type="Batk">Batak</script>
 			<script type="Beng">Bengali</script>
 			<script type="Blis">Blissymbols</script>
@@ -621,7 +601,6 @@
 			<script type="Cyrs">Old Church Slavonic Cyrillic</script>
 			<script type="Deva">Devanagari</script>
 			<script type="Dsrt">Deseret</script>
-			<script type="Dupl">Duployan shorthand</script>
 			<script type="Egyd">Egyptian demotic</script>
 			<script type="Egyh">Egyptian hieratic</script>
 			<script type="Egyp">Egyptian hieroglyphs</script>
@@ -643,7 +622,6 @@
 			<script type="Hant" alt="stand-alone">Traditional Han</script>
 			<script type="Hebr">Hebrew</script>
 			<script type="Hira">Hiragana</script>
-			<script type="Hluw">Anatolian Hieroglyphs</script>
 			<script type="Hmng">Pahawh Hmong</script>
 			<script type="Hrkt">Japanese syllabaries</script>
 			<script type="Hung">Old Hungarian</script>
@@ -651,7 +629,6 @@
 			<script type="Ital">Old Italic</script>
 			<script type="Java">Javanese</script>
 			<script type="Jpan">Japanese</script>
-			<script type="Jurc">Jurchen</script>
 			<script type="Kali">Kayah Li</script>
 			<script type="Kana">Katakana</script>
 			<script type="Khar">Kharoshthi</script>
@@ -659,7 +636,6 @@
 			<script type="Khoj">Khojki</script>
 			<script type="Knda">Kannada</script>
 			<script type="Kore">Korean</script>
-			<script type="Kpel">Kpelle</script>
 			<script type="Kthi">Kaithi</script>
 			<script type="Lana">Lanna</script>
 			<script type="Laoo">Lao</script>
@@ -671,32 +647,25 @@
 			<script type="Lina">Linear A</script>
 			<script type="Linb">Linear B</script>
 			<script type="Lisu">Fraser</script>
-			<script type="Loma">Loma</script>
 			<script type="Lyci">Lycian</script>
 			<script type="Lydi">Lydian</script>
 			<script type="Mand">Mandaean</script>
 			<script type="Mani">Manichaean</script>
 			<script type="Maya">Mayan hieroglyphs</script>
-			<script type="Mend">Mende</script>
 			<script type="Merc">Meroitic Cursive</script>
 			<script type="Mero">Meroitic</script>
 			<script type="Mlym">Malayalam</script>
 			<script type="Mong">Mongolian</script>
 			<script type="Moon">Moon</script>
-			<script type="Mroo">Mro</script>
 			<script type="Mtei">Meitei Mayek</script>
 			<script type="Mymr">Myanmar</script>
-			<script type="Narb">Old North Arabian</script>
-			<script type="Nbat">Nabataean</script>
 			<script type="Nkgb">Naxi Geba</script>
 			<script type="Nkoo">N’Ko</script>
-			<script type="Nshu">Nüshu</script>
 			<script type="Ogam">Ogham</script>
 			<script type="Olck">Ol Chiki</script>
 			<script type="Orkh">Orkhon</script>
 			<script type="Orya">Oriya</script>
 			<script type="Osma">Osmanya</script>
-			<script type="Palm">Palmyrene</script>
 			<script type="Perm">Old Permic</script>
 			<script type="Phag">Phags-pa</script>
 			<script type="Phli">Inscriptional Pahlavi</script>
@@ -714,10 +683,7 @@
 			<script type="Saur">Saurashtra</script>
 			<script type="Sgnw">SignWriting</script>
 			<script type="Shaw">Shavian</script>
-			<script type="Shrd">Sharada</script>
-			<script type="Sind">Khudawadi</script>
 			<script type="Sinh">Sinhala</script>
-			<script type="Sora">Sora Sompeng</script>
 			<script type="Sund">Sundanese</script>
 			<script type="Sylo">Syloti Nagri</script>
 			<script type="Syrc">Syriac</script>
@@ -725,11 +691,9 @@
 			<script type="Syrj">Western Syriac</script>
 			<script type="Syrn">Eastern Syriac</script>
 			<script type="Tagb">Tagbanwa</script>
-			<script type="Takr">Takri</script>
 			<script type="Tale">Tai Le</script>
 			<script type="Talu">New Tai Lue</script>
 			<script type="Taml">Tamil</script>
-			<script type="Tang">Tangut</script>
 			<script type="Tavt">Tai Viet</script>
 			<script type="Telu">Telugu</script>
 			<script type="Teng">Tengwar</script>
@@ -743,7 +707,6 @@
 			<script type="Vaii">Vai</script>
 			<script type="Visp">Visible Speech</script>
 			<script type="Wara">Varang Kshiti</script>
-			<script type="Wole">Woleai</script>
 			<script type="Xpeo">Old Persian</script>
 			<script type="Xsux">Sumero-Akkadian Cuneiform</script>
 			<script type="Yiii">Yi</script>
@@ -774,7 +737,7 @@
 			<territory type="034">Southern Asia</territory>
 			<territory type="035">South-Eastern Asia</territory>
 			<territory type="039">Southern Europe</territory>
-			<territory type="053">Australasia</territory>
+			<territory type="053">Australia and New Zealand</territory>
 			<territory type="054">Melanesia</territory>
 			<territory type="057">Micronesian Region</territory>
 			<territory type="061">Polynesia</territory>
@@ -821,7 +784,7 @@
 			<territory type="BM">Bermuda</territory>
 			<territory type="BN">Brunei</territory>
 			<territory type="BO">Bolivia</territory>
-			<territory type="BQ">Caribbean Netherlands</territory>
+			<territory type="BQ">Bonaire, Sint Eustatius, and Saba</territory>
 			<territory type="BR">Brazil</territory>
 			<territory type="BS">Bahamas</territory>
 			<territory type="BT">Bhutan</territory>
@@ -998,7 +961,7 @@
 			<territory type="PR">Puerto Rico</territory>
 			<territory type="PS">Palestinian Territories</territory>
 			<territory type="PT">Portugal</territory>
-			<territory type="PU">U.S. Other Pacific Islands</territory>
+			<territory type="PU">U.S. Miscellaneous Pacific Islands</territory>
 			<territory type="PW">Palau</territory>
 			<territory type="PY">Paraguay</territory>
 			<territory type="PZ">Panama Canal Zone</territory>
@@ -1051,7 +1014,7 @@
 			<territory type="TZ">Tanzania</territory>
 			<territory type="UA">Ukraine</territory>
 			<territory type="UG">Uganda</territory>
-			<territory type="UM">U.S. Outlying Islands</territory>
+			<territory type="UM">U.S. Minor Outlying Islands</territory>
 			<territory type="US">United States</territory>
 			<territory type="UY">Uruguay</territory>
 			<territory type="UZ">Uzbekistan</territory>
@@ -1540,15 +1503,6 @@
 							<day type="thu">Thu</day>
 							<day type="fri">Fri</day>
 							<day type="sat">Sat</day>
-						</dayWidth>
-						<dayWidth type="short">
-							<day type="sun">Su</day>
-							<day type="mon">Mo</day>
-							<day type="tue">Tu</day>
-							<day type="wed">We</day>
-							<day type="thu">Th</day>
-							<day type="fri">Fr</day>
-							<day type="sat">Sa</day>
 						</dayWidth>
 						<dayWidth type="wide">
 							<day type="sun">Sunday</day>
@@ -3228,59 +3182,19 @@
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one">0.0K</pattern>
-					<pattern type="1000" count="other">0.0K</pattern>
-					<pattern type="10000" count="one">00K</pattern>
-					<pattern type="10000" count="other">00K</pattern>
-					<pattern type="100000" count="one">000K</pattern>
-					<pattern type="100000" count="other">000K</pattern>
-					<pattern type="1000000" count="one">0.0M</pattern>
-					<pattern type="1000000" count="other">0.0M</pattern>
-					<pattern type="10000000" count="one">00M</pattern>
-					<pattern type="10000000" count="other">00M</pattern>
-					<pattern type="100000000" count="one">000M</pattern>
-					<pattern type="100000000" count="other">000M</pattern>
-					<pattern type="1000000000" count="one">0.0B</pattern>
-					<pattern type="1000000000" count="other">0.0B</pattern>
-					<pattern type="10000000000" count="one">00B</pattern>
-					<pattern type="10000000000" count="other">00B</pattern>
-					<pattern type="100000000000" count="one">000B</pattern>
-					<pattern type="100000000000" count="other">000B</pattern>
-					<pattern type="1000000000000" count="one">0.0T</pattern>
-					<pattern type="1000000000000" count="other">0.0T</pattern>
-					<pattern type="10000000000000" count="one">00T</pattern>
-					<pattern type="10000000000000" count="other">00T</pattern>
-					<pattern type="100000000000000" count="one">000T</pattern>
-					<pattern type="100000000000000" count="other">000T</pattern>
+					<pattern type="1000">0.0K</pattern>
+					<pattern type="10000">00K</pattern>
+					<pattern type="100000">000K</pattern>
+					<pattern type="1000000">0.0M</pattern>
+					<pattern type="10000000">00M</pattern>
+					<pattern type="100000000">000M</pattern>
+					<pattern type="1000000000">0.0B</pattern>
+					<pattern type="10000000000">00B</pattern>
+					<pattern type="100000000000">000B</pattern>
+					<pattern type="1000000000000">0.0T</pattern>
+					<pattern type="10000000000000">00T</pattern>
+					<pattern type="100000000000000">000T</pattern>
 				</decimalFormat>
-			</decimalFormatLength>
-			<decimalFormatLength type="long">
-			    <decimalFormat>
-			        <pattern type="1000" count="one">0.0 thousand</pattern>
-			        <pattern type="1000" count="other">0.0 thousand</pattern>
-			        <pattern type="10000" count="one">00 thousand</pattern>
-			        <pattern type="10000" count="other">00 thousand</pattern>
-			        <pattern type="100000" count="one">000 thousand</pattern>
-			        <pattern type="100000" count="other">000 thousand</pattern>
-			        <pattern type="1000000" count="one">0.0 million</pattern>
-			        <pattern type="1000000" count="other">0.0 million</pattern>
-			        <pattern type="10000000" count="one">00 million</pattern>
-			        <pattern type="10000000" count="other">00 million</pattern>
-			        <pattern type="100000000" count="one">000 million</pattern>
-			        <pattern type="100000000" count="other">000 million</pattern>
-			        <pattern type="1000000000" count="one">0.0 billion</pattern>
-			        <pattern type="1000000000" count="other">0.0 billion</pattern>
-			        <pattern type="10000000000" count="one">00 billion</pattern>
-			        <pattern type="10000000000" count="other">00 billion</pattern>
-			        <pattern type="100000000000" count="one">000 billion</pattern>
-			        <pattern type="100000000000" count="other">000 billion</pattern>
-			        <pattern type="1000000000000" count="one">0.0 trillion</pattern>
-			        <pattern type="1000000000000" count="other">0.0 trillion</pattern>
-			        <pattern type="10000000000000" count="one">00 trillion</pattern>
-			        <pattern type="10000000000000" count="other">00 trillion</pattern>
-			        <pattern type="100000000000000" count="one">000 trillion</pattern>
-			        <pattern type="100000000000000" count="other">000 trillion</pattern>
-			    </decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
 		<scientificFormats numberSystem="latn">
@@ -4710,7 +4624,7 @@
 			</currency>
 			<currency type="XXX">
 				<displayName>Unknown Currency</displayName>
-				<displayName count="other">(unknown currency)</displayName>
+				<displayName count="one">unknown currency</displayName>
 			</currency>
 			<currency type="YDD">
 				<displayName>Yemeni Dinar</displayName>

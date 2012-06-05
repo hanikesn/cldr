@@ -2,7 +2,7 @@
 //  SurveyForum.java
 //
 //  Created by Steven R. Loomis on 27/10/2006.
-//  Copyright 2006-2012 IBM. All rights reserved.
+//  Copyright 2006-2011 IBM. All rights reserved.
 //
 
 package org.unicode.cldr.web;
@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -28,13 +27,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
-import org.unicode.cldr.util.CLDRConfig;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRLocale;
 import org.unicode.cldr.util.Level;
 import org.unicode.cldr.util.PathUtilities;
 import org.unicode.cldr.web.SurveyMain.UserLocaleStuff;
-import org.unicode.cldr.web.WebContext.LoadingShow;
 
 import com.ibm.icu.dev.test.util.ElapsedTimer;
 import com.ibm.icu.text.DateFormat;
@@ -63,7 +60,7 @@ public class SurveyForum {
 
 	/* --------- FORUM ------------- */
 	static final String F_FORUM = "forum";
-	public static final String F_XPATH = "xpath";
+	static final String F_XPATH = "xpath";
 	static final String F_PATH = "path";
 	static final String F_DO = "d";
 	static final String F_LIST = "list";
@@ -366,7 +363,9 @@ public class SurveyForum {
 			sm.printHeader(ctx, "Forum");
 		}
 		sm.printUserTable(ctx);
-		printMiniMenu(ctx,null,prettyPath);
+		if(prettyPath != null) {
+			ctx.println("<h2>"+prettyPath+"</h2>");
+		}
 		if(sessionMessage != null) {
 			ctx.println(sessionMessage+"<hr>");
 		}
@@ -470,15 +469,14 @@ public class SurveyForum {
 
 				emailCount = gatherInterestedUsers(forum, cc_emails, bcc_emails);
 
-				CLDRConfig survprops = CLDRConfig.getInstance();
-				String from = survprops.getProperty("CLDR_FROM","nobody@example.com");
-				String smtp = survprops.getProperty("CLDR_SMTP",null);
+				String from = sm.survprops.getProperty("CLDR_FROM","nobody@example.com");
+				String smtp = sm.survprops.getProperty("CLDR_SMTP",null);
 
 				String subject = "New CLDR forum post for: " + forum;
 
 				String body = "This is a post to the CLDR "+forum+" forum, in the subject:\n  "+subj+"\n\n"+
 				"For details and to respond, login to survey tool and then click on this link:\n\t " + "http://" + ctx.serverHostport() + forumUrl(ctx,forum) + "\n" +
-				"\n\n(Note, if the text does not display properly, please click the link to view the entire message)\n\n-----------------\n\n"+text;
+				"(Note, if the text does not display properly, please click the link to view the entire message)\n\n-----------------\n\n"+text;
 
 				if(!bcc_emails.isEmpty()) {
 					MailSender.sendBccMail(smtp, null, null, from, bcc_emails, subject, body);
@@ -521,9 +519,11 @@ public class SurveyForum {
 			} else {
 				sm.printHeader(ctx, forum + " | Forum");
 			}
-			
-			sm.printUserTable(ctx);
-			printMiniMenu(ctx, forum, prettyPath);
+			printForumMenu(ctx, forum);
+			ctx.println(forumLink(ctx,forum));
+			if(prettyPath != null) {
+				ctx.println("<h2>"+prettyPath+"</h2>");
+			}
 		}
 
 		if(replyTo != -1) {
@@ -543,7 +543,7 @@ public class SurveyForum {
 				base_xpath != -1) {
 			// hide the 'post comment' thing
 			String warnHash = "post_comment"+base_xpath+"_"+forum;
-			ctx.println("<div class='postcomment' id='h_"+warnHash+"'><a href='javascript:show(\"" + warnHash + "\")'>" + 
+			ctx.println("<div id='h_"+warnHash+"'><a href='javascript:show(\"" + warnHash + "\")'>" + 
 					"<b>+</b> "+POST_SPIEL+"</a></div>");
 			ctx.println("<!-- <noscript>Warning: </noscript> -->" + 
 					"<div style='display: none' class='pager' id='" + warnHash + "'>" );
@@ -614,7 +614,7 @@ public class SurveyForum {
 							}
 						}
 					}
-//					System.err.println("Got: " + Arrays.toString(o) + " for fn " + forumNumber + " and " + base_xpath);
+					System.err.println("Got: " + o + " for fn " + forumNumber + " and " + base_xpath);
 				} finally {
 					DBUtils.close(conn);
 				}
@@ -634,23 +634,6 @@ public class SurveyForum {
 			if(nopopups) {
 				ctx.println("<hr>"+returnText+"<br/>");
 			}
-		}
-	}
-
-	/**
-	 * @param ctx
-	 * @param forum
-	 */
-	public void printMiniMenu(WebContext ctx, String forum, String prettyPath) {
-		ctx.println("<div class='minimenu'>");
-		ctx.println("<a class='notselected' href=\"" + ctx.url() + "\">" + "<b>Locales</b>" + "</a> &gt; ");
-		ctx.println("<a class='selected' >" + 	ctx.getLocaleDisplayName() + "</a>");
-		if(forum!=null) {
-			ctx.println("&gt; " + forumLink(ctx,forum));
-		}
-		ctx.println("</div>");
-		if(prettyPath != null) {
-			ctx.println("<h2 class='thisItem'>"+prettyPath+"</h2>");
 		}
 	}
 
@@ -676,8 +659,8 @@ public class SurveyForum {
 
 		DataSection section = ctx.getSection(podBase);
 
-		DataSection.printSectionTableOpen(ctx, section, true, canModify);
-		section.showSection(ctx, canModify, ctx.sm.xpt.getById(item_xpath), true);
+		baseCtx.sm.printSectionTableOpen(ctx, section, true, canModify);
+		baseCtx.sm.showPeas(ctx, section, canModify, item_xpath, true);
 		baseCtx.sm.printSectionTableClose(ctx, section, canModify);
 		baseCtx.sm.printPathListClose(ctx);
 
@@ -690,7 +673,6 @@ public class SurveyForum {
 	 * @param ctx the current web context
 	 * @param baseXpath the xpath of one of the items being submitted
 	 * @return true if no errors were detected, otherwise false.
-	 * @deprecated
 	 */
 	public static SummarizingSubmissionResultHandler processDataSubmission(WebContext ctx, String baseXpath) {
 		return processDataSubmission(ctx,baseXpath,null);
@@ -701,12 +683,12 @@ public class SurveyForum {
 	 * @param baseXpath the xpath of one of the items being submitted
 	 * @param ssrh ResultHandler, if null one will be created.
 	 * @return true if no errors were detected, otherwise false.
-	 * @deprecated
 	 */
 	public static SummarizingSubmissionResultHandler processDataSubmission(WebContext ctx, String baseXpath, SummarizingSubmissionResultHandler ssrh) {
 		if(ssrh == null) {
 			ssrh = new SummarizingSubmissionResultHandler();
 		}
+		ctx.sm.vet.processPodChanges(ctx, DataSection.xpathToSectionBase(baseXpath), ssrh, null);
 		return ssrh;
 	}
 
@@ -746,7 +728,7 @@ public class SurveyForum {
 		ctx.put(WebContext.ZOOMED_IN, true);
 		String podBase = DataSection.xpathToSectionBase(base_xpath);        
 		DataSection section = ctx.getSection(podBase);
-		section.showPeasShort(ctx, item_xpath);
+		baseCtx.sm.showPeasShort(ctx, section, item_xpath);
 		return podBase;
 	}
 
@@ -784,13 +766,13 @@ public class SurveyForum {
 		WebContext ctx = new WebContext(baseCtx);
 		ctx.setLocale(loc);
 		boolean canModify = (UserRegistry.userCanModifyLocale(ctx.session.user,ctx.getLocale()));
-		if(false&&canModify) {
+		if(canModify) {
 			/* hidden fields for that */
 			//            ctx.println("<input type='hidden' name='"+F_FORUM+"' value='"+ctx.locale.getLanguage()+"'>");
 			//            ctx.println("<input type='hidden' name='"+F_XPATH+"' value='"+base_xpath+"'>");
 			//            ctx.println("<input type='hidden' name='_' value='"+loc+"'>");
 
-//			ctx.println("<input type='submit' value='" + ctx.sm.getSaveButtonText() + "'>"); //style='float:right' 
+			ctx.println("<input type='submit' value='" + ctx.sm.getSaveButtonText() + "'>"); //style='float:right' 
 
 		}
 	}
@@ -799,43 +781,37 @@ public class SurveyForum {
 	public void showXpath(WebContext baseCtx, String xpath, int base_xpath, CLDRLocale locale) {
 		WebContext ctx = new WebContext(baseCtx);
 		ctx.setLocale(locale);
-        ctx.println("       <div id='DynamicDataSection'><noscript>"+
-                ctx.iconHtml("stop", "sorry")+ "JavaScript is required.</noscript></div>      "+
-                " <script type='text/javascript'>   "+
-                "surveyCurrentLocale='"+locale+"';\n" 
-                + "showRows('DynamicDataSection', '"+xpath+"', '"
-                    +ctx.session.id+"','"+ "optional" /*ctx.getEffectiveCoverageLevel(ctx.getLocale())*/ +"');       </script>");
 		// Show the Pod in question:
 		//        ctx.println("<hr> \n This post Concerns:<p>");
-//		boolean canModify =ctx.canModify();
-//		
-//		//String podBase = DataSection.xpathToSectionBase(xpath);
-//		String podBase = XPathTable.xpathToBaseXpath(xpath); // each zoom-in in its own spot.
-//		
-//		sm.printPathListOpen(ctx);
-//
-//		if(canModify) {
-//			/* hidden fields for that */
-//			ctx.println("<input type='hidden' name='"+F_FORUM+"' value='"+ctx.getLocale().getLanguage()+"'>");
-//			ctx.println("<input type='hidden' name='"+F_XPATH+"' value='"+base_xpath+"'>");
-//			ctx.println("<input type='hidden' name='_' value='"+locale+"'>");
-//
-////			if(false) ctx.println("<input type='submit' value='" + sm.getSaveButtonText() + "'><br>"); //style='float:right' 
-////			sm.processChanges(ctx, null, null, podBase, canModify, new DefaultDataSubmissionResultHandler(ctx));
-//		} else {
-//			            ctx.println("<!-- <br>cant modify " + locale + "<br> -->");
-//		}
-//
-//		DataSection section = ctx.getSection(podBase,Level.COMPREHENSIVE.toString(),LoadingShow.showLoading); // always use comprehensive - so no cov filtering
-//
-//		section.showSection(ctx, canModify, BaseAndPrefixMatcher.getInstance(base_xpath,null), true);
-//		sm.printPathListClose(ctx);
-//
-//		ctx.printHelpHtml(xpath);
+		boolean canModify = (UserRegistry.userCanModifyLocale(ctx.session.user,ctx.getLocale()));
+		
+		//String podBase = DataSection.xpathToSectionBase(xpath);
+		String podBase = XPathTable.xpathToBaseXpath(xpath); // each zoom-in in its own spot.
+		
+		sm.printPathListOpen(ctx);
+
+		if(canModify) {
+			/* hidden fields for that */
+			ctx.println("<input type='hidden' name='"+F_FORUM+"' value='"+ctx.getLocale().getLanguage()+"'>");
+			ctx.println("<input type='hidden' name='"+F_XPATH+"' value='"+base_xpath+"'>");
+			ctx.println("<input type='hidden' name='_' value='"+locale+"'>");
+
+			ctx.println("<input type='submit' value='" + sm.getSaveButtonText() + "'><br>"); //style='float:right' 
+			sm.vet.processPodChanges(ctx, podBase, new DefaultDataSubmissionResultHandler(ctx), Level.COMPREHENSIVE.toString());// always use comprehensive - so no cov filtering
+		} else {
+			//            ctx.println("<br>cant modify " + ctx.locale + "<br>");
+		}
+
+		DataSection section = ctx.getSection(podBase,Level.COMPREHENSIVE.toString()); // always use comprehensive - so no cov filtering
+
+		sm.showPeas(ctx, section, canModify, BaseAndPrefixMatcher.getInstance(base_xpath,null), true);
+		sm.printPathListClose(ctx);
+
+		ctx.printHelpHtml(xpath);
 	}
 
 	void printForumMenu(WebContext ctx, String forum) {
-		ctx.println("<table class='forumMenu' id='forumMenu' width='100%' border='0'><tr><td>");
+		ctx.println("<table width='100%' border='0'><tr><td>");
 		ctx.println("<a href=\"" + ctx.url() + "\">" + "<b>Locales</b>" + "</a><br>");
 		sm.printListFromInterestGroup(ctx, forum);
 		ctx.println("</td><td align='right'>");
@@ -856,7 +832,7 @@ public class SurveyForum {
 		int count = 0;
 
 		// print header
-		sm.printHeader(ctx, "Forum  " + forum);
+		sm.printHeader(ctx, "Forum | " + forum);
 		printForumMenu(ctx, forum);
 
 		ctx.print(forumFeedIcon(ctx, forum));
@@ -1176,7 +1152,7 @@ public class SurveyForum {
 	 */
 	private void setupDB(Connection conn) throws SQLException
 	{
-		String onOrBefore = CLDRConfig.getInstance().getProperty("CLDR_OLD_POSTS_BEFORE", "12/31/69");
+		String onOrBefore = sm.survprops.getProperty("CLDR_OLD_POSTS_BEFORE", "12/31/69");
 		DateFormat sdf = DateFormat.getDateInstance(DateFormat.SHORT, ULocale.US);
 		try {
 			oldOnOrBefore = sdf.parse(onOrBefore);
@@ -1377,7 +1353,7 @@ public class SurveyForum {
 	/**
 	 * @deprecated section is not needed.
 	 * @param ctx
-	 * @param section ignored
+	 * @param section
 	 * @param p
 	 * @param xpath
 	 * @param contents
@@ -1394,38 +1370,8 @@ public class SurveyForum {
             title = " (not on your interest list)";
         }*/
 		//        title = null /*+ title*/;
-		String forumLinkContents = getForumLink(ctx, p, xpath, contents);
-		ctx.println(forumLinkContents);
-	}
-	void showForumLink(WebContext ctx, DataSection.DataRow p,String contents) {
-		//if(ctx.session.user == null) {     
-		//    return; // no user?
-		//}
-		//        String title;
-		/*        if(!ctx.session.user.interestedIn(forum)) {
-            title = " (not on your interest list)";
-        }*/
-		//        title = null /*+ title*/;
-		String forumLinkContents = getForumLink(ctx, p, contents);
-		ctx.println(forumLinkContents);
-	}
-
-	/**
-	 * @param ctx
-	 * @param p
-	 * @param xpath
-	 * @param contents
-	 * @return
-	 */
-	public String getForumLink(WebContext ctx, DataSection.DataRow p, int xpath, String contents) {
-		String forumLinkContents = "<a "+ctx.atarget(WebContext.TARGET_ZOOMED)+"  href='"+forumUrl(ctx,p,xpath)+"' >" // title='"+title+"'
-				+contents+ "</a>";
-		return forumLinkContents;
-	}
-	public String getForumLink(WebContext ctx, DataSection.DataRow p,  String contents) {
-		String forumLinkContents = "<a "+ctx.atarget(WebContext.TARGET_ZOOMED)+"  href='"+forumUrl(ctx,p,p.getXpath())+"' >" // title='"+title+"'
-				+contents+ "</a>";
-		return forumLinkContents;
+		ctx.println("<a "+ctx.atarget(WebContext.TARGET_ZOOMED)+"  href='"+forumUrl(ctx,p,xpath)+"' >" // title='"+title+"'
+				+contents+ "</a>");
 	}
 	void showForumLink(WebContext ctx, DataSection section, DataSection.DataRow p, int xpath) {
 		showForumLink(ctx,section,p,xpath,ctx.iconHtml("zoom","zoom"));
@@ -1433,13 +1379,11 @@ public class SurveyForum {
 	// "link" UI
 	static public String forumUrl(WebContext ctx, DataSection.DataRow p, int xpath) {
 		String xp = ctx.sm.xpt.getById(xpath);
-		if(xp==null) {
+		if((xpath == -1) || (xp==null)) {
 			xp = Integer.toString(xpath);
+		} else {
+			xp = java.net.URLEncoder.encode(xp);
 		}
-		return forumUrl(ctx,p,xp);
-	}
-	static public String forumUrl(WebContext ctx, DataSection.DataRow p, String xp) {
-		xp = java.net.URLEncoder.encode(xp);
 		return ctx.base()+"?_="+ctx.getLocale()+"&"+F_FORUM+"="+p.getIntgroup()+"&"+F_XPATH+"="+xp;
 	}
 	static public String localeToForum(String locale) {
@@ -1517,7 +1461,7 @@ public class SurveyForum {
 			return true;
 		}
 
-//		DateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
+		DateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
 
 		try {
 			SyndFeed feed = new SyndFeedImpl();
@@ -1715,7 +1659,7 @@ public class SurveyForum {
 		String feedUrl = ctx.schemeHostPort()+  ctx.base()+("/feed?_="+ctx.getLocale().getLanguage()+"&amp;email="+ctx.session.user.email+"&amp;pw="+
 				ctx.session.user.password+"&amp;");
 
-		return  " <a href='"+feedUrl+"&feed=rss_2.0"+"'>"+ctx.iconHtml("feed","RSS 2.0")+"<!-- Forum&nbsp;rss --></a>"; /* | " +
+		return  " <a href='"+feedUrl+"&feed=rss_2.0"+"'>"+ctx.iconHtml("feed","RSS 2.0")+"Forum&nbsp;rss</a>"; /* | " +
                 "<a href='"+feedUrl+"&feed=rss_2.0"+"'>"+ctx.iconHtml("feed","RSS 1.0")+"RSS 1.0</a>"; */
 
 	}
@@ -1738,7 +1682,7 @@ public class SurveyForum {
 	}
 
 
-	public String mainFeedIcon(WebContext ctx) {
+	String mainFeedIcon(WebContext ctx) {
 		if(ctx.session == null ||
 				ctx.session.user == null ||
 				!UserRegistry.userIsStreet(ctx.session.user)) {

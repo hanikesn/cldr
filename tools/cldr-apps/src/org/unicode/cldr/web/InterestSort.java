@@ -9,9 +9,6 @@ import java.util.Comparator;
 import org.unicode.cldr.util.XMLSource;
 import org.unicode.cldr.web.DataSection.DataRow;
 import org.unicode.cldr.web.Partition.Membership;
-import org.unicode.cldr.util.VoteResolver.Status;
-import org.unicode.cldr.util.CLDRLocale;
-import com.ibm.icu.text.Collator;
 
 /**
  * @author srl
@@ -50,7 +47,6 @@ public class InterestSort extends SortMode {
 		final int ourKey = SortMode.SortKeyType.SORTKEY_INTEREST.ordinal();
 		
 		final Comparator<DataRow> nameComparator = NameSort.comparator();
-        final Collator collator = CodeSortMode.createCollator();
 	    return new Comparator<DataRow>() {
 
 	      public int compare(DataRow p1, DataRow p2){
@@ -72,8 +68,7 @@ public class InterestSort extends SortMode {
 	        } else if (p1IsName) {
 	          return nameComparator.compare(p1,p2);
 	        }
-	        // Sort by xpath if all else fails.
-	        return collator.compare(p1.getXpath(), p2.getXpath());
+	        return nameComparator.compare(p1,p2);
 
 //	        if(rv == 0) { // try to avoid a compare
 //	          String p1d  = null;
@@ -127,11 +122,11 @@ public class InterestSort extends SortMode {
                 return (p.hasErrors);
               }
             },
-//            new Partition.Membership("Disputed") { 
-//              public boolean isMember(DataRow p) {
-//                return ((p.allVoteType & Vetting.RES_DISPUTED)>0) ; // not sure why "allVoteType" is needed
-//              }
-//            },
+            new Partition.Membership("Disputed") { 
+              public boolean isMember(DataRow p) {
+                return ((p.allVoteType & Vetting.RES_DISPUTED)>0) ; // not sure why "allVoteType" is needed
+              }
+            },
             new Partition.Membership("Warnings") { 
               public boolean isMember(DataRow p) {
                 return (p.hasWarnings);
@@ -146,8 +141,8 @@ public class InterestSort extends SortMode {
             new Partition.Membership("Not (minimally) Approved") { 
               public boolean isMember(DataRow p) {
                 return p.winningXpathId != -1 
-                && p.confirmStatus != Status.approved
-                && p.confirmStatus != Status.contributed;
+                && p.confirmStatus != Vetting.Status.APPROVED
+                && p.confirmStatus != Vetting.Status.CONTRIBUTED;
                 // || p.winningXpathId == -1 && p.hasMultipleProposals;
               }
             },
@@ -160,8 +155,8 @@ public class InterestSort extends SortMode {
               public boolean isMember(DataRow p) {
                 //return "root".equals(p.aliasFromLocale) || XMLSource.CODE_FALLBACK_ID.equals(p.aliasFromLocale);
                 return p.inheritedValue!=null && // found inherited item (extrapaths and some special paths may not have an inherited item)
-                ( CLDRLocale.ROOT==p.inheritedValue.inheritFrom 
-                        || XMLSource.CODE_FALLBACK_ID.equals(p.inheritedValue.inheritFrom.getBaseName()) );
+                ( "root".equals(p.inheritedValue.inheritFrom) 
+                        || XMLSource.CODE_FALLBACK_ID.equals(p.inheritedValue.inheritFrom) );
                 /*
      p.winningXpathId==-1 &&    // no winning item
      p.inheritedValue!=null && // found inherited item (extrapaths and some special paths may not have an inherited item)
@@ -176,9 +171,5 @@ public class InterestSort extends SortMode {
             }
 	};
     
-	@Override
-	String getDisplayName() {
-		return "Priority";
-	}
 
 }

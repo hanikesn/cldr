@@ -60,7 +60,9 @@ public class CasingInfo {
             loadFromXml(localeID);
             if (!casing.containsKey(localeID)) {
                 String parentID = LocaleIDParser.getSimpleParent(localeID);
-                if (!parentID.equals("root")) {
+                if (parentID.equals("root")) {
+                    System.err.println("Casing file not found for " + localeID);
+                } else {
                     casing.put(localeID, getLocaleCasing(parentID));
                 }
             }
@@ -300,11 +302,6 @@ public class CasingInfo {
         @Override
         public Iterator<String> iterator() {
             return pathMap.keySet().iterator();
-        }
-
-        @Override
-        public void getPathsWithValue(String valueToMatch, String pathPrefix, Set<String> result) {
-            // do nothing
         }
     }
 }

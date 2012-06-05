@@ -6,7 +6,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -14,25 +13,20 @@ import java.util.regex.Pattern;
 
 import org.unicode.cldr.tool.GenerateXMB;
 import org.unicode.cldr.util.CldrUtility.Output;
-import org.unicode.cldr.util.PatternPlaceholders.PlaceholderInfo;
 
-import com.ibm.icu.impl.Row.R2;
 import com.ibm.icu.text.MessageFormat;
 
 public class PathDescription {
 
     public enum ErrorHandling {SKIP, CONTINUE}
-    // BE sure to sync with the list in xmbSkip!
-    public static final Set<String> EXTRA_LANGUAGES = new TreeSet<String>(Arrays.asList(
-            "ach|af|ak|ak|am|ar|az|be|bem|bg|bh|bn|br|bs|ca|chr|ckb|co|crs|cs|cy|da|de|de_AT|de_CH|ee|el|en|en_AU|en_CA|en_GB|en_US|eo|es|es_419|es_ES|et|eu|fa|fi|fil|fo|fr|fr_CA|fr_CH|fy|ga|gaa|gd|gl|gn|gsw|gu|ha|haw|he|hi|hr|ht|hu|hy|ia|id|ig|is|it|ja|jv|ka|kg|kk|km|kn|ko|kri|ku|ky|la|lg|ln|lo|loz|lt|lua|lv|mfe|mg|mi|mk|ml|mn|mr|ms|mt|my|nb|ne|nl|nl_BE|nn|nso|ny|nyn|oc|om|or|pa|pcm|pl|ps|pt|pt_BR|pt_PT|qu|rm|rn|ro|ro|ro_MD|ru|rw|sd|si|sk|sl|sn|so|sq|sr|sr_Latn|sr_ME|st|su|sv|sw|ta|te|tg|th|ti|tk|tlh|tn|to|tr|tt|tum|ug|uk|und|ur|uz|vi|wo|xh|yi|yo|zh|zh_Hans|zh_Hant|zh_HK|zu|zxx"
-            .split("|")));
+    public static final Set<String> EXTRA_LANGUAGES = new TreeSet<String>(Arrays.asList("ace en zh ja de ru es ko fr pl ar pt it tr nl cs id th sv vi ro nb hu fi he bg da et sk sr el lt hr lv fa sl uk ca is ms fil az sq eu ka gl hi be af mk la hy mn fy kk ta bn kn mt lb ur uz eo si km ky cy ne ku sw oc mi fo jv te ml ug pa mr ga ps gu my lo yo su tg ht am tt gd qu bo dv to sd sa iu or bho gn".split(" ")));
 
     private static final Pattern METAZONE_PATTERN = Pattern.compile("//ldml/dates/timeZoneNames/metazone\\[@type=\"([^\"]*)\"]/(.*)/(.*)");
     private static final Pattern STAR_ATTRIBUTE_PATTERN = Pattern.compile("=\"([^\"]*)\"");
 
     private static final StandardCodes STANDARD_CODES = StandardCodes.make();
     private static Map<String, String> ZONE2COUNTRY = STANDARD_CODES.getZoneToCounty();
-    private static RegexLookup<String> pathHandling = new RegexLookup<String>().loadFromFile(PathDescription.class, "data/PathDescription.txt");
+    private static RegexLookup<String> pathHandling = new RegexLookup<String>().loadFromFile(GenerateXMB.class, "xmbHandling.txt");
 
     // set in construction
 
@@ -50,7 +44,7 @@ public class PathDescription {
     private Output<String[]> pathArguments = new Output<String[]>();
     private EnumSet<Status> status = EnumSet.noneOf(Status.class);
 
-    public static final String MISSING_DESCRIPTION = "Before translating, please see http://cldr.org/translation.";
+    public static final String MISSING_DESCRIPTION = "Before translating, please see cldr.org/translation.";
 
     public PathDescription(SupplementalDataInfo supplementalDataInfo, 
             CLDRFile english, 
@@ -96,22 +90,22 @@ public class PathDescription {
             String xpath = extras.get(path);
             if (xpath != null) {
                 value = english.getStringValue(xpath);
-            } else if (path.contains("/metazone")) {
-                if (metazoneMatcher.reset(path).matches()) {
-                    String name = metazoneMatcher.group(1);
-                    String type = metazoneMatcher.group(3);
-                    value = name.replace('_', ' ') + (type.equals("generic") ? "" : type.equals("daylight") ? " Summer" : " Winter") + " Time";
-                    // System.out.println("Missing:    " + path + " :    " + value);
+            } else {
+                if (path.contains("/metazone")) {
+                    if (metazoneMatcher.reset(path).matches()) {
+                        String name = metazoneMatcher.group(1);
+                        String type = metazoneMatcher.group(3);
+                        value = name.replace('_', ' ') + (type.equals("generic") ? "" : type.equals("daylight") ? " Summer" : " Winter") + " Time";
+                        // System.out.println("Missing:    " + path + " :    " + value);
+                    }
                 }
             }
             if (value == null) {
                 status.add(Status.NULL_VALUE);
-                if (errorHandling == ErrorHandling.SKIP) {
-                    return null;
-                }
+                return null;
             }
         }
-        if (value != null && value.length() == 0) {
+        if (value.length() == 0) {
             status.add(Status.EMPTY_CONTENT);
             if (errorHandling == ErrorHandling.SKIP) {
                 return null;
@@ -153,15 +147,15 @@ public class PathDescription {
 
                 boolean found = false;
                 if ("001".equals(country)) {
-                    code = "the timezone “" + codeName + '”';
+                    code = "the timezone \"" + codeName + '"';
                     found = true;
                 } else if (country != null) {
                     String countryName = english.getName("territory", country);
                     if (countryName != null) {
                         if (!codeName.equals(countryName)) {
-                            code = "the city “" + codeName + "” (in " + countryName + ")";
+                            code = "the city \"" + codeName + "\" (in " + countryName + ")";
                         } else {
-                            code = "the country “" + codeName + '”';
+                            code = "the country \"" + codeName + '"';
                         }
                         found = true;
                     }
@@ -178,33 +172,7 @@ public class PathDescription {
         } else if (description != MISSING_DESCRIPTION){
             description = MessageFormat.format(MessageFormat.autoQuoteApostrophe(description), pathArguments.value);
         }
-
         return description;
-    }
-
-    /**
-     * Creates an escaped HTML string of placeholder information.
-     * @param path the xpath to specify placeholder information for
-     * @return a HTML string, or an empty string if there was no placeholder information
-     */
-    public String getPlaceholderDescription(String path) {
-        Map<String, PlaceholderInfo> placeholders = PatternPlaceholders.getInstance().get(path);
-        if (placeholders != null && placeholders.size() > 0) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("<table>");
-            buffer.append("<tr><th>Placeholder</th><th>Meaning</th><th>Example</th></tr>");
-            for (Entry<String, PlaceholderInfo> entry : placeholders.entrySet()) {
-                PlaceholderInfo info = entry.getValue();
-                buffer.append("<tr>");
-                buffer.append("<td>").append(entry.getKey()).append("</td>");
-                buffer.append("<td>").append(info.name).append("</td>");
-                buffer.append("<td>").append(info.example).append("</td>");
-                buffer.append("</tr>");
-            }
-            buffer.append("</table>");
-            return buffer.toString();
-        }
-        return "";
     }
 
     private static boolean isRootCode(String code, Set<String> allMetazones, String type, boolean isMetazone) {
