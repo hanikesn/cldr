@@ -2269,11 +2269,25 @@
 					<daylight>Westafrikanische Sommerzeit</daylight>
 				</long>
 			</metazone>
+			<metazone type="Aktyubinsk">
+				<long>
+					<generic>Aktyubinsk-Zeit</generic>
+					<standard>Aktyubinsk-Normalzeit</standard>
+					<daylight>Aktyubinsk-Sommerzeit</daylight>
+				</long>
+			</metazone>
 			<metazone type="Alaska">
 				<long>
 					<generic>Alaska Zeit</generic>
 					<standard>Alaska-Normalzeit</standard>
 					<daylight>Alaska Sommerzeit</daylight>
+				</long>
+			</metazone>
+			<metazone type="Alaska_Hawaii">
+				<long>
+					<generic>Alaska-Hawaii-Zeit</generic>
+					<standard>Alaska-Hawaii-Normalzeit</standard>
+					<daylight>Alaska-Hawaii-Sommerzeit</daylight>
 				</long>
 			</metazone>
 			<metazone type="Almaty">
@@ -2760,6 +2774,18 @@
 					<daylight>Krasnoyarsk-Sommerzeit</daylight>
 				</long>
 			</metazone>
+			<metazone type="Kuybyshev">
+				<long>
+					<generic draft="contributed">Kuibyschew-Zeit</generic>
+					<standard draft="contributed">Kuibyschew-Normalzeit</standard>
+					<daylight draft="contributed">Kuibyschew-Sommerzeit</daylight>
+				</long>
+			</metazone>
+			<metazone type="Kwajalein">
+				<long>
+					<standard draft="provisional">Kwajalein-Zeit</standard>
+				</long>
+			</metazone>
 			<metazone type="Kyrgystan">
 				<long>
 					<standard>Kirgisistan-Zeit</standard>
@@ -3011,6 +3037,11 @@
 					<standard>Südgeorgische Zeit</standard>
 				</long>
 			</metazone>
+			<metazone type="Suriname">
+				<long>
+					<standard>Suriname-Zeit</standard>
+				</long>
+			</metazone>
 			<metazone type="Syowa">
 				<long>
 					<standard>Syowa-Zeit</standard>
@@ -3048,6 +3079,13 @@
 			<metazone type="Truk">
 				<long>
 					<standard>Chuuk-Zeit</standard>
+				</long>
+			</metazone>
+			<metazone type="Turkey">
+				<long>
+					<generic draft="contributed">Türkische Zeit</generic>
+					<standard draft="contributed">Türkische Normalzeit</standard>
+					<daylight draft="contributed">Türkische Sommerzeit</daylight>
 				</long>
 			</metazone>
 			<metazone type="Turkmenistan">

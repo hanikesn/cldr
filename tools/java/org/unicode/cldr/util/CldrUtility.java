@@ -163,7 +163,7 @@ public class CldrUtility {
     public static final String DEFAULT_SUPPLEMENTAL_DIRECTORY = getPath(COMMON_DIRECTORY, "supplemental/");
 
     public static final boolean BETA = false;
-    public static final String CHART_DISPLAY_VERSION = "23";
+    public static final String CHART_DISPLAY_VERSION = "22.1.1";
     public static final String CHART_DIRECTORY = getPath(AUX_DIRECTORY + "charts/", CHART_DISPLAY_VERSION);
     public static final String LOG_DIRECTORY = getPath(TMP_DIRECTORY, "logs/");
 
@@ -531,10 +531,10 @@ public class CldrUtility {
     /**
      * Appends two strings, inserting separator if either is empty. Modifies first map
      */
-    public static Map<String, String> joinWithSeparation(Map<String, String> a, String separator, Map<String, String> b) {
-        for (Iterator<String> it = b.keySet().iterator(); it.hasNext();) {
-            String key = it.next();
-            String bvalue = b.get(key);
+    public static Map<Object, String> joinWithSeparation(Map<Object, String> a, String separator, Map b) {
+        for (Iterator<Object> it = b.keySet().iterator(); it.hasNext();) {
+            Object key = it.next();
+            String bvalue = (String) b.get(key);
             String avalue = a.get(key);
             if (avalue != null) {
                 if (avalue.trim().equals(bvalue.trim())) continue;
@@ -576,7 +576,7 @@ public class CldrUtility {
     /**
      * Utility like Arrays.asList()
      */
-    public static <K, V> Map<K, V> asMap(Object[][] source, Map<K, V> target, boolean reverse) {
+    public static Map asMap(Object[][] source, Map target, boolean reverse) {
         int from = 0, to = 1;
         if (reverse) {
             from = 1;
@@ -587,13 +587,24 @@ public class CldrUtility {
                 throw new IllegalArgumentException("Source must be array of pairs of strings: "
                     + Arrays.asList(source[i]));
             }
-            target.put((K) source[i][from], (V) source[i][to]);
+            target.put(source[i][from], source[i][to]);
         }
         return target;
     }
 
-    public static <K, V> Map<K, V> asMap(Object[][] source) {
-        return asMap(source, new HashMap<K, V>(), false);
+    public static Map asMap(Object[][] source) {
+        return asMap(source, new HashMap(), false);
+    }
+
+    /**
+     * Utility that ought to be on Map
+     */
+    public static Map removeAll(Map m, Collection itemsToRemove) {
+        for (Iterator it = itemsToRemove.iterator(); it.hasNext();) {
+            Object item = it.next();
+            m.remove(item);
+        }
+        return m;
     }
 
     /**

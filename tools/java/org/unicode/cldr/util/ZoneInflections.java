@@ -1,6 +1,6 @@
 /*
  **********************************************************************
- * Copyright (c) 2002-2012, International Business Machines
+ * Copyright (c) 2002-2004, International Business Machines
  * Corporation and others.  All Rights Reserved.
  **********************************************************************
  * Author: Mark Davis
@@ -9,7 +9,6 @@
 package org.unicode.cldr.util;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +24,7 @@ import com.ibm.icu.util.ULocale;
  * (at offset 0) to lowest. The ZoneInflections has no knowledge of the
  * internals of TimeZones -- public API is queried to get the information.
  */
-public class ZoneInflections implements Comparable<ZoneInflections> {
+public class ZoneInflections implements Comparable {
     static private final long SECOND = 1000;
 
     static private final long MINUTE = 60 * SECOND;
@@ -42,7 +41,8 @@ public class ZoneInflections implements Comparable<ZoneInflections> {
 
     static private final long EPSILON = 15 * MINUTE; // smallest interval we test
                                                      // to
-    static private final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+    static private final int currentYear = new Date().getYear() + 1900;
 
     static private final long endDate = getDateLong(currentYear + 5, 1, 1);
 
@@ -101,6 +101,7 @@ public class ZoneInflections implements Comparable<ZoneInflections> {
         // System.out.println("\tAdding: " + dtf.format(new Date(lastDate)));
         int lastOffset = zone.getOffset(endDate);
         inflectionPoints.add(new InflectionPoint(endDate, zone.getOffset(endDate)));
+        long lastInflection = endDate;
 
         // we do a gross search, then narrow in when we find a difference from the
         // last one
@@ -132,6 +133,7 @@ public class ZoneInflections implements Comparable<ZoneInflections> {
 
                 // System.out.println("\tAdding*: " + dtf.format(new Date(low)));
                 inflectionPoints.add(new InflectionPoint(high, highOffset));
+                lastInflection = low;
             }
             lastOffset = currentOffset;
             lastDate = currentDate;
@@ -186,11 +188,11 @@ public class ZoneInflections implements Comparable<ZoneInflections> {
 
     private transient OutputLong temp = new OutputLong(0);
 
-    public int compareTo(ZoneInflections o) {
-        return compareTo(o, temp);
+    public int compareTo(Object o) {
+        return compareTo((ZoneInflections) o, temp);
     }
 
-    public static class InflectionPoint implements Comparable<InflectionPoint> {
+    public static class InflectionPoint implements Comparable {
         static final long NONE = Long.MIN_VALUE;
 
         public long utcDateTime;
@@ -213,7 +215,8 @@ public class ZoneInflections implements Comparable<ZoneInflections> {
          * offset != that.offset) { return Math.max(utcDateTime, that.utcDateTime); }
          * return NONE; }
          */
-        public int compareTo(InflectionPoint that) {
+        public int compareTo(Object o) {
+            InflectionPoint that = (InflectionPoint) o;
             if (utcDateTime < that.utcDateTime)
                 return -1;
             if (utcDateTime > that.utcDateTime)
@@ -227,9 +230,7 @@ public class ZoneInflections implements Comparable<ZoneInflections> {
     }
 
     public static long getDateLong(int year, int month, int day) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(year, month - 1, day);
-        return cal.getTimeInMillis();
+        return new Date(year - 1900, month - 1, day).getTime();
     }
 
     static private final NumberFormat nf = NumberFormat.getInstance(ULocale.US);
@@ -238,7 +239,7 @@ public class ZoneInflections implements Comparable<ZoneInflections> {
         return nf.format(hours / ZoneInflections.DHOUR);
     }
 
-    public static class OutputLong implements Comparable<Object> {
+    public static class OutputLong implements Comparable {
         public long value;
 
         public OutputLong(long value) {

@@ -1886,6 +1886,11 @@
 					<standard>South Georgia Time</standard>
 				</long>
 			</metazone>
+			<metazone type="Suriname">
+				<long>
+					<standard>Suriname Time</standard>
+				</long>
+			</metazone>
 			<metazone type="Syowa">
 				<long>
 					<standard>Syowa Time</standard>

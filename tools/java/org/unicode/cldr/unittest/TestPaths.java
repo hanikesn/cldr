@@ -9,7 +9,7 @@ import java.util.Set;
 import org.unicode.cldr.unittest.TestAll.TestInfo;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRFile.Status;
-import org.unicode.cldr.util.PathHeader;
+import org.unicode.cldr.util.PrettyPath;
 
 import com.ibm.icu.dev.test.TestFmwk;
 
@@ -48,29 +48,29 @@ public class TestPaths extends TestFmwk {
         }
     }
 
-    public void TestPathHeaders() {
+    public void TestPretty() {
         if (params.inclusion == 0) {
-            warnln("TestPathHeaders skipped, use -e to include");
+            warnln("TestPretty skipped, use -e to include");
             return;
         }
 
+        PrettyPath prettyPath = new PrettyPath().setShowErrors(true);
         Set<String> pathsSeen = new HashSet<String>();
 
         for (String locale : getLocalesToTest()) {
             CLDRFile file = testInfo.getCldrFactory().make(locale, true);
-            PathHeader.Factory phf = PathHeader.getFactory(file);
             logln(locale);
 
             for (Iterator<String> it = file.iterator(); it.hasNext();) {
-                checkPaths(it.next(), pathsSeen, phf, locale);
+                checkPaths(it.next(), pathsSeen, prettyPath, locale);
             }
             for (String path : file.getExtraPaths()) {
-                checkPaths(path, pathsSeen, phf, locale);
+                checkPaths(path, pathsSeen, prettyPath, locale);
             }
         }
     }
 
-    private void checkPaths(String path, Set<String> pathsSeen, PathHeader.Factory phf, String locale) {
+    private void checkPaths(String path, Set<String> pathsSeen, PrettyPath prettyPath, String locale) {
         if (path.endsWith("/alias")) {
             return;
         }
@@ -78,10 +78,12 @@ public class TestPaths extends TestFmwk {
             return;
         }
         pathsSeen.add(path);
-        String prettied = phf.fromPath(path).toString();
-        String unprettied = phf.fromPath(path).getOriginalPath();
-        if (!path.equals(unprettied)) {
-            errln("Path Header doesn't roundtrip:\t" + path + "\t" + prettied + "\t" + unprettied);
+        String prettied = prettyPath.getPrettyPath(path, true);
+        String unprettied = prettyPath.getOriginal(prettied);
+        if (prettied.contains("%%")) { // && !path.contains("/alias")
+            errln(locale + "\t" + prettied + "\t" + path);
+        } else if (!path.equals(unprettied)) {
+            errln("Pretty Path doesn't roundtrip:\t" + path + "\t" + prettied + "\t" + unprettied);
         } else {
             logln(prettied + "\t" + path);
         }

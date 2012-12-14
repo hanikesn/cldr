@@ -8,7 +8,6 @@
 		<territory type="LY"/>
 	</identity>
 	<numbers>
-		<defaultNumberingSystem>latn</defaultNumberingSystem>
 		<symbols numberSystem="latn">
 			<decimal>,</decimal>
 			<group>.</group>

@@ -1,6 +1,6 @@
 /*
  ******************************************************************************
- * Copyright (C) 2004-2012, International Business Machines Corporation and   *
+ * Copyright (C) 2004, International Business Machines Corporation and        *
  * others. All Rights Reserved.                                               *
  ******************************************************************************
  */
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,17 +27,17 @@ import com.ibm.icu.impl.Utility;
  */
 public class XPathParts {
     private static final boolean DEBUGGING = false;
-    private List<Element> elements = new ArrayList<Element>();
-    Comparator<String> attributeComparator;
+    private List<Element> elements = new ArrayList();
+    Comparator attributeComparator;
     Map<String, Map<String, String>> suppressionMap;
 
-    static Map<String, XPathParts> cache = new HashMap<String, XPathParts>();
+    static Map<String, XPathParts> cache = new HashMap();
 
     public XPathParts() {
         this(null, null);
     }
 
-    public XPathParts(Comparator<String> attributeComparator, Map<String, Map<String, String>> suppressionMap) {
+    public XPathParts(Comparator attributeComparator, Map<String, Map<String, String>> suppressionMap) {
         if (attributeComparator == null) attributeComparator = CLDRFile.getAttributeComparator();
         this.attributeComparator = attributeComparator;
         this.suppressionMap = suppressionMap;
@@ -87,11 +86,11 @@ public class XPathParts {
         if (v == null) return this; // end
         // now write the start of the current
         for (int i = limit; i < size() - 1; ++i) {
-            filteredXPath.writeComment(pw, xpath_comments, i + 1, Comments.CommentType.PREBLOCK);
+            filteredXPath.writeComment(pw, xpath_comments, i + 1, Comments.PREBLOCK);
             pw.print(Utility.repeat("\t", i));
             pw.println(elements.get(i).toString(XML_OPEN));
         }
-        filteredXPath.writeComment(pw, xpath_comments, size(), Comments.CommentType.PREBLOCK);
+        filteredXPath.writeComment(pw, xpath_comments, size(), Comments.PREBLOCK);
 
         // now write element itself
         pw.print(Utility.repeat("\t", (size() - 1)));
@@ -104,9 +103,9 @@ public class XPathParts {
             pw.print(untrim(eValue, size()));
             pw.print(e.toString(XML_CLOSE));
         }
-        filteredXPath.writeComment(pw, xpath_comments, size(), Comments.CommentType.LINE);
+        filteredXPath.writeComment(pw, xpath_comments, size(), Comments.LINE);
         pw.println();
-        filteredXPath.writeComment(pw, xpath_comments, size(), Comments.CommentType.POSTBLOCK);
+        filteredXPath.writeComment(pw, xpath_comments, size(), Comments.POSTBLOCK);
         pw.flush();
         return this;
     }
@@ -124,42 +123,36 @@ public class XPathParts {
     // public static final char BLOCK_PREFIX = 'B', LINE_PREFIX = 'L';
 
     public static class Comments implements Cloneable {
-        public enum CommentType {
-            LINE,
-            PREBLOCK,
-            POSTBLOCK
-        }
-
-        private EnumMap<CommentType, Map<String, String>> comments = new EnumMap<CommentType, Map<String, String>>(
-            CommentType.class);
+        public static final int LINE = 0, PREBLOCK = 1, POSTBLOCK = 2;
+        private HashMap[] comments = new HashMap[3];
 
         public Comments() {
-            for (CommentType c : CommentType.values()) {
-                comments.put(c, new HashMap<String, String>());
-            }
+            comments[LINE] = new HashMap();
+            comments[PREBLOCK] = new HashMap();
+            comments[POSTBLOCK] = new HashMap();
         }
 
-        public Comments addComment(CommentType style, String xpath, String comment) {
-            String existing = comments.get(style).get(xpath);
+        public Comments addComment(int style, String xpath, String comment) {
+            String existing = (String) comments[style].get(xpath);
             if (existing != null) {
                 comment = existing + XPathParts.NEWLINE + comment;
             }
-            comments.get(style).put(xpath, comment);
+            comments[style].put(xpath, comment);
             return this;
         }
 
-        public String removeComment(CommentType style, String xPath) {
-            String result = comments.get(style).get(xPath);
-            if (result != null) comments.get(style).remove(xPath);
+        public String removeComment(int style, String xPath) {
+            String result = (String) comments[style].get(xPath);
+            if (result != null) comments[style].remove(xPath);
             return result;
         }
 
-        public List<String> extractCommentsWithoutBase() {
-            List<String> result = new ArrayList<String>();
-            for (CommentType style : CommentType.values()) {
-                for (Iterator<String> it = comments.get(style).keySet().iterator(); it.hasNext();) {
-                    String key = it.next();
-                    String value = comments.get(style).get(key);
+        public List extractCommentsWithoutBase() {
+            List result = new ArrayList();
+            for (int i = 0; i < comments.length; ++i) {
+                for (Iterator it = comments[i].keySet().iterator(); it.hasNext();) {
+                    Object key = (String) it.next();
+                    Object value = comments[i].get(key);
                     result.add(value + "\t - was on: " + key);
                     it.remove();
                 }
@@ -170,9 +163,10 @@ public class XPathParts {
         public Object clone() {
             try {
                 Comments result = (Comments) super.clone();
-                for (CommentType c : CommentType.values()) {
-                    result.comments.put(c, new HashMap<String, String>(comments.get(c)));
-                }
+                result.comments = new HashMap[3];
+                result.comments[LINE] = (HashMap) comments[LINE].clone();
+                result.comments[PREBLOCK] = (HashMap) comments[PREBLOCK].clone();
+                result.comments[POSTBLOCK] = (HashMap) comments[POSTBLOCK].clone();
                 return result;
             } catch (CloneNotSupportedException e) {
                 throw new InternalError("should never happen");
@@ -183,9 +177,9 @@ public class XPathParts {
          * @param other
          */
         public Comments joinAll(Comments other) {
-            for (CommentType c : CommentType.values()) {
-                CldrUtility.joinWithSeparation(comments.get(c), XPathParts.NEWLINE, other.comments.get(c));
-            }
+            CldrUtility.joinWithSeparation(comments[LINE], XPathParts.NEWLINE, other.comments[LINE]);
+            CldrUtility.joinWithSeparation(comments[PREBLOCK], XPathParts.NEWLINE, other.comments[PREBLOCK]);
+            CldrUtility.joinWithSeparation(comments[POSTBLOCK], XPathParts.NEWLINE, other.comments[POSTBLOCK]);
             return this;
         }
 
@@ -195,10 +189,10 @@ public class XPathParts {
         public Comments removeComment(String string) {
             if (initialComment.equals(string)) initialComment = "";
             if (finalComment.equals(string)) finalComment = "";
-            for (CommentType c : CommentType.values()) {
-                for (Iterator<String> it = comments.get(c).keySet().iterator(); it.hasNext();) {
-                    String key = it.next();
-                    String value = comments.get(c).get(key);
+            for (int i = 0; i < comments.length; ++i) {
+                for (Iterator it = comments[i].keySet().iterator(); it.hasNext();) {
+                    Object key = (String) it.next();
+                    Object value = comments[i].get(key);
                     if (!value.equals(string)) continue;
                     it.remove();
                 }
@@ -249,24 +243,24 @@ public class XPathParts {
          */
         public void fixLineEndings() {
             if (true) return;
-            // Set<String> sharedKeys = new HashSet<String>(comments.get(CommentType.LINE).keySet());
-            // sharedKeys.addAll(comments.get(CommentType.POSTBLOCK).keySet());
-            // for (String key : sharedKeys) {
-            // String line = (String) comments.get(CommentType.LINE).get(key);
-            // String postblock = (String) comments.get(CommentType.POSTBLOCK).get(key);
-            // if (line != null) {
-            // if (postblock != null) {
-            // comments.get(CommentType.LINE).remove(key);
-            // comments.get(CommentType.POSTBLOCK).put(key, line + NEWLINE + postblock);
-            // } else if (line.contains(NEWLINE)) {
-            // comments.get(CommentType.LINE).remove(key);
-            // comments.get(CommentType.POSTBLOCK).put(key, line);
-            // }
-            // } else if (postblock != null && !postblock.contains(NEWLINE)) {
-            // comments.get(CommentType.LINE).put(key, postblock);
-            // comments.get(CommentType.POSTBLOCK).remove(key);
-            // }
-            // }
+            HashSet<String> sharedKeys = new HashSet(comments[LINE].keySet());
+            sharedKeys.addAll(comments[POSTBLOCK].keySet());
+            for (String key : sharedKeys) {
+                String line = (String) comments[LINE].get(key);
+                String postblock = (String) comments[POSTBLOCK].get(key);
+                if (line != null) {
+                    if (postblock != null) {
+                        comments[LINE].remove(key);
+                        comments[POSTBLOCK].put(key, line + NEWLINE + postblock);
+                    } else if (line.contains(NEWLINE)) {
+                        comments[LINE].remove(key);
+                        comments[POSTBLOCK].put(key, line);
+                    }
+                } else if (postblock != null && !postblock.contains(NEWLINE)) {
+                    comments[LINE].put(key, postblock);
+                    comments[POSTBLOCK].remove(key);
+                }
+            }
         }
     }
 
@@ -276,13 +270,13 @@ public class XPathParts {
      * @param index
      *            TODO
      */
-    private XPathParts writeComment(PrintWriter pw, Comments xpath_comments, int index, Comments.CommentType style) {
+    private XPathParts writeComment(PrintWriter pw, Comments xpath_comments, int index, int style) {
         if (index == 0) return this;
         String xpath = toString(index);
         Log.logln(DEBUGGING, "Checking for: " + xpath);
         String comment = xpath_comments.removeComment(style, xpath);
         if (comment != null) {
-            boolean blockComment = style != Comments.CommentType.LINE;
+            boolean blockComment = style != Comments.LINE;
             XPathParts.writeComment(pw, index - 1, comment, blockComment);
         }
         return this;
@@ -867,7 +861,7 @@ public class XPathParts {
      */
     public XPathParts replace(int i, XPathParts parts) {
         List<Element> temp = elements;
-        elements = new ArrayList<Element>();
+        elements = new ArrayList();
         set(parts);
         for (; i < temp.size(); ++i) {
             elements.add(temp.get(i));

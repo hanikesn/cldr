@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -52,13 +53,13 @@ public class ZoneParser {
      * @return map from tzids to a list: latitude, longitude, country, comment?. + =
      *         N or E
      */
-    public Map<String, List<String>> getZoneData() {
+    public Map getZoneData() {
         if (zoneData == null)
             makeZoneData();
         return zoneData;
     }
 
-    public List<String> getDeprecatedZoneIDs() {
+    public List getDeprecatedZoneIDs() {
         return Arrays.asList(FIX_DEPRECATED_ZONE_DATA);
     }
 
@@ -66,16 +67,17 @@ public class ZoneParser {
    * 
    */
     private void make_zone_to_country() {
-        zone_to_country = new TreeMap<String, String>(TZIDComparator);
-        country_to_zoneSet = new TreeMap<String, Set<String>>();
+        zone_to_country = new TreeMap(TZIDComparator);
+        country_to_zoneSet = new TreeMap();
         // Map aliasMap = getAliasMap();
-        Map<String, List<String>> zoneData = getZoneData();
-        for (String zone : zoneData.keySet()) {
-            String country = (String) zoneData.get(zone).get(2);
+        Map zoneData = getZoneData();
+        for (Iterator it = zoneData.keySet().iterator(); it.hasNext();) {
+            String zone = (String) it.next();
+            String country = (String) ((List) zoneData.get(zone)).get(2);
             zone_to_country.put(zone, country);
-            Set<String> s = country_to_zoneSet.get(country);
+            Set s = (Set) country_to_zoneSet.get(country);
             if (s == null)
-                country_to_zoneSet.put(country, s = new TreeSet<String>());
+                country_to_zoneSet.put(country, s = new TreeSet());
             s.add(zone);
         }
         /*
@@ -95,7 +97,7 @@ public class ZoneParser {
          */
         // protect
         zone_to_country = Collections.unmodifiableMap(zone_to_country);
-        country_to_zoneSet = CldrUtility.protectCollection(country_to_zoneSet);
+        country_to_zoneSet = (Map) CldrUtility.protectCollection(country_to_zoneSet);
     }
 
     /**
@@ -115,9 +117,9 @@ public class ZoneParser {
      * bogusZones; }
      */
 
-    Map<String, List<String>> zoneData;
+    Map zoneData;
 
-    Set<String> skippedAliases = new TreeSet<String>();
+    Set skippedAliases = new TreeSet();
 
     /*
      * # This file contains a table with the following columns: # 1. ISO 3166
@@ -129,7 +131,8 @@ public class ZoneParser {
      * Comments; present if and only if the country has multiple rows. # # Columns
      * are separated by a single tab.
      */
-    static int parseYear(String year, int defaultValue) {
+    static int parseYear(Object object, int defaultValue) {
+        String year = (String) object;
         if ("only".startsWith(year))
             return defaultValue;
         if ("minimum".startsWith(year))
@@ -204,7 +207,7 @@ public class ZoneParser {
     static Pattern dayPattern = Pattern.compile("([0-9]+)|(last)([a-z]+)|([a-z]+)([<=>]+)([0-9]+)");
     static final String[] relations = { "<=", ">=" };
 
-    public static class Day implements Comparable<Object> {
+    public static class Day implements Comparable {
         public int number;
         public byte relation;
         public int weekDay;
@@ -336,20 +339,20 @@ public class ZoneParser {
      */
 
     public static class RuleLine {
-        public static Set<String> types = new TreeSet<String>();
-        public static Set<Day> days = new TreeSet<Day>();
-        static Set<Integer> saves = new TreeSet<Integer>();
+        public static Set types = new TreeSet();
+        public static Set days = new TreeSet();
+        static Set saves = new TreeSet();
 
-        RuleLine(List<String> l) {
+        RuleLine(List l) {
             fromYear = parseYear(l.get(0), 0);
             toYear = parseYear(l.get(1), fromYear);
-            type = l.get(2);
+            type = (String) l.get(2);
             if (type.equals("-")) type = null;
             month = 1 + findStartsWith((String) l.get(3), months, false);
-            day = new Day(l.get(4));
-            time = new Time(l.get(5));
-            save = Time.parseSeconds(l.get(6), true);
-            letter = l.get(7);
+            day = new Day((String) l.get(4));
+            time = new Time((String) l.get(5));
+            save = Time.parseSeconds((String) l.get(6), true);
+            letter = (String) l.get(7);
             if (letter.equals("-")) letter = null;
             if (type != null) types.add(type);
             days.add(day);
@@ -433,11 +436,11 @@ public class ZoneParser {
      * continuation.
      */
     public static class ZoneLine {
-        public static Set<Day> untilDays = new TreeSet<Day>();
-        public static Set<String> rulesSaves = new TreeSet<String>();
+        public static Set untilDays = new TreeSet();
+        public static Set rulesSaves = new TreeSet();
 
-        ZoneLine(List<String> l) {
-            gmtOff = Time.parseSeconds(l.get(0), true);
+        ZoneLine(List l) {
+            gmtOff = Time.parseSeconds((String) l.get(0), true);
             rulesSave = (String) l.get(1);
             if (rulesSave.equals("-"))
                 rulesSave = "0";
@@ -446,9 +449,9 @@ public class ZoneParser {
             format = (String) l.get(2);
             switch (l.size()) {
             case 7:
-                untilTime = new Time(l.get(6)); // fall through
+                untilTime = new Time((String) l.get(6)); // fall through
             case 6:
-                untilDay = new Day(l.get(5)); // fall through
+                untilDay = new Day((String) l.get(5)); // fall through
                 untilDays.add(untilDay);
             case 5:
                 untilMonth = 1 + findStartsWith((String) l.get(4), months, false); // fall through
@@ -487,13 +490,13 @@ public class ZoneParser {
         public static final int FIELD_COUNT_UNTIL = 7; // excluding Zone, Name
     }
 
-    Map<String, List<RuleLine>> ruleID_rules = new TreeMap<String, List<RuleLine>>();
+    Map ruleID_rules = new TreeMap();
 
-    Map<String, List<ZoneLine>> zone_rules = new TreeMap<String, List<ZoneLine>>();
+    Map zone_rules = new TreeMap();
 
-    Map<String, String> linkold_new = new TreeMap<String, String>();
+    Map linkold_new = new TreeMap();
 
-    Map<String, Set<String>> linkNew_oldSet = new TreeMap<String, Set<String>>();
+    Map linkNew_oldSet = new TreeMap();
 
     public class Transition {
         public long date;
@@ -502,52 +505,53 @@ public class ZoneParser {
     }
 
     public class TransitionList {
+        List transitions;
 
         void addTransitions(ZoneLine lastZoneLine, ZoneLine zoneLine, int startYear, int endYear) {
             // add everything between the zonelines
-            if (lastZoneLine == null) {
-                return;
-            }
+            if (lastZoneLine == null) return;
             startYear = Math.max(startYear, lastZoneLine.untilYear);
             endYear = Math.min(endYear, zoneLine.untilYear);
             int gmtOffset = lastZoneLine.gmtOff;
             for (int year = startYear; year <= endYear; ++year) {
-                resolveTime(gmtOffset, lastZoneLine.untilYear, lastZoneLine.untilMonth,
+                long startTime = resolveTime(gmtOffset, lastZoneLine.untilYear, lastZoneLine.untilMonth,
                     lastZoneLine.untilDay, lastZoneLine.untilTime);
             }
         }
 
         private long resolveTime(int gmtOffset, int untilYear, int untilMonth, Day untilDay, Time untilTime) {
+            // TODO Auto-generated method stub
             return 0;
         }
     }
 
     public TransitionList getTransitions(String zoneID, int startYear, int endYear) {
         TransitionList results = new TransitionList();
-        List<ZoneLine> rules = zone_rules.get(zoneID);
+        List rules = (List) zone_rules.get(zoneID);
         ZoneLine lastZoneLine = null;
-        for (ZoneLine zoneLine : rules) {
+        for (Iterator it = rules.iterator(); it.hasNext();) {
+            ZoneLine zoneLine = (ZoneLine) it.next();
             results.addTransitions(lastZoneLine, zoneLine, startYear, endYear);
             lastZoneLine = zoneLine;
         }
         return results;
     }
 
-    public Comparator<String> getTZIDComparator() {
+    public Comparator getTZIDComparator() {
         return TZIDComparator;
     }
 
-    private static List<String> errorData = Arrays.asList(new String[] {
-        new Double(Double.MIN_VALUE).toString(), new Double(Double.MIN_VALUE).toString(), "" });
+    private static List<Object> errorData = Arrays.asList(new Object[] {
+        new Double(Double.MIN_VALUE), new Double(Double.MIN_VALUE), "" });
 
     private Comparator<String> TZIDComparator = new Comparator<String>() {
-        Map<String, List<String>> data = getZoneData();
+        Map<String, List<Object>> data = getZoneData();
 
         public int compare(String s1, String s2) {
-            List<String> data1 = data.get(s1);
+            List<Object> data1 = data.get(s1);
             if (data1 == null)
                 data1 = errorData;
-            List<String> data2 = data.get(s2);
+            List<Object> data2 = data.get(s2);
             if (data2 == null)
                 data2 = errorData;
 
@@ -559,13 +563,13 @@ public class ZoneParser {
             if ((result = country1.compareTo(country2)) != 0)
                 return result;
             // longitude
-            Double d1 = Double.valueOf(data1.get(1));
-            Double d2 = Double.valueOf(data2.get(1));
+            Double d1 = (Double) data1.get(1);
+            Double d2 = (Double) data2.get(1);
             if ((result = d1.compareTo(d2)) != 0)
                 return result;
             // latitude
-            d1 = Double.valueOf(data1.get(0));
-            d2 = Double.valueOf(data2.get(0));
+            d1 = (Double) data1.get(0);
+            d2 = (Double) data2.get(0);
             if ((result = d1.compareTo(d2)) != 0)
                 return result;
             // name
@@ -573,7 +577,7 @@ public class ZoneParser {
         }
     };
 
-    private static MapComparator<String> regionalCompare = new MapComparator<String>();
+    private static MapComparator regionalCompare = new MapComparator();
     static {
         regionalCompare.add("America");
         regionalCompare.add("Atlantic");
@@ -592,12 +596,16 @@ public class ZoneParser {
         "australasia", "backward", "etcetera", "europe", "northamerica",
         "pacificnew", "southamerica", "systemv" };
 
-    private static Map<String, String> FIX_UNSTABLE_TZIDS;
+    private static Map FIX_UNSTABLE_TZIDS;
 
-    private static Set<String> SKIP_LINKS = new HashSet<String>(Arrays.asList(new String[] {
+    private static Map RESTORE_UNSTABLE_TZIDS;
+
+    private static Set SKIP_LINKS = new HashSet(Arrays.asList(new String[] {
         "Navajo", "America/Shiprock" }));
 
-    private static Set<String> PREFERRED_BASES = new HashSet<String>(Arrays.asList(new String[] { "Europe/London" }));
+    private static Set PREFERRED_BASES = new HashSet(Arrays.asList(new String[] {
+        "Europe/London"
+    }));
 
     private static String[][] ADD_ZONE_ALIASES_DATA = { { "Etc/UTC", "Etc/GMT" },
         { "Etc/UCT", "Etc/GMT" },
@@ -656,10 +664,10 @@ public class ZoneParser {
             { "Asia/Kolkata", "Asia/Calcutta" },
             { "Asia/Ho_Chi_Minh", "Asia/Saigon" },
             { "Asia/Kathmandu", "Asia/Katmandu" },
-            { "Pacific/Pohnpei", "Pacific/Ponape" },
-            { "Pacific/Chuuk", "Pacific/Truk" }
         };
         FIX_UNSTABLE_TZIDS = CldrUtility.asMap(FIX_UNSTABLE_TZID_DATA);
+        RESTORE_UNSTABLE_TZIDS = CldrUtility.asMap(FIX_UNSTABLE_TZID_DATA,
+            new HashMap(), true);
     }
 
     /**
@@ -671,15 +679,15 @@ public class ZoneParser {
             BufferedReader versionIn = CldrUtility.getUTF8Data("tzdb-version.txt");
             version = versionIn.readLine();
             if (!version.matches("[0-9]{4}[a-z]")) {
-                throw new IllegalArgumentException(String.format("Bad Version number: %s, should be of the form 2007x",
-                    version));
+                throw new IllegalArgumentException(
+                    "Bad Version number: %s, should be of the form 2007x".format(version));
             }
             versionIn.close();
 
             // String deg = "([+-][0-9]+)";//
             String deg = "([+-])([0-9][0-9][0-9]?)([0-9][0-9])([0-9][0-9])?";//
             Matcher m = Pattern.compile(deg + deg).matcher("");
-            zoneData = new TreeMap<String, List<String>>();
+            zoneData = new TreeMap();
             BufferedReader in = CldrUtility.getUTF8Data("zone.tab");
             while (true) {
                 String line = in.readLine();
@@ -693,7 +701,7 @@ public class ZoneParser {
                 }
                 if (line.length() == 0)
                     continue;
-                List<String> pieces = CldrUtility.splitList(line, '\t', true);
+                List pieces = CldrUtility.splitList(line, '\t', true);
                 String country = (String) pieces.get(0);
                 String latLong = (String) pieces.get(1);
                 String tzid = (String) pieces.get(2);
@@ -706,8 +714,8 @@ public class ZoneParser {
                     throw new IllegalArgumentException("Bad zone.tab, lat/long format: "
                         + line);
 
-                pieces.add(getDegrees(m, true).toString());
-                pieces.add(getDegrees(m, false).toString());
+                pieces.add(getDegrees(m, true));
+                pieces.add(getDegrees(m, false));
                 pieces.add(country);
                 if (comment != null)
                     pieces.add(comment);
@@ -719,32 +727,32 @@ public class ZoneParser {
             in.close();
             // add Etcs
             for (int i = -14; i <= 12; ++i) {
-                List<String> pieces = new ArrayList<String>();
+                List pieces = new ArrayList();
                 int latitude = 0;
                 int longitude = i * 15;
                 if (longitude <= -180) {
                     longitude += 360;
                 }
-                pieces.add(new Double(latitude).toString()); // lat
+                pieces.add(new Double(latitude)); // lat
                 // remember that the sign of the TZIDs is wrong
-                pieces.add(new Double(-longitude).toString()); // long
+                pieces.add(new Double(-longitude)); // long
                 pieces.add(StandardCodes.NO_COUNTRY); // country
 
                 zoneData.put("Etc/GMT" + (i == 0 ? "" : i < 0 ? "" + i : "+" + i),
                     pieces);
             }
             // add Unknown
-            List<String> pieces = new ArrayList<String>();
-            pieces.add(new Double(0).toString()); // lat
-            pieces.add(new Double(0).toString()); // long
+            List pieces = new ArrayList();
+            pieces.add(new Double(0)); // lat
+            pieces.add(new Double(0)); // long
             pieces.add(StandardCodes.NO_COUNTRY); // country
             zoneData.put("Etc/Unknown", pieces);
 
-            zoneData = CldrUtility.protectCollection(zoneData); // protect for later
+            zoneData = (Map) CldrUtility.protectCollection(zoneData); // protect for later
 
             // now get links
             Pattern whitespace = Pattern.compile("\\s+");
-            XEquivalenceClass<String, String> linkedItems = new XEquivalenceClass<String, String>("None");
+            XEquivalenceClass linkedItems = new XEquivalenceClass("None");
             for (int i = 0; i < TZFiles.length; ++i) {
                 in = CldrUtility.getUTF8Data(TZFiles[i]);
                 String zoneID = null;
@@ -764,7 +772,7 @@ public class ZoneParser {
                         continue;
                     String[] items = whitespace.split(line);
                     if (zoneID != null || items[0].equals("Zone")) {
-                        List<String> l = new ArrayList<String>();
+                        List l = new ArrayList();
                         l.addAll(Arrays.asList(items));
 
                         // Zone Africa/Algiers 0:12:12 - LMT 1891 Mar 15 0:01
@@ -772,17 +780,17 @@ public class ZoneParser {
                         if (zoneID == null) {
                             l.remove(0); // "Zone"
                             zoneID = (String) l.get(0);
+                            if (false) System.out.println("*Link:\t" + zoneID);
                             String ntzid = (String) FIX_UNSTABLE_TZIDS.get(zoneID);
                             if (ntzid != null)
                                 zoneID = ntzid;
                             l.remove(0);
                         }
-                        List<ZoneLine> zoneRules = zone_rules.get(zoneID);
+                        List zoneRules = (List) zone_rules.get(zoneID);
                         if (zoneRules == null) {
-                            zoneRules = new ArrayList<ZoneLine>();
+                            zoneRules = new ArrayList();
                             zone_rules.put(zoneID, zoneRules);
                         }
-
                         if (l.size() < ZoneLine.FIELD_COUNT
                             || l.size() > ZoneLine.FIELD_COUNT_UNTIL) {
                             System.out.println("***Zone incorrect field count:");
@@ -791,7 +799,15 @@ public class ZoneParser {
                         }
 
                         ZoneLine zoneLine = new ZoneLine(l);
+                        if (false && zoneLine.rulesSave.charAt(0) >= 'A'
+                            && ruleID_rules.get(zoneLine.rulesSave) == null) {
+                            System.out.println("*** Forward Reference to: " + zoneLine.rulesSave + " in " + zoneID);
+                        }
                         zoneLine.comment = comment;
+                        if (false) {
+                            System.out
+                                .println(zoneID + "\t" + zoneLine + "\t" + originalLine);
+                        }
                         zoneRules.add(zoneLine);
                         if (l.size() == ZoneLine.FIELD_COUNT) {
                             zoneID = null; // no continuation line
@@ -801,12 +817,12 @@ public class ZoneParser {
                         // Rule Algeria 1916 only - Jun 14 23:00s 1:00 S
 
                         String ruleID = items[1];
-                        List<RuleLine> ruleList = ruleID_rules.get(ruleID);
+                        List ruleList = (List) ruleID_rules.get(ruleID);
                         if (ruleList == null) {
-                            ruleList = new ArrayList<RuleLine>();
+                            ruleList = new ArrayList();
                             ruleID_rules.put(ruleID, ruleList);
                         }
-                        List<String> l = new ArrayList<String>();
+                        List l = new ArrayList();
                         l.addAll(Arrays.asList(items));
                         l.remove(0);
                         l.remove(0);
@@ -825,6 +841,8 @@ public class ZoneParser {
                         if (!SKIP_LINKS.contains(old) && !SKIP_LINKS.contains(newOne)) {
                             // System.out.println("Original " + old + "\t=>\t" + newOne);
                             linkedItems.add(old, newOne);
+                            if (false) System.out.println("*Link:\t" + old);
+                            if (false) System.out.println("*Link:\t" + newOne);
                         }
                         /*
                          * String conflict = (String) linkold_new.get(old); if (conflict !=
@@ -848,25 +866,27 @@ public class ZoneParser {
             // linkedItems.add("Etc/UCT", "Etc/GMT");
             // linkedItems.add("Navajo", "America/Shiprock");
 
-            Set<String> isCanonical = zoneData.keySet();
+            Set isCanonical = zoneData.keySet();
 
             // walk through the sets, and
             // if any set contains two canonical items, split it.
             // if any contains one, make it the primary
             // if any contains zero, problem!
-            for (Set<String> equivalents : linkedItems.getEquivalenceSets()) {
-                Set<String> canonicals = new TreeSet<String>(equivalents);
+            for (Iterator it = linkedItems.getEquivalenceSets().iterator(); it
+                .hasNext();) {
+                Set equivalents = (Set) it.next();
+                Set canonicals = new TreeSet(equivalents);
                 canonicals.retainAll(isCanonical);
                 if (canonicals.size() == 0)
                     throw new IllegalArgumentException("No canonicals in: " + equivalents);
-                if (canonicals.size() > 1) {
+                if (false && canonicals.size() > 1) {
                     if (DEBUG) {
                         System.out.println("Too many canonicals in: " + equivalents);
                         System.out
                             .println("\t*Don't* put these into the same equivalence class: "
                                 + canonicals);
                     }
-                    Set<String> remainder = new TreeSet<String>(equivalents);
+                    Set remainder = new TreeSet(equivalents);
                     remainder.removeAll(isCanonical);
                     if (remainder.size() != 0) {
                         if (DEBUG) {
@@ -877,18 +897,19 @@ public class ZoneParser {
                     }
                 }
                 {
-                    String newOne;
+                    Object newOne;
                     // get the item that we want to hang all the aliases off of.
                     // normally this is the first (alphabetically) one, but
                     // it may be overridden with PREFERRED_BASES
-                    Set<String> preferredItems = new HashSet<String>(PREFERRED_BASES);
+                    Set preferredItems = new HashSet(PREFERRED_BASES);
                     preferredItems.retainAll(canonicals);
                     if (preferredItems.size() > 0) {
                         newOne = preferredItems.iterator().next();
                     } else {
                         newOne = canonicals.iterator().next();
                     }
-                    for (String oldOne : equivalents) {
+                    for (Iterator it2 = equivalents.iterator(); it2.hasNext();) {
+                        Object oldOne = it2.next();
                         if (canonicals.contains(oldOne))
                             continue;
                         // System.out.println("Mapping " + oldOne + "\t=>\t" + newOne);
@@ -928,20 +949,20 @@ public class ZoneParser {
              */
 
             // generate list of new to old
-            for (Iterator<String> it = linkold_new.keySet().iterator(); it.hasNext();) {
-                String oldZone = it.next();
-                String newZone = linkold_new.get(oldZone);
-                Set<String> s = linkNew_oldSet.get(newZone);
+            for (Iterator it = linkold_new.keySet().iterator(); it.hasNext();) {
+                String oldZone = (String) it.next();
+                String newZone = (String) linkold_new.get(oldZone);
+                Set s = (Set) linkNew_oldSet.get(newZone);
                 if (s == null)
-                    linkNew_oldSet.put(newZone, s = new HashSet<String>());
+                    linkNew_oldSet.put(newZone, s = new HashSet());
                 s.add(oldZone);
             }
 
             // PROTECT EVERYTHING
-            linkNew_oldSet = CldrUtility.protectCollection(linkNew_oldSet);
-            linkold_new = CldrUtility.protectCollection(linkold_new);
-            ruleID_rules = CldrUtility.protectCollection(ruleID_rules);
-            zone_rules = CldrUtility.protectCollection(zone_rules);
+            linkNew_oldSet = (Map) CldrUtility.protectCollection(linkNew_oldSet);
+            linkold_new = (Map) CldrUtility.protectCollection(linkold_new);
+            ruleID_rules = (Map) CldrUtility.protectCollection(ruleID_rules);
+            zone_rules = (Map) CldrUtility.protectCollection(zone_rules);
             // TODO protect zone info later
         } catch (IOException e) {
             throw (IllegalArgumentException) new IllegalArgumentException(
@@ -966,7 +987,7 @@ public class ZoneParser {
     /**
      * @return Returns the linkold_new.
      */
-    public Map<String, String> getZoneLinkold_new() {
+    public Map getZoneLinkold_new() {
         getZoneData();
         return linkold_new;
     }
@@ -974,7 +995,7 @@ public class ZoneParser {
     /**
      * @return Returns the linkold_new.
      */
-    public Map<String, Set<String>> getZoneLinkNew_OldSet() {
+    public Map getZoneLinkNew_OldSet() {
         getZoneData();
         return linkNew_oldSet;
     }
@@ -982,7 +1003,7 @@ public class ZoneParser {
     /**
      * @return Returns the ruleID_rules.
      */
-    public Map<String, List<RuleLine>> getZoneRuleID_rules() {
+    public Map getZoneRuleID_rules() {
         getZoneData();
         return ruleID_rules;
     }
@@ -990,7 +1011,7 @@ public class ZoneParser {
     /**
      * @return Returns the zone_rules.
      */
-    public Map<String, List<ZoneLine>> getZone_rules() {
+    public Map getZone_rules() {
         getZoneData();
         return zone_rules;
     }

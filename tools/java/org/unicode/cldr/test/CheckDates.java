@@ -607,8 +607,7 @@ public class CheckDates extends FactoryCheckCLDR {
             } else if (!dateTimePatternGenerator.skeletonsAreSimilar(idCanonical, skeletonCanonical)) {
                 String fixedValue = dateTimePatternGenerator.replaceFieldTypes(value, id);
                 result
-                    .add(new CheckStatus()
-                        .setCause(this)
+                    .add(new CheckStatus().setCause(this)
                         .setMainType(CheckStatus.errorType)
                         .setSubtype(Subtype.incorrectDatePattern)
                         // "Internal ID ({0}) doesn't match generated ID ({1}) for pattern ({2}). " +
@@ -791,11 +790,11 @@ public class CheckDates extends FactoryCheckCLDR {
         bi.setText(value);
         if (current != 0) bi.preceding(current + 1); // get safe spot, possibly before
         current = bi.next();
-        if (current == BreakIterator.DONE) {
+        if (current == bi.DONE) {
             return value.length();
         }
         current = bi.next();
-        if (current == BreakIterator.DONE) {
+        if (current == bi.DONE) {
             return value.length();
         }
         // continue collecting any additional characters that are M or grapheme extend

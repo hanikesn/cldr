@@ -25,7 +25,6 @@ import org.unicode.cldr.util.Iso639Data.Scope;
 import org.unicode.cldr.util.IsoCurrencyParser;
 import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.Pair;
-import org.unicode.cldr.util.StandardCodes;
 import org.unicode.cldr.util.SupplementalDataInfo;
 import org.unicode.cldr.util.SupplementalDataInfo.CurrencyDateInfo;
 
@@ -45,8 +44,7 @@ public class TestSupplementalInfo extends TestFmwk {
     }
 
     public void TestAliases() {
-        testInfo.getStandardCodes();
-        Map<String, Map<String, Map<String, String>>> bcp47Data = StandardCodes.getLStreg();
+        Map<String, Map<String, Map<String, String>>> bcp47Data = testInfo.getStandardCodes().getLStreg();
         Map<String, Map<String, R2<List<String>, String>>> aliases = testInfo.getSupplementalDataInfo()
             .getLocaleAliasInfo();
 
@@ -67,16 +65,15 @@ public class TestSupplementalInfo extends TestFmwk {
                         // TODO, check the value
                     }
                     Map<String, String> data = codeData.getValue();
-                    if (data.containsKey("Deprecated")
-                        && testInfo.getSupplementalDataInfo().getCLDRLanguageCodes().contains(code)) {
+                    if (data.containsKey("Deprecated")) {
                         errln("supplementalMetadata.xml: alias is missing <languageAlias type=\"" + code + "\" ... /> "
                             + "\t" + data);
                     }
                 }
             }
 
-            Set<R3<String, List<String>, List<String>>> failures = new TreeSet<R3<String, List<String>, List<String>>>();
-            Set<String> nullReplacements = new TreeSet<String>();
+            Set<R3<String, List<String>, List<String>>> failures = new TreeSet();
+            Set<String> nullReplacements = new TreeSet();
             for (Entry<String, R2<List<String>, String>> codeRep : codeReplacement.entrySet()) {
                 String code = codeRep.getKey();
                 List<String> replacements = codeRep.getValue().get0();
@@ -84,7 +81,7 @@ public class TestSupplementalInfo extends TestFmwk {
                     nullReplacements.add(code);
                     continue;
                 }
-                Set<String> fixedReplacements = new LinkedHashSet<String>();
+                Set<String> fixedReplacements = new LinkedHashSet();
                 for (String replacement : replacements) {
                     R2<List<String>, String> newReplacement = codeReplacement.get(replacement);
                     if (newReplacement != null) {
@@ -96,7 +93,7 @@ public class TestSupplementalInfo extends TestFmwk {
                         fixedReplacements.add(replacement);
                     }
                 }
-                List<String> fixedList = new ArrayList<String>(fixedReplacements);
+                List<String> fixedList = new ArrayList(fixedReplacements);
                 if (!replacements.equals(fixedList)) {
                     R3<String, List<String>, List<String>> row = Row.of(code, replacements, fixedList);
                     failures.add(row);
@@ -314,9 +311,8 @@ public class TestSupplementalInfo extends TestFmwk {
     }
 
     public void TestCompleteness() {
-        if (testInfo.getSupplementalDataInfo().getSkippedElements().size() > 0) {
-            logln("SupplementalDataInfo API doesn't support: " + testInfo.getSupplementalDataInfo().getSkippedElements().toString());
-        }
+        assertEquals("API doesn't support: " + testInfo.getSupplementalDataInfo().getSkippedElements(), 0, testInfo
+            .getSupplementalDataInfo().getSkippedElements().size());
     }
 
     // these are settings for exceptional cases we want to allow
@@ -377,7 +373,7 @@ public class TestSupplementalInfo extends TestFmwk {
                 if (lastValue == null || lastValue.compareTo(end) > 0) {
                     currencyLastValid.put(currency, end);
                 }
-                if (end.compareTo(NOW) >= 0 && dateInfo.isLegalTender()) {
+                if (end.compareTo(NOW) >= 0) {
                     modernCurrencyCodes.put(currency, new Pair<String, CurrencyDateInfo>(territory, dateInfo));
                     territoriesWithoutModernCurrencies.remove(territory);
                 } else {

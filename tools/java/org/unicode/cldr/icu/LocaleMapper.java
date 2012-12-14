@@ -80,6 +80,7 @@ public class LocaleMapper extends LdmlMapper {
          * //ldml/dates/calendars/calendar[@type="([^"]*)"]/(dateFormats|dateTimeFormats|timeFormats)/(?:[^/\[]*)[@type=
          * "([^"]*)"]/(?:[^/\[]*)[@type="([^"]*)"]/.* ; locales ; /calendar/$1/DateTimePatterns
          */
+        @SuppressWarnings("unchecked")
         @Override
         public int compare(String arg0, String arg1) {
             Matcher[] matchers = new Matcher[2];
@@ -431,43 +432,6 @@ public class LocaleMapper extends LdmlMapper {
         } else {
             throw new IllegalArgumentException("Unknown measurement system");
         }
-
-        // Default calendar.
-        String calendar = getCalendarIfDifferent(localeID);
-        if (calendar != null) {
-            icuData.add("/calendar/default", calendar);
-        }
-    }
-
-    /**
-     * Returns the default calendar to be used for a locale. If the default
-     * calendar for the parent locale is the same, null is returned.
-     */
-    private String getCalendarIfDifferent(String localeID) {
-        String calendar = getCalendar(localeID);
-        if (calendar == null) return null;
-        String parent = LocaleIDParser.getParent(localeID);
-        String parentCalendar = null;
-        while (parentCalendar == null && parent != null) {
-            parentCalendar = getCalendar(parent);
-            parent = LocaleIDParser.getParent(parent);
-        }
-        return calendar.equals(parentCalendar) ? null : calendar;
-    }
-
-    /**
-     * Returns the default calendar to be used for a locale, if any.
-     */
-    private String getCalendar(String localeID) {
-        LanguageTagParser parser = new LanguageTagParser().set(localeID);
-        String region = localeID.equals("root") ? "001" : parser.getRegion();
-        if (region.equals("")) {
-            parser.set(supplementalDataInfo.getLikelySubtags().get(parser.getLanguage()));
-            region = parser.getRegion();
-            if (region == null) region = "001";
-        }
-        List<String> calendars = supplementalDataInfo.getCalendars(region);
-        return calendars == null ? null : calendars.get(0);
     }
 
     /**

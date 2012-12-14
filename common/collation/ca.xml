@@ -134,7 +134,7 @@
 				<reset>ᅮᅵ</reset>	<!-- 116E U(V) + 1175 I(V) = 1171 WI(V) -->
 					<i>ᅱ</i>
 				<!-- Above are the standard root search collator rules. -->
-				<!-- Below are the rules specific to ca. -->
+				<!-- Below are the rules specific to ca; don't need backwards="on" for search. -->
 				<!-- Per Apple language group, these are modified from standard rules below -->
 				<!-- to make L primary-different from L-dot for search. -->
 				<reset>L</reset>
@@ -145,7 +145,8 @@
 			</rules>
 		</collation>
 		<collation type="standard"
-			references="Enciclopèdia Catalana: Diccionari de la llengua catalana ISBN 84-85194-46-2">
+			references="Enciclopèdia Catalana: Diccionari da la llengua catalana ISBN 84-85194-46-2">
+			<settings backwards="on" />
 			<rules>
 				<reset>L</reset>
 				<s>ŀ</s>
@@ -155,6 +156,7 @@
 			</rules>
 		</collation>
 		<collation draft="unconfirmed" alt="proposed" type="standard">
+			<settings backwards="on" />
 			<rules>
 				<reset>C</reset>
 				<p>ch</p>

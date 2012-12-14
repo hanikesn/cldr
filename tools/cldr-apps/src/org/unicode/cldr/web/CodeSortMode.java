@@ -14,59 +14,57 @@ import com.ibm.icu.text.RuleBasedCollator;
 
 /**
  * @author srl
- * 
+ *
  */
 public class CodeSortMode extends SortMode {
 
-    public static String name = SurveyMain.PREF_SORTMODE_CODE;
+	public static String name=SurveyMain.PREF_SORTMODE_CODE;
+	
+	/* (non-Javadoc)
+	 * @see org.unicode.cldr.web.SortMode#getName()
+	 */
+	@Override
+	String getName() {
+		return name;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.unicode.cldr.web.SortMode#getName()
-     */
-    @Override
-    String getName() {
-        return name;
-    }
+	@Override
+	Membership[] memberships() {
+		return null;
+	}
 
-    @Override
-    Membership[] memberships() {
-        return null;
-    }
-
-    @Override
-    Comparator<DataRow> createComparator() {
-        return comparator();
-    }
-
-    public static Comparator<DataRow> comparator() {
-        return new Comparator<DataRow>() {
-            final Collator myCollator = createCollator();
-
-            public int compare(DataRow p1, DataRow p2) {
-                if (p1 == p2) {
-                    return 0;
-                }
-                return myCollator.compare(p1.getPrettyPath(), p2.getPrettyPath());
-            }
-        };
-    }
-
+	@Override
+	Comparator<DataRow> createComparator() {
+		return comparator();
+	}
+	
+	public static
+	Comparator<DataRow> comparator() {
+		return new Comparator<DataRow>() {
+			final Collator myCollator = createCollator();
+		      public int compare(DataRow p1, DataRow p2){
+		        if(p1==p2) { 
+		          return 0;
+		        }
+		        return myCollator.compare(p1.getPrettyPath(), p2.getPrettyPath());
+		      }
+		    };
+	}
+	    
     public static Collator createCollator() {
-        RuleBasedCollator rbc = ((RuleBasedCollator) Collator.getInstance());
+        RuleBasedCollator rbc = 
+            ((RuleBasedCollator)Collator.getInstance());
         rbc.setNumericCollation(true);
         return rbc;
     }
 
     @Override
-    public String getDisplayName(DataRow p) {
-        return p.getPrettyPath(); // always code.
+	public String getDisplayName(DataRow p) {
+    	return p.getPrettyPath(); // always code.
     }
-
-    @Override
-    String getDisplayName() {
-        return "Code";
-    }
+	@Override
+	String getDisplayName() {
+		return "Code";
+	}
 
 }

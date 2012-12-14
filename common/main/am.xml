@@ -3371,6 +3371,11 @@
 					<standard>የደቡብ ጂዮርጂያ ሰዓት</standard>
 				</long>
 			</metazone>
+			<metazone type="Suriname">
+				<long>
+					<standard>የሱሪናም ሰዓት</standard>
+				</long>
+			</metazone>
 			<metazone type="Syowa">
 				<long>
 					<standard>የሲዮዋ ሰዓት</standard>

@@ -32,7 +32,7 @@
 			<language type="alt">Altai Selatan</language>
 			<language type="am">Amharik</language>
 			<language type="an">Aragon</language>
-			<language type="ang">Inggris Kuno</language>
+			<language type="ang">Inggris Kuno [kl.450-1100]</language>
 			<language type="anp">Angika</language>
 			<language type="apa">Rumpun Bahasa Apache</language>
 			<language type="ar">Arab</language>
@@ -161,7 +161,7 @@
 			<language type="en_CA">Inggris Kanada</language>
 			<language type="en_GB">Inggris Inggris</language>
 			<language type="en_US">Inggris A.S.</language>
-			<language type="enm">Inggris Abad Pertengahan</language>
+			<language type="enm">Inggris Abad Pertengahan [1100-1500]</language>
 			<language type="eo">Esperanto</language>
 			<language type="es">Spanyol</language>
 			<language type="es_419">Spanyol Amerika Latin</language>
@@ -182,8 +182,8 @@
 			<language type="fr">Prancis</language>
 			<language type="fr_CA">Prancis Kanada</language>
 			<language type="fr_CH">Prancis Swiss</language>
-			<language type="frm">Prancis Abad Pertengahan</language>
-			<language type="fro">Prancis Kuno</language>
+			<language type="frm">Prancis Abad Pertengahan [kl.1400-1600]</language>
+			<language type="fro">Prancis Kuno [842-kl.1400]</language>
 			<language type="frr">Frisia Utara</language>
 			<language type="frs">Frisia Timur</language>
 			<language type="fur">Friuli</language>
@@ -197,14 +197,14 @@
 			<language type="gez">Geez</language>
 			<language type="gil">Gilbert</language>
 			<language type="gl">Galisia</language>
-			<language type="gmh">Jerman Abad Pertengahan</language>
+			<language type="gmh">Jerman Abad Pertengahan [kl.1050-1500]</language>
 			<language type="gn">Guarani</language>
-			<language type="goh">Jerman Kuno</language>
+			<language type="goh">Jerman Kuno [kl.750-1050]</language>
 			<language type="gon">Gondi</language>
 			<language type="gor">Gorontalo</language>
 			<language type="got">Gothik</language>
 			<language type="grb">Grebo</language>
-			<language type="grc">Yunani Kuno</language>
+			<language type="grc">Yunani Kuno [s/d 1453]</language>
 			<language type="gsw">Jerman Swiss</language>
 			<language type="gu">Gujarati</language>
 			<language type="guz">Gusii</language>
@@ -336,7 +336,7 @@
 			<language type="mer">Meru</language>
 			<language type="mfe" draft="provisional">Morisien</language>
 			<language type="mg">Malagasi</language>
-			<language type="mga">Irlandia Abad Pertengahan</language>
+			<language type="mga">Irlandia Abad Pertengahan [900-1200]</language>
 			<language type="mgh">Makhuwa-Meetto</language>
 			<language type="mh">Marshall</language>
 			<language type="mi">Maori</language>
@@ -415,7 +415,7 @@
 			<language type="pam">Pampanga</language>
 			<language type="pap">Papiamento</language>
 			<language type="pau">Palau</language>
-			<language type="peo">Persia Kuno</language>
+			<language type="peo">Persia Kuno [kl.600-400 SM.]</language>
 			<language type="phi">Rumpun Bahasa Filipina</language>
 			<language type="phn">Funisia</language>
 			<language type="pi">Pali</language>
@@ -2557,7 +2557,7 @@
 						<era type="19">Daidō (806-810)</era>
 						<era type="20">Kōnin (810-824)</era>
 						<era type="21">Tenchō (824-834)</era>
-						<era type="22">Jōwa (834-848)</era>
+						<era type="22">Shōwa (834-848)</era>
 						<era type="23">Kajō (848-851)</era>
 						<era type="24">Ninju (851-854)</era>
 						<era type="25">Saiko (854-857)</era>
@@ -3303,11 +3303,25 @@
 					<daylight>Waktu Musim Panas Afrika Barat</daylight>
 				</long>
 			</metazone>
+			<metazone type="Aktyubinsk">
+				<long>
+					<generic>Waktu Aktyubinsk</generic>
+					<standard>Waktu Standar Aktyubinsk</standard>
+					<daylight>Waktu Musim Panas Aktyubinsk</daylight>
+				</long>
+			</metazone>
 			<metazone type="Alaska">
 				<long>
 					<generic>Waktu Alaska</generic>
 					<standard>Waktu Standar Alaska</standard>
 					<daylight>Waktu Terang Alaska</daylight>
+				</long>
+			</metazone>
+			<metazone type="Alaska_Hawaii">
+				<long>
+					<generic>Waktu Alaska-Hawaii</generic>
+					<standard>Waktu Standar Alaska-Hawaii</standard>
+					<daylight>Waktu Terang Alaska-Hawaii</daylight>
 				</long>
 			</metazone>
 			<metazone type="Almaty">
@@ -3401,6 +3415,13 @@
 					<daylight>Waktu Musim Panas Armenia</daylight>
 				</long>
 			</metazone>
+			<metazone type="Ashkhabad">
+				<long>
+					<generic>Waktu Ashkhabad</generic>
+					<standard>Waktu Standar Ashkhabad</standard>
+					<daylight>Waktu Musim Panas Ashkhabad</daylight>
+				</long>
+			</metazone>
 			<metazone type="Atlantic">
 				<long>
 					<generic>Waktu Atlantik</generic>
@@ -3450,11 +3471,25 @@
 					<daylight>Waktu Musim Panas Azores</daylight>
 				</long>
 			</metazone>
+			<metazone type="Baku">
+				<long>
+					<generic>Waktu Kota Baku</generic>
+					<standard>Waktu Standar Kota Baku</standard>
+					<daylight>Waktu Musim Panas Kota Baku</daylight>
+				</long>
+			</metazone>
 			<metazone type="Bangladesh">
 				<long>
 					<generic>Waktu Bangladesh</generic>
 					<standard>Waktu Standar Bangladesh</standard>
 					<daylight>Waktu Musim Panas Bangladesh</daylight>
+				</long>
+			</metazone>
+			<metazone type="Bering">
+				<long>
+					<generic>Waktu Bering</generic>
+					<standard>Waktu Standar Bering</standard>
+					<daylight>Waktu Terang Bering</daylight>
 				</long>
 			</metazone>
 			<metazone type="Bhutan">
@@ -3465,6 +3500,13 @@
 			<metazone type="Bolivia">
 				<long>
 					<standard>Waktu Bolivia</standard>
+				</long>
+			</metazone>
+			<metazone type="Borneo">
+				<long>
+					<generic>Waktu Kalimantan</generic>
+					<standard>Waktu Standar Kalimantan</standard>
+					<daylight>Waktu Musim Panas Kalimantan</daylight>
 				</long>
 			</metazone>
 			<metazone type="Brasilia">
@@ -3494,6 +3536,11 @@
 			<metazone type="Chamorro">
 				<long>
 					<standard>Waktu Chamorro</standard>
+				</long>
+			</metazone>
+			<metazone type="Changbai">
+				<long>
+					<standard>Waktu Changbai</standard>
 				</long>
 			</metazone>
 			<metazone type="Chatham">
@@ -3555,6 +3602,11 @@
 					<daylight>Waktu Musim Panas Kuba</daylight>
 				</long>
 			</metazone>
+			<metazone type="Dacca">
+				<long>
+					<standard>Waktu Dhaka</standard>
+				</long>
+			</metazone>
 			<metazone type="Davis">
 				<long>
 					<standard>Waktu Davis</standard>
@@ -3563,6 +3615,18 @@
 			<metazone type="DumontDUrville">
 				<long>
 					<standard>Waktu Dumont-d’Urville</standard>
+				</long>
+			</metazone>
+			<metazone type="Dushanbe">
+				<long>
+					<generic>Waktu Dushanbe</generic>
+					<standard>Waktu Standar Dushanbe</standard>
+					<daylight>Waktu Musim Panas Dushanbe</daylight>
+				</long>
+			</metazone>
+			<metazone type="Dutch_Guiana">
+				<long>
+					<standard>Waktu Guyana Belanda</standard>
 				</long>
 			</metazone>
 			<metazone type="East_Timor">
@@ -3627,6 +3691,13 @@
 					<standard>Waktu Antartika dan Selatan Prancis</standard>
 				</long>
 			</metazone>
+			<metazone type="Frunze">
+				<long>
+					<generic>Waktu Frunze</generic>
+					<standard>Waktu Standar Frunze</standard>
+					<daylight>Waktu Musim Panas Frunze</daylight>
+				</long>
+			</metazone>
 			<metazone type="Galapagos">
 				<long>
 					<standard>Waktu Galapagos</standard>
@@ -3652,6 +3723,13 @@
 			<metazone type="GMT">
 				<long>
 					<standard>Waktu Rata-Rata Greenwich</standard>
+				</long>
+			</metazone>
+			<metazone type="Greenland_Central">
+				<long>
+					<generic>Waktu Greenland Tengah</generic>
+					<standard>Waktu Standar Greenland Tengah</standard>
+					<daylight>Waktu Musim Panas Greenland Tengah</daylight>
 				</long>
 			</metazone>
 			<metazone type="Greenland_Eastern">
@@ -3778,6 +3856,16 @@
 					<daylight>Waktu Musim Panas Petropavlovsk-Kamchatski</daylight>
 				</long>
 			</metazone>
+			<metazone type="Karachi">
+				<long>
+					<standard>Waktu Karachi</standard>
+				</long>
+			</metazone>
+			<metazone type="Kashgar">
+				<long>
+					<standard>Waktu Kashgar</standard>
+				</long>
+			</metazone>
 			<metazone type="Kazakhstan_Eastern">
 				<long>
 					<standard>Waktu Kazakhstan Timur</standard>
@@ -3786,6 +3874,13 @@
 			<metazone type="Kazakhstan_Western">
 				<long>
 					<standard>Waktu Kazakhstan Barat</standard>
+				</long>
+			</metazone>
+			<metazone type="Kizilorda">
+				<long>
+					<generic>Waktu Kizilorda</generic>
+					<standard>Waktu Standar Kizilorda</standard>
+					<daylight>Waktu Musim Panas Kizilorda</daylight>
 				</long>
 			</metazone>
 			<metazone type="Korea">
@@ -3807,6 +3902,18 @@
 					<daylight>Waktu Musim Panas Krasnoyarsk</daylight>
 				</long>
 			</metazone>
+			<metazone type="Kuybyshev">
+				<long>
+					<generic>Waktu Kuibyshev</generic>
+					<standard>Waktu Standar Kuibyshev</standard>
+					<daylight>Waktu Musim Panas Kuibyshev</daylight>
+				</long>
+			</metazone>
+			<metazone type="Kwajalein">
+				<long>
+					<standard>Waktu Kwajalein</standard>
+				</long>
+			</metazone>
 			<metazone type="Kyrgystan">
 				<long>
 					<standard>Waktu Kirghizia</standard>
@@ -3820,6 +3927,11 @@
 			<metazone type="Line_Islands">
 				<long>
 					<standard>Waktu Kep. Line</standard>
+				</long>
+			</metazone>
+			<metazone type="Long_Shu">
+				<long>
+					<standard>Waktu Long-Shu</standard>
 				</long>
 			</metazone>
 			<metazone type="Lord_Howe">
@@ -3846,6 +3958,11 @@
 					<generic>Waktu Magadan</generic>
 					<standard>Waktu Standar Magadan</standard>
 					<daylight>Waktu Musim Panas Magadan</daylight>
+				</long>
+			</metazone>
+			<metazone type="Malaya">
+				<long>
+					<standard>Waktu Malaya</standard>
 				</long>
 			</metazone>
 			<metazone type="Malaysia">
@@ -4057,6 +4174,13 @@
 					<daylight>Waktu Musim Panas Samara</daylight>
 				</long>
 			</metazone>
+			<metazone type="Samarkand">
+				<long>
+					<generic>Waktu Samarkand</generic>
+					<standard>Waktu Standar Samarkand</standard>
+					<daylight>Waktu Musim Panas Samarkand</daylight>
+				</long>
+			</metazone>
 			<metazone type="Samoa">
 				<long>
 					<standard>Waktu Samoa</standard>
@@ -4065,6 +4189,13 @@
 			<metazone type="Seychelles">
 				<long>
 					<standard>Waktu Seychelles</standard>
+				</long>
+			</metazone>
+			<metazone type="Shevchenko">
+				<long>
+					<generic>Waktu Shevchenko</generic>
+					<standard>Waktu Standar Shevchenko</standard>
+					<daylight>Waktu Musim Panas Shevchenko</daylight>
 				</long>
 			</metazone>
 			<metazone type="Singapore">
@@ -4080,6 +4211,18 @@
 			<metazone type="South_Georgia">
 				<long>
 					<standard>Waktu Georgia Selatan</standard>
+				</long>
+			</metazone>
+			<metazone type="Suriname">
+				<long>
+					<standard>Waktu Suriname</standard>
+				</long>
+			</metazone>
+			<metazone type="Sverdlovsk">
+				<long>
+					<generic>Waktu Sverdlovsk</generic>
+					<standard>Waktu Standar Sverdlovsk</standard>
+					<daylight>Waktu Musim Panas Sverdlovsk</daylight>
 				</long>
 			</metazone>
 			<metazone type="Syowa">
@@ -4104,6 +4247,20 @@
 					<standard>Waktu Tajikistan</standard>
 				</long>
 			</metazone>
+			<metazone type="Tashkent">
+				<long>
+					<generic>Waktu Tashkent</generic>
+					<standard>Waktu Standar Tashkent</standard>
+					<daylight>Waktu Musim Panas Tashkent</daylight>
+				</long>
+			</metazone>
+			<metazone type="Tbilisi">
+				<long>
+					<generic>Waktu Tbilisi</generic>
+					<standard>Waktu Standar Tbilisi</standard>
+					<daylight>Waktu Musim Panas Tbilisi</daylight>
+				</long>
+			</metazone>
 			<metazone type="Tokelau">
 				<long>
 					<standard>Waktu Tokelau</standard>
@@ -4121,6 +4278,13 @@
 					<standard>Waktu Chuuk</standard>
 				</long>
 			</metazone>
+			<metazone type="Turkey">
+				<long>
+					<generic>Waktu Turki</generic>
+					<standard>Waktu Standar Turki</standard>
+					<daylight>Waktu Musim Panas Turki</daylight>
+				</long>
+			</metazone>
 			<metazone type="Turkmenistan">
 				<long>
 					<generic>Waktu Turkimenistan</generic>
@@ -4133,11 +4297,23 @@
 					<standard>Waktu Tuvalu</standard>
 				</long>
 			</metazone>
+			<metazone type="Uralsk">
+				<long>
+					<generic>Waktu Uralʹsk</generic>
+					<standard>Waktu Standar Uralʹsk</standard>
+					<daylight>Waktu Musim Panas Uralʹsk</daylight>
+				</long>
+			</metazone>
 			<metazone type="Uruguay">
 				<long>
 					<generic>Waktu Uruguay</generic>
 					<standard>Waktu Standar Uruguay</standard>
 					<daylight>Waktu Musim Panas Uruguay</daylight>
+				</long>
+			</metazone>
+			<metazone type="Urumqi">
+				<long>
+					<standard>Waktu Urumqi</standard>
 				</long>
 			</metazone>
 			<metazone type="Uzbekistan">
@@ -4200,6 +4376,20 @@
 					<generic>Waktu Yekaterinburg</generic>
 					<standard>Waktu Standar Yekaterinburg</standard>
 					<daylight>Waktu Musim Panas Yekaterinburg</daylight>
+				</long>
+			</metazone>
+			<metazone type="Yerevan">
+				<long>
+					<generic>Waktu Yerevan</generic>
+					<standard>Waktu Standar Yerevan</standard>
+					<daylight>Waktu Musim Panas Yerevan</daylight>
+				</long>
+			</metazone>
+			<metazone type="Yukon">
+				<long>
+					<generic>Waktu Yukon</generic>
+					<standard>Waktu Standar Yukon</standard>
+					<daylight>Waktu Terang Yukon</daylight>
 				</long>
 			</metazone>
 		</timeZoneNames>

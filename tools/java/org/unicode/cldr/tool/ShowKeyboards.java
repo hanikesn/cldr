@@ -270,7 +270,9 @@ public class ShowKeyboards {
                 String keyboardId = platformKeyboard.get2();
                 // System.out.println(platformId + "\t" + p.getHardwareMap());
                 Keyboard keyboard = Keyboard.getKeyboard(keyboardId, errors);
-                showErrors(errors);
+                if (errors.size() != 0) {
+                    System.out.println("*Errors:\t" + CollectionUtilities.join(errors, "\n\t\t"));
+                }
                 Set<String> names = keyboard.getNames();
                 out.println("<h2>" + getLinkedName(keyboardId, keyboardId) + (names.size() == 0 ? "" : " " + names)
                     + "</h2>");
@@ -328,13 +330,6 @@ public class ShowKeyboards {
             out.close();
         }
         System.out.println("Failing Invisibles: " + FAILING_INVISIBLE.retainAll(INVISIBLE));
-    }
-
-    private static void showErrors(Set<String> errors) {
-        for (String error : errors) {
-            String title = error.contains("No minimal data for") ? "Warning" : "Error";
-            System.out.println("\t*" + title + ":\t" + errors);
-        }
     }
 
     static Transliterator TO_SAFE_HTML;

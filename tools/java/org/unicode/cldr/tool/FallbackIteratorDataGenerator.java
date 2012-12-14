@@ -80,7 +80,7 @@ public class FallbackIteratorDataGenerator {
         }
     }
 
-    static Map<String, String> specialCanonicalValue = CldrUtility.asMap(new String[][] {
+    static Map<String, String> specialCanonicalValue = CldrUtility.asMap(new Object[][] {
         { "cel-gaulish", "xcg" },
         { "en-GB-oed", "en-GB-x-oed" },
         { "i-default", "und" },

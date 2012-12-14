@@ -35,7 +35,8 @@ public class LDMLNodesDeleter {
         HELP2 = 1,
         SOURCEDIR = 2,
         DESTDIR = 3,
-        XPATH = 4;
+        XPATH = 4,
+        UOPTION_LIMIT = 5;
 
     private static final UOption[] options = new UOption[] {
         UOption.HELP_H(),

@@ -1865,6 +1865,11 @@
 					<standard>Isikhathi sase-South Georgia</standard>
 				</long>
 			</metazone>
+			<metazone type="Suriname">
+				<long>
+					<standard>Isikhathi sase-Suriname</standard>
+				</long>
+			</metazone>
 			<metazone type="Syowa">
 				<long>
 					<standard>Isikhathi sase-Syowa</standard>

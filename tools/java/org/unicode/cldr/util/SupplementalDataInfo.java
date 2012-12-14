@@ -1359,7 +1359,6 @@ public class SupplementalDataInfo {
                 String defContent = parts.getAttributeValue(-1, "locales").trim();
                 String[] defLocales = defContent.split("\\s+");
                 defaultContentLocales = Collections.unmodifiableSet(new TreeSet<String>(Arrays.asList(defLocales)));
-
                 return true;
             }
             if (level2.equals("alias")) {
@@ -1437,24 +1436,6 @@ public class SupplementalDataInfo {
                                 attribute2Values.put(attribute, value0);
                             }
                         }
-                    }
-                }
-            } else if (level2.equals("distinguishing")) {
-                String level3 = parts.getElement(3);
-                if (level3.equals("distinguishingItems")) {
-                    Map<String, String> attributes = parts.getAttributes(-1);
-                    // <distinguishingItems
-                    // attributes="key request id _q registry alt iso4217 iso3166 mzone from to type numberSystem"/>
-                    // <distinguishingItems exclude="true"
-                    // elements="default measurementSystem mapping abbreviationFallback preferenceOrdering"
-                    // attributes="type"/>
-
-                    if (attributes.containsKey("exclude") && "true".equals(attributes.get("exclude"))) {
-                        return false; // don't handle the excludes -yet.
-                    } else {
-                        distinguishingAttributes = Collections.unmodifiableCollection(getSpaceDelimited(-1,
-                            "attributes", STAR_SET));
-                        return true;
                     }
                 }
             }
@@ -1684,8 +1665,6 @@ public class SupplementalDataInfo {
     private VariableReplacer coverageVariables = new VariableReplacer();
     private Map<String, String> numberingSystems = new HashMap<String, String>();
     private Set<String> defaultContentLocales;
-    public Map<CLDRLocale, CLDRLocale> baseToDefaultContent; // wo -> wo_Arab_SN
-    public Map<CLDRLocale, CLDRLocale> defaultContentToBase; // wo_Arab_SN -> wo
     private Set<String> CLDRLanguageCodes;
     private Set<String> CLDRScriptCodes;
 
@@ -1819,31 +1798,15 @@ public class SupplementalDataInfo {
     }
 
     /**
-     * Return the list of default content locales.
+     * Return the canonicalized zone, or null if there is none.
      * 
+     * @param alias
      * @return
      */
     public Set<String> getDefaultContentLocales() {
         return defaultContentLocales;
     }
 
-    /**
-     * Return the list of default content locales.
-     * 
-     * @return
-     */
-    public Set<CLDRLocale> getDefaultContentCLDRLocales() {
-        initCLDRLocaleBasedData();
-        return defaultContentToBase.keySet();
-    }
-
-    /**
-     * Get the default content locale for a specified language
-     * 
-     * @param language
-     *            language to search
-     * @return default content, or null if none
-     */
     public String getDefaultContentLocale(String language) {
         for (String dc : defaultContentLocales) {
             if (dc.startsWith(language + "_")) {
@@ -1853,58 +1816,13 @@ public class SupplementalDataInfo {
         return null;
     }
 
-    /**
-     * Get the default content locale for a specified language and script.
-     * If script is null, delegates to {@link #getDefaultContentLocale(String)}
-     * 
-     * @param language
-     * @param script
-     *            if null, delegates to {@link #getDefaultContentLocale(String)}
-     * @return default content, or null if none
-     */
     public String getDefaultContentLocale(String language, String script) {
-        if (script == null) return getDefaultContentLocale(language);
         for (String dc : defaultContentLocales) {
             if (dc.startsWith(language + "_" + script + "_")) {
                 return dc;
             }
         }
         return null;
-    }
-
-    /**
-     * Given a default locale (such as 'wo_Arab_SN') return the base locale (such as 'wo'), or null if the input wasn't
-     * a default conetnt locale.
-     * 
-     * @param baseLocale
-     * @return
-     */
-    public CLDRLocale getBaseFromDefaultContent(CLDRLocale dcLocale) {
-        initCLDRLocaleBasedData();
-        return defaultContentToBase.get(dcLocale);
-    }
-
-    /**
-     * Given a base locale (such as 'wo') return the default content locale (such as 'wo_Arab_SN'), or null.
-     * 
-     * @param baseLocale
-     * @return
-     */
-    public CLDRLocale getDefaultContentFromBase(CLDRLocale baseLocale) {
-        initCLDRLocaleBasedData();
-        return baseToDefaultContent.get(baseLocale);
-    }
-
-    /**
-     * Is this a default content locale?
-     * 
-     * @param dcLocale
-     * @return
-     */
-    public boolean isDefaultContent(CLDRLocale dcLocale) {
-        initCLDRLocaleBasedData();
-        if (dcLocale == null) throw new NullPointerException("null locale");
-        return (defaultContentToBase.get(dcLocale) != null);
     }
 
     public Set<String> getNumberingSystems() {
@@ -1949,7 +1867,7 @@ public class SupplementalDataInfo {
                 String pattern = ci.match.replace('\'', '"')
                     .replace("[@", "\\[@") // make sure that attributes are quoted
                     .replace("(", "(?:") // make sure that there are no capturing groups (beyond what we generate
-                // below).
+                                         // below).
                 ;
                 pattern = "^//ldml/" + pattern + "$"; // for now, force a complete match
                 String variableType = null;
@@ -2111,21 +2029,16 @@ public class SupplementalDataInfo {
         Set<String> targetCalendars = new HashSet<String>();
         Iterator<String> it = territories.iterator();
         while (it.hasNext()) {
-            List<String> addCalendars = getCalendars(it.next());
+            List<String> addCalendars = calendarPreferences.get(it.next());
             if (addCalendars == null) {
                 continue;
             }
-            targetCalendars.addAll(addCalendars);
+            Iterator<String> it2 = addCalendars.iterator();
+            while (it2.hasNext()) {
+                targetCalendars.add(it2.next());
+            }
         }
         return targetCalendars;
-    }
-
-    /**
-     * @param territory
-     * @return a list the calendars used in the specified territorys
-     */
-    public List<String> getCalendars(String territory) {
-        return calendarPreferences.get(territory);
     }
 
     private Set<String> getCurrentCurrencies(Set<String> territories) {
@@ -2730,7 +2643,6 @@ public class SupplementalDataInfo {
     private List<String> attributeOrder;
     private List<String> elementOrder;
     private List<String> serialElements;
-    private Collection<String> distinguishingAttributes;
 
     public List<String> getAttributeOrder() {
         return attributeOrder;
@@ -2742,10 +2654,6 @@ public class SupplementalDataInfo {
 
     public List<String> getSerialElements() {
         return serialElements;
-    }
-
-    public Collection<String> getDistinguishingAttributes() {
-        return distinguishingAttributes;
     }
 
     public List<R4<String, String, Integer, Boolean>> getLanguageMatcherData(String string) {
@@ -2832,11 +2740,9 @@ public class SupplementalDataInfo {
      */
     public MetaZoneRange getMetaZoneRange(String zone, long date) {
         Set<MetaZoneRange> metazoneRanges = zoneToMetaZoneRanges.get(zone);
-        if (metazoneRanges != null) {
-            for (MetaZoneRange metazoneRange : metazoneRanges) {
-                if (metazoneRange.dateRange.getFrom() <= date && date < metazoneRange.dateRange.getTo()) {
-                    return metazoneRange;
-                }
+        for (MetaZoneRange metazoneRange : metazoneRanges) {
+            if (metazoneRange.dateRange.getFrom() <= date && date < metazoneRange.dateRange.getTo()) {
+                return metazoneRange;
             }
         }
         return null;
@@ -2929,60 +2835,5 @@ public class SupplementalDataInfo {
 
     public boolean isCLDRScriptCode(String code) {
         return CLDRScriptCodes.contains(code);
-    }
-
-    private synchronized void initCLDRLocaleBasedData() throws InternalError {
-        // This initialization depends on SDI being initialized.
-        if (defaultContentToBase == null) {
-            Map<CLDRLocale, CLDRLocale> p2c = new TreeMap<CLDRLocale, CLDRLocale>();
-            Map<CLDRLocale, CLDRLocale> c2p = new TreeMap<CLDRLocale, CLDRLocale>();
-            TreeSet<CLDRLocale> tmpAllLocales = new TreeSet<CLDRLocale>();
-            // copied from SupplementalData.java - CLDRLocale based
-            for (String l : defaultContentLocales) {
-                CLDRLocale child = CLDRLocale.getInstance(l);
-                tmpAllLocales.add(child);
-            }
-
-            for (CLDRLocale child : tmpAllLocales) {
-                // Find a parent of this locale which is NOT itself also a defaultContent
-                CLDRLocale nextParent = child.getParent();
-                // /System.err.println(">> considering " + child + " with parent " + nextParent);
-                while (nextParent != null) {
-                    if (!tmpAllLocales.contains(nextParent)) { // Did we find a parent that's also not itself a
-                        // defaultContent?
-                        // /System.err.println(">>>> Got 1? considering " + child + " with parent " + nextParent);
-                        break;
-                    }
-                    // /System.err.println(">>>>> considering " + child + " with parent " + nextParent);
-                    nextParent = nextParent.getParent();
-                }
-                // parent
-                if (nextParent == null) {
-                    throw new InternalError("SupplementalDataInfo.defaultContentToChild(): No valid parent for "
-                        + child);
-                } else if (nextParent == CLDRLocale.ROOT || nextParent == CLDRLocale.getInstance("root")) {
-                    throw new InternalError(
-                        "SupplementalDataInfo.defaultContentToChild(): Parent is root for default content locale "
-                            + child);
-                } else {
-                    c2p.put(child, nextParent); // wo_Arab_SN -> wo
-                    CLDRLocale oldChild = p2c.get(nextParent);
-                    if (oldChild != null) {
-                        CLDRLocale childParent = child.getParent();
-                        if (!childParent.equals(oldChild)) {
-                            throw new InternalError(
-                                "SupplementalData.defaultContentToChild(): defaultContent list in wrong order? Tried to map "
-                                    + nextParent + " -> " + child + ", replacing " + oldChild + " (should have been "
-                                    + childParent + ")");
-                        }
-                    }
-                    p2c.put(nextParent, child); // wo -> wo_Arab_SN
-                }
-            }
-
-            // done, save the hashtables..
-            baseToDefaultContent = Collections.unmodifiableMap(p2c); // wo -> wo_Arab_SN
-            defaultContentToBase = Collections.unmodifiableMap(c2p); // wo_Arab_SN -> wo
-        }
     }
 }

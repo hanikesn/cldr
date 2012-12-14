@@ -1611,6 +1611,13 @@
 					<daylight>Şərq Avropa yay vaxtı</daylight>
 				</long>
 			</metazone>
+			<metazone type="Kuybyshev">
+				<long>
+					<generic>Kuybuşev vaxtı</generic>
+					<standard>Kuybuşev standart vaxtı</standard>
+					<daylight>Kuybuşev yay vaxtı</daylight>
+				</long>
+			</metazone>
 			<metazone type="Moscow">
 				<long>
 					<generic>Moskva vaxtı</generic>
@@ -1623,6 +1630,13 @@
 					<generic>Samara vaxtı</generic>
 					<standard>Samara standart vaxtı</standard>
 					<daylight>Samara yay vaxtı</daylight>
+				</long>
+			</metazone>
+			<metazone type="Turkey">
+				<long>
+					<generic>Türkiya vaxtı</generic>
+					<standard>Türkiya standart vaxtı</standard>
+					<daylight>Türkiya yay vaxtı</daylight>
 				</long>
 			</metazone>
 			<metazone type="Volgograd">
@@ -2672,4 +2686,3 @@
 		</messages>
 	</posix>
 </ldml>
-

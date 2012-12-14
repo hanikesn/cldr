@@ -42,8 +42,8 @@ import com.ibm.icu.text.UTF16;
  */
 public class VettingAdder {
 
-    private Map<String, Set<String>> locale_files = new TreeMap<String, Set<String>>();
-    private Comparator<String> scomp = new UTF16.StringComparator();
+    private Map locale_files = new TreeMap();
+    private Comparator scomp = new UTF16.StringComparator();
     private Set conflictSet = new TreeSet(
         new ArrayComparator(new Comparator[] { scomp, scomp, scomp }));
 
@@ -63,10 +63,8 @@ public class VettingAdder {
                 return;
             }
             String localeName = name.substring(0, name.length() - 4);
-            Set<String> s = locale_files.get(localeName);
-            if (s == null) {
-                locale_files.put(localeName, s = new TreeSet<String>());
-            }
+            Set s = (Set) locale_files.get(localeName);
+            if (s == null) locale_files.put(localeName, s = new TreeSet());
             s.add(f.getParent());
         } else {
             String[] subnames = f.list();
@@ -106,21 +104,22 @@ public class VettingAdder {
     };
 
     static class VettingInfoSet {
-        private Map<String, List<VettingInfo>> path_vettingInfoList = new TreeMap<String, List<VettingInfo>>();
+        private Map path_vettingInfoList = new TreeMap();
 
         public void add(String path, String dir, String fullPath, String value) {
             VettingInfo vi = new VettingInfo(dir, fullPath, value);
-            List<VettingInfo> s = path_vettingInfoList.get(path);
-            if (s == null) path_vettingInfoList.put(path, s = new ArrayList<VettingInfo>(1));
+            List s = (List) path_vettingInfoList.get(path);
+            if (s == null) path_vettingInfoList.put(path, s = new ArrayList(1));
             s.add(vi);
         }
 
-        public Iterator<String> iterator() {
+        public Iterator iterator() {
+            // TODO Auto-generated method stub
             return path_vettingInfoList.keySet().iterator();
         }
 
-        public Collection<VettingInfo> get(String path) {
-            return path_vettingInfoList.get(path);
+        public Collection get(String path) {
+            return (Collection) path_vettingInfoList.get(path);
         }
     }
 

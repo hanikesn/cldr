@@ -147,7 +147,7 @@ public class CompactDecimalFormatTest {
             CompactDecimalFormat snf;
             try {
                 snf = BuildIcuCompactDecimalFormat.build(file, errors, debugOriginals, Style.SHORT,
-                    new ULocale(locale), CurrencyStyle.PLAIN, "EUR");
+                    new ULocale(locale), CurrencyStyle.PLAIN);
             } catch (Exception e) {
                 errors.add("Can't construct: " + e.getMessage());
                 continue;

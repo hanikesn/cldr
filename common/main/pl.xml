@@ -3088,6 +3088,13 @@
 					<daylight>Czas Alaska letni</daylight>
 				</long>
 			</metazone>
+			<metazone type="Alaska_Hawaii">
+				<long>
+					<generic draft="provisional">Czas alaskańsko-hawajski</generic>
+					<standard draft="provisional">Czas standardowy alaskańsko-hawajski</standard>
+					<daylight draft="provisional">Czas alaskańsko-hawajski letni</daylight>
+				</long>
+			</metazone>
 			<metazone type="Amazon">
 				<long>
 					<generic>Czas amazoński</generic>
@@ -3212,6 +3219,13 @@
 					<generic>Bangladesz</generic>
 					<standard>Bangladesz (czas standardowy)</standard>
 					<daylight>Bangladesz (czas letni)</daylight>
+				</long>
+			</metazone>
+			<metazone type="Bering">
+				<long>
+					<generic draft="provisional">Czas Cieśniny Beringa</generic>
+					<standard draft="provisional">Czas standardowy Cieśniny Beringa</standard>
+					<daylight draft="provisional">Czas Cieśniny Beringa letni</daylight>
 				</long>
 			</metazone>
 			<metazone type="Bhutan">
@@ -3419,6 +3433,13 @@
 			<metazone type="GMT">
 				<long>
 					<standard draft="provisional">Czas uniwersalny</standard>
+				</long>
+			</metazone>
+			<metazone type="Greenland_Central">
+				<long>
+					<generic>Czas centralnogrenlandzki</generic>
+					<standard>Czas standardowy centralnogrenlandzki</standard>
+					<daylight>Czas centralnogrenlandzki letni</daylight>
 				</long>
 			</metazone>
 			<metazone type="Greenland_Eastern">
@@ -3811,6 +3832,11 @@
 					<standard>Georgia Południowa</standard>
 				</long>
 			</metazone>
+			<metazone type="Suriname">
+				<long>
+					<standard>Surinam</standard>
+				</long>
+			</metazone>
 			<metazone type="Syowa">
 				<long>
 					<standard>Syowa</standard>
@@ -3929,6 +3955,13 @@
 					<generic draft="contributed">Czas Jekaterynburg</generic>
 					<standard draft="contributed">Jekaterynburg (czas standardowy)</standard>
 					<daylight draft="contributed">Czas Jekaterynburg letni</daylight>
+				</long>
+			</metazone>
+			<metazone type="Yukon">
+				<long>
+					<generic draft="unconfirmed">Czas Yukon</generic>
+					<standard draft="unconfirmed">Czas standardowy Yukon</standard>
+					<daylight draft="unconfirmed">Czas Yukon letni</daylight>
 				</long>
 			</metazone>
 		</timeZoneNames>
