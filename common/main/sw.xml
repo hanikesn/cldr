@@ -13,7 +13,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 	<localeDisplayNames>
 		<localeDisplayPattern>
 			<localePattern>{0} ({1})</localePattern>
-			<localeSeparator>{0}, {1}</localeSeparator>
+			<localeSeparator>,</localeSeparator>
 		</localeDisplayPattern>
 		<languages>
 			<language type="ab">Kiabkhazi</language>
@@ -828,10 +828,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<availableFormats>
 						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">d E</dateFormatItem>
-						<dateFormatItem id="Gy">y G</dateFormatItem>
-						<dateFormatItem id="GyMMM">MMM y G</dateFormatItem>
-						<dateFormatItem id="GyMMMd">d MMM y G</dateFormatItem>
-						<dateFormatItem id="GyMMMEd">E, MMM d, y G</dateFormatItem>
 						<dateFormatItem id="H">HH</dateFormatItem>
 						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
@@ -845,17 +841,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<dateFormatItem id="MMMMd">d MMMM</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, d MMMM</dateFormatItem>
 						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">y G</dateFormatItem>
-						<dateFormatItem id="yyyy">y G</dateFormatItem>
-						<dateFormatItem id="yyyyM">M/y G</dateFormatItem>
-						<dateFormatItem id="yyyyMd">d/M/y G</dateFormatItem>
-						<dateFormatItem id="yyyyMEd">E, d/M/y G</dateFormatItem>
-						<dateFormatItem id="yyyyMMM">MMM y G</dateFormatItem>
-						<dateFormatItem id="yyyyMMMd">d MMM y G</dateFormatItem>
-						<dateFormatItem id="yyyyMMMEd">E, MMM d, y G</dateFormatItem>
-						<dateFormatItem id="yyyyMMMM">MMMM y G</dateFormatItem>
-						<dateFormatItem id="yyyyQQQ">QQQ y G</dateFormatItem>
-						<dateFormatItem id="yyyyQQQQ">QQQQ y G</dateFormatItem>
+						<dateFormatItem id="y">y</dateFormatItem>
+						<dateFormatItem id="yM">M/y</dateFormatItem>
+						<dateFormatItem id="yMd">d/M/y</dateFormatItem>
+						<dateFormatItem id="yMEd">E, d/M/y</dateFormatItem>
+						<dateFormatItem id="yMMM">MMM y</dateFormatItem>
+						<dateFormatItem id="yMMMd">d MMM y</dateFormatItem>
+						<dateFormatItem id="yMMMEd">E, MMM d, y</dateFormatItem>
+						<dateFormatItem id="yMMMM">MMMM y</dateFormatItem>
+						<dateFormatItem id="yQQQ">QQQ y</dateFormatItem>
+						<dateFormatItem id="yQQQQ">QQQQ y</dateFormatItem>
 					</availableFormats>
 					<intervalFormats>
 						<intervalFormatItem id="d">
@@ -916,39 +911,39 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<greatestDifference id="M">E, d MMM - E, d MMM</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="y">
-							<greatestDifference id="y">y - y G</greatestDifference>
+							<greatestDifference id="y">y - y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yM">
-							<greatestDifference id="M">M/y - M/y G</greatestDifference>
-							<greatestDifference id="y">M/y - M/y G</greatestDifference>
+							<greatestDifference id="M">M/y - M/y</greatestDifference>
+							<greatestDifference id="y">M/y - M/y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMd">
-							<greatestDifference id="d">d/M/y - d/M/y G</greatestDifference>
-							<greatestDifference id="M">d/M/y - d/M/y G</greatestDifference>
-							<greatestDifference id="y">d/M/y - d/M/y G</greatestDifference>
+							<greatestDifference id="d">d/M/y - d/M/y</greatestDifference>
+							<greatestDifference id="M">d/M/y - d/M/y</greatestDifference>
+							<greatestDifference id="y">d/M/y - d/M/y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMEd">
-							<greatestDifference id="d">E, d/M/y - E, d/M/y G</greatestDifference>
-							<greatestDifference id="M">E, d/M/y - E, d/M/y G</greatestDifference>
-							<greatestDifference id="y">E, d/M/y - E, d/M/y G</greatestDifference>
+							<greatestDifference id="d">E, d/M/y - E, d/M/y</greatestDifference>
+							<greatestDifference id="M">E, d/M/y - E, d/M/y</greatestDifference>
+							<greatestDifference id="y">E, d/M/y - E, d/M/y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMM">
-							<greatestDifference id="M">MMM - MMM y G</greatestDifference>
-							<greatestDifference id="y">MMM y - MMM y G</greatestDifference>
+							<greatestDifference id="M">MMM - MMM y</greatestDifference>
+							<greatestDifference id="y">MMM y - MMM y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMd">
-							<greatestDifference id="d">d - d MMM y G</greatestDifference>
-							<greatestDifference id="M">d MMM - d MMM y G</greatestDifference>
-							<greatestDifference id="y">d MMM y - d MMM y G</greatestDifference>
+							<greatestDifference id="d">d - d MMM y</greatestDifference>
+							<greatestDifference id="M">d MMM - d MMM y</greatestDifference>
+							<greatestDifference id="y">d MMM y - d MMM y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMEd">
-							<greatestDifference id="d">E, d MMM - E, d MMM y G</greatestDifference>
-							<greatestDifference id="M">E, d MMM - E, d MMM y G</greatestDifference>
-							<greatestDifference id="y">E, d MMM y - E, d MMM y G</greatestDifference>
+							<greatestDifference id="d">E, d MMM - E, d MMM y</greatestDifference>
+							<greatestDifference id="M">E, d MMM - E, d MMM y</greatestDifference>
+							<greatestDifference id="y">E, d MMM y - E, d MMM y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMM">
-							<greatestDifference id="M">MMMM-MMMM y G</greatestDifference>
-							<greatestDifference id="y">MMMM y – MMMM y G</greatestDifference>
+							<greatestDifference id="M">MMMM-MMMM y</greatestDifference>
+							<greatestDifference id="y">MMMM y – MMMM y</greatestDifference>
 						</intervalFormatItem>
 					</intervalFormats>
 				</dateTimeFormats>
@@ -1175,10 +1170,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<availableFormats>
 						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">d E</dateFormatItem>
-						<dateFormatItem id="Gy">y G</dateFormatItem>
-						<dateFormatItem id="GyMMM">MMM y G</dateFormatItem>
-						<dateFormatItem id="GyMMMd">d MMM y G</dateFormatItem>
-						<dateFormatItem id="GyMMMEd">E, MMM d, y G</dateFormatItem>
 						<dateFormatItem id="H">HH</dateFormatItem>
 						<dateFormatItem id="hm">h:mm a</dateFormatItem>
 						<dateFormatItem id="Hm">HH:mm</dateFormatItem>
@@ -1355,6 +1346,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<gmtZeroFormat>GMT</gmtZeroFormat>
 			<regionFormat>{0} Saa</regionFormat>
 			<fallbackFormat>{1} ({0})</fallbackFormat>
+			<fallbackRegionFormat>{1} Saa ({0})</fallbackRegionFormat>
 			<zone type="America/St_Barthelemy">
 				<exemplarCity>Saint Barthélemy</exemplarCity>
 			</zone>
@@ -2340,8 +2332,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
 				<currencyFormat>
-					<pattern>¤#,##0.00</pattern>
-					<pattern alt="accounting">¤#,##0.00;(¤#,##0.00)</pattern>
+					<pattern>¤#,##0.00;(¤#,##0.00)</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 			<unitPattern count="one">{0} {1}</unitPattern>
@@ -2845,129 +2836,111 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</currencies>
 	</numbers>
 	<units>
-		<unitLength type="long">
-			<unit type="duration-day">
-				<unitPattern count="one">siku {0}</unitPattern>
-				<unitPattern count="other">siku {0}</unitPattern>
-			</unit>
-			<unit type="duration-day-future">
-				<unitPattern count="one">Baada ya siku {0}</unitPattern>
-				<unitPattern count="other">Baada ya siku {0}</unitPattern>
-			</unit>
-			<unit type="duration-day-past">
-				<unitPattern count="one">Siku {0} iliyopita</unitPattern>
-				<unitPattern count="other">Siku {0} zilizopita</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="one">saa {0}</unitPattern>
-				<unitPattern count="other">masaa {0}</unitPattern>
-			</unit>
-			<unit type="duration-hour-future">
-				<unitPattern count="one">Baada ya saa {0}</unitPattern>
-				<unitPattern count="other">Baada ya masaa {0}</unitPattern>
-			</unit>
-			<unit type="duration-hour-past">
-				<unitPattern count="one">Saa {0} lililopita</unitPattern>
-				<unitPattern count="other">Masaa {0} yaliyopita</unitPattern>
-			</unit>
-			<unit type="duration-minute">
-				<unitPattern count="one">dakika {0}</unitPattern>
-				<unitPattern count="other">dakika {0}</unitPattern>
-			</unit>
-			<unit type="duration-minute-future">
-				<unitPattern count="one">Baada ya dakika {0}</unitPattern>
-				<unitPattern count="other">Baada ya dakika {0}</unitPattern>
-			</unit>
-			<unit type="duration-minute-past">
-				<unitPattern count="one">Dakina {0} iliyopita</unitPattern>
-				<unitPattern count="other">Dakika {0} zilizopita</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="one">mwezi {0}</unitPattern>
-				<unitPattern count="other">miezi {0}</unitPattern>
-			</unit>
-			<unit type="duration-month-future">
-				<unitPattern count="one">Baada ya mwezi {0}</unitPattern>
-				<unitPattern count="other">Baada ya miezi {0}</unitPattern>
-			</unit>
-			<unit type="duration-month-past">
-				<unitPattern count="one">Miezi {0} iliyopita</unitPattern>
-				<unitPattern count="other">Miezi {0} iliyopita</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="one">sekunde {0}</unitPattern>
-				<unitPattern count="other">sekunde {0}</unitPattern>
-			</unit>
-			<unit type="duration-second-future">
-				<unitPattern count="one">Baada ya sekunde {0}</unitPattern>
-				<unitPattern count="other">Baada ya sekunde {0}</unitPattern>
-			</unit>
-			<unit type="duration-second-past">
-				<unitPattern count="one">Sekunde {0} iliyopita</unitPattern>
-				<unitPattern count="other">Sekunde {0} zilizopita</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="one">wiki {0}</unitPattern>
-				<unitPattern count="other">wiki {0}</unitPattern>
-			</unit>
-			<unit type="duration-week-future">
-				<unitPattern count="one">Baada ya wiki {0}</unitPattern>
-				<unitPattern count="other">Baada ya wiki {0}</unitPattern>
-			</unit>
-			<unit type="duration-week-past">
-				<unitPattern count="one">Wiki {0} iliyopita</unitPattern>
-				<unitPattern count="other">Wiki {0} zilizopita</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="one">mwaka {0}</unitPattern>
-				<unitPattern count="other">miaka {0}</unitPattern>
-			</unit>
-			<unit type="duration-year-future">
-				<unitPattern count="one">Baada ya mwaka {0}</unitPattern>
-				<unitPattern count="other">Baada ya miaka {0}</unitPattern>
-			</unit>
-			<unit type="duration-year-past">
-				<unitPattern count="one">Mwaka {0} uliopita</unitPattern>
-				<unitPattern count="other">Miaka {0} iliyopita</unitPattern>
-			</unit>
-		</unitLength>
-		<unitLength type="short">
-			<unit type="duration-day">
-				<unitPattern count="one">siku {0}</unitPattern>
-				<unitPattern count="other">siku {0}</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="one">saa {0}</unitPattern>
-				<unitPattern count="other">masaa {0}</unitPattern>
-			</unit>
-			<unit type="duration-minute">
-				<unitPattern count="one">dakika {0}</unitPattern>
-				<unitPattern count="other">dakika {0}</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="one">mwezi {0}</unitPattern>
-				<unitPattern count="other">miezi {0}</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="one">sekunde {0}</unitPattern>
-				<unitPattern count="other">sekunde {0}</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="one">wiki {0}</unitPattern>
-				<unitPattern count="other">wiki {0}</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="one">mwaka {0}</unitPattern>
-				<unitPattern count="other">miaka {0}</unitPattern>
-			</unit>
-		</unitLength>
+		<unit type="day">
+			<unitPattern count="one">siku {0}</unitPattern>
+			<unitPattern count="one" alt="short">siku {0}</unitPattern>
+			<unitPattern count="other">siku {0}</unitPattern>
+			<unitPattern count="other" alt="short">siku {0}</unitPattern>
+		</unit>
+		<unit type="day-future">
+			<unitPattern count="one">Baada ya siku {0}</unitPattern>
+			<unitPattern count="other">Baada ya siku {0}</unitPattern>
+		</unit>
+		<unit type="day-past">
+			<unitPattern count="one">Siku {0} iliyopita</unitPattern>
+			<unitPattern count="other">Siku {0} zilizopita</unitPattern>
+		</unit>
+		<unit type="hour">
+			<unitPattern count="one">saa {0}</unitPattern>
+			<unitPattern count="one" alt="short">saa {0}</unitPattern>
+			<unitPattern count="other">masaa {0}</unitPattern>
+			<unitPattern count="other" alt="short">masaa {0}</unitPattern>
+		</unit>
+		<unit type="hour-future">
+			<unitPattern count="one">Baada ya saa {0}</unitPattern>
+			<unitPattern count="other">Baada ya masaa {0}</unitPattern>
+		</unit>
+		<unit type="hour-past">
+			<unitPattern count="one">Saa {0} lililopita</unitPattern>
+			<unitPattern count="other">Masaa {0} yaliyopita</unitPattern>
+		</unit>
+		<unit type="minute">
+			<unitPattern count="one">dakika {0}</unitPattern>
+			<unitPattern count="one" alt="short">dakika {0}</unitPattern>
+			<unitPattern count="other">dakika {0}</unitPattern>
+			<unitPattern count="other" alt="short">dakika {0}</unitPattern>
+		</unit>
+		<unit type="minute-future">
+			<unitPattern count="one">Baada ya dakika {0}</unitPattern>
+			<unitPattern count="other">Baada ya dakika {0}</unitPattern>
+		</unit>
+		<unit type="minute-past">
+			<unitPattern count="one">Dakina {0} iliyopita</unitPattern>
+			<unitPattern count="other">Dakika {0} zilizopita</unitPattern>
+		</unit>
+		<unit type="month">
+			<unitPattern count="one">mwezi {0}</unitPattern>
+			<unitPattern count="one" alt="short">mwezi {0}</unitPattern>
+			<unitPattern count="other">miezi {0}</unitPattern>
+			<unitPattern count="other" alt="short">miezi {0}</unitPattern>
+		</unit>
+		<unit type="month-future">
+			<unitPattern count="one">Baada ya mwezi {0}</unitPattern>
+			<unitPattern count="other">Baada ya miezi {0}</unitPattern>
+		</unit>
+		<unit type="month-past">
+			<unitPattern count="one">Miezi {0} iliyopita</unitPattern>
+			<unitPattern count="other">Miezi {0} iliyopita</unitPattern>
+		</unit>
+		<unit type="second">
+			<unitPattern count="one">sekunde {0}</unitPattern>
+			<unitPattern count="one" alt="short">sekunde {0}</unitPattern>
+			<unitPattern count="other">sekunde {0}</unitPattern>
+			<unitPattern count="other" alt="short">sekunde {0}</unitPattern>
+		</unit>
+		<unit type="second-future">
+			<unitPattern count="one">Baada ya sekunde {0}</unitPattern>
+			<unitPattern count="other">Baada ya sekunde {0}</unitPattern>
+		</unit>
+		<unit type="second-past">
+			<unitPattern count="one">Sekunde {0} iliyopita</unitPattern>
+			<unitPattern count="other">Sekunde {0} zilizopita</unitPattern>
+		</unit>
+		<unit type="week">
+			<unitPattern count="one">wiki {0}</unitPattern>
+			<unitPattern count="one" alt="short">wiki {0}</unitPattern>
+			<unitPattern count="other">wiki {0}</unitPattern>
+			<unitPattern count="other" alt="short">wiki {0}</unitPattern>
+		</unit>
+		<unit type="week-future">
+			<unitPattern count="one">Baada ya wiki {0}</unitPattern>
+			<unitPattern count="other">Baada ya wiki {0}</unitPattern>
+		</unit>
+		<unit type="week-past">
+			<unitPattern count="one">Wiki {0} iliyopita</unitPattern>
+			<unitPattern count="other">Wiki {0} zilizopita</unitPattern>
+		</unit>
+		<unit type="year">
+			<unitPattern count="one">mwaka {0}</unitPattern>
+			<unitPattern count="one" alt="short">mwaka {0}</unitPattern>
+			<unitPattern count="other">miaka {0}</unitPattern>
+			<unitPattern count="other" alt="short">miaka {0}</unitPattern>
+		</unit>
+		<unit type="year-future">
+			<unitPattern count="one">Baada ya mwaka {0}</unitPattern>
+			<unitPattern count="other">Baada ya miaka {0}</unitPattern>
+		</unit>
+		<unit type="year-past">
+			<unitPattern count="one">Mwaka {0} uliopita</unitPattern>
+			<unitPattern count="other">Miaka {0} iliyopita</unitPattern>
+		</unit>
 	</units>
 	<listPatterns>
 		<listPattern>
-			<listPatternPart type="start">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle">{0}, {1}</listPatternPart>
-			<listPatternPart type="end">{0}, na {1}</listPatternPart>
 			<listPatternPart type="2">{0} na {1}</listPatternPart>
+			<listPatternPart type="end">{0}, na {1}</listPatternPart>
+			<listPatternPart type="middle">{0}, {1}</listPatternPart>
+			<listPatternPart type="start">{0}, {1}</listPatternPart>
 		</listPattern>
 	</listPatterns>
 	<posix>

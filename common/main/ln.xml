@@ -652,6 +652,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<timeZoneNames>
 			<regionFormat>Ngonga ya {0}</regionFormat>
 			<fallbackFormat>{1} ({0})</fallbackFormat>
+			<fallbackRegionFormat>Ngonga ya {1} ({0})</fallbackRegionFormat>
 			<metazone type="Africa_Central">
 				<long>
 					<standard draft="unconfirmed">Ntángo ya Lubumbashi</standard>
@@ -985,10 +986,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 	</numbers>
 	<listPatterns>
 		<listPattern>
-			<listPatternPart type="start" draft="unconfirmed">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle" draft="unconfirmed">{0}, {1}</listPatternPart>
-			<listPatternPart type="end" draft="unconfirmed">{0} mpé {1}</listPatternPart>
 			<listPatternPart type="2" draft="unconfirmed">{0} mpé {1}</listPatternPart>
+			<listPatternPart type="end" draft="unconfirmed">{0} mpé {1}</listPatternPart>
+			<listPatternPart type="middle" draft="unconfirmed">{0}, {1}</listPatternPart>
+			<listPatternPart type="start" draft="unconfirmed">{0}, {1}</listPatternPart>
 		</listPattern>
 	</listPatterns>
 	<posix>

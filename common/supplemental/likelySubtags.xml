@@ -493,8 +493,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<!--{ Lisu; ?; ? } => { Lisu; Fraser; China }-->
 		<likelySubtag from="lki" to="lki_Arab_IR"/>
 		<!--{ Laki; ?; ? } => { Laki; Arabic; Iran }-->
-		<likelySubtag from="lkt" to="lkt_Latn_US"/>
-		<!--{ Lakota; ?; ? } => { Lakota; Latin; United States }-->
 		<likelySubtag from="lmn" to="lmn_Telu_IN"/>
 		<!--{ Lambadi; ?; ? } => { Lambadi; Telugu; India }-->
 		<likelySubtag from="ln" to="ln_Latn_CD"/>
@@ -527,10 +525,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<!--{ Makasar; ?; ? } => { Makasar; Latin; Indonesia }-->
 		<likelySubtag from="man" to="man_Latn_GN"/>
 		<!--{ Mandingo; ?; ? } => { Mandingo; Latin; Guinea }-->
-		<likelySubtag from="man_GM" to="man_Latn_GM"/>
-		<!--{ Mandingo; ?; Gambia } => { Mandingo; Latin; Gambia }-->
-		<likelySubtag from="man_Latn" to="man_Latn_GM"/>
-		<!--{ Mandingo; Latin; ? } => { Mandingo; Latin; Gambia }-->
 		<likelySubtag from="mas" to="mas_Latn_KE"/>
 		<!--{ Masai; ?; ? } => { Masai; Latin; Kenya }-->
 		<likelySubtag from="mdf" to="mdf_Cyrl_RU"/>
@@ -893,10 +887,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<!--{ Umbundu; ?; ? } => { Umbundu; Latin; Angola }-->
 		<likelySubtag from="unr" to="unr_Beng_IN"/>
 		<!--{ Mundari; ?; ? } => { Mundari; Bengali; India }-->
-		<likelySubtag from="unr_NP" to="unr_Deva_NP"/>
-		<!--{ Mundari; ?; Nepal } => { Mundari; Devanagari; Nepal }-->
-		<likelySubtag from="unr_Deva" to="unr_Deva_NP"/>
-		<!--{ Mundari; Devanagari; ? } => { Mundari; Devanagari; Nepal }-->
 		<likelySubtag from="unx" to="unx_Beng_IN"/>
 		<!--{ Munda; ?; ? } => { Munda; Bengali; India }-->
 		<likelySubtag from="ur" to="ur_Arab_PK"/>
@@ -951,8 +941,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<!--{ Yoruba; ?; ? } => { Yoruba; Latin; Nigeria }-->
 		<likelySubtag from="za" to="za_Latn_CN"/>
 		<!--{ Zhuang; ?; ? } => { Zhuang; Latin; China }-->
-		<likelySubtag from="zgh" to="zgh_Tfng_MA"/>
-		<!--{ Standard Moroccan Tamazight; ?; ? } => { Standard Moroccan Tamazight; Tifinagh; Morocco }-->
 		<likelySubtag from="zh" to="zh_Hans_CN"/>
 		<!--{ Chinese; ?; ? } => { Chinese; Simplified; China }-->
 		<likelySubtag from="zh_AU" to="zh_Hant_AU"/>

@@ -74,7 +74,6 @@ public class NewLdml2IcuConverter extends CLDRConverterTool {
         .add("keeptogether", 'k', null, null,
             "Write locale data to one file instead of splitting into separate directories. For debugging")
         .add("type", 't', "\\w+", null, "The type of file to be generated")
-        .add("xpath", 'x', ".*", null, "An optional xpath to debug the regexes with")
         .add("cldrVersion", 'c', ".*", "21.0", "The version of the CLDR data, used purely for supplementalData output.")
         .add("filter", 'f', null, null, "Perform filtering on the locale data to be converted.")
         .add("organization", 'o', ".*", null, "The organization to filter the data for");
@@ -157,12 +156,6 @@ public class NewLdml2IcuConverter extends CLDRConverterTool {
             splitter = IcuDataSplitter.make(destinationDir, splitInfos);
         }
 
-        String debugXPath = options.get("xpath").getValue();
-        // Quotes are stripped out at the command line so add them back in.
-        if (debugXPath != null) {
-            debugXPath = debugXPath.replaceAll("=([^\\]\"]++)\\]", "=\"$1\"\\]");
-        }
-
         // Process files.
         switch (type) {
         case locales:
@@ -201,18 +194,17 @@ public class NewLdml2IcuConverter extends CLDRConverterTool {
             String organization = options.get("organization").getValue();
             LocaleMapper mapper = new LocaleMapper(factory, specialFactory,
                 supplementalDataInfo, options.get("filter").doesOccur(), organization);
-            mapper.setDebugXPath(debugXPath);
             processLocales(mapper, locales);
             break;
         case keyTypeData:
-            processBcp47Data();
+            processBcp47Data(type);
             break;
         default: // supplemental data
-            processSupplemental(type, options.get("cldrVersion").getValue(), debugXPath);
+            processSupplemental(type, options.get("cldrVersion").getValue());
         }
     }
 
-    private void processBcp47Data() {
+    private void processBcp47Data(Type type) {
         Bcp47Mapper mapper = new Bcp47Mapper(sourceDir);
         IcuData[] icuData = mapper.fillFromCldr();
         for (IcuData data : icuData) {
@@ -220,7 +212,7 @@ public class NewLdml2IcuConverter extends CLDRConverterTool {
         }
     }
 
-    private void processSupplemental(Type type, String cldrVersion, String debugXPath) {
+    private void processSupplemental(Type type, String cldrVersion) {
         IcuData icuData;
         if (type == Type.plurals) {
             PluralsMapper mapper = new PluralsMapper(sourceDir);
@@ -230,9 +222,6 @@ public class NewLdml2IcuConverter extends CLDRConverterTool {
             icuData = mapper.fillFromCldr();
         } else {
             SupplementalMapper mapper = SupplementalMapper.create(sourceDir, cldrVersion);
-            if (debugXPath != null) {
-                mapper.setDebugXPath(debugXPath);
-            }
             icuData = mapper.fillFromCldr(type.toString());
         }
         writeIcuData(icuData, destinationDir);

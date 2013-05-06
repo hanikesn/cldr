@@ -758,11 +758,10 @@ public class CookieSession {
     }
 
     /**
-     * Get the coverage level for my organization (if I have one)
      * @param locale
      * @return
      */
-    public String getOrgCoverageLevel(String locale) {
+    String getOrgCoverageLevel(String locale) {
         String level;
         String myOrg = getUserOrg();
         if ((myOrg == null) || !WebContext.isCoverageOrganization(myOrg)) {
@@ -777,11 +776,6 @@ public class CookieSession {
         return level;
     }
 
-    /**
-     * Get my actual effective coverage level, including preference settings.
-     * @param locale
-     * @return
-     */
     public String getEffectiveCoverageLevel(String locale) {
         String level = sm.getListSetting(settings, SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST, false);
         if ((level == null) || (level.equals(WebContext.COVLEV_RECOMMENDED)) || (level.equals("default"))) {

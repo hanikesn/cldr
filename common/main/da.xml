@@ -13,7 +13,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 	<localeDisplayNames>
 		<localeDisplayPattern>
 			<localePattern>{0} ({1})</localePattern>
-			<localeSeparator>{0}, {1}</localeSeparator>
+			<localeSeparator>, </localeSeparator>
 			<localeKeyTypePattern>{0}: {1}</localeKeyTypePattern>
 		</localeDisplayPattern>
 		<languages>
@@ -1181,14 +1181,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<codePattern type="territory">Område: {0}</codePattern>
 		</codePatterns>
 	</localeDisplayNames>
-	<contextTransforms>
-		<contextTransformUsage type="languages">
-			<contextTransform type="uiListOrMenu">titlecase-firstword</contextTransform>
-		</contextTransformUsage>
-	</contextTransforms>
 	<characters>
 		<exemplarCharacters>[a b c d e f g h i j k l m n o p q r s t u v w x y z æ ø å]</exemplarCharacters>
-		<exemplarCharacters type="auxiliary">[á à â ç é è ê ë í î ï ñ ó ô ú ù û ÿ ü ä ǿ ö œ]</exemplarCharacters>
+		<exemplarCharacters type="auxiliary">[á à â ç é è ê ë í î ï ñ ó ô ú ù û ÿ ü æ ä ø ö œ å]</exemplarCharacters>
 		<exemplarCharacters type="index">[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z Æ Ø Å]</exemplarCharacters>
 		<exemplarCharacters type="punctuation">[\- ‐ – , ; \: ! ? . … ' ‘ ’ &quot; “ ” ( ) \[ \] § @ * / \&amp; # † ′ ″]</exemplarCharacters>
 		<ellipsis type="final" draft="contributed">{0}…</ellipsis>
@@ -1930,6 +1925,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<gmtZeroFormat>GMT</gmtZeroFormat>
 			<regionFormat>Tidszone for {0}</regionFormat>
 			<fallbackFormat>{1} ({0})</fallbackFormat>
+			<fallbackRegionFormat>Tidszone for {1} ({0})</fallbackRegionFormat>
 			<zone type="Etc/Unknown">
 				<exemplarCity>Ukendt by</exemplarCity>
 			</zone>
@@ -4492,129 +4488,111 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</currencies>
 	</numbers>
 	<units>
-		<unitLength type="long">
-			<unit type="duration-day">
-				<unitPattern count="one">{0} dag</unitPattern>
-				<unitPattern count="other">{0} dage</unitPattern>
-			</unit>
-			<unit type="duration-day-future">
-				<unitPattern count="one">om {0} dag</unitPattern>
-				<unitPattern count="other">om {0} dage</unitPattern>
-			</unit>
-			<unit type="duration-day-past">
-				<unitPattern count="one">{0} dag siden</unitPattern>
-				<unitPattern count="other">{0} dage siden</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="one">{0} time</unitPattern>
-				<unitPattern count="other">{0} timer</unitPattern>
-			</unit>
-			<unit type="duration-hour-future">
-				<unitPattern count="one">om {0} time</unitPattern>
-				<unitPattern count="other">om {0} timer</unitPattern>
-			</unit>
-			<unit type="duration-hour-past">
-				<unitPattern count="one">{0} time siden</unitPattern>
-				<unitPattern count="other">{0} timer siden</unitPattern>
-			</unit>
-			<unit type="duration-minute">
-				<unitPattern count="one">{0} minut</unitPattern>
-				<unitPattern count="other">{0} minutter</unitPattern>
-			</unit>
-			<unit type="duration-minute-future">
-				<unitPattern count="one">om {0} minut</unitPattern>
-				<unitPattern count="other">om {0} minutter</unitPattern>
-			</unit>
-			<unit type="duration-minute-past">
-				<unitPattern count="one">{0} minut siden</unitPattern>
-				<unitPattern count="other">{0} minutter siden</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="one">{0} måned</unitPattern>
-				<unitPattern count="other">{0} måneder</unitPattern>
-			</unit>
-			<unit type="duration-month-future">
-				<unitPattern count="one">om {0} måned</unitPattern>
-				<unitPattern count="other">om {0} måneder</unitPattern>
-			</unit>
-			<unit type="duration-month-past">
-				<unitPattern count="one">{0} måned siden</unitPattern>
-				<unitPattern count="other">{0} måneder siden</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="one">{0} sekund</unitPattern>
-				<unitPattern count="other">{0} sekunder</unitPattern>
-			</unit>
-			<unit type="duration-second-future">
-				<unitPattern count="one">om {0} sekund</unitPattern>
-				<unitPattern count="other">om {0} sekunder</unitPattern>
-			</unit>
-			<unit type="duration-second-past">
-				<unitPattern count="one">{0} sekund siden</unitPattern>
-				<unitPattern count="other">{0} sekunder siden</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="one">{0} uge</unitPattern>
-				<unitPattern count="other">{0} uger</unitPattern>
-			</unit>
-			<unit type="duration-week-future">
-				<unitPattern count="one">om {0} uge</unitPattern>
-				<unitPattern count="other">om {0} uger</unitPattern>
-			</unit>
-			<unit type="duration-week-past">
-				<unitPattern count="one">{0} uge siden</unitPattern>
-				<unitPattern count="other">{0} uger siden</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="one">{0} år</unitPattern>
-				<unitPattern count="other">{0} år</unitPattern>
-			</unit>
-			<unit type="duration-year-future">
-				<unitPattern count="one">om {0} år</unitPattern>
-				<unitPattern count="other">om {0} år</unitPattern>
-			</unit>
-			<unit type="duration-year-past">
-				<unitPattern count="one">{0} år siden</unitPattern>
-				<unitPattern count="other">{0} år siden</unitPattern>
-			</unit>
-		</unitLength>
-		<unitLength type="short">
-			<unit type="duration-day">
-				<unitPattern count="one">{0} dag</unitPattern>
-				<unitPattern count="other">{0} dage</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="one">{0} t.</unitPattern>
-				<unitPattern count="other">{0} t.</unitPattern>
-			</unit>
-			<unit type="duration-minute">
-				<unitPattern count="one">{0} min.</unitPattern>
-				<unitPattern count="other">{0} min.</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="one">{0} mdr.</unitPattern>
-				<unitPattern count="other">{0} mdr.</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="one">{0} sek.</unitPattern>
-				<unitPattern count="other">{0} sek.</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="one">{0} uge</unitPattern>
-				<unitPattern count="other">{0} uger</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="one">{0} år</unitPattern>
-				<unitPattern count="other">{0} år</unitPattern>
-			</unit>
-		</unitLength>
+		<unit type="day">
+			<unitPattern count="one">{0} dag</unitPattern>
+			<unitPattern count="one" alt="short">{0} dag</unitPattern>
+			<unitPattern count="other">{0} dage</unitPattern>
+			<unitPattern count="other" alt="short">{0} dage</unitPattern>
+		</unit>
+		<unit type="day-future">
+			<unitPattern count="one">om {0} dag</unitPattern>
+			<unitPattern count="other">om {0} dage</unitPattern>
+		</unit>
+		<unit type="day-past">
+			<unitPattern count="one">{0} dag siden</unitPattern>
+			<unitPattern count="other">{0} dage siden</unitPattern>
+		</unit>
+		<unit type="hour">
+			<unitPattern count="one">{0} time</unitPattern>
+			<unitPattern count="one" alt="short">{0} t.</unitPattern>
+			<unitPattern count="other">{0} timer</unitPattern>
+			<unitPattern count="other" alt="short">{0} t.</unitPattern>
+		</unit>
+		<unit type="hour-future">
+			<unitPattern count="one">om {0} time</unitPattern>
+			<unitPattern count="other">om {0} timer</unitPattern>
+		</unit>
+		<unit type="hour-past">
+			<unitPattern count="one">{0} time siden</unitPattern>
+			<unitPattern count="other">{0} timer siden</unitPattern>
+		</unit>
+		<unit type="minute">
+			<unitPattern count="one">{0} minut</unitPattern>
+			<unitPattern count="one" alt="short">{0} min.</unitPattern>
+			<unitPattern count="other">{0} minutter</unitPattern>
+			<unitPattern count="other" alt="short">{0} min.</unitPattern>
+		</unit>
+		<unit type="minute-future">
+			<unitPattern count="one">om {0} minut</unitPattern>
+			<unitPattern count="other">om {0} minutter</unitPattern>
+		</unit>
+		<unit type="minute-past">
+			<unitPattern count="one">{0} minut siden</unitPattern>
+			<unitPattern count="other">{0} minutter siden</unitPattern>
+		</unit>
+		<unit type="month">
+			<unitPattern count="one">{0} måned</unitPattern>
+			<unitPattern count="one" alt="short">{0} mdr.</unitPattern>
+			<unitPattern count="other">{0} måneder</unitPattern>
+			<unitPattern count="other" alt="short">{0} mdr.</unitPattern>
+		</unit>
+		<unit type="month-future">
+			<unitPattern count="one">om {0} måned</unitPattern>
+			<unitPattern count="other">om {0} måneder</unitPattern>
+		</unit>
+		<unit type="month-past">
+			<unitPattern count="one">{0} måned siden</unitPattern>
+			<unitPattern count="other">{0} måneder siden</unitPattern>
+		</unit>
+		<unit type="second">
+			<unitPattern count="one">{0} sekund</unitPattern>
+			<unitPattern count="one" alt="short">{0} sek.</unitPattern>
+			<unitPattern count="other">{0} sekunder</unitPattern>
+			<unitPattern count="other" alt="short">{0} sek.</unitPattern>
+		</unit>
+		<unit type="second-future">
+			<unitPattern count="one">om {0} sekund</unitPattern>
+			<unitPattern count="other">om {0} sekunder</unitPattern>
+		</unit>
+		<unit type="second-past">
+			<unitPattern count="one">{0} sekund siden</unitPattern>
+			<unitPattern count="other">{0} sekunder siden</unitPattern>
+		</unit>
+		<unit type="week">
+			<unitPattern count="one">{0} uge</unitPattern>
+			<unitPattern count="one" alt="short">{0} uge</unitPattern>
+			<unitPattern count="other">{0} uger</unitPattern>
+			<unitPattern count="other" alt="short">{0} uger</unitPattern>
+		</unit>
+		<unit type="week-future">
+			<unitPattern count="one">om {0} uge</unitPattern>
+			<unitPattern count="other">om {0} uger</unitPattern>
+		</unit>
+		<unit type="week-past">
+			<unitPattern count="one">{0} uge siden</unitPattern>
+			<unitPattern count="other">{0} uger siden</unitPattern>
+		</unit>
+		<unit type="year">
+			<unitPattern count="one">{0} år</unitPattern>
+			<unitPattern count="one" alt="short">{0} år</unitPattern>
+			<unitPattern count="other">{0} år</unitPattern>
+			<unitPattern count="other" alt="short">{0} år</unitPattern>
+		</unit>
+		<unit type="year-future">
+			<unitPattern count="one">om {0} år</unitPattern>
+			<unitPattern count="other">om {0} år</unitPattern>
+		</unit>
+		<unit type="year-past">
+			<unitPattern count="one">{0} år siden</unitPattern>
+			<unitPattern count="other">{0} år siden</unitPattern>
+		</unit>
 	</units>
 	<listPatterns>
 		<listPattern>
-			<listPatternPart type="start">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle">{0}, {1}</listPatternPart>
-			<listPatternPart type="end">{0} og {1}</listPatternPart>
 			<listPatternPart type="2">{0} og {1}</listPatternPart>
+			<listPatternPart type="end">{0} og {1}</listPatternPart>
+			<listPatternPart type="middle">{0}, {1}</listPatternPart>
+			<listPatternPart type="start">{0}, {1}</listPatternPart>
 		</listPattern>
 	</listPatterns>
 	<posix>

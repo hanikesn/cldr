@@ -1,28 +1,9 @@
 <%@page import="com.ibm.icu.lang.UCharacter"%>
-<!--  st_top.jsp -->
 <%@ include file="/WEB-INF/jspf/stcontext.jspf" %><%
-   String title;
-   String bodyClass;
-   boolean isScrollingContent = false;
-   if(ctx==null) {
-	   title = "?";
-	   bodyClass = "stUnknown";
-   } else {
-       title = (String) ctx.get("TITLE");
-	   if(ctx.getPageId()!=null) {
-		   bodyClass = "claro";
-		   isScrollingContent = true;
-	   } else {
-		   bodyClass = "stNormalPage";
-		   isScrollingContent = false;
-	   }
-   }
+   String title = (ctx==null)?"?":((String)ctx.get("TITLE"));
 %>
-</head>
-<body class='<%= bodyClass %>'>
-<%
-if(ctx!=null) {
-%>
+<!--  st_top.jsp --></head>
+<body>
 	<div id="toparea">
     <img id="stlogo" width="44" height="48" src='<%= WebContext.context(request, "STLogo"+".png") %>' title="[ST Logo]" alt="[ST Logo]" />
     <div id="toptitle" title='Phase: <%= ctx.sm.phase().toString() %>'>
@@ -43,17 +24,18 @@ if(ctx!=null) {
         int i,j;
          for(i=(n-1);i>0;i--) {
             boolean canModifyL = UserRegistry.userCanModifyLocale(ctx.session.user,ctx.docLocale[i]);
-            ctx.print("&raquo;&nbsp; <a title='"+ctx.docLocale[i]+"' class='notselected' href=\"" + ctx.vurl(ctx.docLocale[i]) + 
+            ctx.print("&raquo;&nbsp; <a title='"+ctx.docLocale[i]+"' class='notselected' href=\"" + ctx.url() + ctx.urlConnector() +SurveyMain.QUERY_LOCALE+"=" + ctx.docLocale[i] + 
                 "\">");
             ctx.print(SurveyMain.decoratedLocaleName(ctx.docLocale[i],ctx.docLocale[i].getDisplayName(),""));
             ctx.print("</a> ");
         }
         boolean canModifyL = false&&UserRegistry.userCanModifyLocale(ctx.session.user,ctx.getLocale());
-        %>&raquo;&nbsp;
-        <span title='<%= ctx.getLocale() %>' class='curLocale'>
-            <a href='<%= ctx.vurl(ctx.getLocale()) %>' class='notselected' ><%= ctx.getLocale().getDisplayName()+(canModifyL?SurveyMain.modifyThing(ctx):"") %></a>
-        </span>
-<%
+        ctx.print("&raquo;&nbsp;");
+        ctx.print("<span title='"+ctx.getLocale()+"' class='curLocale'>");
+        SurveyMain.printMenu(subCtx2, ctx.field(SurveyMain.QUERY_DO), SurveyMain.xMAIN, 
+            SurveyMain.decoratedLocaleName(ctx.getLocale(), ctx.getLocale().getDisplayName()+(canModifyL?SurveyMain.modifyThing(ctx):""), "") );
+        ctx.print("</span>");
+
         CLDRLocale dcParent = ctx.sm.getSupplementalDataInfo().getBaseFromDefaultContent(toplocale);
         CLDRLocale dcChild = ctx.sm.getSupplementalDataInfo().getDefaultContentFromBase(ctx.getLocale());
         if (dcChild != null) {
@@ -77,8 +59,5 @@ if(ctx!=null) {
         <span class='normal-title'><%= title %></span>
     </div>
     </div>
-<%
-}
-%>
 <%@ include file="/WEB-INF/tmpl/stnotices.jspf" %>
 <!-- end st_top.jsp -->

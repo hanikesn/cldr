@@ -77,7 +77,7 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
          * @see com.ibm.icu.util.Freezable#freeze()
          */
         @Override
-        public XMLSource freeze() {
+        public Object freeze() {
             readonly();
             return null;
         }
@@ -395,7 +395,7 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
                 VoteResolver<String> resolver = null; // save recalculating
                                                       // this.
                 Set<String> hitXpaths = new HashSet<String>();
-                ElapsedTimer et = (SurveyLog.DEBUG) ? new ElapsedTimer("Loading PLD for " + locale + " - cutoff = " + SurveyMain.getSQLVotesAfter()) : null;
+                ElapsedTimer et = (SurveyLog.DEBUG) ? new ElapsedTimer("Loading PLD for " + locale) : null;
                 Connection conn = null;
                 PreparedStatement ps = null;
                 PreparedStatement ps2 = null;
@@ -752,17 +752,6 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
         }
 
         @Override
-        public void unvoteFor(User user, String distinguishingXpath) {
-            voteForValue(user,distinguishingXpath,null);
-        }
-        
-        @Override
-        public void revoteFor(User user, String distinguishingXpath) {
-            String oldValue = getVoteValue(user, distinguishingXpath);
-            voteForValue(user, distinguishingXpath, oldValue);
-        }
-
-        @Override
         public synchronized void voteForValue(User user, String distinguishingXpath, String value) {
             SurveyLog.debug("V4v: " + locale + " " + distinguishingXpath + " : " + user + " voting for '" + value + "'");
             ModifyDenial denial = UserRegistry.userCanModifyLocaleWhy(user, locale); // this
@@ -821,8 +810,8 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
 
                     if (DBUtils.db_Mysql) { // use 'on duplicate key' syntax
                         ps = DBUtils.prepareForwardReadOnly(conn, "INSERT INTO " + CLDR_VBV
-                                + " (locale,xpath,submitter,value,last_mod) values (?,?,?,?,CURRENT_TIMESTAMP) "
-                                + "ON DUPLICATE KEY UPDATE locale=?,xpath=?,submitter=?,value=?,last_mod=CURRENT_TIMESTAMP");
+                                + " (locale,xpath,submitter,value) values (?,?,?,?) "
+                                + "ON DUPLICATE KEY UPDATE locale=?,xpath=?,submitter=?,value=?");
 
                         ps.setString(5, locale.getBaseName());
                         ps.setInt(6, xpathId);
@@ -832,7 +821,7 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
                         ps2 = DBUtils.prepareForwardReadOnly(conn, "DELETE FROM " + CLDR_VBV
                                 + " where locale=? and xpath=? and submitter=? ");
                         ps = DBUtils.prepareForwardReadOnly(conn, "INSERT INTO  " + CLDR_VBV
-                                + " (locale,xpath,submitter,value,last_mod) VALUES (?,?,?,?,CURRENT_TIMESTAMP) ");
+                                + " (locale,xpath,submitter,value) VALUES (?,?,?,?) ");
 
                         ps2.setString(1, locale.getBaseName());
                         ps2.setInt(2, xpathId);
@@ -963,7 +952,7 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
          * @see com.ibm.icu.util.Freezable#freeze()
          */
         @Override
-        public XMLSource freeze() {
+        public Object freeze() {
             readonly();
             return null;
         }
@@ -1096,7 +1085,7 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
     }
 
     // Database stuff here.
-    public static final String CLDR_VBV = "cldr_votevalue";
+    static final String CLDR_VBV = "cldr_votevalue";
     static final String CLDR_VBV_ALT = "cldr_votevalue_alt";
 
     // private static final String SOME_KEY =
@@ -1323,8 +1312,7 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
      */
     private PreparedStatement openQueryByLocale(Connection conn) throws SQLException {
         setupDB();
-        final String votesAfter = SurveyMain.getSQLVotesAfter();
-        return DBUtils.prepareForwardReadOnly(conn, "SELECT xpath,submitter,value FROM " + CLDR_VBV + " WHERE locale = ? and last_mod > " + votesAfter);
+        return DBUtils.prepareForwardReadOnly(conn, "SELECT xpath,submitter,value FROM " + CLDR_VBV + " WHERE locale = ?");
     }
 
     private synchronized final void setupDB() {
@@ -1511,8 +1499,6 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
      * where cldr_votevalue.value is not null;
      */
     public CLDRFile makeProposedFile(CLDRLocale locale) {
-        final String votesAfter = SurveyMain.getSQLVotesAfter();
-
         Connection conn = null;
         PreparedStatement ps = null; // all for mysql, or 1st step for derby
         ResultSet rs = null;
@@ -1521,7 +1507,7 @@ public class STFactory extends Factory implements BallotBoxFactory<UserRegistry.
             conn = DBUtils.getInstance().getDBConnection();
 
             ps = DBUtils.prepareStatementWithArgsFRO(conn, "select xpath,submitter,value from " + CLDR_VBV
-                    + " where locale=? and value IS NOT NULL and last_mod > " + SurveyMain.getSQLVotesAfter(), locale);
+                    + " where locale=? and value IS NOT NULL", locale);
 
             rs = ps.executeQuery();
             XPathParts xpp = new XPathParts(null, null);

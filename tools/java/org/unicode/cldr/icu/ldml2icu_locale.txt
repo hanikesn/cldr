@@ -43,8 +43,6 @@
      ; /calendar/$1/intervalFormats:alias ; values=/LOCALE/calendar/$2/intervalFormats
 //ldml/dates/calendars/calendar[@type="(%A)"]/dateTimeFormats/(availableFormats|appendItems|intervalFormats)/alias[@source="locale"][@path="../../../calendar[@type='(%A)']/dateTimeFormats/\2"]   ; /calendar/$1/$2:alias ; values=/LOCALE/calendar/$3/$2
 
-//ldml/units/unitLength[@type="long"]/alias[@source="locale"][@path="../unitLength[@type='short']"] ; /units:alias ; values=/LOCALE/unitsShort
-//ldml/listPatterns/listPattern[@type="(%A)"]/alias[@source="locale"][@path="../listPattern"] ; /listPattern/$1:alias ; values=/LOCALE/listPattern/standard
 
 # Characters
 
@@ -83,9 +81,9 @@
 
 //ldml/dates/calendars/calendar[@type="(%A)"]/dayPeriods/dayPeriodContext[@type="format"]/dayPeriodWidth[@type="wide"]/dayPeriod[@type="(am|pm)"] ; /calendar/$1/AmPmMarkers
 
-//ldml/dates/calendars/calendar[@type="(%A)"]/eras/eraNarrow/era[@type="(%A)"] ; /calendar/$1/eras/narrow
-//ldml/dates/calendars/calendar[@type="(%A)"]/eras/eraAbbr/era[@type="(%A)"] ; /calendar/$1/eras/abbreviated
-//ldml/dates/calendars/calendar[@type="(%A)"]/eras/eraNames/era[@type="(%A)"] ; /calendar/$1/eras/wide
+//ldml/dates/calendars/calendar[@type="(%A)"]/eras/eraNarrow/era[@type="(%A)"] ; /calendar/$1/eras/narrow ; key=$2
+//ldml/dates/calendars/calendar[@type="(%A)"]/eras/eraAbbr/era[@type="(%A)"] ; /calendar/$1/eras/abbreviated ; key=$2
+//ldml/dates/calendars/calendar[@type="(%A)"]/eras/eraNames/era[@type="(%A)"] ; /calendar/$1/eras/wide ; key=$2
 
 //ldml/dates/calendars/calendar[@type="(%A)"]/(day|month)s/%W[@type="(%A)"]/%W[@type="(%A)"]/%W[@type="(%A)"]([@yeartype="(%A)"])? ; /calendar/$1/$2Names/$3/$4
 //ldml/dates/calendars/calendar[@type="(%A)"]/(quarters)/%W[@type="(%A)"]/%W[@type="(%A)"]/%W[@type="(?:%A)"] ; /calendar/$1/$2/$3/$4
@@ -146,10 +144,11 @@
 
 //ldml/numbers/symbols[@numberSystem="(%A)"]/(%W) ; /NumberElements/$1/symbols/$2
 //ldml/numbers/(%GFormat)s[@numberSystem="(%W)"]/\1Length/\1[@type="standard"]/pattern[@type="standard"] ; /NumberElements/$2/patterns/$1
+# TODO(jchye): remove the following CLDR21-compatible regex for compact decimal formats once ICU uses CLDR22.
+//ldml/numbers/decimalFormats[@numberSystem="(%W)"]/decimalFormatLength[@type="short"]/decimalFormat[@type="standard"]/pattern[@type="(%N)"] ; /NumberElements/$1/patternsShort/decimalFormat/$2/other
+# CLDR22-compatible regexes for compact/long decimal formats.
 //ldml/numbers/decimalFormats[@numberSystem="(%W)"]/decimalFormatLength[@type="short"]/decimalFormat[@type="standard"]/pattern[@type="(%N)"][@count="(%W)"] ; /NumberElements/$1/patternsShort/decimalFormat/$2/$3
 //ldml/numbers/decimalFormats[@numberSystem="(%W)"]/decimalFormatLength[@type="long"]/decimalFormat[@type="standard"]/pattern[@type="(%N)"][@count="(%W)"] ; /NumberElements/$1/patternsLong/decimalFormat/$2/$3
-
-//ldml/numbers/miscPatterns[@numberSystem="(%W)"]/pattern[@type="(%W)"] ; /NumberElements/$1/miscPatterns/$2
 
 # Misc
 
@@ -161,8 +160,6 @@
 //ldml/layout/orientation/(%G)Order ; /layout/$1s
 
 //ldml/listPatterns/listPattern/listPatternPart[@type="(%A)"] ; /listPattern/standard/$1
-//ldml/listPatterns/listPattern[@type="(%A)"]/listPatternPart[@type="(%A)"] ; /listPattern/$1/$2
 
-//ldml/units/unitLength[@type="short"]/unit[@type="(\w++)-(%A)"]/unitPattern[@count="(%A)"] ; /unitsShort/$1/$2/$3
-//ldml/units/unitLength[@type="long"]/unit[@type="(\w++)-(%A)"]/unitPattern[@count="(%A)"] ; /units/$1/$2/$3
-//ldml/units/unitLength[@type="short"]/durationUnit[@type="(%A)"]/durationUnitPattern ; /durationUnits/$1
+//ldml/units/unit[@type="(%A)"]/unitPattern[@count="(%A)"][@alt="short"] ; /unitsShort/$1/$2
+//ldml/units/unit[@type="(%A)"]/unitPattern[@count="(%A)"] ; /units/$1/$2

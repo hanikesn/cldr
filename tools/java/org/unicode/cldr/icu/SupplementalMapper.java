@@ -2,7 +2,6 @@ package org.unicode.cldr.icu;
 
 import java.io.File;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -220,15 +219,8 @@ public class SupplementalMapper extends LdmlMapper {
         for (String xpath : cldrFile) {
             Output<Finder> matcher = new Output<Finder>();
             String fullPath = cldrFile.getFullXPath(xpath);
-            List<String> debugResults = isDebugXPath(fullPath) ? new ArrayList<String>() : null;
-            RegexResult regexResult = pathConverter.get(fullPath, null, null, matcher, debugResults);
-            if (regexResult == null) {
-                printLookupResults(fullPath, debugResults);
-                continue;
-            }
-            if (debugResults != null) {
-                System.out.println(fullPath + " successfully matched");
-            }
+            RegexResult regexResult = pathConverter.get(fullPath, null, null, matcher, null);
+            if (regexResult == null) continue;
             String[] arguments = matcher.value.getInfo();
             for (PathValueInfo info : regexResult) {
                 List<String> values = info.processValues(arguments, cldrFile, xpath);
@@ -427,7 +419,7 @@ public class SupplementalMapper extends LdmlMapper {
         }
 
         @Override
-        public XMLSource freeze() {
+        public Object freeze() {
             locked = true;
             return this;
         }

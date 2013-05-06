@@ -279,7 +279,7 @@ public class CasingInfo {
         }
 
         @Override
-        public XMLSource freeze() {
+        public Object freeze() {
             return null;
         }
 

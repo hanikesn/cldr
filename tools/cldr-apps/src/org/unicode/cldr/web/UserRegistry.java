@@ -1,7 +1,7 @@
 //  UserRegistry.java
 //
 //  Created by Steven R. Loomis on 14/10/2005.
-//  Copyright 2005-2013 IBM. All rights reserved.
+//  Copyright 2005-2012 IBM. All rights reserved.
 //
 
 package org.unicode.cldr.web;
@@ -20,7 +20,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -59,10 +58,6 @@ import com.ibm.icu.util.ULocale;
  * @see OldUserRegistry
  **/
 public class UserRegistry {
-
-    public class LogoutException extends Exception {
-
-    }
 
     static Set<String> getCovGroupsForOrg(String st_org) {
         Connection conn = null;
@@ -135,13 +130,20 @@ public class UserRegistry {
 
     private static java.util.logging.Logger logger;
     // user levels
-    public static final int ADMIN = VoteResolver.Level.admin.getSTLevel();    /**< Administrator **/
-    public static final int TC = VoteResolver.Level.tc.getSTLevel();    /**< Technical Committee **/
-    public static final int MANAGER = VoteResolver.Level.manager.getSTLevel();    /**< manager **/
-    public static final int EXPERT = VoteResolver.Level.expert.getSTLevel();     /**< Expert Vetter **/
-    public static final int VETTER = VoteResolver.Level.vetter.getSTLevel();    /**< regular Vetter **/
-    public static final int STREET = VoteResolver.Level.street.getSTLevel();    /**< Guest Vetter **/
-    public static final int LOCKED = VoteResolver.Level.locked.getSTLevel();  /**< Locked user - can't login **/
+    public static final int ADMIN = VoteResolver.Level.admin.getSTLevel();
+    /** Administrator **/
+    public static final int TC = VoteResolver.Level.tc.getSTLevel();
+    /** Technical Committee **/
+    public static final int MANAGER = VoteResolver.Level.manager.getSTLevel();
+    /** manager **/
+    public static final int EXPERT = VoteResolver.Level.expert.getSTLevel();
+    /** Expert Vetter **/
+    public static final int VETTER = VoteResolver.Level.vetter.getSTLevel();
+    /** regular Vetter **/
+    public static final int STREET = VoteResolver.Level.street.getSTLevel();
+    /** Guest Vetter **/
+    public static final int LOCKED = VoteResolver.Level.locked.getSTLevel();
+    /** Locked user - can't login **/
 
     public static final int LIMIT_LEVEL = 10000;
     /** max level **/
@@ -265,10 +267,6 @@ public class UserRegistry {
             } else {
                 return "<a href='mailto:" + email + "'>" + name + "</a>-" + levelAsStr(userlevel).toLowerCase();
             }
-        }
-
-        public String toHtml() {
-                return "<a href='mailto:" + email + "'>" + name + "</a>-" + levelAsStr(userlevel).toLowerCase();
         }
 
         public String toString(User forUser) {
@@ -688,7 +686,6 @@ public class UserRegistry {
                     u.intlocs = rs.getString(5);
                     u.locales = rs.getString(6);
                     u.last_connect = rs.getTimestamp(7);
-                    u.password = rs.getString(8);
                     // queryIdStmt =
                     // conn.prepareStatement("SELECT name,org,email,userlevel,intlocs,lastlogin,password from "
                     // + CLDR_USERS +" where id=?",
@@ -732,12 +729,8 @@ public class UserRegistry {
             return ret;
         } // end synch array
     }
-    
-    private final String normalizeEmail(String str) {
-        return str.trim().toLowerCase();
-    }
 
-    public final UserRegistry.User get(String pass, String email, String ip) throws LogoutException {
+    public final UserRegistry.User get(String pass, String email, String ip) {
         return get(pass, email, ip, false);
     }
 
@@ -769,7 +762,7 @@ public class UserRegistry {
      * @param pass
      *            the password to match. If NULL, means just do a lookup
      */
-    public UserRegistry.User get(String pass, String email, String ip, boolean letmein) throws LogoutException {
+    public UserRegistry.User get(String pass, String email, String ip, boolean letmein) {
         if ((email == null) || (email.length() <= 0)) {
             return null; // nothing to do
         }
@@ -781,8 +774,6 @@ public class UserRegistry {
             email = email.substring(1);
             letmein = true;
         }
-        
-        email = normalizeEmail(email);
 
         ResultSet rs = null;
         // synchronized(conn) {
@@ -803,7 +794,8 @@ public class UserRegistry {
             // First, try to query it back from the DB.
             rs = pstmt.executeQuery();
             if (!rs.next()) {
-                throw new UserRegistry.LogoutException();
+                logger.info("Unknown user or bad login: " + email + " @ " + ip);
+                return null;
             }
             User u = new UserRegistry.User(rs.getInt(1));
 
@@ -812,7 +804,7 @@ public class UserRegistry {
             if (letmein) {
                 u.password = rs.getString(8);
             }
-            u.email =normalizeEmail( email );
+            u.email = email;
             // from db: (id,name,userlevel,org,locales)
             u.name = DBUtils.getStringUTF8(rs, 2);// rs.getString(2);
             u.userlevel = rs.getInt(3);
@@ -838,9 +830,6 @@ public class UserRegistry {
                     "UserRegistry: SQL error trying to get " + email + " - " + DBUtils.unchainSqlException(se), se);
             throw new InternalError("UserRegistry: SQL error trying to get " + email + " - " + DBUtils.unchainSqlException(se));
             // return null;
-        } catch(LogoutException le) {
-            logger.info("Unknown user or bad login: " + email + " @ " + ip);
-            throw le; // bubble
         } catch (Throwable t) {
             logger.log(java.util.logging.Level.SEVERE, "UserRegistry: some error trying to get " + email, t);
             throw new InternalError("UserRegistry: some error trying to get " + email + " - " + t.toString());
@@ -853,11 +842,7 @@ public class UserRegistry {
     } // end get
 
     public UserRegistry.User get(String email) {
-        try {
-            return get(null, email, INTERNAL);
-        } catch(LogoutException le) {
-            return null;
-        }
+        return get(null, email, INTERNAL);
     }
 
     /**
@@ -1236,12 +1221,6 @@ public class UserRegistry {
         if (type == InfoType.INFO_ORG && ctx.session.user.userlevel > ADMIN) {
             return ("[Permission Denied]");
         }
-        
-        if(type == InfoType.INFO_EMAIL) {
-            value = normalizeEmail(value);
-        } else {
-            value = value.trim();
-        }
 
         if (!ctx.session.user.isAdminFor(getInfo(theirId))) {
             return ("[Permission Denied]");
@@ -1286,105 +1265,6 @@ public class UserRegistry {
 
         return msg;
     }
-    
-    public String resetPassword(String forEmail, String ip) {
-        String msg = "";
-        String newPassword = CookieSession.newId(false);
-        if(newPassword.length() > 10 ) {
-            newPassword = newPassword.substring(0, 10);
-        }
-        Connection conn = null;
-        PreparedStatement updateInfoStmt = null;
-        try {
-            conn = DBUtils.getInstance().getDBConnection();
-
-            updateInfoStmt = DBUtils.prepareStatementWithArgs(conn, "UPDATE " + CLDR_USERS + " set password=? ,  audit=? WHERE email=? AND userlevel <" + LOCKED + "  AND userlevel >= " +  TC, newPassword, 
-                    "Reset: " + new Date().toString() + " by " + ip,
-                    forEmail);
-
-            logger.info("** Attempt password reset " + forEmail + " from " + ip );
-            int n = updateInfoStmt.executeUpdate();
-            
-            conn.commit();
-            userModified(forEmail);
-            if (n == 0) {
-                msg = msg + "Error: no valid accounts found";
-                logger.severe("Error in password reset:: 0 users updated.");
-            } else if (n != 1) {
-                msg = msg + " [Error in updated users!] ";
-                logger.severe("Error in password reset: " + n + " updated removed!");
-            } else {
-                msg = msg + "OK";
-                
-                sm.notifyUser(null, forEmail, newPassword);
-            }
-        } catch (SQLException se) {
-            SurveyLog.logException(se, "Resetting password for user " + forEmail + " from " + ip);
-            msg = msg + " exception";
-        } catch (Throwable t) {
-            SurveyLog.logException(t, "Resetting password for user " + forEmail + " from " + ip);
-            msg = msg + " exception: " + t.toString();
-        } finally {
-            DBUtils.close(updateInfoStmt, conn);
-        }
-        return msg;
-    }
-
-    public String lockAccount(String forEmail, String reason, String ip) {
-        String msg = "";
-        logger.info("** Attempt LOCK " + forEmail + " from " + ip  + " reason " + reason);
-        String newPassword = CookieSession.newId(false);
-        if(newPassword.length() > 10 ) {
-            newPassword = newPassword.substring(0, 10);
-        }
-        if(reason.length() > 500 ) {
-            reason= reason.substring(0, 500) + "...";
-        }
-        Connection conn = null;
-        PreparedStatement updateInfoStmt = null;
-        try {
-            conn = DBUtils.getInstance().getDBConnection();
-
-            updateInfoStmt = DBUtils.prepareStatementWithArgs(conn, "UPDATE " + CLDR_USERS + " set password=?,userlevel=" + LOCKED + ",  audit=? WHERE email=? AND userlevel <" + LOCKED + "  AND userlevel >= " +  TC, 
-                    newPassword,
-                    "Lock: " + new Date().toString() + " by " + ip + ":" + reason,
-                    forEmail);
-
-            int n = updateInfoStmt.executeUpdate();
-            
-            conn.commit();
-            userModified(forEmail);
-            if (n == 0) {
-                msg = msg + "Error: no valid accounts found";
-                logger.severe("Error in LOCK:: 0 users updated.");
-            } else if (n != 1) {
-                msg = msg + " [Error in updated users!] ";
-                logger.severe("Error in LOCK: " + n + " updated removed!");
-            } else {
-                msg = msg + "OK";
-                sm.mailUser(null, "surveytool@unicode.org", "User Locked: " + forEmail, "User account locked: " + ip + " reason=" + reason);
-            }
-        } catch (SQLException se) {
-            SurveyLog.logException(se, "Locking account for user " + forEmail + " from " + ip);
-            msg = msg + " exception";
-        } catch (Throwable t) {
-            SurveyLog.logException(t, "Locking account for user " + forEmail + " from " + ip);
-            msg = msg + " exception: " + t.toString();
-        } finally {
-            DBUtils.close(updateInfoStmt, conn);
-        }
-        return msg;
-    }
-
-    private void userModified(String forEmail) {
-        User u = get(forEmail);
-        if(u!=null) userModified(u);
-    }
-
-    private void userModified(User u) {
-        // TODO Auto-generated method stub
-        userModified(u.id);
-    }
 
     public String getPassword(WebContext ctx, int theirId) {
         ResultSet rs = null;
@@ -1406,9 +1286,7 @@ public class UserRegistry {
             }
             result = rs.getString(1);
             if (rs.next()) {
-                if(ctx != null) {
-                    ctx.println("Matched duplicate user (?)");
-                }
+                ctx.println("Matched duplicate user (?)");
                 return null;
             }
         } catch (SQLException se) {
@@ -1437,7 +1315,6 @@ public class UserRegistry {
 
     public User newUser(WebContext ctx, User u) {
 
-        u.email = normalizeEmail(u.email);
         // prepare quotes
         u.email = u.email.replace('\'', '_').toLowerCase();
         u.org = u.org.replace('\'', '_');
@@ -2131,7 +2008,7 @@ public class UserRegistry {
     /**
      * Update the organization list.
      */
-    public synchronized void setOrgList() {
+    public void setOrgList() {
         if (orgList.length > 0) {
             return; // already set.
         }
@@ -2282,7 +2159,7 @@ public class UserRegistry {
 
                             String name = attrs.get("name");
                             String org = attrs.get("org");
-                            String email = normalizeEmail(attrs.get("email"));
+                            String email = attrs.get("email");
                             Level level = Level.valueOf(attrs.get("level"));
                             String locales = attrs.get("locales");
 

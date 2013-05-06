@@ -2018,7 +2018,7 @@ public class SupplementalDataInfo {
     }
 
     public Set<String> getNumericNumberingSystems() {
-        return Collections.unmodifiableSet(numericSystems);
+        return numericSystems;
     }
 
     public String getDigits(String numberingSystem) {

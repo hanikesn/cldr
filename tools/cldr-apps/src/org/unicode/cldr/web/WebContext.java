@@ -20,7 +20,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.Vector;
 
@@ -31,7 +30,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.unicode.cldr.test.DisplayAndInputProcessor;
 import org.unicode.cldr.test.ExampleGenerator.HelpMessages;
@@ -45,7 +43,6 @@ import org.unicode.cldr.util.StandardCodes;
 import org.unicode.cldr.web.CLDRProgressIndicator.CLDRProgressTask;
 import org.unicode.cldr.web.SurveyAjax.AjaxType;
 import org.unicode.cldr.web.SurveyMain.UserLocaleStuff;
-import org.unicode.cldr.web.UserRegistry.LogoutException;
 import org.unicode.cldr.web.UserRegistry.User;
 import org.w3c.dom.Document;
 
@@ -573,15 +570,6 @@ public class WebContext implements Cloneable, Appendable {
             outQuery = outQuery + "&amp;" + k + "=" + v;
         }
     }
-    
-    /**
-     * Copy from request queries to output query
-     */
-    public void addAllParametersAsQuery() {
-        for(Entry<String, String[]> e : request.getParameterMap().entrySet()) {
-            addQuery(e.getKey(),e.getValue()[0]);
-        }
-    }
 
     /**
      * Add a boolean parameter to the output URL as 't' or 'f'
@@ -662,14 +650,6 @@ public class WebContext implements Cloneable, Appendable {
             return base() + "?" + outQuery;
         }
     }
-    
-    /**
-     * Return the raw query string, or null
-     * @return
-     */
-    public String query() {
-        return outQuery;
-    }
 
     /**
      * Returns the string that must be appended to the URL to start the next
@@ -692,48 +672,6 @@ public class WebContext implements Cloneable, Appendable {
         } else {
             return context() + theServletPath;
         }
-    }
-    
-    public String vurl(CLDRLocale loc) {
-        return vurl(loc,null,null,null);
-    }
-
-    
-    /**
-     * Get the new '/v' viewing URL. Note that this will include a fragment, do NOT append to the result (pass in something in queryAppend)
-     * @param loc locale to view.
-     * @param page pageID to view. Example:  PageId.Africa (shouldn't be null- yet)
-     * @param strid strid to view. Example: "12345678" or null
-     * @param queryAppend  this will be appended as the query. Example: "?email=foo@bar"
-     * @return
-     */
-    public String vurl(CLDRLocale loc, PageId page, String strid, String queryAppend) {
-        StringBuilder sb = new StringBuilder(request.getContextPath());
-        sb.append("/v");
-        if(queryAppend!=null && !queryAppend.isEmpty()) {
-            sb.append(queryAppend);
-        }
-        sb.append('#'); // hash
- 
-        // locale
-        sb.append('/');
-        sb.append(loc.getBaseName());
-        
-        // page
-        sb.append('/');
-        if(page!=null) {
-            sb.append(page.name());
-        }
-        if(strid!=null && !strid.isEmpty()) {
-            sb.append('/');
-            sb.append(strid);
-        }
-        return sb.toString();
-    }
-    
-    public void redirectToVurl(String vurl) {
-        println("<a class='vredirect' href='"+vurl+"'>Redirecting to " +vurl+"</a>");
-        println("<script type='text/javascript'>window.location=' " +vurl + "/'+window.location.hash.substring(1);</script>");
     }
 
     public void setServletPath(String path) {
@@ -1284,9 +1222,9 @@ public class WebContext implements Cloneable, Appendable {
      * Print the coverage level for a certain locale.
      */
     public void showCoverageLevel() {
-        String itsLevel = getEffectiveCoverageLevel();
+        String itsLevel = getEffectiveCoverageLevel(getLocale().toString());
         String recLevel = getRecommendedCoverageLevel();
-        String def = getRequiredCoverageLevel();
+        String def = sm.getListSetting(this, SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST, false);
         if (def.equals(COVLEV_RECOMMENDED)) {
             print("Coverage Level: <tt class='codebox'>" + itsLevel.toString() + "</tt><br>");
         } else {
@@ -1309,7 +1247,7 @@ public class WebContext implements Cloneable, Appendable {
     }
 
     public String getEffectiveCoverageLevel(String locale) {
-        String level = getRequiredCoverageLevel();
+        String level = sm.getListSetting(this, SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST, false);
         if ((level == null) || (level.equals(COVLEV_RECOMMENDED)) || (level.equals("default"))) {
             // fetch from org
             level = session.getOrgCoverageLevel(locale);
@@ -1413,31 +1351,15 @@ public class WebContext implements Cloneable, Appendable {
      * @see SurveyMain#basicOptionsMap()
      */
     public Map<String, String> getOptionsMap(Map<String, String> options) {
-        String def = getRequiredCoverageLevel();
+        String def = sm.getListSetting(this, SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST, false);
         options.put("CheckCoverage.requiredLevel", def);
 
-        String org = getEffectiveCoverageLevel();
+        String org = getEffectiveCoverageLevel(getLocale().toString());
         if (org != null) {
             options.put("CoverageLevel.localeType", org);
         }
 
         return options;
-    }
-
-    /**
-     * @return
-     */
-    public String getEffectiveCoverageLevel() {
-        String org = getEffectiveCoverageLevel(getLocale().toString());
-        return org;
-    }
-
-    /**
-     * @return
-     */
-    public String getRequiredCoverageLevel() {
-        String def = sm.getListSetting(this, SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST, false);
-        return def;
     }
 
     // DataPod functions
@@ -2025,7 +1947,9 @@ public class WebContext implements Cloneable, Appendable {
             WebContext nuCtx = (WebContext) clone();
             nuCtx.setQuery(SurveyMain.PREF_NOJAVASCRIPT, "t");
             println("<noscript><h1>");
-            println(iconHtml("warn", "JavaScript disabled") + "JavaScript is disabled. Please enable JavaScript..");
+            println("<a href='" + nuCtx.url() + "'>");
+            println(iconHtml("warn", "JavaScript disabled") + "JavaScript is disabled. Please click here to continue.");
+            println("</a>");
             println("</h1></noscript>");
         }
     }
@@ -2062,7 +1986,6 @@ public class WebContext implements Cloneable, Appendable {
     }
 
     public static Cookie getCookie(HttpServletRequest request, String id) {
-        if(request==null) return null;
         Cookie cooks[] = request.getCookies();
         if (cooks == null)
             return null;
@@ -2149,9 +2072,8 @@ public class WebContext implements Cloneable, Appendable {
      * @return
      */
     String urlForLocale(CLDRLocale locale) {
-        return vurl(locale,null,null,null);
-//        String localeUrl = url() + urlConnector() + SurveyMain.QUERY_LOCALE + "=" + locale.getBaseName();
-//        return localeUrl;
+        String localeUrl = url() + urlConnector() + SurveyMain.QUERY_LOCALE + "=" + locale.getBaseName();
+        return localeUrl;
     }
 
     public String getLocaleDisplayName(String loc) {
@@ -2198,226 +2120,6 @@ public class WebContext implements Cloneable, Appendable {
         return pageId;
     }
 
-    /**
-     * set the session.
-     */
-    public String setSession() {
-        if(this.session!=null) return "Internal error - session already set.";
-        
-        String message = null;
-        // get the context
-        CookieSession mySession = null;
-        String myNum = field(SurveyMain.QUERY_SESSION);
-        // get the uid
-        String password = field(SurveyMain.QUERY_PASSWORD);
-        if (password.isEmpty()) {
-            password = field(SurveyMain.QUERY_PASSWORD_ALT);
-        }
-        boolean letmein = SurveyMain.vap.equals(field("letmein"));
-        String email = field(SurveyMain.QUERY_EMAIL);
-        if ("admin@".equals(email) && SurveyMain.vap.equals(password)) {
-            letmein = true; /*
-                             * don't require the DB password from admin, VAP is
-                             * ok
-                             */
-        }
-    
-        {
-            String myEmail = getCookieValue(SurveyMain.QUERY_EMAIL);
-            String myPassword = getCookieValue(SurveyMain.QUERY_PASSWORD);
-            if (myEmail != null && (email == null || email.isEmpty())) {
-                email = myEmail;
-                if (myPassword != null && (password == null || password.isEmpty())) {
-                    password = myPassword;
-                }
-            }
-        }
-        User user = null;
-        // /*srl*/ SurveyLog.logger.warning("isBusted: " + isBusted + ", reg: "
-        // + reg);
-    
-        // SurveyLog.logger.warning("reg.get  pw="+password+", email="+email+", lmi="+ctx.field("letmein")+", lmigood="+vap.equals(ctx.field("letmein")));
-
-        HttpSession httpSession = null;
-        
-        if(request != null) {
-            httpSession = request.getSession(true);
-        }
-
-        
-        try {
-            user = CookieSession.sm.reg.get(password, email, userIP(), letmein);
-        } catch (LogoutException e) {
-            logout();
-            if(httpSession!=null) {                
-                httpSession.removeAttribute(SurveyMain.SURVEYTOOL_COOKIE_SESSION);
-            }
-        }
-        if (user != null) {
-            user.touch();
-        }
-        // SurveyLog.logger.warning("user= "+user);
-    
-        if (request == null && session != null) {
-            return "using canned session"; // already set - for testing
-        }
-    
-        boolean idFromSession = false;
-        if (myNum.equals(SurveyMain.SURVEYTOOL_COOKIE_NONE)) {
-            httpSession.removeAttribute(SurveyMain.SURVEYTOOL_COOKIE_SESSION);
-        }
-        if (user != null) {
-            mySession = CookieSession.retrieveUser(user.email);
-            if (mySession != null) {
-                if (null == CookieSession.retrieve(mySession.id)) {
-                    mySession = null; // don't allow dead sessions to show up
-                                      // via the user list.
-                } else {
-                    // message =
-                    // "<i id='sessionMessage'>Reconnecting to your previous session.</i>";
-                    myNum = mySession.id;
-                }
-            }
-        }
-    
-        // Retreive a number from the httpSession if present
-        if ((httpSession != null) && (mySession == null) && ((myNum == null) || (myNum.length() == 0))) {
-            String aNum = (String) httpSession.getAttribute(SurveyMain.SURVEYTOOL_COOKIE_SESSION);
-            if ((aNum != null) && (aNum.length() > 0)) {
-                myNum = aNum;
-                idFromSession = true;
-            }
-        }
-    
-        if ((mySession == null) && (myNum != null) && (myNum.length() > 0)) {
-            mySession = CookieSession.retrieve(myNum);
-            if (mySession == null) {
-                idFromSession = false;
-            }
-            if ((mySession == null) && (!myNum.equals(SurveyMain.SURVEYTOOL_COOKIE_NONE))) {
-                // message =
-                // "<i id='sessionMessage'>(Sorry, This session has expired. ";
-                if (user == null) {
-                    message = "You may have to log in again. ";
-                }
-                // message = message + ")</i><br>";
-            }
-        }
-        if ((idFromSession == false) && (httpSession != null) && (mySession != null)) { // can
-                                                                                        // we
-                                                                                        // elide
-                                                                                        // the
-                                                                                        // 's'?
-            String aNum = (String) httpSession.getAttribute(SurveyMain.SURVEYTOOL_COOKIE_SESSION);
-            if ((aNum != null) && (mySession.id.equals(aNum))) {
-                idFromSession = true; // it would have matched.
-            } else {
-                // ctx.println("[Confused? cs="+aNum +", s=" + mySession.id +
-                // "]");
-            }
-        }
-        // Can go from anon -> logged in.
-        // can NOT go from one logged in account to another.
-        if ((mySession != null) && (mySession.user != null) && (user != null) && (mySession.user.id != user.id)) {
-            mySession = null; // throw it out.
-        }
-        
-        if (mySession != null && user != null && hasField(SurveyMain.QUERY_SAVE_COOKIE)) {
-           loginRemember(user);
-        } else if (hasField(SurveyMain.QUERY_PASSWORD) || hasField(SurveyMain.QUERY_EMAIL)) {
-           logout(); // zap cookies if some id/pw failed to work
-        }
-    
-        if (mySession == null && user == null) {
-            mySession = CookieSession.checkForAbuseFrom(userIP(), SurveyMain.BAD_IPS, request.getHeader("User-Agent"));
-            if (mySession != null) {
-                println("<h1>Note: Your IP, " + userIP() + " has been throttled for making " + SurveyMain.BAD_IPS.get(userIP())
-                        + " connections. Try turning on cookies, or obeying the 'META ROBOTS' tag.</h1>");
-                flush();
-                // try {
-                // Thread.sleep(15000);
-                // } catch(InterruptedException ie) {
-                // }
-                session = null;
-                // ctx.println("Now, go away.");
-                return "Bad IP.";
-            }
-        }
-        if (mySession == null) {
-            mySession = new CookieSession(user == null, userIP());
-            if (!myNum.equals(SurveyMain.SURVEYTOOL_COOKIE_NONE)) {
-                // ctx.println("New session: " + mySession.id + "<br>");
-            }
-            idFromSession = false;
-        }
-        session = mySession;
-    
-        if (!idFromSession) { // suppress 's' if cookie was valid
-            addQuery(SurveyMain.QUERY_SESSION, mySession.id);
-        } else {
-            // ctx.println("['s' suppressed]");
-        }
-    
-        if (httpSession != null) {
-            httpSession.setAttribute(SurveyMain.SURVEYTOOL_COOKIE_SESSION, mySession.id);
-            httpSession.setMaxInactiveInterval(CookieSession.USER_TO / 1000);
-        }
-    
-        if (user != null) {
-            session.setUser(user); // this will replace any existing session
-                                       // by this user.
-            session.user.ip = userIP();
-        } else {
-            if ((email != null) && (email.length() > 0) && (session.user == null)) {
-                message = "<strong id='sessionMessage'>"+ iconHtml("stop", "failed login") + "login failed.</strong> <a href='" 
-                        + request.getContextPath() + "/reset.jsp?email=" + email +
-                        "&s="+ session.id + 
-                        "' id='notselected'>Forgot&nbsp;Password?</a><br>";
-            }
-        }
-        CookieSession.reap();
-        return message;
-    }
-
-    /**
-     * Logout this ctx
-     */
-    public void logout() {
-        logout(request,response);
-    }
-    
-    /**
-     * Logout this req/response (zap cookie)
-     * Zaps http session
-     * @param request
-     * @param response
-     */
-    public static void logout(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false); // dont create
-        if(session!=null) {
-            String sessionId = (String)session.getAttribute(SurveyMain.SURVEYTOOL_COOKIE_SESSION);
-            if(sessionId!=null) {
-                CookieSession sess = CookieSession.retrieveWithoutTouch(sessionId);
-                if(sess != null) {
-                    sess.remove(); // forcibly remove session
-                }
-            }
-            session.removeAttribute(SurveyMain.SURVEYTOOL_COOKIE_SESSION);
-        }
-        Cookie c0 = WebContext.getCookie(request,SurveyMain.QUERY_EMAIL);
-        if(c0!=null) { // only zap extant cookies
-            c0.setValue("");
-            c0.setMaxAge(0);
-            response.addCookie(c0);
-        }
-        Cookie c1 = WebContext.getCookie(request,SurveyMain.QUERY_PASSWORD);
-        if(c1!=null) { 
-            c1.setValue("");
-            c1.setMaxAge(0);
-            response.addCookie(c1);
-        }
-   }
-    
     public static PageId getPageId(String pageField) {
         if (pageField != null && !pageField.isEmpty()) {
             try {
@@ -2427,13 +2129,5 @@ public class WebContext implements Cloneable, Appendable {
             }
         }
         return null;
-    }
-
-    /**
-     * Remember this login (adds cookie to ctx.response )
-     */
-    public void loginRemember(User user) {
-        addCookie(SurveyMain.QUERY_EMAIL, user.email, SurveyMain.TWELVE_WEEKS);
-        addCookie(SurveyMain.QUERY_PASSWORD, user.password, SurveyMain.TWELVE_WEEKS);
     }
 }

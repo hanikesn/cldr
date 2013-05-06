@@ -1,23 +1,22 @@
 /*
-	Copyright (c) 2004-2012, The Dojo Foundation All Rights Reserved.
+	Copyright (c) 2004-2011, The Dojo Foundation All Rights Reserved.
 	Available via Academic Free License >= 2.1 OR the modified BSD license.
 	see: http://dojotoolkit.org/license for details
 */
 
 //>>built
-define("dojo/gears",["./_base/lang","./sniff"],function(_1,_2){
-var _3={};
-_1.setObject("dojo.gears",_3);
-_3._gearsObject=function(){
+define("dojo/gears",["./_base/kernel","./_base/lang","./_base/sniff"],function(_1,_2,_3){
+_2.getObject("gears",true,_1);
+_1.gears._gearsObject=function(){
 var _4;
-var _5=_1.getObject("google.gears");
+var _5=_2.getObject("google.gears");
 if(_5){
 return _5;
 }
 if(typeof GearsFactory!="undefined"){
 _4=new GearsFactory();
 }else{
-if(_2("ie")){
+if(_3("ie")){
 try{
 _4=new ActiveXObject("Gears.Factory");
 }
@@ -37,9 +36,9 @@ document.documentElement.appendChild(_4);
 if(!_4){
 return null;
 }
-_1.setObject("google.gears.factory",_4);
-return _1.getObject("google.gears");
+_2.setObject("google.gears.factory",_4);
+return _2.getObject("google.gears");
 };
-_3.available=(!!_3._gearsObject())||0;
-return _3;
+_1.gears.available=(!!_1.gears._gearsObject())||0;
+return _1.gears;
 });

@@ -96,6 +96,7 @@ public class CheckForExemplars extends FactoryCheckCLDR {
     // "|hoursFormat" +
     // "|gmtFormat" +
     // "|regionFormat" +
+    // "|fallbackRegionFormat" +
     // "|fallbackFormat" +
     // "|unitPattern.*@count=\"(zero|one|two|few|many|other)\"" +
     // "|localePattern" +
@@ -107,7 +108,8 @@ public class CheckForExemplars extends FactoryCheckCLDR {
     // private Matcher supposedToBeMessageFormat = SUPPOSED_TO_BE_MESSAGE_FORMAT_PATTERN.matcher("");
 
     public static final Pattern LEAD_OR_TRAIL_WHITESPACE_OK = Pattern.compile("/(" +
-        "references/reference" +
+        "localeSeparator" +
+        "|references/reference" +
         "|insertBetween" +
         ")");
     private Matcher leadOrTrailWhitespaceOk = LEAD_OR_TRAIL_WHITESPACE_OK.matcher("");

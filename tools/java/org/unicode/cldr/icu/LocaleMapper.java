@@ -1,6 +1,5 @@
 package org.unicode.cldr.icu;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -147,13 +146,11 @@ public class LocaleMapper extends LdmlMapper {
         super("ldml2icu_locale.txt");
         unresolvedFactory = resolvedFactory = factory;
         // If filtering is required, filter all unresolved CLDRFiles for use in
-        // fillFromCldr(). We don't filter the resolved CLDRFiles by organization
-        // coverage level because
+        // fillFromCldr(). We don't filter the resolved CLDRFiles because
         // some rbPaths (e.g. /calendar/x/DateTimePatterns) have a fixed number
         // of values that must always be present regardless of filtering.
         if (useAltValues || organization != null) {
             unresolvedFactory = FilterFactory.load(factory, organization, useAltValues);
-            resolvedFactory = FilterFactory.load(factory, null, useAltValues);
         }
         this.specialFactory = specialFactory;
         this.supplementalDataInfo = supplementalDataInfo;
@@ -341,20 +338,12 @@ public class LocaleMapper extends LdmlMapper {
      * @param matcherFound
      * @return the result of converting an xpath into an ICU-style path
      */
-    private RegexResult matchXPath(RegexLookup<RegexResult> lookup,
+    private static RegexResult matchXPath(RegexLookup<RegexResult> lookup,
         CLDRFile cldr, String path,
         Output<Finder> matcherFound) {
         String fullPath = cldr.getFullXPath(path);
         fullPath = fullPath == null ? path : DRAFT_PATTERN.matcher(fullPath).replaceAll("");
-        List<String> debugResults = isDebugXPath(fullPath) ? new ArrayList<String>() : null;
-        RegexResult result = lookup.get(fullPath, null, null, matcherFound, debugResults);
-        if (debugResults != null) {
-            if (result == null) {
-                printLookupResults(fullPath, debugResults);
-            } else {
-                System.out.println(fullPath + " successfully matched");
-            }
-        }
+        RegexResult result = lookup.get(fullPath, null, null, matcherFound, null);
         return result;
     }
 
