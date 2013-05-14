@@ -55,7 +55,7 @@ public class GenerateSeedDurations {
             DateTimeFormats formats = new DateTimeFormats().set(cldrFile, "gregorian");
             System.out.println("    <numericUnits>");
             for (String numericUnit : numericUnits) {
-                SimpleDateFormat pattern = formats.getDateFormatFromSkeleton(numericUnit);
+                SimpleDateFormat pattern = formats.getDateFormat(numericUnit);
                 String patternString = pattern.toPattern();
                 if (numericUnit.contains("H")) {
                     if (!patternString.contains("H")) {

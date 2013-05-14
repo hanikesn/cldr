@@ -48,6 +48,7 @@
 </div>
 
 <%-- pop-up stuff. --%>
+<div id='pu-content'></div>
 
 <%= SurveyMain.SHOWHIDE_SCRIPT %>
 <!--  end stnotices.jspf -->

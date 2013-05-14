@@ -2,7 +2,6 @@ package org.unicode.cldr.icu;
 
 import java.io.File;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -220,15 +219,8 @@ public class SupplementalMapper extends LdmlMapper {
         for (String xpath : cldrFile) {
             Output<Finder> matcher = new Output<Finder>();
             String fullPath = cldrFile.getFullXPath(xpath);
-            List<String> debugResults = isDebugXPath(fullPath) ? new ArrayList<String>() : null;
-            RegexResult regexResult = pathConverter.get(fullPath, null, null, matcher, debugResults);
-            if (regexResult == null) {
-                printLookupResults(fullPath, debugResults);
-                continue;
-            }
-            if (debugResults != null) {
-                System.out.println(fullPath + " successfully matched");
-            }
+            RegexResult regexResult = pathConverter.get(fullPath, null, null, matcher, null);
+            if (regexResult == null) continue;
             String[] arguments = matcher.value.getInfo();
             for (PathValueInfo info : regexResult) {
                 List<String> values = info.processValues(arguments, cldrFile, xpath);
@@ -348,6 +340,7 @@ public class SupplementalMapper extends LdmlMapper {
             }
             setDateField(calendar, Calendar.DAY_OF_MONTH, type);
         }
+        String finalPattern = "yyyy-MM-dd HH:mm:ss.SSS";
         switch (type) {
         case from: {
             // Set the times for to fields to the beginning of the day.
@@ -366,6 +359,7 @@ public class SupplementalMapper extends LdmlMapper {
             break;
         }
         }
+        format.applyPattern(finalPattern);
         return calendar.getTimeInMillis();
     }
 
@@ -400,8 +394,7 @@ public class SupplementalMapper extends LdmlMapper {
      * @return
      */
     private static int countHyphens(String str) {
-        // Hyphens in front are actually minus signs.
-        int lastPos = 1;
+        int lastPos = 0;
         int numHyphens = 0;
         while ((lastPos = str.indexOf('-', lastPos + 1)) > -1) {
             numHyphens++;
@@ -426,7 +419,7 @@ public class SupplementalMapper extends LdmlMapper {
         }
 
         @Override
-        public XMLSource freeze() {
+        public Object freeze() {
             locked = true;
             return this;
         }

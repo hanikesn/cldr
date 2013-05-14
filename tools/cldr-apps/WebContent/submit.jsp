@@ -186,7 +186,6 @@
     TestCache.TestResultBundle cc = stf.getTestResult(loc, options);
 	UserRegistry.User u = theirU;
 	CheckCLDR.Phase cPhase = CLDRConfig.getInstance().getPhase();
-	Set<String> allValidPaths = stf.getPathsForFile(loc);
 	CLDRProgressTask progress = cs.sm.openProgress("Bulk:" + loc,
 			all.size());
 	try {
@@ -240,10 +239,8 @@
 			
 			PathHeader ph = stf.getPathHeader(base);
 			
-			if(!allValidPaths.contains(base)) {
-                result="Item is not a valid XPath.";
-                resultIcon="stop";
-			} else if(ph==null) {
+			
+			if(ph==null) {
                 result="Item is not a SurveyTool-visible LDML entity.";
                 resultIcon="stop";
 			} else {

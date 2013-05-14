@@ -247,7 +247,7 @@ public class GenerateAttributeList {
             }
         }
         pw.println("</table>");
-        pw.println(CldrUtility.ANALYTICS);
+        pw.println(ShowData.ANALYTICS);
         pw.println("</body></html>");
     }
 

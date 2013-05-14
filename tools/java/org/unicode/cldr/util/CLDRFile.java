@@ -60,7 +60,6 @@ import com.ibm.icu.text.MessageFormat;
 import com.ibm.icu.text.PluralRules;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.util.Freezable;
-import com.ibm.icu.util.Output;
 import com.ibm.icu.util.ULocale;
 import com.ibm.icu.util.VersionInfo;
 
@@ -111,7 +110,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     public static final String SUPPLEMENTAL_NAME = "supplementalData";
     public static final String SUPPLEMENTAL_METADATA = "supplementalMetadata";
     public static final String SUPPLEMENTAL_PREFIX = "supplemental";
-    public static final String GEN_VERSION = "24";
+    public static final String GEN_VERSION = "23.1";
 
     private Collection<String> extraPaths = null;
 
@@ -125,25 +124,25 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
 
         public static DraftStatus forString(String string) {
             return string == null ? DraftStatus.approved
-                    : DraftStatus.valueOf(string.toLowerCase(Locale.ENGLISH));
+                : DraftStatus.valueOf(string.toLowerCase(Locale.ENGLISH));
         }
     };
 
     public String toString() {
         return "{"
-                + "locked=" + locked
-                + " locale=" + dataSource.getLocaleID()
-                + " dataSource=" + dataSource.toString()
-                + "}";
+            + "locked=" + locked
+            + " locale=" + dataSource.getLocaleID()
+            + " dataSource=" + dataSource.toString()
+            + "}";
     }
 
     public String toString(String regex) {
         return "{"
-                + "locked=" + locked
-                + " locale=" + dataSource.getLocaleID()
-                + " regex=" + regex
-                + " dataSource=" + dataSource.toString(regex)
-                + "}";
+            + "locked=" + locked
+            + " locale=" + dataSource.getLocaleID()
+            + " regex=" + regex
+            + " dataSource=" + dataSource.toString(regex)
+            + "}";
     }
 
     // for refactoring
@@ -186,7 +185,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         } catch (Exception e) {
             // e.printStackTrace();
             throw (IllegalArgumentException) new IllegalArgumentException("Can't read " + fullFileName + " - "
-                    + e.toString()).initCause(e);
+                + e.toString()).initCause(e);
         }
     }
 
@@ -212,7 +211,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
      * @param fis
      */
     private static CLDRFile load(String fileName, String localeName, InputStream fis, DraftStatus minimalDraftStatus,
-            XMLSource source) {
+        XMLSource source) {
         try {
             fis = new StripUTF8BOMInputStream(fis);
             CLDRFile cldrFile = new CLDRFile(source);
@@ -234,9 +233,9 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             cldrFile.setNonInheriting(DEFAULT_DECLHANDLER.isSupplemental > 0);
             if (DEFAULT_DECLHANDLER.overrideCount > 0) {
                 throw new IllegalArgumentException("Internal problems: either data file has duplicate path, or" +
-                        " CLDRFile.isDistinguishing() or CLDRFile.isOrdered() need updating: "
-                        + DEFAULT_DECLHANDLER.overrideCount
-                        + "; The exact problems are printed on the consol above.");
+                    " CLDRFile.isDistinguishing() or CLDRFile.isOrdered() need updating: "
+                    + DEFAULT_DECLHANDLER.overrideCount
+                    + "; The exact problems are printed on the consol above.");
             }
             if (localeName == null) {
                 cldrFile.dataSource.setLocaleID(cldrFile.getLocaleIDFromIdentity());
@@ -245,7 +244,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         } catch (SAXParseException e) {
             // System.out.println(CLDRFile.showSAX(e));
             throw (IllegalArgumentException) new IllegalArgumentException("Can't read " + localeName + "\t"
-                    + CLDRFile.showSAX(e)).initCause(e);
+                + CLDRFile.showSAX(e)).initCause(e);
         } catch (SAXException e) {
             throw (IllegalArgumentException) new IllegalArgumentException("Can't read " + localeName).initCause(e);
         } catch (IOException e) {
@@ -371,7 +370,12 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             }
         }
         // now do the rest
-        final String COPYRIGHT_STRING = CldrUtility.getCopyrightString();
+        final String COPYRIGHT_STRING = "Copyright \u00A9 1991-"
+            + Calendar.getInstance().get(Calendar.YEAR)
+            + " Unicode, Inc.\n"
+            + "CLDR data files are interpreted according to the LDML specification "
+            + "(http://unicode.org/reports/tr35/)\n"
+            + "For terms of use, see http://www.unicode.org/copyright.html";
 
         String initialComment = dataSource.getXpathComments().getInitialComment();
         if (!initialComment.contains("Copyright") || !initialComment.contains("Unicode")) {
@@ -384,7 +388,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
 
         MapComparator<String> modAttComp = attributeOrdering;
         if (HACK_ORDER) modAttComp = new MapComparator<String>()
-                .add("alt").add("draft").add(modAttComp.getOrder());
+            .add("alt").add("draft").add(modAttComp.getOrder());
 
         XPathParts last = new XPathParts(attributeOrdering, defaultSuppressionMap);
         XPathParts current = new XPathParts(attributeOrdering, defaultSuppressionMap);
@@ -458,22 +462,6 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         }
         return result;
     }
-
-    /**
-     * Get GeorgeBailey value: that is, what the value would be if it were not directly contained in the file. 
-     * A non-resolving CLDRFile will always return null.
-     */
-    public String getBaileyValue(String xpath, Output<String> pathWhereFound, Output<String> localeWhereFound) {
-        String result = dataSource.getBaileyValue(xpath, pathWhereFound, localeWhereFound);
-        if (result == null && dataSource.isResolving()) {
-            final String fallbackPath = getFallbackPath(xpath, false);
-            if (fallbackPath != null) {
-                result = dataSource.getBaileyValue(fallbackPath, pathWhereFound, localeWhereFound);
-            }
-        }
-        return result;
-    }
-
 
     /**
      * Only call if xpath doesn't exist in the current file.
@@ -562,7 +550,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             dataSource.putValueAtPath(currentFullXPath, value);
         } catch (RuntimeException e) {
             throw (IllegalArgumentException) new IllegalArgumentException("failed adding " + currentFullXPath + ",\t"
-                    + value).initCause(e);
+                + value).initCause(e);
         }
         return this;
     }
@@ -573,8 +561,8 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         Log.logln(LOG_PROGRESS, "ADDING Comment: \t" + type + "\t" + xpath + " \t" + comment);
         if (xpath == null || xpath.length() == 0) {
             dataSource.getXpathComments().setFinalComment(
-                    CldrUtility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(), XPathParts.NEWLINE,
-                            comment));
+                CldrUtility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(), XPathParts.NEWLINE,
+                    comment));
         } else {
             xpath = getDistinguishingXPath(xpath, null, false);
             dataSource.getXpathComments().addComment(type, xpath, comment);
@@ -584,10 +572,10 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
 
     // TODO Change into enum, update docs
     static final public int
-    MERGE_KEEP_MINE = 0,
-    MERGE_REPLACE_MINE = 1,
-    MERGE_ADD_ALTERNATE = 2,
-    MERGE_REPLACE_MY_DRAFT = 3;
+        MERGE_KEEP_MINE = 0,
+        MERGE_REPLACE_MINE = 1,
+        MERGE_ADD_ALTERNATE = 2,
+        MERGE_REPLACE_MY_DRAFT = 3;
 
     /**
      * Merges elements from another CLDR file. Note: when both have the same xpath key,
@@ -639,8 +627,8 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                     String myVersion = getStringValue(cpath);
                     if (myVersion == null || !newValue.equals(myVersion)) {
                         Log.logln(getLocaleID() + "\tDenied attempt to replace non-draft" + CldrUtility.LINE_SEPARATOR
-                                + "\tcurr: [" + cpath + ",\t"
-                                + myVersion + "]" + CldrUtility.LINE_SEPARATOR + "\twith: [" + newValue + "]");
+                            + "\tcurr: [" + cpath + ",\t"
+                            + myVersion + "]" + CldrUtility.LINE_SEPARATOR + "\twith: [" + newValue + "]");
                         continue;
                     }
                 }
@@ -655,8 +643,8 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                 if (myValue == null) {
                     dataSource.putValueAtPath(other.getFullXPath(key), otherValue);
                 } else if (!(myValue.equals(otherValue)
-                        && equalsIgnoringDraft(getFullXPath(key), other.getFullXPath(key)))
-                        && !key.startsWith("//ldml/identity")) {
+                    && equalsIgnoringDraft(getFullXPath(key), other.getFullXPath(key)))
+                    && !key.startsWith("//ldml/identity")) {
                     for (int i = 0;; ++i) {
                         String prop = "proposed" + (i == 0 ? "" : String.valueOf(i));
                         String fullPath = parts.set(other.getFullXPath(key)).addAttribute("alt", prop).toString();
@@ -671,13 +659,13 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             throw new IllegalArgumentException("Illegal operand: " + conflict_resolution);
 
         dataSource.getXpathComments().setInitialComment(
-                CldrUtility.joinWithSeparation(dataSource.getXpathComments().getInitialComment(),
-                        XPathParts.NEWLINE,
-                        other.dataSource.getXpathComments().getInitialComment()));
+            CldrUtility.joinWithSeparation(dataSource.getXpathComments().getInitialComment(),
+                XPathParts.NEWLINE,
+                other.dataSource.getXpathComments().getInitialComment()));
         dataSource.getXpathComments().setFinalComment(
-                CldrUtility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(),
-                        XPathParts.NEWLINE,
-                        other.dataSource.getXpathComments().getFinalComment()));
+            CldrUtility.joinWithSeparation(dataSource.getXpathComments().getFinalComment(),
+                XPathParts.NEWLINE,
+                other.dataSource.getXpathComments().getFinalComment()));
         dataSource.getXpathComments().joinAll(other.dataSource.getXpathComments());
         /*
          * private Map xpath_value;
@@ -691,8 +679,8 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
 
     /**
-     * 
-     */
+   * 
+   */
     private String addReferencesIfNeeded(String newFullPath, String fullXPath) {
         if (fullXPath == null || fullXPath.indexOf("[@references=") < 0) return newFullPath;
         XPathParts parts = new XPathParts(null, null).set(fullXPath);
@@ -755,24 +743,24 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
      * Code should explicitly include CODE_FALLBACK
      */
     public static final Pattern specialsToKeep = Pattern.compile(
-            "/(" +
-                    "measurementSystemName" +
-                    "|codePattern" +
-                    "|calendar\\[\\@type\\=\"[^\"]*\"\\]/(?!dateTimeFormats/appendItems)" + // gregorian
-                    "|numbers/symbols/(decimal/group)" +
-                    "|timeZoneNames/(hourFormat|gmtFormat|regionFormat)" +
-                    "|pattern" +
+        "/(" +
+            "measurementSystemName" +
+            "|codePattern" +
+            "|calendar\\[\\@type\\=\"[^\"]*\"\\]/(?!dateTimeFormats/appendItems)" + // gregorian
+            "|numbers/symbols/(decimal/group)" +
+            "|timeZoneNames/(hourFormat|gmtFormat|regionFormat)" +
+            "|pattern" +
             ")");
 
     static public final Pattern specialsToPushFromRoot = Pattern.compile(
-            "/(" +
-                    "calendar\\[\\@type\\=\"gregorian\"\\]/" +
-                    "(?!fields)" +
-                    "(?!dateTimeFormats/appendItems)" +
-                    "(?!.*\\[@type=\"format\"].*\\[@type=\"narrow\"])" +
-                    "(?!.*\\[@type=\"stand-alone\"].*\\[@type=\"(abbreviated|wide)\"])" +
-                    "|numbers/symbols/(decimal/group)" +
-                    "|timeZoneNames/(hourFormat|gmtFormat|regionFormat)" +
+        "/(" +
+            "calendar\\[\\@type\\=\"gregorian\"\\]/" +
+            "(?!fields)" +
+            "(?!dateTimeFormats/appendItems)" +
+            "(?!.*\\[@type=\"format\"].*\\[@type=\"narrow\"])" +
+            "(?!.*\\[@type=\"stand-alone\"].*\\[@type=\"(abbreviated|wide)\"])" +
+            "|numbers/symbols/(decimal/group)" +
+            "|timeZoneNames/(hourFormat|gmtFormat|regionFormat)" +
             ")");
 
     private static final boolean MINIMIZE_ALT_PROPOSED = false;
@@ -796,7 +784,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
      *            TODO
      */
     public CLDRFile removeDuplicates(CLDRFile other, boolean butComment, RetentionTest keepIfMatches,
-            Collection<String> removedItems) {
+        Collection<String> removedItems) {
         if (locked) throw new UnsupportedOperationException("Attempt to modify locked object");
         // Matcher specialPathMatcher = dontRemoveSpecials ? specialsToKeep.matcher("") : null;
         boolean first = true;
@@ -988,7 +976,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     public CLDRFile appendFinalComment(String comment) {
         if (locked) throw new UnsupportedOperationException("Attempt to modify locked object");
         dataSource.getXpathComments().setFinalComment(
-                CldrUtility
+            CldrUtility
                 .joinWithSeparation(dataSource.getXpathComments().getFinalComment(), XPathParts.NEWLINE, comment));
         return this;
     }
@@ -1021,7 +1009,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             File[] files = dir.listFiles();
             for (int i = 0; i < files.length; ++i) {
                 String name = files[i].getName();
-                if (!name.endsWith(".xml") || name.startsWith(".")) continue;
+                if (!name.endsWith(".xml")) continue;
                 // if (name.startsWith(SUPPLEMENTAL_NAME)) continue;
                 String locale = name.substring(0, name.length() - 4); // drop .xml
                 if (!m.reset(locale).matches()) continue;
@@ -1052,12 +1040,12 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
 
     public Iterator<String> iterator(String prefix, Comparator<String> comparator) {
         Iterator<String> it = (prefix == null || prefix.length() == 0)
-                ? dataSource.iterator()
-                        : dataSource.iterator(prefix);
-                if (comparator == null) return it;
-                Set<String> orderedSet = new TreeSet<String>(comparator);
-                CollectionUtilities.addAll(it, orderedSet);
-                return orderedSet.iterator();
+            ? dataSource.iterator()
+            : dataSource.iterator(prefix);
+        if (comparator == null) return it;
+        Set<String> orderedSet = new TreeSet<String>(comparator);
+        CollectionUtilities.addAll(it, orderedSet);
+        return orderedSet.iterator();
     }
 
     public Iterable<String> fullIterable() {
@@ -1188,61 +1176,62 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         switch (type) {
         case ldml:
             return attribute.equals("_q")
-                    || attribute.equals("key")
-                    || attribute.equals("indexSource")
-                    || attribute.equals("request")
-                    || attribute.equals("count")
-                    || attribute.equals("id")
-                    || attribute.equals("registry")
-                    || attribute.equals("alt")
-                    || attribute.equals("mzone")
-                    || attribute.equals("from")
-                    || attribute.equals("to")
-                    || attribute.equals("value")
-                    || attribute.equals("yeartype")
-                    || attribute.equals("numberSystem")
-                    || attribute.equals("parent")
-                    || (attribute.equals("type")
-                            && !elementName.equals("default")
-                            && !elementName.equals("measurementSystem")
-                            && !elementName.equals("mapping")
-                            && !elementName.equals("abbreviationFallback")
-                            && !elementName.equals("preferenceOrdering"));
+                || attribute.equals("key")
+                || attribute.equals("indexSource")
+                || attribute.equals("request")
+                || attribute.equals("count")
+                || attribute.equals("id")
+                || attribute.equals("registry")
+                || attribute.equals("alt")
+                || attribute.equals("mzone")
+                || attribute.equals("from")
+                || attribute.equals("to")
+                || attribute.equals("value")
+                || attribute.equals("yeartype")
+                || attribute.equals("numberSystem")
+                || attribute.equals("parent")
+                || (attribute.equals("type")
+                    && !elementName.equals("listPattern")
+                    && !elementName.equals("default")
+                    && !elementName.equals("measurementSystem")
+                    && !elementName.equals("mapping")
+                    && !elementName.equals("abbreviationFallback")
+                    && !elementName.equals("preferenceOrdering"));
         case ldmlBCP47:
             return attribute.equals("_q")
-                    || attribute.equals("alias")
-                    || attribute.equals("name");
+                || attribute.equals("alias")
+                || attribute.equals("name");
         case supplementalData:
             return attribute.equals("_q")
-                    || attribute.equals("iso4217")
-                    || attribute.equals("iso3166")
-                    || attribute.equals("code")
-                    || elementName.equals("deprecatedItems")
-                    && (attribute.equals("type") || attribute.equals("elements") || attribute.equals("attributes") || attribute
-                            .equals("values"))
-                            || elementName.equals("dayPeriodRules") && attribute.equals("locales")
-                            || elementName.equals("dayPeriodRule") && attribute.equals("type")
-                            || elementName.equals("metazones") && attribute.equals("type")
-                            || elementName.equals("mapZone") && (attribute.equals("other") || attribute.equals("territory"))
-                            || elementName.equals("postCodeRegex") && attribute.equals("territoryId")
-                            || elementName.equals("calendarPreference") && attribute.equals("territories")
-                            || elementName.equals("minDays") && attribute.equals("territories")
-                            || elementName.equals("firstDay") && attribute.equals("territories")
-                            || elementName.equals("weekendStart") && attribute.equals("territories")
-                            || elementName.equals("weekendEnd") && attribute.equals("territories")
-                            || elementName.equals("measurementSystem") && attribute.equals("territories")
-                            || elementName.equals("distinguishingItems") && attribute.equals("attributes")
-                            || elementName.equals("codesByTerritory") && attribute.equals("territory")
-                            || elementName.equals("currency") &&
-                            (attribute.equals("iso4217") || attribute.equals("tender"))
-                            || elementName.equals("territoryAlias") &&
-                            (attribute.equals("replacement") || attribute.equals("type"))
-                            || elementName.equals("territoryCodes") &&
-                            (attribute.equals("alpha3") || attribute.equals("numeric") || attribute.equals("type"))
-                            || elementName.equals("group") && attribute.equals("status")
-                            || elementName.equals("plurals") && attribute.equals("type")
-                            || elementName.equals("pluralRules") && attribute.equals("locales")
-                            || elementName.equals("hours") && attribute.equals("regions");
+                || attribute.equals("iso4217")
+                || attribute.equals("iso3166")
+                || attribute.equals("code")
+                || elementName.equals("deprecatedItems")
+                && (attribute.equals("type") || attribute.equals("elements") || attribute.equals("attributes") || attribute
+                    .equals("values"))
+                || elementName.equals("dayPeriodRules") && attribute.equals("locales")
+                || elementName.equals("dayPeriodRule") && attribute.equals("type")
+                || elementName.equals("metazones") && attribute.equals("type")
+                || elementName.equals("mapZone") && (attribute.equals("other") || attribute.equals("territory"))
+                || elementName.equals("postCodeRegex") && attribute.equals("territoryId")
+                || elementName.equals("calendarPreference") && attribute.equals("territories")
+                || elementName.equals("minDays") && attribute.equals("territories")
+                || elementName.equals("firstDay") && attribute.equals("territories")
+                || elementName.equals("weekendStart") && attribute.equals("territories")
+                || elementName.equals("weekendEnd") && attribute.equals("territories")
+                || elementName.equals("measurementSystem") && attribute.equals("territories")
+                || elementName.equals("distinguishingItems") && attribute.equals("attributes")
+                || elementName.equals("codesByTerritory") && attribute.equals("territory")
+                || elementName.equals("currency") &&
+                (attribute.equals("iso4217") || attribute.equals("tender"))
+                || elementName.equals("territoryAlias") &&
+                (attribute.equals("replacement") || attribute.equals("type"))
+                || elementName.equals("territoryCodes") &&
+                (attribute.equals("alpha3") || attribute.equals("numeric") || attribute.equals("type"))
+                || elementName.equals("group") && attribute.equals("status")
+                || elementName.equals("plurals") && attribute.equals("type")
+                || elementName.equals("pluralRules") && attribute.equals("locales")
+                || elementName.equals("hours") && attribute.equals("regions");
         case keyboard:
         case platform:
             return false;
@@ -1266,21 +1255,21 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
      */
     public static XMLReader createXMLReader(boolean validating) {
         String[] testList = {
-                "org.apache.xerces.parsers.SAXParser",
-                "org.apache.crimson.parser.XMLReaderImpl",
-                "gnu.xml.aelfred2.XmlReader",
-                "com.bluecast.xml.Piccolo",
-                "oracle.xml.parser.v2.SAXParser",
-                ""
+            "org.apache.xerces.parsers.SAXParser",
+            "org.apache.crimson.parser.XMLReaderImpl",
+            "gnu.xml.aelfred2.XmlReader",
+            "com.bluecast.xml.Piccolo",
+            "oracle.xml.parser.v2.SAXParser",
+            ""
         };
         XMLReader result = null;
         for (int i = 0; i < testList.length; ++i) {
             try {
                 result = (testList[i].length() != 0)
-                        ? XMLReaderFactory.createXMLReader(testList[i])
-                                : XMLReaderFactory.createXMLReader();
-                        result.setFeature("http://xml.org/sax/features/validation", validating);
-                        break;
+                    ? XMLReaderFactory.createXMLReader(testList[i])
+                    : XMLReaderFactory.createXMLReader();
+                result.setFeature("http://xml.org/sax/features/validation", validating);
+                break;
             } catch (SAXException e1) {
             }
         }
@@ -1290,7 +1279,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             result.setEntityResolver(new CachingEntityResolver());
         } catch (Throwable e) {
             System.err
-            .println("WARNING: Can't set caching entity resolver  -  error "
+                .println("WARNING: Can't set caching entity resolver  -  error "
                     + e.toString());
             e.printStackTrace();
         }
@@ -1445,7 +1434,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                     lastChars = "";
                 else
                     throw new IllegalArgumentException("Must not have mixed content: " + qName + ", "
-                            + show(attributes) + ", Content: " + lastChars);
+                        + show(attributes) + ", Content: " + lastChars);
             }
             // currentXPath += "/" + qName;
             currentFullXPath += "/" + qName;
@@ -1465,7 +1454,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                     // <!ATTLIST version number CDATA #REQUIRED >
                     // <!ATTLIST version cldrVersion CDATA #FIXED "24" >
                     if (attribute.equals("cldrVersion")
-                            && (qName.equals("version"))) {
+                        && (qName.equals("version"))) {
                         ((SimpleXMLSource) target.dataSource).setDtdVersionInfo(VersionInfo.getInstance(value));
                     } else {
                         putAndFixDeprecatedAttribute(qName, attribute, value);
@@ -1507,7 +1496,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                 else if (value.equals("false")) value = "unconfirmed";
             } else if (attribute.equals("type")) {
                 if (changedTypes.contains(element) && isSupplemental < 1) { // measurementSystem for example did not
-                    // change from 'type' to 'choice'.
+                                                                            // change from 'type' to 'choice'.
                     attribute = "choice";
                 }
             }
@@ -1534,8 +1523,8 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
          * Types which changed from 'type' to 'choice', but not in supplemental data.
          */
         private static Set changedTypes = new HashSet(Arrays.asList(new String[] {
-                "abbreviationFallback",
-                "default", "mapping", "measurementSystem", "preferenceOrdering" }));
+            "abbreviationFallback",
+            "default", "mapping", "measurementSystem", "preferenceOrdering" }));
 
         static final Pattern draftPattern = Pattern.compile("\\[@draft=\"([^\"]*)\"\\]");
         Matcher draftMatcher = draftPattern.matcher("");
@@ -1600,7 +1589,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                 lastChars = "";
             } else {
                 Log.logln(LOG_PROGRESS && lastActiveLeafNode != null, "pop: zeroing last leafNode: "
-                        + lastActiveLeafNode);
+                    + lastActiveLeafNode);
                 lastActiveLeafNode = null;
                 if (comment != null) {
                     target.addComment(lastLeafNode, comment, XPathParts.Comments.CommentType.POSTBLOCK);
@@ -1635,9 +1624,9 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         private void warnOnOverride(String former, String formerPath) {
             String distinguishing = CLDRFile.getDistinguishingXPath(formerPath, null, true);
             System.out.println("\tWARNING! in " + target.getLocaleID() + ";\toverriding old value <" + former
-                    + "> at path " + distinguishing +
-                    CldrUtility.LINE_SEPARATOR + "\twith\t<" + lastChars + ">;\told fullpath: " + formerPath +
-                    CldrUtility.LINE_SEPARATOR + "new fullpath: " + currentFullXPath);
+                + "> at path " + distinguishing +
+                CldrUtility.LINE_SEPARATOR + "\twith\t<" + lastChars + ">;\told fullpath: " + formerPath +
+                CldrUtility.LINE_SEPARATOR + "new fullpath: " + currentFullXPath);
             overrideCount += 1;
         }
 
@@ -1674,16 +1663,16 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         // SAX items we need to catch
 
         public void startElement(
-                String uri,
-                String localName,
-                String qName,
-                Attributes attributes)
-                        throws SAXException {
+            String uri,
+            String localName,
+            String qName,
+            Attributes attributes)
+            throws SAXException {
             Log.logln(LOG_PROGRESS || SHOW_START_END, "startElement uri\t" + uri
-                    + "\tlocalName " + localName
-                    + "\tqName " + qName
-                    + "\tattributes " + show(attributes)
-                    );
+                + "\tlocalName " + localName
+                + "\tqName " + qName
+                + "\tattributes " + show(attributes)
+                );
             try {
                 if (isSupplemental < 0) { // set by first element
                     if (qName.equals("ldml"))
@@ -1703,9 +1692,9 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         }
 
         public void endElement(String uri, String localName, String qName)
-                throws SAXException {
+            throws SAXException {
             Log.logln(LOG_PROGRESS || SHOW_START_END, "endElement uri\t" + uri + "\tlocalName " + localName
-                    + "\tqName " + qName);
+                + "\tqName " + qName);
             try {
                 pop(qName);
             } catch (RuntimeException e) {
@@ -1718,7 +1707,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         static final String XML_LINESEPARATOR_STRING = String.valueOf(XML_LINESEPARATOR);
 
         public void characters(char[] ch, int start, int length)
-                throws SAXException {
+            throws SAXException {
             try {
                 String value = new String(ch, start, length);
                 Log.logln(LOG_PROGRESS, "characters:\t" + value);
@@ -1736,9 +1725,9 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
 
         public void startDTD(String name, String publicId, String systemId) throws SAXException {
             Log.logln(LOG_PROGRESS, "startDTD name: " + name
-                    + ", publicId: " + publicId
-                    + ", systemId: " + systemId
-                    );
+                + ", publicId: " + publicId
+                + ", systemId: " + systemId
+                );
             commentStack++;
         }
 
@@ -1767,12 +1756,12 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
             if (LOG_PROGRESS)
                 Log.logln(LOG_PROGRESS,
-                        "ignorableWhitespace length: " + length + ": " + Utility.hex(new String(ch, start, length)));
+                    "ignorableWhitespace length: " + length + ": " + Utility.hex(new String(ch, start, length)));
             // if (lastActiveLeafNode != null) {
             for (int i = start; i < start + length; ++i) {
                 if (ch[i] == '\n') {
                     Log.logln(LOG_PROGRESS && lastActiveLeafNode != null, "\\n: zeroing last leafNode: "
-                            + lastActiveLeafNode);
+                        + lastActiveLeafNode);
                     lastActiveLeafNode = null;
                     break;
                 }
@@ -1802,7 +1791,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         }
 
         public void attributeDecl(String eName, String aName, String type, String mode, String value)
-                throws SAXException {
+            throws SAXException {
             Log.logln(LOG_PROGRESS, "Attribute\t" + eName + "\t" + aName + "\t" + type + "\t" + mode + "\t" + value);
         }
 
@@ -1815,12 +1804,12 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         }
 
         public void processingInstruction(String target, String data)
-                throws SAXException {
+            throws SAXException {
             Log.logln(LOG_PROGRESS, "processingInstruction: " + target + ", " + data);
         }
 
         public void skippedEntity(String name)
-                throws SAXException {
+            throws SAXException {
             Log.logln(LOG_PROGRESS, "skippedEntity: " + name);
         }
 
@@ -1830,7 +1819,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
 
         public void startPrefixMapping(String prefix, String uri) throws SAXException {
             Log.logln(LOG_PROGRESS, "startPrefixMapping prefix: " + prefix +
-                    ", uri: " + uri);
+                ", uri: " + uri);
         }
 
         public void endPrefixMapping(String prefix) throws SAXException {
@@ -1889,10 +1878,10 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
      */
     public static String showSAX(SAXParseException exception) {
         return exception.getMessage()
-                + ";\t SystemID: " + exception.getSystemId()
-                + ";\t PublicID: " + exception.getPublicId()
-                + ";\t LineNumber: " + exception.getLineNumber()
-                + ";\t ColumnNumber: " + exception.getColumnNumber();
+            + ";\t SystemID: " + exception.getSystemId()
+            + ";\t PublicID: " + exception.getPublicId()
+            + ";\t LineNumber: " + exception.getLineNumber()
+            + ";\t ColumnNumber: " + exception.getColumnNumber();
     }
 
     /**
@@ -1945,13 +1934,13 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
 
     public static final int NO_NAME = -1, LANGUAGE_NAME = 0, SCRIPT_NAME = 1, TERRITORY_NAME = 2, VARIANT_NAME = 3,
-            CURRENCY_NAME = 4, CURRENCY_SYMBOL = 5,
-            TZ_EXEMPLAR = 6, TZ_START = TZ_EXEMPLAR,
-            TZ_GENERIC_LONG = 7, TZ_GENERIC_SHORT = 8,
-            TZ_STANDARD_LONG = 9, TZ_STANDARD_SHORT = 10,
-            TZ_DAYLIGHT_LONG = 11, TZ_DAYLIGHT_SHORT = 12,
-            TZ_LIMIT = 13,
-            LIMIT_TYPES = 13;
+        CURRENCY_NAME = 4, CURRENCY_SYMBOL = 5,
+        TZ_EXEMPLAR = 6, TZ_START = TZ_EXEMPLAR,
+        TZ_GENERIC_LONG = 7, TZ_GENERIC_SHORT = 8,
+        TZ_STANDARD_LONG = 9, TZ_STANDARD_SHORT = 10,
+        TZ_DAYLIGHT_LONG = 11, TZ_DAYLIGHT_SHORT = 12,
+        TZ_LIMIT = 13,
+        LIMIT_TYPES = 13;
 
     private static final String[][] NameTable = {
         { "//ldml/localeDisplayNames/languages/language[@type=\"", "\"]", "language" },
@@ -2067,19 +2056,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         return getName(localeOrTZID, false);
     }
 
-    /**
-     * Returns the name of the given bcp47 identifier. Note that extensions must
-     * be specified using the old "\@key=type" syntax.
-     * Only used by ExampleGenerator.
-     * @param localeOrTZID the locale or timezone ID
-     * @param onlyConstructCompound
-     * @param localeKeyTypePattern the pattern used to format key-type pairs
-     * @param localePattern the pattern used to format primary/secondary subtags
-     * @param localeSeparator the list separator for secondary subtags
-     * @return
-     */
-    public synchronized String getName(String localeOrTZID, boolean onlyConstructCompound,
-            String localeKeyTypePattern, String localePattern, String localeSeparator) {
+    public synchronized String getName(String localeOrTZID, boolean onlyConstructCompound) {
         boolean isCompound = localeOrTZID.contains("_");
         String name = isCompound && onlyConstructCompound ? null : getName(LANGUAGE_NAME, localeOrTZID);
         // TODO - handle arbitrary combinations
@@ -2116,18 +2093,31 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             }
         }
 
+        String nameSeparator = getWinningValue("//ldml/localeDisplayNames/localeDisplayPattern/localeSeparator");
+        String sname;
         String extras = "";
         if (!haveScript) {
-            extras = addDisplayName(lparser.getScript(), SCRIPT_NAME, localeSeparator, extras);
+            sname = original = lparser.getScript();
+            if (sname.length() != 0) {
+                if (extras.length() != 0) extras += nameSeparator;
+                sname = getName(SCRIPT_NAME, sname);
+                extras += (sname == null ? original : sname);
+            }
         }
         if (!haveRegion) {
-            extras = addDisplayName(lparser.getRegion(), TERRITORY_NAME, localeSeparator, extras);
+            original = sname = lparser.getRegion();
+            if (sname.length() != 0) {
+                if (extras.length() != 0) extras += nameSeparator;
+                sname = getName(TERRITORY_NAME, sname);
+                extras += (sname == null ? original : sname);
+            }
         }
         List<String> variants = lparser.getVariants();
-        for (String orig : variants) {
-            extras = addDisplayName(orig, VARIANT_NAME, localeSeparator, extras);
+        for (int i = 0; i < variants.size(); ++i) {
+            if (extras.length() != 0) extras += nameSeparator;
+            sname = getName(VARIANT_NAME, original = (String) variants.get(i));
+            extras += (sname == null ? original : sname);
         }
-
         // Look for key-type pairs.
         for (Entry<String, String> extension : lparser.getLocaleExtensions().entrySet()) {
             String key = extension.getKey();
@@ -2141,55 +2131,19 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             }
             if (value == null) {
                 // Get name of key instead and pair it with the type as-is.
-                String sname = getStringValue("//ldml/localeDisplayNames/keys/key[@type=\"" + key + "\"]");
+                String keyTypePattern = getWinningValue("//ldml/localeDisplayNames/localeDisplayPattern/localeKeyTypePattern");
+                sname = getStringValue("//ldml/localeDisplayNames/keys/key[@type=\"" + key + "\"]");
                 if (sname == null) sname = key;
-                value = MessageFormat.format(localeKeyTypePattern, new Object[] { sname, type });
+                value = MessageFormat.format(keyTypePattern, new Object[] { sname, type });
             }
-            extras = MessageFormat.format(localeSeparator, new Object[] { extras, value });
+            extras += ", " + value;
         }
         // fix this -- shouldn't be hardcoded!
         if (extras.length() == 0) {
             return name;
         }
-        return MessageFormat.format(localePattern, new Object[] { name, extras });
-    }
-
-    /**
-     * Returns the name of the given bcp47 identifier. Note that extensions must
-     * be specified using the old "\@key=type" syntax.
-     * @param localeOrTZID the locale or timezone ID
-     * @param onlyConstructCompound
-     * @return
-     */
-    public synchronized String getName(String localeOrTZID, boolean onlyConstructCompound) {
-        return getName(localeOrTZID, onlyConstructCompound,
-                getWinningValue("//ldml/localeDisplayNames/localeDisplayPattern/localeKeyTypePattern"),
-                getWinningValue("//ldml/localeDisplayNames/localeDisplayPattern/localePattern"),
-                getWinningValue("//ldml/localeDisplayNames/localeDisplayPattern/localeSeparator"));
-    }
-
-    /**
-     * Adds the display name for a subtag to a string.
-     * @param subtag the subtag
-     * @param type the type of the subtag
-     * @param separatorPattern the pattern to be used for separating display
-     *      names in the resultant string
-     * @param extras the string to be added to
-     * @return the modified display name string
-     */
-    private String addDisplayName(String subtag, int type, String separatorPattern, String extras) {
-        if (subtag.length() == 0) return extras;
-
-        String sname = getName(type, subtag);
-        if (sname == null) {
-            sname = subtag;
-        }
-        if (extras.length() == 0) {
-            extras += sname;
-        } else {
-            extras = MessageFormat.format(separatorPattern, new Object[] { extras, sname });
-        }
-        return extras;
+        String namePattern = getWinningValue("//ldml/localeDisplayNames/localeDisplayPattern/localePattern");
+        return MessageFormat.format(namePattern, new Object[] { name, extras });
     }
 
     /**
@@ -2239,25 +2193,30 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     // TODO, convert to use SupplementalInfo
 
     private static MapComparator<String> attributeOrdering = new MapComparator<String>()
-            .add(
-                    // START MECHANICALLY attributeOrdering GENERATED BY FindDTDOrder
-                    "_q type id choice key registry source target path day date version count lines characters before from to iso4217 mzone number time casing list uri digits rounding iso3166 hex request direction alternate backwards caseFirst caseLevel hiraganaQuarternary hiraganaQuaternary variableTop normalization numeric strength elements element attributes attribute attributeValue contains multizone order other replacement scripts services territories territory aliases tzidVersion value values variant variants visibility alpha3 code end exclude fips10 gdp internet literacyPercent locales population writingPercent populationPercent officialStatus start used otherVersion typeVersion access after allowsParsing at bcp47 decexp desired indexSource numberSystem numbers oneway ordering percent priority radix rules supported tender territoryId yeartype cldrVersion grouping inLanguage inScript inTerritory match parent private reason reorder status cashRounding allowed override preferred regions validSubLocales standard references alt draft" // END
-                    // MECHANICALLY
-                    // attributeOrdering
-                    // GENERATED
-                    // BY
-                    // FindDTDOrder
-                    .trim().split("\\s+"))
-                    .setErrorOnMissing(false)
-                    .freeze();
+        .add(
+            // START MECHANICALLY attributeOrdering GENERATED BY FindDTDOrder
+            "_q type id choice key registry source target path day date version count lines characters before from to iso4217 mzone number time casing list uri digits rounding iso3166 hex request direction alternate backwards caseFirst caseLevel hiraganaQuarternary hiraganaQuaternary variableTop normalization numeric strength elements element attributes attribute attributeValue contains multizone order other replacement scripts services territories territory aliases tzidVersion value values variant variants visibility alpha3 code end exclude fips10 gdp internet literacyPercent locales population writingPercent populationPercent officialStatus start used otherVersion typeVersion access after allowsParsing at bcp47 decexp desired indexSource numberSystem numbers oneway ordering percent priority radix rules supported tender territoryId yeartype cldrVersion grouping inLanguage inScript inTerritory match parent private reason reorder status cashRounding allowed preferred regions validSubLocales standard references alt draft" // END
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // MECHANICALLY
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // attributeOrdering
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // GENERATED
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // BY
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // FindDTDOrder
+            .trim().split("\\s+"))
+        .setErrorOnMissing(false)
+        .freeze();
 
     private static MapComparator<String> elementOrdering = new MapComparator<String>()
-            .add(
-                    // START MECHANICALLY elementOrdering GENERATED BY FindDTDOrder
-                    "ldml alternate attributeOrder attributes blockingItems calendarPreference calendarSystem casingData casingItem character character-fallback characterOrder codesByTerritory comment context coverageVariable coverageLevel cp dayPeriodRule dayPeriodRules deprecatedItems distinguishingItems elementOrder first_variable fractions hours identity indexSeparator compressedIndexSeparator indexRangePattern indexLabelBefore indexLabelAfter indexLabel info keyMap languageAlias languageCodes languageCoverage languageMatch languageMatches languagePopulation last_variable first_tertiary_ignorable last_tertiary_ignorable first_secondary_ignorable last_secondary_ignorable first_primary_ignorable last_primary_ignorable first_non_ignorable last_non_ignorable first_trailing last_trailing likelySubtag lineOrder mapKeys mapTypes mapZone numberingSystem parentLocale personList pluralRule pluralRules postCodeRegex primaryZone reference region scriptAlias scriptCoverage serialElements stopwordList substitute suppress tRule telephoneCountryCode territoryAlias territoryCodes territoryCoverage currencyCoverage timezone timezoneCoverage transform typeMap usesMetazone validity alias appendItem base beforeCurrency afterCurrency codePattern compoundUnit contextTransform contextTransformUsage currencyMatch cyclicName cyclicNameContext cyclicNameSet cyclicNameWidth dateFormatItem day dayPeriod dayPeriodContext dayPeriodWidth defaultNumberingSystem deprecated distinguishing blocking coverageAdditions durationUnitPattern era eraNames eraAbbr eraNarrow exemplarCharacters ellipsis fallback field generic greatestDifference height hourFormat hoursFormat gmtFormat gmtZeroFormat intervalFormatFallback intervalFormatItem key listPattern listPatternPart localeDisplayNames layout contextTransforms localeDisplayPattern languages localePattern localeSeparator localeKeyTypePattern localizedPatternChars dateRangePattern calendars long measurementSystem measurementSystemName messages minDays firstDay month monthPattern monthPatternContext monthPatternWidth months monthNames monthAbbr monthPatterns days dayNames dayAbbr moreInformation native orientation inList inText otherNumberingSystems paperSize quarter quarters quotationStart quotationEnd alternateQuotationStart alternateQuotationEnd rbnfrule regionFormat fallbackFormat fallbackRegionFormat abbreviationFallback preferenceOrdering reset import p pc rule ruleset rulesetGrouping s sc scripts segmentation settings short commonlyUsed exemplarCity singleCountries default calendar collation currency currencyFormat currencySpacing currencyFormatLength dateFormat dateFormatLength dateTimeFormat dateTimeFormatLength availableFormats appendItems dayContext dayWidth decimalFormat decimalFormatLength intervalFormats monthContext monthWidth pattern displayName percentFormat percentFormatLength quarterContext quarterWidth relative scientificFormat scientificFormatLength skipDefaultLocale defaultContent standard daylight stopwords indexLabels mapping suppress_contractions optimize rules surroundingMatch insertBetween symbol decimal group list percentSign nativeZeroDigit patternDigit plusSign minusSign exponential superscriptingExponent perMille infinity nan currencyDecimal currencyGroup symbols decimalFormats scientificFormats percentFormats currencyFormats currencies miscPatterns t tc q qc i ic extend territories timeFormat timeFormatLength traditional finance transformName type unit durationUnit unitLength unitPattern variable attributeValues variables segmentRules variantAlias variants keys types transformNames measurementSystemNames codePatterns version generation cldrVersion currencyData language script territory territoryContainment languageData territoryInfo postalCodeData calendarData calendarPreferenceData variant week am pm dayPeriods eras cyclicNameSets dateFormats timeFormats dateTimeFormats fields timeZoneNames weekData timeData measurementData timezoneData characters delimiters measurement dates numbers transforms units listPatterns collations posix segmentations rbnf metadata codeMappings parentLocales likelySubtags metazoneInfo mapTimezones plurals telephoneCodeData numberingSystems bcp47KeywordMappings gender references languageMatching dayPeriodRuleSet metaZones primaryZones weekendStart weekendEnd width windowsZones coverageLevels x yesstr nostr yesexpr noexpr zone metazone special zoneAlias zoneFormatting zoneItem supplementalData"
-                    .trim().split("\\s+"))
-                    .setErrorOnMissing(false)
-                    .freeze();
+        .add(
+            // START MECHANICALLY elementOrdering GENERATED BY FindDTDOrder
+            "ldml alternate attributeOrder attributes blockingItems calendarPreference calendarSystem casingData casingItem character character-fallback characterOrder codesByTerritory comment context coverageVariable coverageLevel cp dayPeriodRule dayPeriodRules deprecatedItems distinguishingItems elementOrder first_variable fractions hours identity indexSeparator compressedIndexSeparator indexRangePattern indexLabelBefore indexLabelAfter indexLabel info keyMap languageAlias languageCodes languageCoverage languageMatch languageMatches languagePopulation last_variable first_tertiary_ignorable last_tertiary_ignorable first_secondary_ignorable last_secondary_ignorable first_primary_ignorable last_primary_ignorable first_non_ignorable last_non_ignorable first_trailing last_trailing likelySubtag lineOrder mapKeys mapTypes mapZone numberingSystem parentLocale personList pluralRule pluralRules postCodeRegex primaryZone reference region scriptAlias scriptCoverage serialElements stopwordList substitute suppress tRule telephoneCountryCode territoryAlias territoryCodes territoryCoverage currencyCoverage timezone timezoneCoverage transform typeMap usesMetazone validity alias appendItem base beforeCurrency afterCurrency codePattern contextTransform contextTransformUsage currencyMatch cyclicName cyclicNameContext cyclicNameSet cyclicNameWidth dateFormatItem day dayPeriod dayPeriodContext dayPeriodWidth defaultNumberingSystem deprecated distinguishing blocking coverageAdditions era eraNames eraAbbr eraNarrow exemplarCharacters ellipsis fallback field generic greatestDifference height hourFormat hoursFormat gmtFormat gmtZeroFormat intervalFormatFallback intervalFormatItem key listPattern listPatternPart localeDisplayNames layout contextTransforms localeDisplayPattern languages localePattern localeSeparator localeKeyTypePattern localizedPatternChars dateRangePattern calendars long measurementSystem measurementSystemName messages minDays firstDay month monthPattern monthPatternContext monthPatternWidth months monthNames monthAbbr monthPatterns days dayNames dayAbbr moreInformation native orientation inList inText otherNumberingSystems paperSize pattern displayName quarter quarters quotationStart quotationEnd alternateQuotationStart alternateQuotationEnd rbnfrule regionFormat fallbackFormat fallbackRegionFormat abbreviationFallback preferenceOrdering relative reset import p pc rule ruleset rulesetGrouping s sc scripts segmentation settings short commonlyUsed exemplarCity singleCountries default calendar collation currency currencyFormat currencySpacing currencyFormatLength dateFormat dateFormatLength dateTimeFormat dateTimeFormatLength availableFormats appendItems dayContext dayWidth decimalFormat decimalFormatLength intervalFormats monthContext monthWidth percentFormat percentFormatLength quarterContext quarterWidth scientificFormat scientificFormatLength skipDefaultLocale defaultContent standard daylight stopwords indexLabels mapping suppress_contractions optimize rules surroundingMatch insertBetween symbol decimal group list percentSign nativeZeroDigit patternDigit plusSign minusSign exponential perMille infinity nan currencyDecimal currencyGroup symbols decimalFormats scientificFormats percentFormats currencyFormats currencies t tc q qc i ic extend territories timeFormat timeFormatLength traditional finance transformName type unit unitPattern variable attributeValues variables segmentRules variantAlias variants keys types transformNames measurementSystemNames codePatterns version generation cldrVersion currencyData language script territory territoryContainment languageData territoryInfo postalCodeData calendarData calendarPreferenceData variant week am pm dayPeriods eras cyclicNameSets dateFormats timeFormats dateTimeFormats fields timeZoneNames weekData timeData measurementData timezoneData characters delimiters measurement dates numbers transforms units listPatterns collations posix segmentations rbnf metadata codeMappings parentLocales likelySubtags metazoneInfo mapTimezones plurals telephoneCodeData numberingSystems bcp47KeywordMappings gender references languageMatching dayPeriodRuleSet metaZones primaryZones weekendStart weekendEnd width windowsZones coverageLevels x yesstr nostr yesexpr noexpr zone metazone special zoneAlias zoneFormatting zoneItem supplementalData" // END
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // MECHANICALLY
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // elementOrdering
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // GENERATED
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // BY
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // FindDTDOrder
+            .trim().split("\\s+"))
+        .setErrorOnMissing(false)
+        .freeze();
 
     private static MapComparator<String> valueOrdering = new MapComparator<String>().setErrorOnMissing(false).freeze();
     /*
@@ -2305,121 +2264,109 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
      * }
      */
     static MapComparator<String> dayValueOrder = new MapComparator<String>().add(
-            "sun", "mon", "tue", "wed", "thu", "fri", "sat").freeze();
-    static MapComparator<String> listPatternOrder = new MapComparator<String>().add(
-            "start", "middle", "end", "2", "3").freeze();
+        "sun", "mon", "tue", "wed", "thu", "fri", "sat").freeze();
     static MapComparator<String> widthOrder = new MapComparator<String>().add(
-            "abbreviated", "narrow", "short", "wide", "all").freeze();
+        "abbreviated", "narrow", "short", "wide", "all").freeze();
     static MapComparator<String> lengthOrder = new MapComparator<String>().add(
-            "full", "long", "medium", "short").freeze();
+        "full", "long", "medium", "short").freeze();
     static MapComparator<String> dateFieldOrder = new MapComparator<String>().add(
-            "era", "year", "month", "week", "day", "weekday", 
-            "sun", "mon", "tue", "wed", "thu", "fri", "sat", 
-            "dayperiod", "hour", "minute", "second", 
-            "zone").freeze();
+        "era", "year", "month", "week", "day", "weekday", "dayperiod",
+        "hour", "minute", "second", "zone").freeze();
     static MapComparator<String> countValueOrder = new MapComparator<String>().add(
-            "0", "1", "zero", "one", "two", "few", "many", "other").freeze();
-    static MapComparator<String> unitLengthOrder = new MapComparator<String>().add(
-            "long", "short", "narrow").freeze();
+        "0", "1", "zero", "one", "two", "few", "many", "other").freeze();
     static Comparator<String> zoneOrder = StandardCodes.make().getTZIDComparator();
 
     static Set<String> orderedElements = Collections.unmodifiableSet(new HashSet<String>(Arrays
-            .asList(
-                    // can prettyprint with TestAttributes
+        .asList(
+            // can prettyprint with TestAttributes
 
-                    // DTD: ldml
-                    // <collation> children
-                    "base", "optimize", "rules", "settings", "suppress_contractions",
+            // DTD: ldml
+            // <collation> children
+            "base", "optimize", "rules", "settings", "suppress_contractions",
 
-                    // <rules> children
-                    "i", "ic", "p", "pc", "reset", "s", "sc", "t", "tc", "x",
+            // <rules> children
+            "i", "ic", "p", "pc", "reset", "s", "sc", "t", "tc", "x",
 
-                    // <x> children
-                    "context", "extend", "i", "ic", "p", "pc", "s", "sc", "t", "tc",
-                    "last_non_ignorable", "last_secondary_ignorable", "last_tertiary_ignorable",
+            // <x> children
+            "context", "extend", "i", "ic", "p", "pc", "s", "sc", "t", "tc",
+            "last_non_ignorable", "last_secondary_ignorable", "last_tertiary_ignorable",
 
-                    // <variables> children
-                    "variable",
+            // <variables> children
+            "variable",
 
-                    // <rulesetGrouping> children
-                    "ruleset",
+            // <rulesetGrouping> children
+            "ruleset",
 
-                    // <ruleset> children
-                    "rbnfrule",
+            // <ruleset> children
+            "rbnfrule",
 
-                    // DTD: supplementalData
-                    // <territory> children
-                    // "languagePopulation",
+            // DTD: supplementalData
+            // <territory> children
+            // "languagePopulation",
 
-                    // <postalCodeData> children
-                    // "postCodeRegex",
+            // <postalCodeData> children
+            // "postCodeRegex",
 
-                    // <characters> children
-                    // "character-fallback",
+            // <characters> children
+            // "character-fallback",
 
-                    // <character-fallback> children
-                    // "character",
+            // <character-fallback> children
+            // "character",
 
-                    // <character> children
-                    "substitute", // may occur multiple times
+            // <character> children
+            "substitute", // may occur multiple times
 
-                    // <transform> children
-                    "comment", "tRule",
+            // <transform> children
+            "comment", "tRule",
 
-                    // <validity> children
-                    // both of these don't need to be ordered, but must delay changes until after isDistinguished always uses
-                    // the dtd type
-                    "attributeValues", // attribute values shouldn't need ordering, as long as these are distinguishing:
-                    // elements="zoneItem" attributes="type"
-                    "variable", // doesn't need to be ordered
+            // <validity> children
+            // both of these don't need to be ordered, but must delay changes until after isDistinguished always uses
+            // the dtd type
+            "attributeValues", // attribute values shouldn't need ordering, as long as these are distinguishing:
+                               // elements="zoneItem" attributes="type"
+            "variable", // doesn't need to be ordered
 
-                    // <pluralRules> children
-                    "pluralRule",
+            // <pluralRules> children
+            "pluralRule",
 
-                    // <codesByTerritory> children
-                    // "telephoneCountryCode", // doesn't need ordering, as long as code is distinguishing, telephoneCountryCode
-                    // code="376"
+            // <codesByTerritory> children
+            // "telephoneCountryCode", // doesn't need ordering, as long as code is distinguishing, telephoneCountryCode
+            // code="376"
 
-                    // <numberingSystems> children
-                    // "numberingSystem", // doesn't need ordering, since id is distinguishing
+            // <numberingSystems> children
+            // "numberingSystem", // doesn't need ordering, since id is distinguishing
 
-                    // <metazoneInfo> children
-                    // "timezone", // doesn't need ordering, since type is distinguishing
+            // <metazoneInfo> children
+            // "timezone", // doesn't need ordering, since type is distinguishing
 
-                    "attributes", // shouldn't need this in //supplementalData/metadata/suppress/attributes, except that the
-                    // element is badly designed
+            "attributes", // shouldn't need this in //supplementalData/metadata/suppress/attributes, except that the
+                          // element is badly designed
 
-                    "languageMatch"
+            "languageMatch"
 
-                    )));
+        )));
 
     public static boolean isOrdered(String element, DtdType type) {
         return orderedElements.contains(element);
     }
 
     /**
-     * 
-     */
+   * 
+   */
     public static Comparator<String> getAttributeValueComparator(String element, String attribute) {
         Comparator<String> comp = valueOrdering;
         if (attribute.equals("day")) { // && (element.startsWith("weekend")
             comp = dayValueOrder;
         } else if (attribute.equals("type")) {
-            if (element.endsWith("FormatLength")) {
+            if (element.endsWith("FormatLength"))
                 comp = lengthOrder;
-            } else if (element.endsWith("Width")) {
+            else if (element.endsWith("Width"))
                 comp = widthOrder;
-            } else if (element.equals("day")) {
+            else if (element.equals("day"))
                 comp = dayValueOrder;
-            } else if (element.equals("field")) {
+            else if (element.equals("field"))
                 comp = dateFieldOrder;
-            } else if (element.equals("zone")) {
-                comp = zoneOrder;
-            } else if (element.equals("listPatternPart")) {
-                comp = listPatternOrder;
-            } else if (element.equals("unitLength")) {
-                comp = unitLengthOrder;
-            }
+            else if (element.equals("zone")) comp = zoneOrder;
         } else if (attribute.equals("count") && !element.equals("minDays")) {
             comp = countValueOrder;
         }
@@ -2504,24 +2451,24 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     private final static Map defaultSuppressionMap;
     static {
         String[][] data = {
-                { "ldml", "version", GEN_VERSION },
-                { "version", "cldrVersion", "*" },
-                { "orientation", "characters", "left-to-right" },
-                { "orientation", "lines", "top-to-bottom" },
-                { "weekendStart", "time", "00:00" },
-                { "weekendEnd", "time", "24:00" },
-                { "dateFormat", "type", "standard" },
-                { "timeFormat", "type", "standard" },
-                { "dateTimeFormat", "type", "standard" },
-                { "decimalFormat", "type", "standard" },
-                { "scientificFormat", "type", "standard" },
-                { "percentFormat", "type", "standard" },
-                { "currencyFormat", "type", "standard" },
-                { "pattern", "type", "standard" },
-                { "currency", "type", "standard" },
-                // {"collation", "type", "standard"},
-                { "transform", "visibility", "external" },
-                { "*", "_q", "*" },
+            { "ldml", "version", GEN_VERSION },
+            { "version", "cldrVersion", "*" },
+            { "orientation", "characters", "left-to-right" },
+            { "orientation", "lines", "top-to-bottom" },
+            { "weekendStart", "time", "00:00" },
+            { "weekendEnd", "time", "24:00" },
+            { "dateFormat", "type", "standard" },
+            { "timeFormat", "type", "standard" },
+            { "dateTimeFormat", "type", "standard" },
+            { "decimalFormat", "type", "standard" },
+            { "scientificFormat", "type", "standard" },
+            { "percentFormat", "type", "standard" },
+            { "currencyFormat", "type", "standard" },
+            { "pattern", "type", "standard" },
+            { "currency", "type", "standard" },
+            // {"collation", "type", "standard"},
+            { "transform", "visibility", "external" },
+            { "*", "_q", "*" },
         };
         Map tempmain = asMap(data, true);
         defaultSuppressionMap = Collections.unmodifiableMap(tempmain);
@@ -2581,8 +2528,8 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
 
     static final UnicodeSet HACK_CASE_CLOSURE_SET = new UnicodeSet(
-            "[ſẛﬀẞ{i̇}\u1F71\u1F73\u1F75\u1F77\u1F79\u1F7B\u1F7D\u1FBB\u1FBE\u1FC9\u1FCB\u1FD3\u1FDB\u1FE3\u1FEB\u1FF9\u1FFB\u2126\u212A\u212B]")
-    .freeze();
+        "[ſẛﬀẞ{i̇}\u1F71\u1F73\u1F75\u1F77\u1F79\u1F7B\u1F7D\u1FBB\u1FBE\u1FC9\u1FCB\u1FD3\u1FDB\u1FE3\u1FEB\u1FF9\u1FFB\u2126\u212A\u212B]")
+        .freeze();
 
     public UnicodeSet getExemplarSet(String type, WinningChoice winningChoice, int option) {
         if (type.length() != 0) type = "[@type=\"" + type + "\"]";
@@ -2632,7 +2579,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     private static class DistinguishedXPath {
         public static final String stats() {
             return "distinguishingMap:" + distinguishingMap.size() + " " +
-                    "normalizedPathMap:" + normalizedPathMap.size();
+                "normalizedPathMap:" + normalizedPathMap.size();
         }
 
         private static Map<String, String> distinguishingMap = new HashMap<String, String>();
@@ -2726,7 +2673,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         }
 
         public Map<String, String> getNonDistinguishingAttributes(String fullPath, Map<String, String> result,
-                Set<String> skipList) {
+            Set<String> skipList) {
             if (result == null) {
                 result = new LinkedHashMap<String, String>();
             } else {
@@ -2771,7 +2718,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
 
     public Map<String, String> getNonDistinguishingAttributes(String fullPath, Map<String, String> result,
-            Set<String> skipList) {
+        Set<String> skipList) {
         return distinguishedXPath.getNonDistinguishingAttributes(fullPath, result, skipList);
     }
 
@@ -2981,7 +2928,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                 throw new IllegalArgumentException("baseFile must be resolved");
             }
             Relation<String, String> pathMap = new Relation(new HashMap<String, String>(), TreeSet.class,
-                    new WinningComparator(user));
+                new WinningComparator(user));
             for (String path : baseFile) {
                 String newPath = getNondraftNonaltXPath(path);
                 pathMap.put(newPath, path);
@@ -3016,33 +2963,20 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
      * @return
      */
     public Collection<String> getExtraPaths() {
-        Set<String> toAddTo = new HashSet<String>();
+        return getExtraPaths(new HashSet<String>());
+    }
 
-        // reverse the order because we're hitting some strange behavior
-
-        toAddTo.addAll(getRawExtraPaths());
-        for (String path : this) {
-            toAddTo.remove(path);
+    /**
+     * Returns the extra paths, skipping those that are already represented in the locale.
+     * 
+     * @return
+     */
+    public Collection<String> getExtraPaths(Collection<String> toAddTo) {
+        for (String item : getRawExtraPaths()) {
+            if (dataSource.getValueAtPath(item) == null) { // don't use getStringValue, since it recurses.
+                toAddTo.add(item);
+            }
         }
-        
-//        showStars(getLocaleID() + " getExtraPaths", toAddTo);
-//        for (String path : getRawExtraPaths()) {
-//            // don't use getStringValue, since it recurses.
-//            if (!dataSource.hasValueAtDPath(path)) { 
-//                toAddTo.add(path);
-//            } else {
-//                if (path.contains("compoundUnit")) {
-//                    for (String path2 : this) {
-//                        if (path2.equals(path)) {
-//                            System.out.println("\t\t" + path);
-//                        }
-//                    }
-//                    System.out.println();
-//                }
-//            }
-//
-//        }
-//        showStars(getLocaleID() + " getExtraPaths", toAddTo);
         return toAddTo;
     }
 
@@ -3054,7 +2988,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     public Collection<String> getExtraPaths(String prefix, Collection<String> toAddTo) {
         for (String item : getRawExtraPaths()) {
             if (item.startsWith(prefix) && dataSource.getValueAtPath(item) == null) { // don't use getStringValue, since
-                // it recurses.
+                                                                                      // it recurses.
                 toAddTo.add(item);
             }
         }
@@ -3077,36 +3011,52 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         }
         return extraPaths;
     }
-    
-//    private static Set<String> ROOT_COUNT_OTHER = null;
-//    private Set<String> getRootCountOther() {
-//        if (ROOT_COUNT_OTHER == null) {
-//            Set<String> temp = new HashSet<String>();
-//            Factory cldrFactory = Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
-//            CLDRFile root = cldrFactory.make("root", true);
-//            for (String path : root) {
-//                if (path.contains("[@count=\"other\"]")) {
-//                    temp.add(path);
-//                }
-//            }
-//            //showStars(temp, "unitLength");
-//            ROOT_COUNT_OTHER = Collections.unmodifiableSet(temp);
-//        }
-//        return ROOT_COUNT_OTHER;
-//    }
-    
+
     private Collection<String> getRawExtraPathsPrivate(Collection<String> toAddTo) {
         SupplementalDataInfo supplementalData = SupplementalDataInfo.getInstance(getSupplementalDirectory());
         Set<String> codes = StandardCodes.make().getAvailableCodes("currency");
         // units
         final Set<Count> pluralCounts = supplementalData.getPlurals(PluralType.cardinal, getLocaleID())
-                .getCountToExamplesMap().keySet();
+            .getCountToExamplesMap().keySet();
         if (pluralCounts.size() != 1) {
-            // we get all the root paths with count
-            addPluralCounts(toAddTo, pluralCounts, this);
-//            addPluralCounts(toAddTo, pluralCounts, getRootCountOther());
-            if (false) {
-                showStars(getLocaleID() + " toAddTo", toAddTo);
+            for (Count count : pluralCounts) {
+                for (String unit : new String[] { "year", "month", "week", "day", "hour", "minute", "second" }) {
+                    for (String when : new String[] { "", "-past", "-future" }) {
+                        toAddTo.add("//ldml/units/unit[@type=\"" + unit + when + "\"]/unitPattern[@count=\""
+                            + count + "\"]");
+                    }
+                    for (String alt : new String[] { "", "[@alt=\"short\"]" }) {
+                        toAddTo.add("//ldml/units/unit[@type=\"" + unit + "\"]/unitPattern[@count=\"" + count
+                            + "\"]" + alt);
+                    }
+                }
+
+                for (String unit : codes) {
+                    toAddTo.add("//ldml/numbers/currencies/currency[@type=\"" + unit + "\"]/displayName[@count=\""
+                        + count + "\"]");
+                }
+
+                for (String numberSystem : supplementalData.getNumericNumberingSystems()) {
+                    String numberSystemString = "[@numberSystem=\"" + numberSystem + "\"]";
+                    final String currencyPattern = "//ldml/numbers/currencyFormats" + numberSystemString +
+                        "/unitPattern[@count=\"" + count + "\"]";
+                    toAddTo.add(currencyPattern);
+                    if (DEBUG) {
+                        System.out.println(getLocaleID() + "\t" + currencyPattern);
+                    }
+
+                    for (String type : new String[] {
+                        "1000", "10000", "100000", "1000000", "10000000", "100000000", "1000000000",
+                        "10000000000", "100000000000", "1000000000000", "10000000000000", "100000000000000" }) {
+                        for (String width : new String[] { "short", "long" }) {
+                            toAddTo.add("//ldml/numbers/decimalFormats" +
+                                numberSystemString + "/decimalFormatLength[@type=\"" +
+                                width + "\"]/decimalFormat[@type=\"standard\"]/pattern[@type=\"" +
+                                type + "\"][@count=\"" +
+                                count + "\"]");
+                        }
+                    }
+                }
             }
         }
         // dayPeriods
@@ -3120,9 +3070,9 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                     for (DayPeriod dayPeriod : items) {
                         // ldml/dates/calendars/calendar[@type="gregorian"]/dayPeriods/dayPeriodContext[@type="format"]/dayPeriodWidth[@type="wide"]/dayPeriod[@type="am"]
                         toAddTo.add("//ldml/dates/calendars/calendar[@type=\"gregorian\"]/dayPeriods/" +
-                                "dayPeriodContext[@type=\"" + context
-                                + "\"]/dayPeriodWidth[@type=\"" + width
-                                + "\"]/dayPeriod[@type=\"" + dayPeriod + "\"]");
+                            "dayPeriodContext[@type=\"" + context
+                            + "\"]/dayPeriodWidth[@type=\"" + width
+                            + "\"]/dayPeriod[@type=\"" + dayPeriod + "\"]");
                     }
                 }
             }
@@ -3141,89 +3091,17 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
 
         // Individual zone overrides
         final String[] overrides = {
-                "Pacific/Honolulu\"]/short/generic",
-                "Pacific/Honolulu\"]/short/standard",
-                "Pacific/Honolulu\"]/short/daylight",
-                "Europe/Dublin\"]/long/daylight",
-                "Europe/London\"]/long/daylight"
+            "Pacific/Honolulu\"]/short/generic",
+            "Pacific/Honolulu\"]/short/standard",
+            "Pacific/Honolulu\"]/short/daylight",
+            "Europe/Dublin\"]/long/daylight",
+            "Europe/London\"]/long/daylight"
         };
         for (String override : overrides) {
             toAddTo.add("//ldml/dates/timeZoneNames/zone[@type=\"" + override);
         }
 
         return toAddTo;
-    }
-
-    private void showStars(String title, Iterable<String> source) {
-        PathStarrer ps = new PathStarrer();
-        Relation<String,String> stars = Relation.of(new TreeMap<String,Set<String>>(), TreeSet.class);
-        for (String path : source) {
-            String skeleton = ps.set(path);
-            stars.put(skeleton, ps.getAttributesString("|"));
-
-        }
-        System.out.println(title);
-        for (Entry<String, Set<String>> s : stars.keyValuesSet()) {
-            System.out.println("\t" + s.getKey() + "\t" + s.getValue());
-        }
-    }
-
-    private void addPluralCounts(Collection<String> toAddTo, 
-            final Set<Count> pluralCounts, 
-            Iterable<String> file) {
-        for (String path : file) {
-            String countAttr = "[@count=\"other\"]";
-            int countPos = path.indexOf(countAttr);
-            if (countPos < 0) {
-                continue;
-            }
-            String start = path.substring(0,countPos) + "[@count=\"";
-            String end = path.substring(countPos+countAttr.length()) + "\"]";
-            for (Count count : pluralCounts) {
-                if (count == Count.other) {
-                    continue;
-                }
-                toAddTo.add(start + count + end);
-
-                //                for (String unit : new String[] { "year", "month", "week", "day", "hour", "minute", "second" }) {
-                //                    for (String when : new String[] { "", "-past", "-future" }) {
-                //                        toAddTo.add("//ldml/units/unit[@type=\"" + unit + when + "\"]/unitPattern[@count=\""
-                //                            + count + "\"]");
-                //                    }
-                //                    for (String alt : new String[] { "", "[@alt=\"short\"]" }) {
-                //                        toAddTo.add("//ldml/units/unit[@type=\"" + unit + "\"]/unitPattern[@count=\"" + count
-                //                            + "\"]" + alt);
-                //                    }
-                //                }
-
-                //                    for (String unit : codes) {
-                //                        toAddTo.add("//ldml/numbers/currencies/currency[@type=\"" + unit + "\"]/displayName[@count=\""
-                //                                + count + "\"]");
-                //                    }
-                //
-                //                    for (String numberSystem : supplementalData.getNumericNumberingSystems()) {
-                //                        String numberSystemString = "[@numberSystem=\"" + numberSystem + "\"]";
-                //                        final String currencyPattern = "//ldml/numbers/currencyFormats" + numberSystemString +
-                //                                "/unitPattern[@count=\"" + count + "\"]";
-                //                        toAddTo.add(currencyPattern);
-                //                        if (DEBUG) {
-                //                            System.out.println(getLocaleID() + "\t" + currencyPattern);
-                //                        }
-                //
-                //                        for (String type : new String[] {
-                //                                "1000", "10000", "100000", "1000000", "10000000", "100000000", "1000000000",
-                //                                "10000000000", "100000000000", "1000000000000", "10000000000000", "100000000000000" }) {
-                //                            for (String width : new String[] { "short", "long" }) {
-                //                                toAddTo.add("//ldml/numbers/decimalFormats" +
-                //                                        numberSystemString + "/decimalFormatLength[@type=\"" +
-                //                                        width + "\"]/decimalFormat[@type=\"standard\"]/pattern[@type=\"" +
-                //                                        type + "\"][@count=\"" +
-                //                                        count + "\"]");
-                //                            }
-                //                        }
-                //                    }
-            }
-        }
     }
 
     // This code never worked right, since extraPaths is static.
@@ -3324,7 +3202,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
 
     private String getCountPathWithFallback2(XPathParts parts, String xpathWithNoCount,
-            Count count, boolean winning) {
+        Count count, boolean winning) {
         parts.addAttribute("count", count == null ? null : count.toString());
         String newPath = parts.toString();
         if (!newPath.equals(xpathWithNoCount)) {

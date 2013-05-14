@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -450,8 +448,4 @@ public class SearchXml {
         }
         return b.toString();
     }
-    
-//    static class StarCounter {
-//        Map<String,Counter<String>> data = new HashMap();
-//    }
 }

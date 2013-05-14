@@ -93,40 +93,31 @@ public class ICUServiceBuilder {
     }
 
     public SimpleDateFormat getDateFormat(String calendar, int dateIndex, int timeIndex) {
-        return getDateFormat(calendar, dateIndex, timeIndex, null);
-    }
-
-    public SimpleDateFormat getDateFormat(String calendar, int dateIndex, int timeIndex, String numbersOverride) {
         String key = cldrFile.getLocaleID() + "," + calendar + "," + dateIndex + "," + timeIndex;
         SimpleDateFormat result = (SimpleDateFormat) cacheDateFormats.get(key);
         if (result != null) return (SimpleDateFormat) result.clone();
 
         String pattern = getPattern(calendar, dateIndex, timeIndex);
 
-        result = getFullFormat(calendar, pattern, numbersOverride);
+        result = getFullFormat(calendar, pattern);
         cacheDateFormats.put(key, result);
         // System.out.println("created " + key);
-        return (SimpleDateFormat) result.clone();
-    }
-
-    public SimpleDateFormat getDateFormat(String calendar, String pattern, String numbersOverride) {
-        String key = cldrFile.getLocaleID() + "," + calendar + ",," + pattern + ",,," + numbersOverride;
-        SimpleDateFormat result = (SimpleDateFormat) cacheDateFormats.get(key);
-        if (result != null) return (SimpleDateFormat) result.clone();
-        result = getFullFormat(calendar, pattern, numbersOverride);
-        cacheDateFormats.put(key, result);
-        // System.out.println("created " + key);
-        SimpleDateFormat sdf = (SimpleDateFormat) result.clone();
         return (SimpleDateFormat) result.clone();
     }
 
     public SimpleDateFormat getDateFormat(String calendar, String pattern) {
-        return getDateFormat(calendar, pattern, null);
+        String key = cldrFile.getLocaleID() + "," + calendar + ",," + pattern;
+        SimpleDateFormat result = (SimpleDateFormat) cacheDateFormats.get(key);
+        if (result != null) return (SimpleDateFormat) result.clone();
+        result = getFullFormat(calendar, pattern);
+        cacheDateFormats.put(key, result);
+        // System.out.println("created " + key);
+        return (SimpleDateFormat) result.clone();
     }
 
-    private SimpleDateFormat getFullFormat(String calendar, String pattern, String numbersOverride) {
+    private SimpleDateFormat getFullFormat(String calendar, String pattern) {
         ULocale curLocaleWithCalendar = new ULocale(cldrFile.getLocaleID() + "@calendar=" + calendar);
-        SimpleDateFormat result = new SimpleDateFormat(pattern, numbersOverride, curLocaleWithCalendar); // formatData
+        SimpleDateFormat result = new SimpleDateFormat(pattern, curLocaleWithCalendar); // formatData
         // TODO Serious Hack, until ICU #4915 is fixed. => It *was* fixed in ICU 3.8, so now use current locale.(?)
         Calendar cal = Calendar.getInstance(curLocaleWithCalendar);
         // TODO look these up and set them
@@ -139,14 +130,12 @@ public class ICUServiceBuilder {
 
         // formatData.setZoneStrings();
 
-        NumberFormat numberFormat = result.getNumberFormat();
-        if (numberFormat instanceof DecimalFormat) {
-            DecimalFormat df = (DecimalFormat) numberFormat;
-            df.setGroupingUsed(false);
-            df.setDecimalSeparatorAlwaysShown(false);
-            df.setParseIntegerOnly(true); /* So that dd.MM.yy can be parsed */
-            df.setMinimumFractionDigits(0); // To prevent "Jan 1.00, 1997.00"
-        }
+        DecimalFormat numberFormat = (DecimalFormat) getNumberFormat(1);
+        numberFormat.setGroupingUsed(false);
+        numberFormat.setDecimalSeparatorAlwaysShown(false);
+        numberFormat.setParseIntegerOnly(true); /* So that dd.MM.yy can be parsed */
+        numberFormat.setMinimumFractionDigits(0); // To prevent "Jan 1.00, 1997.00"
+
         result.setNumberFormat((NumberFormat) numberFormat.clone());
         return result;
     }
@@ -689,7 +678,7 @@ public class ICUServiceBuilder {
         // numsys should not be null (previously resolved to defaultNumberingSystem if necessary)
         String value = null;
         try {
-            value = cldrFile.getWinningValue("//ldml/numbers/symbols[@numberSystem=\"" + numsys + "\"]/" + key);
+            value = cldrFile.getWinningValue("//ldml/numbers/symbols[@numberSystem='" + numsys + "']/" + key);
             if (value == null || value.length() < 1) {
                 throw new RuntimeException();
             }

@@ -21,15 +21,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.unicode.cldr.draft.FileUtilities;
-import org.unicode.cldr.util.CLDRConfig;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.CldrUtility.VariableReplacer;
-import org.unicode.cldr.util.PathHeader.SectionId;
 import org.unicode.cldr.util.ExtractCollationRules;
 import org.unicode.cldr.util.Factory;
 import org.unicode.cldr.util.LocaleIDParser;
-import org.unicode.cldr.util.PathHeader;
 import org.unicode.cldr.util.PrettyPath;
 import org.unicode.cldr.util.XPathParts;
 
@@ -62,6 +59,16 @@ public class ShowData {
             "<p>Generation: " + CldrUtility.isoFormat(new java.util.Date()) + "</p>\n";
     }
 
+    public static String ANALYTICS = "<script type=\"text/javascript\">\n"
+        + "var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\");\n"
+        + "document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E\"));\n"
+        + "</script>\n"
+        + "<script type=\"text/javascript\">\n"
+        + "try {\n"
+        + "var pageTracker = _gat._getTracker(\"UA-7672775-1\");\n"
+        + "pageTracker._trackPageview();\n"
+        + "} catch(err) {}</script>";
+
     static RuleBasedCollator uca = (RuleBasedCollator) Collator
         .getInstance(ULocale.ROOT);
 
@@ -69,7 +76,7 @@ public class ShowData {
         uca.setNumericCollation(true);
     }
 
-    static PathHeader.Factory prettyPathMaker = PathHeader.getFactory(CLDRConfig.getInstance().getEnglish());
+    static PrettyPath prettyPathMaker = new PrettyPath();
 
     static CLDRFile english;
 
@@ -110,7 +117,7 @@ public class ShowData {
             locales = new TreeSet(cldrFactory.getAvailable());
             new CldrUtility.MatcherFilter(options[MATCH].value).retainAll(locales);
             // Set paths = new TreeSet();
-            Set<PathHeader> prettySet = new TreeSet<PathHeader>();
+            Set prettySet = new TreeSet(uca);
             Set skipList = new HashSet(Arrays.asList(new String[] { "id" }));
 
             CLDRFile.Status status = new CLDRFile.Status();
@@ -169,10 +176,8 @@ public class ShowData {
                         skippedCount++;
                         continue; // skip code fllback
                     }
-                    PathHeader prettyString = prettyPathMaker.fromPath(path);
-                    if (prettyString.getSectionId() != SectionId.Special) {
-                        prettySet.add(prettyString);
-                    }
+                    String prettyString = prettyPathMaker.getPrettyPath(path);
+                    prettySet.add(prettyString);
                 }
 
                 PrintWriter pw = BagFormatter.openUTF8Writer(targetDir, locale + ".html");
@@ -237,11 +242,7 @@ public class ShowData {
                 }
                 pw.println("<table border=\"1\" cellpadding=\"2\" cellspacing=\"0\">");
 
-                pw.println("<tr><th>No</th>"
-                        + "<th>Section</th>"
-                        + "<th>Page</th>"
-                        + "<th>Header</th>"
-                        + "<th>Code</th>"
+                pw.println("<tr><th>No</th><th colSpan=3>Path</th>"
                     + (showEnglish ? "<th>English</th>" : "")
                     + (showParent ? "<th>Parent</th>" : "") + "<th>Native</th>"
                     + "<th>D?</th>" +
@@ -251,9 +252,10 @@ public class ShowData {
                     "<tr>");
 
                 int count = 0;
-                PathHeader oldParts = null;
-                for (PathHeader prettyPath : prettySet) {
-                    String path = prettyPath.getOriginalPath();
+                String[] oldParts = new String[4];
+                for (Iterator it2 = prettySet.iterator(); it2.hasNext();) {
+                    String prettyPath = (String) it2.next();
+                    String path = prettyPathMaker.getOriginal(prettyPath);
                     boolean zeroOutEnglish = path.indexOf("/references") < 0;
 
                     String source = file.getSourceLocaleID(path, status);
@@ -311,12 +313,27 @@ public class ShowData {
                             parentValue += parentNda;
                         }
                     }
-//                    prettyPath = TransliteratorUtilities.toHTML
-//                        .transliterate(prettyPath.getOutputForm(prettyPath));
-//                    String[] pathParts = prettyPath.split("[|]");
+                    prettyPath = TransliteratorUtilities.toHTML
+                        .transliterate(prettyPathMaker.getOutputForm(prettyPath));
+                    String[] pathParts = prettyPath.split("[|]");
                     // count the <td>'s and pad
                     // int countBreaks = Utility.countInstances(prettyPath, "</td><td>");
                     // prettyPath += Utility.repeat("</td><td>", 3-countBreaks);
+                    prettyPath = "";
+                    for (int i = 0; i < 3; ++i) {
+                        String newPart = i < pathParts.length ? pathParts[i] : "";
+                        if (newPart.equals(oldParts[i])) {
+                            prettyPath += "</td><td class='n'>";
+                        } else {
+                            if (newPart.length() == 0) {
+                                prettyPath += "</td><td>";
+                            } else {
+                                prettyPath += "</td><td class='g'>";
+                            }
+                            oldParts[i] = newPart;
+                        }
+                        prettyPath += newPart;
+                    }
                     String statusClass = isAliased ? (isInherited ? " class='ah'"
                         : " class='a'") : (isInherited ? " class='h'" : "");
 
@@ -326,10 +343,7 @@ public class ShowData {
                             + statusClass
                             + ">"
                             + (++count)
-                            + addPart(oldParts == null ? null : oldParts.getSection(), prettyPath.getSection())
-                            + addPart(oldParts == null ? null : oldParts.getPage(), prettyPath.getPage())
-                            + addPart(oldParts == null ? null : oldParts.getHeader(), prettyPath.getHeader())
-                            + addPart(oldParts == null ? null : oldParts.getCode(), prettyPath.getCode())
+                            + prettyPath
                             // + "</td><td>" +
                             // TransliteratorUtilities.toHTML.transliterate(lastElement)
                             + showValue(showEnglish, englishValue, value)
@@ -345,7 +359,6 @@ public class ShowData {
                             // + showValue(showEnglish, englishNda, nda)
                             // + showValue(showParent, parentNda, nda)
                             + "</td></tr>");
-                    oldParts = prettyPath;
                 }
                 pw.println("</table><br><table>");
                 pw.println("<tr><td class='a'>Aliased items: </td><td>" + aliasedCount
@@ -366,18 +379,6 @@ public class ShowData {
             System.out.println("Elapsed: " + deltaTime / 1000.0 + " seconds");
             System.out.println("Done");
         }
-    }
-
-    private static String addPart(String oldPart, String newPart) {
-        String prefix;
-        if (newPart.equals(oldPart)) {
-            prefix = "</td><td class='n'>";
-        } else if (newPart.length() == 0) {
-            prefix = "</td><td>";
-        } else {
-            prefix = "</td><td class='g'>";
-        }
-        return prefix + TransliteratorUtilities.toHTML.transform(newPart);
     }
 
     private static void getScripts() throws IOException {

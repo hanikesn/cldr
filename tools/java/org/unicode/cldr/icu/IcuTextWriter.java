@@ -2,7 +2,6 @@ package org.unicode.cldr.icu;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,7 +13,6 @@ import org.unicode.cldr.draft.FileUtilities;
 
 import com.ibm.icu.dev.util.BagFormatter;
 import com.ibm.icu.impl.Utility;
-import com.ibm.icu.util.Calendar;
 
 /**
  * Writes an IcuData object to a text file.
@@ -32,8 +30,6 @@ public class IcuTextWriter {
     private static final Pattern STRING_ESCAPE = Pattern.compile("\\\\\\\\");
     private static final Pattern QUOTE_ESCAPE = Pattern.compile("\\\\?\"");
 
-    private static String headerText;
-
     /**
      * ICU paths have a simple comparison, alphabetical within a level. We do
      * have to catch the / so that it is lower than everything.
@@ -43,11 +39,6 @@ public class IcuTextWriter {
             @Override
             public int compare(String arg0, String arg1) {
                 int min = Math.min(arg0.length(), arg1.length());
-                // Initialize counts to 1 in order to preserve 0s without having
-                // to keep track of previous identical digits.
-                // Assumes that there are no numbers in rbPaths with leading 0s.
-                int num0 = 1;
-                int num1 = 1;
                 for (int i = 0; i < min; ++i) {
                     int ch0 = arg0.charAt(i);
                     int ch1 = arg1.charAt(i);
@@ -55,52 +46,17 @@ public class IcuTextWriter {
                     if (diff == 0) {
                         continue;
                     }
-                    // Numbers are sorted by the value of the entire number.
-                    boolean isDigit0 = Character.isDigit(ch0);
-                    boolean isDigit1 = Character.isDigit(ch1);
-                    if (!isDigit0 && !isDigit1) {
-                        if (num0 != num1) {
-                            return num0 - num1;
-                        } else if (ch0 == '/') {
-                            return -1;
-                        } else if (ch1 == '/') {
-                            return 1;
-                        } else {
-                            return diff;
-                        }
-                    }
-
-                    if (isDigit0) {
-                        num0 = num0 * 10 + Character.getNumericValue(ch0);
-                    }
-                    if (isDigit1) {
-                        num1 = num1 * 10 + Character.getNumericValue(ch1);
-                    }
-
-					// Evaluate numbers with different digit lengths.
-                    if (isDigit0 != isDigit1) {
-                        return num0 - num1;
+                    if (ch0 == '/') {
+                        return -1;
+                    } else if (ch1 == '/') {
+                        return 1;
+                    } else {
+                        return diff;
                     }
                 }
-                // Handle any numbers at the end of the rbPath.
-                if (num0 != num1) {
-                    return num0 - num1;
-                } else {
-                    return arg0.length() - arg1.length();
-                }
-                
+                return arg0.length() - arg1.length();
             }
         };
-
-    private static String getHeader() {
-        if (headerText != null) return headerText;
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter out = new PrintWriter(stringWriter);
-        FileUtilities.appendFile(NewLdml2IcuConverter.class, "ldml2icu_header.txt", out);
-        headerText = stringWriter.toString();
-        headerText = headerText.replace("%year%", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        return headerText;
-    }
 
     /**
      * Write a file in ICU format. LDML2ICUConverter currently has some
@@ -117,9 +73,10 @@ public class IcuTextWriter {
         String name = icuData.getName();
         PrintWriter out = BagFormatter.openUTF8Writer(dirPath, name + ".txt");
         out.write('\uFEFF');
+
         // Append the header.
-        String header = getHeader().replace("%source%", icuData.getSourceFile());
-        out.print(header);
+        String[] replacements = { "%source%", icuData.getSourceFile() };
+        FileUtilities.appendFile(NewLdml2IcuConverter.class, "ldml2icu_header.txt", null, replacements, out);
         if (icuData.hasSpecial()) {
             out.println("/**");
             out.println(" *  ICU <specials> source: <path>/xml/main/" + name + ".xml");

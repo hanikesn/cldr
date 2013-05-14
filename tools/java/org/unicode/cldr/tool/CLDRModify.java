@@ -722,24 +722,6 @@ public class CLDRModify {
             }
         }
 
-        /**
-         * Adds a new path-value pair to the CLDRFile.
-         * @param path the new path
-         * @param value the value
-         * @param reason Reason for adding the path and value.
-         */
-        public void add(String path, String value, String reason) {
-            String oldValueOldPath = cldrFileToFilter.getStringValue(path);
-            if (oldValueOldPath == null) {
-                toBeRemoved.remove(path);
-                toBeReplaced.add(path, value);
-                showAction(reason, "Adding", oldValueOldPath, null,
-                    value, path, path);
-            } else {
-                replace(path, path, value);
-            }
-        }
-
         public CLDRFile getReplacementFile() {
             return toBeReplaced;
         }
@@ -999,22 +981,6 @@ public class CLDRModify {
             }
         });
 
-        fixList.add('s', "create alt accounting", new CLDRFilter() {
-            @Override
-            public void handlePath(String xpath) {
-                if (!xpath.contains("/currencyFormatLength/")) return;
-                String value = cldrFileToFilter.getStringValue(xpath);
-                if (!value.contains("(")) return;
-                String fullXPath = cldrFileToFilter.getFullXPath(xpath);
-                fullparts.set(fullXPath);
-                fullparts.addAttribute("alt", "accounting");
-                add(fullparts.toString(), value, "Move old currency format to accounting");
-
-                String newValue = value.split(";")[0];
-                replace(fullXPath, fullXPath, newValue, "Remove negative accounting format");
-            }
-        });
-
         fixList.add('x', "retain paths", new CLDRFilter() {
             Matcher m = null;
 
@@ -1094,30 +1060,87 @@ public class CLDRModify {
          */
 
         // comment this away, since it is very special purpose.
-        fixList.add('u', "fix unit patterns", new CLDRFilter() {
+        if (false) fixList.add('u', "fix unit patterns", new CLDRFilter() {
 
             public void handlePath(String xpath) {
                 if (!xpath.contains("/units")) {
                     return;
                 }
-                if (!xpath.contains("/unitPattern")) {
+                if (xpath.contains("/unitPattern")) {
+                    remove(xpath, "merging with unitName");
                     return;
                 }
+                if (!xpath.contains("/unitName")) {
+                    throw new IllegalArgumentException("Unexpected path");
+                }
+                // we have a unit name.
+                String unitName = cldrFileToFilter.getStringValue(xpath);
+                String originalXPath = xpath;
+                String xpathWithCount = xpath;
 
-                String value = cldrFileToFilter.getStringValue(xpath);
-                String fullXPath = cldrFileToFilter.getFullXPath(xpath);
+                // if it has no count, and there is no count=one, change to count="one" else remove
+                parts.set(xpath);
+                String key = rootUnitMap.get(parts.getAttributeValue(-2, "type"));
+                String count = parts.getAttributeValue(-1, "count");
 
-                parts.set(fullXPath);
+                if (!xpath.contains("count=")) {
+                    parts.set(xpath).addAttribute("count", "one");
+                    xpathWithCount = parts.toString();
+                    String unitName2 = cldrFileToFilter.getStringValue(xpathWithCount);
+                    if (unitName2 != null) {
+                        if (!unitName2.equals(key)) {
+                            remove(xpath, "have count version");
+                            return;
+                        }
+                    }
+                }
+                if (xpath.contains("count=\"one\"")) {
+                    // if we were using the no-count version, then we have to suppress this one.
+                    parts.set(xpath);
+                    if (unitName.equals(key)) {
+                        parts.addAttribute("count", null);
+                        String countlessValue = cldrFileToFilter.getStringValue(xpathWithCount);
+                        if (countlessValue != null) {
+                            remove(xpath, "have no-count version");
+                            return;
+                        }
+                    }
+                }
 
+                // combine it with the unitPattern of the same name
+                // we may have to strip attributes
+                // we may have to change to count=one
+                // we use a default value if we have to.
 
-                String unittype = parts.findAttributeValue("unit","type");
-                String count = parts.findAttributeValue("unitPattern","count");
-                boolean hasAltShort = parts.containsAttributeValue("alt", "short");
-                
-                String newFullXpath = "//ldml/units/unitLength[@type=\"" +
-                ( hasAltShort ? "short" : "long" ) + "\"]/unit[@type=\"duration-" + unittype + "\"]" +
-                "/unitPattern[@count=\"" + count + "\"]";
-                replace(fullXPath, newFullXpath, value, "converting to new unit structure");
+                String plainPatternPath = xpathWithCount.replace("unitName", "unitPattern");
+                // if ARABIC ONLY
+                String unitPattern = count.equals("zero") || count.equals("one") || count.equals("two") ? "{1}"
+                    : "{0} {1}";
+
+                // String unitPattern = cldrFileToFilter.getStringValue(plainPatternPath);
+                // if (unitPattern == null) {
+                // String plainPatternPath2 = CLDRFile.getNondraftNonaltXPath(plainPatternPath);
+                // unitPattern = cldrFileToFilter.getStringValue(plainPatternPath2);
+                // if (unitPattern == null) {
+                // String plainPatternPath3 = parts.set(plainPatternPath).addAttribute("count", "one").toString();
+                // unitPattern = cldrFileToFilter.getStringValue(plainPatternPath3);
+                // if (unitPattern == null) {
+                // String plainPatternPath4 = parts.set(plainPatternPath2).addAttribute("count", "one").toString();
+                // unitPattern = cldrFileToFilter.getStringValue(plainPatternPath4);
+                // if (unitPattern == null) {
+                // unitPattern = "{0} {1}";
+                // }
+                // }
+                // }
+                // }
+                String newUnitPattern = MessageFormat.format(unitPattern, new Object[] { "{0}", unitName });
+
+                String fullOldXPath = cldrFileToFilter.getFullXPath(originalXPath);
+                String fullXPath = cldrFileToFilter.getFullXPath(plainPatternPath);
+                if (fullXPath == null) {
+                    fullXPath = plainPatternPath;
+                }
+                replace(fullOldXPath, fullXPath, newUnitPattern, "merging unitName/Pattern");
             }
         });
 

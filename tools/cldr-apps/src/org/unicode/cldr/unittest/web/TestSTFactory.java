@@ -5,15 +5,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.unicode.cldr.unittest.web.TestAll.WebTestInfo;
-import org.unicode.cldr.util.CLDRConfig;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRFile.DraftStatus;
 import org.unicode.cldr.util.CLDRLocale;
@@ -24,21 +20,17 @@ import org.unicode.cldr.util.VoteResolver.Status;
 import org.unicode.cldr.util.XMLFileReader;
 import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.web.BallotBox;
-import org.unicode.cldr.web.BallotBox.InvalidXPathException;
-import org.unicode.cldr.web.CookieSession;
 import org.unicode.cldr.web.DBUtils;
 import org.unicode.cldr.web.STFactory;
 import org.unicode.cldr.web.SurveyLog;
 import org.unicode.cldr.web.SurveyMain;
 import org.unicode.cldr.web.UserRegistry;
-import org.unicode.cldr.web.UserRegistry.LogoutException;
 import org.unicode.cldr.web.UserRegistry.User;
 import org.unicode.cldr.web.XPathTable;
 
 import com.ibm.icu.dev.test.TestFmwk;
 import com.ibm.icu.dev.util.BagFormatter;
 import com.ibm.icu.dev.util.ElapsedTimer;
-import com.ibm.icu.text.SimpleDateFormat;
 
 public class TestSTFactory extends TestFmwk {
 
@@ -77,7 +69,7 @@ public class TestSTFactory extends TestFmwk {
         CLDRLocale locale = CLDRLocale.getInstance(file.getLocaleID());
         String currentWinner = file.getStringValue(path);
         boolean didVote = box.userDidVote(getMyUser(), path);
-        StackTraceElement them = StackTracker.currentElement(1);
+        StackTraceElement them = StackTracker.currentElement(0);
         String where = " (" + them.getFileName() + ":" + them.getLineNumber() + "): ";
 
         if (expectString == null)
@@ -105,7 +97,7 @@ public class TestSTFactory extends TestFmwk {
         return didVote ? "(I VOTED)" : "( did NOT VOTE) ";
     }
 
-    public void TestBasicVote() throws SQLException, IOException, InvalidXPathException {
+    public void TestBasicVote() throws SQLException, IOException {
         STFactory fac = getFactory();
 
         final String somePath = "//ldml/localeDisplayNames/keys/key[@type=\"collation\"]";
@@ -222,22 +214,9 @@ public class TestSTFactory extends TestFmwk {
                 logln("Good - caught " + t.toString() + " as this locale is readonly english.");
             }
         }
-        {
-            CLDRLocale locale2 = CLDRLocale.getInstance("nb");
-            CLDRFile nb = fac.make(locale2, false);
-            BallotBox<User> box = fac.ballotBoxForLocale(locale2);
-            final String bad_xpath =  "//ldml/units/unitLength[@type=\"format\"]/unit[@type=\"murray\"]/unitPattern[@count=\"many\"]";
-
-            try {
-                box.voteForValue(getMyUser(), bad_xpath, "{0} Murrays"); // bogus
-                errln("Error! should have failed to vote for " + locale2 + " xpath " + bad_xpath);
-            } catch (Throwable t) {
-                logln("Good - caught " + t.toString() + " voting for " + bad_xpath + " as this is a bad xpath.");
-            }
-        }
     }
 
-    public void TestSparseVote() throws SQLException, IOException, InvalidXPathException {
+    public void TestSparseVote() throws SQLException, IOException {
         STFactory fac = getFactory();
 
         final String somePath2 = "//ldml/localeDisplayNames/keys/key[@type=\"calendar\"]";
@@ -368,12 +347,7 @@ public class TestSTFactory extends TestFmwk {
                     if (elem.equals("unvote")) {
                         value = null;
                     }
-                    try {
-                        box.voteForValue(u, xpath, value);
-                    } catch (InvalidXPathException e) {
-                        // TODO Auto-generated catch block
-                        errln("Error: invalid xpath exception " + xpath  + " : " + e);
-                    }
+                    box.voteForValue(u, xpath, value);
                     logln(u + " " + elem + "d for " + xpath + " = " + value);
                 } else if (elem.equals("verify")) {
                     value = value.trim();
@@ -485,8 +459,6 @@ public class TestSTFactory extends TestFmwk {
 
                 } else if (elem.equals("echo")) {
                     logln("*** \"" + value.trim() + "\"");
-                } else if (elem.equals("warn")) {
-                    logln("*** Warning: \"" + value.trim() + "\"");
                 } else {
                     throw new IllegalArgumentException("Unknown test element type " + elem);
                 }
@@ -500,7 +472,7 @@ public class TestSTFactory extends TestFmwk {
         myReader.read(TestSTFactory.class.getResource("data/" + fileName).toString(), TestAll.getUTF8Data(fileName), -1, true);
     }
 
-    public void TestVettingWithNonDistinguishing() throws SQLException, IOException, InvalidXPathException {
+    public void TestVettingWithNonDistinguishing() throws SQLException, IOException {
         STFactory fac = getFactory();
 
         final String somePath2 = "//ldml/dates/calendars/calendar[@type=\"hebrew\"]/dateFormats/dateFormatLength[@type=\"full\"]/dateFormat[@type=\"standard\"]/pattern[@type=\"standard\"]";
@@ -594,67 +566,7 @@ public class TestSTFactory extends TestFmwk {
             }
         }
     }
-        
-    public void TestVotingAge() throws SQLException, IOException, InterruptedException, JSONException, InvalidXPathException {
-        CLDRConfig config = CLDRConfig.getInstance();
-        config.setProperty(SurveyMain.CLDR_NEWVERSION_AFTER, SurveyMain.NEWVERSION_EPOCH);
-        STFactory fac = resetFactory();
 
-        final String somePath = "//ldml/localeDisplayNames/keys/key[@type=\"collation\"]";
-        final String somePath2 = "//ldml/localeDisplayNames/keys/key[@type=\"calendar\"]";
-        final CLDRLocale loc = CLDRLocale.getInstance("und");
-        final String aValueOld = "oldValue";
-        final String aValueNew = "newValue";
-        String origBase = ANY;
-        
-        {
-            CLDRFile file = fac.make(loc, false);
-            BallotBox<User> box = fac.ballotBoxForLocale(loc);
-            box.voteForValue(getMyUser(), somePath, null); // unvote
-            origBase = expect(somePath, ANY, false, file, box);
-            logln(loc + ":" + somePath + " = " + origBase);
-            
-            box.voteForValue(getMyUser(), somePath, aValueOld); // unvote
-            expect(somePath, aValueOld, true, file, box);
-
-        }
-        
-        logln("Sleeping at .." + new Date());
-        Thread.sleep(2000);  // so that the 'old' vote is prior to the cut
-        Date cutTime = new Date();
-        String cutEpoch = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss'.00000'").format(cutTime);
-        config.setProperty(SurveyMain.CLDR_NEWVERSION_AFTER, cutEpoch);
-
-        logln("Sleeping.. (set old release cut to " + cutEpoch);
-        Thread.sleep(2000); // so that the 'new' vote is after the cut
-        logln("Retesting at " + new Date());
-        fac = resetFactory();
-        
-        {
-            CLDRFile file = fac.make(loc, false);
-            BallotBox<User> box = fac.ballotBoxForLocale(loc);
-            box.voteForValue(getMyUser(), somePath2, aValueNew); // vote on 2nd path
-            final String votesAfter = SurveyMain.getSQLVotesAfter();
-            logln("votesAfter = " + votesAfter);
-            {
-                JSONObject query = DBUtils
-                        .queryToJSON("select xpath,value,last_mod from " + STFactory.CLDR_VBV + " where locale=?", loc);
-                logln("*: " + query.toString());
-            }
-            
-            logln("Expect to find the old value gone (too old)");
-            expect(somePath, origBase, false, file, box);
-            logln("Expect to find the new value  in the new path OK gone (new)");
-            expect(somePath2, aValueNew, true, file, box);
-            
-            logln("Expect to find the new value after revoting");
-            box.voteForValue(getMyUser(), somePath, aValueNew);
-            expect(somePath, aValueNew, true, file, box);
-        }
-
-        
-    }
-    
     private void verifyReadOnly(CLDRFile f) {
         String loc = f.getLocaleID();
         try {
@@ -670,8 +582,6 @@ public class TestSTFactory extends TestFmwk {
             try {
                 gUser = getFactory().sm.reg.get(null, "admin@", "[::1]", true);
             } catch (SQLException e) {
-                handleException(e);
-            } catch (LogoutException e) {
                 handleException(e);
             }
         }
@@ -690,7 +600,6 @@ public class TestSTFactory extends TestFmwk {
 
             et0 = new ElapsedTimer("setup SurveyMain");
             SurveyMain sm = new SurveyMain();
-            CookieSession.sm = sm; // hack - of course.
             logln(et0.toString());
 
             sm.fileBase = CldrUtility.MAIN_DIRECTORY;

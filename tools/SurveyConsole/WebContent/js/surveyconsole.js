@@ -549,7 +549,6 @@ function doUpdates(survey, config, div) {
 	var load = appendStatusItem("Load",div);
 	var pages = appendStatusItem("Pages",div);
 	var newVersion = appendStatusItem("Version",div);
-	var currev = appendStatusItem("SVN Version",div);
 	var phase = appendStatusItem("Phase",div);
 	var environment = appendStatusItem("Environment",div);
 
@@ -619,7 +618,6 @@ function doUpdates(survey, config, div) {
 					replaceText(guests,json.status.guests + " guests, " + json.status.users + " users");
 					replaceText(specialHeader, json.status.specialHeader);
 					replaceText(uptime, json.status.uptime);
-					replaceText(currev, json.status.currev);
 					replaceText(pages, json.status.pages);
 					replaceText(newVersion, json.status.newVersion);
 					replaceText(phase, json.status.phase);

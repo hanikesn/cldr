@@ -77,11 +77,8 @@ public class LocaleTree {
         if (t != null || v != null) {
             if (v == null) {
                 lm.put(localeName.getDisplayCountry(displayLocale), localeName);
-            } else if(t != null){
-                lm.put(localeName.getDisplayCountry(displayLocale) + " (" + localeName.getDisplayVariant(displayLocale) + ")",
-                        localeName);
             } else {
-                lm.put("(" + localeName.getDisplayVariant(displayLocale) + ")",
+                lm.put(localeName.getDisplayCountry(displayLocale) + " (" + localeName.getDisplayVariant(displayLocale) + ")",
                         localeName);
             }
         }

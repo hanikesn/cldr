@@ -1,9 +1,9 @@
 // TODO: this file needs to be converted to the v1.7 loader
 
-// module:
-//		configSpidermonkey
-// summary:
-//		 SpiderMonkey host environment
+
+/*
+ * SpiderMonkey host environment
+ */
 
 if(dojo.config["baseUrl"]){
 	dojo.baseUrl = dojo.config["baseUrl"];
@@ -13,7 +13,11 @@ if(dojo.config["baseUrl"]){
 
 dojo._name = 'spidermonkey';
 
-
+/*=====
+dojo.isSpidermonkey = {
+	// summary: Detect spidermonkey
+};
+=====*/
 
 dojo.isSpidermonkey = true;
 dojo.exit = function(exitcode){

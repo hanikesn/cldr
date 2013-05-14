@@ -128,15 +128,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</currencies>
 	</numbers>
 	<units>
-		<unitLength type="long">
-			<unit type="duration-week">
-				<unitPattern count="one">{0} साता</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="one">{0} वर्ष</unitPattern>
-				<unitPattern count="other">{0} वर्ष</unitPattern>
-			</unit>
-		</unitLength>
+		<unit type="week">
+			<unitPattern count="one">{0} साता</unitPattern>
+		</unit>
+		<unit type="year">
+			<unitPattern count="one">{0} वर्ष</unitPattern>
+			<unitPattern count="other">{0} वर्ष</unitPattern>
+		</unit>
 	</units>
 </ldml>
 

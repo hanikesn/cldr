@@ -684,6 +684,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<gmtZeroFormat>GMT</gmtZeroFormat>
 			<regionFormat>Hora de {0}</regionFormat>
 			<fallbackFormat>{1} ({0})</fallbackFormat>
+			<fallbackRegionFormat>Hora de {1} ({0})</fallbackRegionFormat>
 			<zone type="Etc/Unknown">
 				<exemplarCity draft="contributed">Desconhecido</exemplarCity>
 			</zone>
@@ -2335,18 +2336,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</currencies>
 	</numbers>
 	<units>
-		<unitLength type="long">
-			<unit type="duration-second">
-				<unitPattern count="one">{0} segundo</unitPattern>
-				<unitPattern count="other">{0} segundos</unitPattern>
-			</unit>
-		</unitLength>
-		<unitLength type="short">
-			<unit type="duration-second">
-				<unitPattern count="one">{0} s</unitPattern>
-				<unitPattern count="other">{0} s</unitPattern>
-			</unit>
-		</unitLength>
+		<unit type="second">
+			<unitPattern count="one">{0} segundo</unitPattern>
+			<unitPattern count="one" alt="short">{0} s</unitPattern>
+			<unitPattern count="other">{0} segundos</unitPattern>
+			<unitPattern count="other" alt="short">{0} s</unitPattern>
+		</unit>
 	</units>
 </ldml>
 <!-- Comments without bases

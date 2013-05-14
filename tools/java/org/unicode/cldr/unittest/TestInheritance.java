@@ -40,8 +40,6 @@ import com.ibm.icu.impl.Row.R2;
 
 public class TestInheritance extends TestFmwk {
 
-    static TestInfo testInfo = TestInfo.getInstance();
-
     private static boolean DEBUG = CldrUtility.getProperty("DEBUG", true);
 
     private static String fileMatcher = CldrUtility.getProperty("FILE", ".*");
@@ -429,9 +427,10 @@ public class TestInheritance extends TestFmwk {
     }
 
     public void TestCldrFileConsistency() {
+        Factory factory = Factory.make(CldrUtility.MAIN_DIRECTORY, fileMatcher);
         boolean haveErrors = false;
-        for (String locale : testInfo.getCldrFactory().getAvailable()) {
-            CLDRFile cldrFileToCheck = testInfo.getCldrFactory().make(locale, false);
+        for (String locale : factory.getAvailable()) {
+            CLDRFile cldrFileToCheck = factory.make(locale, true);
             int errors = 0;
             for (String path : cldrFileToCheck) {
                 if (!pathMatcher.reset(path).find()) {

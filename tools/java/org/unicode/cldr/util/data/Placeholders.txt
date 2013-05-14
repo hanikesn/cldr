@@ -1,7 +1,6 @@
 #Remember to quote any [ character!
 
 %A = [^"]*+
-%L = (long|short|narrow)
 
 ^//ldml/dates/calendars/calendar\[@type="%A"]/dateTimeFormats/dateTimeFormatLength\[@type="%A"]/dateTimeFormat\[@type="%A"]/pattern\[@type="%A"] ; {1}=DATE Dec 10, 2010 ; {0}=TIME 3:59
 
@@ -97,62 +96,42 @@
 ^//ldml/dates/calendars/calendar\[@type="%A"]/monthPatterns/monthPatternContext\[@type="%A"]/monthPatternWidth\[@type="%A"]/monthPattern\[@type="%A"] ; {0}=CHINESE_CALENDAR_MONTH_NAME Month4
 
 ^//ldml/dates/timeZoneNames/fallbackFormat ; {1}=METAZONE Pacific Time; {0}=CITY_OR_COUNTRY Los Angeles
+^//ldml/dates/timeZoneNames/fallbackRegionFormat ; {1}=COUNTRY Argentina; {0}=CITY Buenos Aires
 ^//ldml/dates/timeZoneNames/gmtFormat ; {0}=HOURS_FROM_GMT +3
-^//ldml/dates/timeZoneNames/regionFormat ; {0}=COUNTRY_OR_CITY Canada
+^//ldml/dates/timeZoneNames/regionFormat ; {0}=COUNTRY Canada
 
 ^//ldml/listPatterns/listPattern/listPatternPart\[@type="2"] ; {0}=ITEM1 Apples ; {1}=ITEM2 Oranges
 ^//ldml/listPatterns/listPattern/listPatternPart\[@type="start"] ; {0}=FIRST_ITEM Apples ; {1}=REMAINING_ITEMS Oranges, Peaches, and Grapes
 ^//ldml/listPatterns/listPattern/listPatternPart\[@type="middle"] ; {0}=FIRST_ITEMS Apples, Oranges ; {1}=LAST_ITEMS Peaches, and Grapes
 ^//ldml/listPatterns/listPattern/listPatternPart\[@type="end"] ; {0}=START_ITEMS Apples, Oranges, Peaches; {1}=LAST_ITEM Grapes
 
-^//ldml/listPatterns/listPattern\[@type="duration"]/listPatternPart\[@type="2"] ; {0}=ITEM1 4 days; {1}=ITEM2 2 hours
-^//ldml/listPatterns/listPattern\[@type="duration"]/listPatternPart\[@type="start"] ; {0}=FIRST_ITEM 4 days; {1}=REMAINING_ITEMS 2 hours, 37 minutes, and 23 seconds
-^//ldml/listPatterns/listPattern\[@type="duration"]/listPatternPart\[@type="middle"] ; {0}=FIRST_ITEMS 4 days, 2 hours; {1}=LAST_ITEMS 37 minutes, and 23 seconds
-^//ldml/listPatterns/listPattern\[@type="duration"]/listPatternPart\[@type="end"] ; {0}=START_ITEMS 4 days, 2 hours, 37 minutes; {1}=LAST_ITEM 23 seconds
-
-^//ldml/listPatterns/listPattern\[@type="duration-short"]/listPatternPart\[@type="2"] ; {0}=ITEM1 4 days; {1}=ITEM2 2 hrs
-^//ldml/listPatterns/listPattern\[@type="duration-short"]/listPatternPart\[@type="start"] ; {0}=FIRST_ITEM 4 days; {1}=REMAINING_ITEMS 2 hrs, 37 mins, and 23 secs
-^//ldml/listPatterns/listPattern\[@type="duration-short"]/listPatternPart\[@type="middle"] ; {0}=FIRST_ITEMS 4 days, 2 hrs; {1}=LAST_ITEMS 37 mins, and 23 secs
-^//ldml/listPatterns/listPattern\[@type="duration-short"]/listPatternPart\[@type="end"] ; {0}=START_ITEMS 4 days, 2 hrs, 37 mins; {1}=LAST_ITEM 23 secs
-
 ^//ldml/localeDisplayNames/codePatterns/codePattern\[@type="language"] ; {0}=LANGUAGE_CODE zh
 ^//ldml/localeDisplayNames/codePatterns/codePattern\[@type="script"] ; {0}=SCRIPT_CODE Hans
 ^//ldml/localeDisplayNames/codePatterns/codePattern\[@type="territory"] ; {0}=REGION_CODE CN
 ^//ldml/localeDisplayNames/localeDisplayPattern/localePattern ; {0}=BASE_LANGUAGE Chinese; {1}=MODIFIERS Simplified, Singapore
 ^//ldml/localeDisplayNames/localeDisplayPattern/localeKeyTypePattern ; {0}=CATEGORY; {1}=SPECIFIC_NAME
-^//ldml/localeDisplayNames/localeDisplayPattern/localeSeparator ; {0}=FIRST_ITEM Arabic ; {1}=SECOND_ITEM Afghanistan
 
 ^//ldml/numbers/currencyFormats/unitPattern ; {0}=NUMBER 3; {1}=CURRENCY_NAME Dollars
 ^//ldml/numbers/currencyFormats\[@numberSystem="%A"]/unitPattern ; {0}=NUMBER 3; {1}=CURRENCY_NAME Dollars
 
-^//ldml/numbers/miscPatterns\[@numberSystem="%A"]/pattern\[@type=\"range\"] ; {0}=START_NUMBER 3 ; {1}=END_NUMBER 5
-^//ldml/numbers/miscPatterns\[@numberSystem="%A"]/pattern\[@type=\"%A\"] ; {0}=NUMBER 3
+^//ldml/units/unit\[@type="day%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_DAYS 3
+^//ldml/units/unit\[@type="hour%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_HOURS 3
+^//ldml/units/unit\[@type="minute%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_MINUTES 3
+^//ldml/units/unit\[@type="month%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_MONTHS 3
+^//ldml/units/unit\[@type="second%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_SECONDS 3
+^//ldml/units/unit\[@type="week%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_WEEKS 3
+^//ldml/units/unit\[@type="year%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_YEARS 3
 
-^//ldml/units/unitLength\[@type="%L"]/compoundUnit\[@type="%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=DIVIDEND UNIT meters ; {1}=DIVIDEND UNIT second
-
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-day%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_DAYS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-hour%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_HOURS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-minute%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_MINUTES 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-month%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_MONTHS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-second%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_SECONDS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-week%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_WEEKS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-year%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_YEARS 3
-
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-day%A"]/unitPattern ; {0}=NUMBER_OF_DAYS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-hour%A"]/unitPattern ; {0}=NUMBER_OF_HOURS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-minute%A"]/unitPattern ; {0}=NUMBER_OF_MINUTES 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-month%A"]/unitPattern ; {0}=NUMBER_OF_MONTHS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-second%A"]/unitPattern ; {0}=NUMBER_OF_SECONDS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-week%A"]/unitPattern ; {0}=NUMBER_OF_WEEKS 3
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="duration-year%A"]/unitPattern ; {0}=NUMBER_OF_YEARS 3
-
-^//ldml/units/unitLength\[@type="%L"]/unit\[@type="%A"]/unitPattern\[@count="\w+"] ; locale ; {0}=NUMBER_OF_UNITS 3
+^//ldml/units/unit\[@type="day%A"]/unitPattern ; {0}=NUMBER_OF_DAYS 3
+^//ldml/units/unit\[@type="hour%A"]/unitPattern ; {0}=NUMBER_OF_HOURS 3
+^//ldml/units/unit\[@type="minute%A"]/unitPattern ; {0}=NUMBER_OF_MINUTES 3
+^//ldml/units/unit\[@type="month%A"]/unitPattern ; {0}=NUMBER_OF_MONTHS 3
+^//ldml/units/unit\[@type="second%A"]/unitPattern ; {0}=NUMBER_OF_SECONDS 3
+^//ldml/units/unit\[@type="week%A"]/unitPattern ; {0}=NUMBER_OF_WEEKS 3
+^//ldml/units/unit\[@type="year%A"]/unitPattern ; {0}=NUMBER_OF_YEARS 3
 
 # ^//ldml/numbers/currencyFormats/unitPattern\[@count="(%A)"]  ;  {0}=NUMBER 3 ; {1}=UNIT hour(s)
 
 ^//ldml/characters/ellipsis\[@type="final"] ; {0}=FIRST_PART_OF_TEXT very long na
 ^//ldml/characters/ellipsis\[@type="initial"] ; {0}=LAST_PART_OF_TEXT ry long name
-^//ldml/characters/ellipsis\[@type="medial"] ; {0}=FIRST_PART_OF_TEXT very l; {1}=LAST_PART_OF_TEXT ng nam
-^//ldml/characters/ellipsis\[@type="word-final"] ; {0}=FIRST_PART_OF_TEXT very long
-^//ldml/characters/ellipsis\[@type="word-initial"] ; {0}=LAST_PART_OF_TEXT long name
-^//ldml/characters/ellipsis\[@type="word-medial"] ; {0}=FIRST_PART_OF_TEXT very l; {1}=LAST_PART_OF_TEXT long
+^//ldml/characters/ellipsis\[@type="medial"] ; {0}=FIRST_PART_OF_TEXT very l; {1}=LAST_PART_OF_TEXT g name

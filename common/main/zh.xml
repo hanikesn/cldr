@@ -13,7 +13,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 	<localeDisplayNames>
 		<localeDisplayPattern>
 			<localePattern>{0}（{1}）</localePattern>
-			<localeSeparator>{0}、{1}</localeSeparator>
+			<localeSeparator>、</localeSeparator>
 			<localeKeyTypePattern>{0}：{1}</localeKeyTypePattern>
 		</localeDisplayPattern>
 		<languages>
@@ -1141,7 +1141,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<type type="armnlow" key="numbers">亚美尼亚文小写数字</type>
 			<type type="bali" key="numbers">巴厘文数字</type>
 			<type type="beng" key="numbers">孟加拉文数字</type>
-			<type type="big5han" key="collation">繁体中文排序 - Big5</type>
+			<type type="big5han" key="collation">繁体中文(Big5)</type>
 			<type type="buddhist" key="calendar">佛教日历</type>
 			<type type="cham" key="numbers">占文数字</type>
 			<type type="chinese" key="calendar">农历</type>
@@ -1155,7 +1155,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<type type="ethiopic-amete-alem" key="calendar">埃塞俄比亚阿米特阿莱姆日历</type>
 			<type type="finance" key="numbers" draft="contributed">金融数字</type>
 			<type type="fullwide" key="numbers">全角数字</type>
-			<type type="gb2312han" key="collation">简体中文排序 - GB2312</type>
+			<type type="gb2312han" key="collation">简体中文(GB2312)</type>
 			<type type="geor" key="numbers">格鲁吉亚文数字</type>
 			<type type="gregorian" key="calendar">公历</type>
 			<type type="grek" key="numbers">希腊文数字</type>
@@ -3201,6 +3201,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<gmtZeroFormat>GMT</gmtZeroFormat>
 			<regionFormat>{0}时间</regionFormat>
 			<fallbackFormat>{1}（{0}）</fallbackFormat>
+			<fallbackRegionFormat>{1}时间（{0}）</fallbackRegionFormat>
 			<zone type="Etc/Unknown">
 				<exemplarCity>未知城市</exemplarCity>
 			</zone>
@@ -5427,8 +5428,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
 				<currencyFormat>
-					<pattern>¤#,##0.00</pattern>
-					<pattern alt="accounting">¤#,##0.00;(¤#,##0.00)</pattern>
+					<pattern>¤#,##0.00;(¤#,##0.00)</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 			<unitPattern count="other">{0}{1}</unitPattern>
@@ -6328,101 +6328,83 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</currencies>
 	</numbers>
 	<units>
-		<unitLength type="long">
-			<unit type="duration-day">
-				<unitPattern count="other">{0}天</unitPattern>
-			</unit>
-			<unit type="duration-day-future">
-				<unitPattern count="other">{0}天后</unitPattern>
-			</unit>
-			<unit type="duration-day-past">
-				<unitPattern count="other">{0}天前</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="other">{0}小时</unitPattern>
-			</unit>
-			<unit type="duration-hour-future">
-				<unitPattern count="other">{0}小时后</unitPattern>
-			</unit>
-			<unit type="duration-hour-past">
-				<unitPattern count="other">{0}小时前</unitPattern>
-			</unit>
-			<unit type="duration-minute">
-				<unitPattern count="other">{0}分钟</unitPattern>
-			</unit>
-			<unit type="duration-minute-future">
-				<unitPattern count="other">{0}分钟后</unitPattern>
-			</unit>
-			<unit type="duration-minute-past">
-				<unitPattern count="other">{0}分钟前</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="other">{0}个月</unitPattern>
-			</unit>
-			<unit type="duration-month-future">
-				<unitPattern count="other">{0}个月后</unitPattern>
-			</unit>
-			<unit type="duration-month-past">
-				<unitPattern count="other">{0}个月前</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="other">{0}秒钟</unitPattern>
-			</unit>
-			<unit type="duration-second-future">
-				<unitPattern count="other">{0}秒钟后</unitPattern>
-			</unit>
-			<unit type="duration-second-past">
-				<unitPattern count="other">{0}秒钟前</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="other">{0}周</unitPattern>
-			</unit>
-			<unit type="duration-week-future">
-				<unitPattern count="other">{0}周后</unitPattern>
-			</unit>
-			<unit type="duration-week-past">
-				<unitPattern count="other">{0}周前</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="other">{0}年</unitPattern>
-			</unit>
-			<unit type="duration-year-future">
-				<unitPattern count="other">{0}年后</unitPattern>
-			</unit>
-			<unit type="duration-year-past">
-				<unitPattern count="other">{0}年前</unitPattern>
-			</unit>
-		</unitLength>
-		<unitLength type="short">
-			<unit type="duration-day">
-				<unitPattern count="other">{0}天</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="other">{0}小时</unitPattern>
-			</unit>
-			<unit type="duration-minute">
-				<unitPattern count="other">{0}分</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="other">{0}个月</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="other">{0}秒</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="other">{0}周</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="other">{0}年</unitPattern>
-			</unit>
-		</unitLength>
+		<unit type="day">
+			<unitPattern count="other">{0}天</unitPattern>
+			<unitPattern count="other" alt="short">{0}天</unitPattern>
+		</unit>
+		<unit type="day-future">
+			<unitPattern count="other">{0}天后</unitPattern>
+		</unit>
+		<unit type="day-past">
+			<unitPattern count="other">{0}天前</unitPattern>
+		</unit>
+		<unit type="hour">
+			<unitPattern count="other">{0}小时</unitPattern>
+			<unitPattern count="other" alt="short">{0}小时</unitPattern>
+		</unit>
+		<unit type="hour-future">
+			<unitPattern count="other">{0}小时后</unitPattern>
+		</unit>
+		<unit type="hour-past">
+			<unitPattern count="other">{0}小时前</unitPattern>
+		</unit>
+		<unit type="minute">
+			<unitPattern count="other">{0}分钟</unitPattern>
+			<unitPattern count="other" alt="short">{0}分</unitPattern>
+		</unit>
+		<unit type="minute-future">
+			<unitPattern count="other">{0}分钟后</unitPattern>
+		</unit>
+		<unit type="minute-past">
+			<unitPattern count="other">{0}分钟前</unitPattern>
+		</unit>
+		<unit type="month">
+			<unitPattern count="other">{0}个月</unitPattern>
+			<unitPattern count="other" alt="short">{0}个月</unitPattern>
+		</unit>
+		<unit type="month-future">
+			<unitPattern count="other">{0}个月后</unitPattern>
+		</unit>
+		<unit type="month-past">
+			<unitPattern count="other">{0}个月前</unitPattern>
+		</unit>
+		<unit type="second">
+			<unitPattern count="other">{0}秒钟</unitPattern>
+			<unitPattern count="other" alt="short">{0}秒</unitPattern>
+		</unit>
+		<unit type="second-future">
+			<unitPattern count="other">{0}秒钟后</unitPattern>
+		</unit>
+		<unit type="second-past">
+			<unitPattern count="other">{0}秒钟前</unitPattern>
+		</unit>
+		<unit type="week">
+			<unitPattern count="other">{0}周</unitPattern>
+			<unitPattern count="other" alt="short">{0}周</unitPattern>
+		</unit>
+		<unit type="week-future">
+			<unitPattern count="other">{0}周后</unitPattern>
+		</unit>
+		<unit type="week-past">
+			<unitPattern count="other">{0}周前</unitPattern>
+		</unit>
+		<unit type="year">
+			<unitPattern count="other">{0}年</unitPattern>
+			<unitPattern count="other" alt="short">{0}年</unitPattern>
+		</unit>
+		<unit type="year-future">
+			<unitPattern count="other">{0}年后</unitPattern>
+		</unit>
+		<unit type="year-past">
+			<unitPattern count="other">{0}年前</unitPattern>
+		</unit>
 	</units>
 	<listPatterns>
 		<listPattern>
-			<listPatternPart type="start">{0}、{1}</listPatternPart>
-			<listPatternPart type="middle">{0}、{1}</listPatternPart>
-			<listPatternPart type="end">{0}和{1}</listPatternPart>
 			<listPatternPart type="2">{0}和{1}</listPatternPart>
+			<listPatternPart type="end">{0}和{1}</listPatternPart>
+			<listPatternPart type="middle">{0}、{1}</listPatternPart>
+			<listPatternPart type="start">{0}、{1}</listPatternPart>
 		</listPattern>
 	</listPatterns>
 	<posix>

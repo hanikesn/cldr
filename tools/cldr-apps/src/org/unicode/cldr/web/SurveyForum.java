@@ -39,7 +39,6 @@ import org.unicode.cldr.util.Level;
 import org.unicode.cldr.util.PathUtilities;
 import org.unicode.cldr.util.StackTracker;
 import org.unicode.cldr.web.SurveyMain.UserLocaleStuff;
-import org.unicode.cldr.web.UserRegistry.LogoutException;
 import org.unicode.cldr.web.WebContext.LoadingShow;
 
 import com.ibm.icu.dev.util.ElapsedTimer;
@@ -204,7 +203,7 @@ public class SurveyForum {
                     int uid = rs.getInt(1);
 
                     UserRegistry.User u = sm.reg.getInfo(uid);
-                    if (u != null && u.email != null && u.email.length() > 0 && !UserRegistry.userIsLocked(u)) {
+                    if (u != null && u.email != null && u.email.length() > 0) {
                         if (UserRegistry.userIsVetter(u)) {
                             cc_emails.add(u.email);
                         } else {
@@ -500,12 +499,19 @@ public class SurveyForum {
                 String from = survprops.getProperty("CLDR_FROM", "nobody@example.com");
                 String smtp = survprops.getProperty("CLDR_SMTP", null);
 
-                String subject = "CLDR forum post (" +CLDRLocale.getInstance(forum).getDisplayName() + " - "+ forum+"): " + subj;
+                String subject = "New CLDR forum post for: " + forum;
 
-                String body = "Do not reply to this message, instead go to http://st.unicode.org" 
+                String body = "This is a post to the CLDR "
+                        + forum
+                        + " forum, in the subject:\n  "
+                        + subj
+                        + "\n\n"
+                        + "For details and to respond, login to survey tool and then click on this link:\n\t "
+                        + "http://"
+                        + ctx.serverHostport()
                         + forumUrl(ctx, forum)
                         + "\n"
-                        + "====\n\n"
+                        + "\n\n(Note, if the text does not display properly, please click the link to view the entire message)\n\n-----------------\n\n"
                         + text;
 
                 if (!bcc_emails.isEmpty()) {
@@ -848,15 +854,14 @@ public class SurveyForum {
     public void showXpath(WebContext baseCtx, String xpath, int base_xpath, CLDRLocale locale) {
         WebContext ctx = new WebContext(baseCtx);
         ctx.setLocale(locale);
-        ctx.println("<i>Note: item cannot be shown here. Click \"View Item\" once the item is posted.</i>");
-//        ctx.println("       <div id='DynamicDataSection'><noscript>" + ctx.iconHtml("stop", "sorry")
-//                + "JavaScript is required.</noscript></div>      " + " <script type='text/javascript'>   "
-//                + "surveyCurrentLocale='" + locale + "';\n" + "showRows BROKEN('DynamicDataSection', '" + xpath + "', '"
-//                + ctx.session.id + "','" + "optional" /*
-//                                                       * ctx.
-//                                                       * getEffectiveCoverageLevel
-//                                                       * (ctx.getLocale())
-//                                                       */+ "');       </script>");
+        ctx.println("       <div id='DynamicDataSection'><noscript>" + ctx.iconHtml("stop", "sorry")
+                + "JavaScript is required.</noscript></div>      " + " <script type='text/javascript'>   "
+                + "surveyCurrentLocale='" + locale + "';\n" + "showRows('DynamicDataSection', '" + xpath + "', '"
+                + ctx.session.id + "','" + "optional" /*
+                                                       * ctx.
+                                                       * getEffectiveCoverageLevel
+                                                       * (ctx.getLocale())
+                                                       */+ "');       </script>");
         // Show the Pod in question:
         // ctx.println("<hr> \n This post Concerns:<p>");
         // boolean canModify =ctx.canModify();
@@ -1562,13 +1567,8 @@ public class SurveyForum {
             return true;
         }
 
-        UserRegistry.User user = null;
-        try {
-            user = sm.reg.get(pw, email, "RSS@" + WebContext.userIP(request));
-        } catch (LogoutException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        UserRegistry.User user;
+        user = sm.reg.get(pw, email, "RSS@" + WebContext.userIP(request));
 
         if (user == null) {
             sendErr(request, response, "authentication err");

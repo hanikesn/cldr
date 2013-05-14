@@ -15,11 +15,7 @@ var profile = (function(){
 				"dojo/tests/_base/loader/requirejs/relative/relative-tests":1,
 				"dojo/tests/_base/loader/requirejs/exports/exports-tests":1
 			};
-			return (mid in list) ||
-				/^dojo\/_base\/config\w+$/.test(mid) ||
-				(/^dojo\/resources\//.test(mid) && !/\.css$/.test(filename)) ||
-				/(png|jpg|jpeg|gif|tiff)$/.test(filename) ||
-				/built\-i18n\-test\/152\-build/.test(mid);
+			return (mid in list) || /^dojo\/_base\/config\w+$/.test(mid) || (/^dojo\/resources\//.test(mid) && !/\.css$/.test(filename)) || /(png|jpg|jpeg|gif|tiff)$/.test(filename);
 		};
 
 	return {
@@ -35,6 +31,10 @@ var profile = (function(){
 			amd: function(filename, mid){
 				return !testResourceRe.test(mid) && !copyOnly(filename, mid) && /\.js$/.test(filename);
 			}
-		}
+		},
+
+		trees:[
+			[".", ".", /(\/\.)|(~$)/]
+		]
 	};
 })();

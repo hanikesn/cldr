@@ -314,14 +314,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<currencyFormats numberSystem="latn">
 			<currencyFormatLength>
 				<currencyFormat>
-					<pattern>¤#,##0.00</pattern>
-					<pattern alt="accounting">¤#,##0.00;(¤#,##0.00)</pattern>
+					<pattern>¤#,##0.00;(¤#,##0.00)</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 		</currencyFormats>
 		<currencies>
-			<currency type="ZMW">
+			<currency type="ZMK">
 				<symbol>K</symbol>
+			</currency>
+			<currency type="ZMW">
+				<symbol>KR</symbol>
 			</currency>
 		</currencies>
 	</numbers>

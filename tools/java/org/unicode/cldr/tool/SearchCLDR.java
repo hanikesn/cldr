@@ -18,8 +18,6 @@ import org.unicode.cldr.util.LocaleIDParser;
 import org.unicode.cldr.util.PathHeader;
 import org.unicode.cldr.util.StandardCodes;
 
-import com.ibm.icu.dev.util.CollectionUtilities;
-
 public class SearchCLDR {
     // private static final int
     // HELP1 = 0,
@@ -177,26 +175,25 @@ public class SearchCLDR {
                 }
                 if (!headerShown) {
                     showLine(showPath, showParent, showEnglish, resolved, locale, "Path", "Full-Path", "Value",
-                        "PathHeader", "Parent-Value", "English-Value", "Source-Locale\tSource-Path", "Org-Level");
+                        "ShortPath", "Parent-Value", "English-Value", "Source Locale\tSource Path", "Org-Level");
                     headerShown = true;
                 }
-//                if (showParent && parent == null) {
-//                    String parentLocale = LocaleIDParser.getParent(locale);
-//                    parent = cldrFactory.make(parentLocale, true);
-//                }
+                if (showParent && parent == null) {
+                    String parentLocale = LocaleIDParser.getParent(locale);
+                    parent = cldrFactory.make(parentLocale, true);
+                }
                 // String shortPath = pretty.getPrettyPath(path);
                 // String cleanShort = pretty.getOutputForm(shortPath);
                 String cleanShort = pathHeader.toString().replace('\t', '|');
                 final String resolvedSource = !resolved ? null
                     : file.getSourceLocaleID(path, status)
-                        + (path.equals(status.pathWhereFound) ? "\t≣" : "\t" + status);
+                        + (path.equals(status.pathWhereFound) ? "" : "\t" + status);
                 showLine(showPath, showParent, showEnglish, resolved, locale,
                     path, fullPath, value,
                     cleanShort,
-                    !showParent ? null : english.getBaileyValue(path, null, null),
+                    parent == null ? null : parent.getStringValue(path),
                     english == null ? null : english.getStringValue(path),
-                    resolvedSource, 
-                    organizationLevel == null ? null : organizationLevel.toString());
+                    resolvedSource, organizationLevel == null ? null : organizationLevel.toString());
             }
             if (countOnly) {
                 System.out.print(locale);
@@ -214,10 +211,9 @@ public class SearchCLDR {
     private static void showLine(boolean showPath, boolean showParent, boolean showEnglish,
         boolean resolved, String locale, String path, String fullPath, String value,
         String shortPath, String parentValue, String englishValue, String resolvedSource, String organizationLevel) {
-        System.out.println(
-                locale + "\t⟪" + value + "⟫"
-            + (showEnglish ? "\t⟪" + englishValue + "⟫" : "")
-            + (!showParent ? "" : CollectionUtilities.equals(value,  parentValue) ? "\t≣" : "\t⟪" + parentValue + "⟫")
+        System.out.println(locale + "\t⟪" + value + "⟫"
+            + (showParent ? "\t⟪" + parentValue + "⟪" : "")
+            + (showEnglish ? "\t⟪" + englishValue + "⟪" : "")
             + "\t" + shortPath
             + (showPath ? "\t" + fullPath : "")
             + (resolved ? "\t" + resolvedSource : "")

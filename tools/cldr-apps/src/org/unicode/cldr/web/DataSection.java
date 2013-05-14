@@ -735,8 +735,8 @@ public class DataSection implements JSONString {
         public CandidateItem addItem(String value) {
             final String kValue = (value == null) ? "" : value;
             CandidateItem pi = items.get(kValue);
-//            if (DEBUG)
-//                System.err.println("Adding VItem value=" + kValue + " ret=" + pi + ", of " + items.size());
+            if (DEBUG)
+                System.err.println("Adding VItem value=" + kValue + " ret=" + pi + ", of " + items.size());
             if (pi != null)
                 return pi;
             pi = new CandidateItem(value);
@@ -1026,8 +1026,8 @@ public class DataSection implements JSONString {
             if (winningValue == null)
                 return null;
             CandidateItem ci = items.get(winningValue);
-//            if (DEBUG)
-//                System.err.println("WV = '" + winningValue + "' and return is " + ci);
+            if (DEBUG)
+                System.err.println("WV = '" + winningValue + "' and return is " + ci);
             return ci;
         }
 
@@ -1775,9 +1775,7 @@ public class DataSection implements JSONString {
                         .put("displayInExample", displayInExample)
                         // .put("showstatus",
                         // (ph!=null)?ph.getSurveyToolStatus():null)
-                        .put("statusAction", getStatusAction())
-                        //.put("prettyPath", getPrettyPath())
-                        .put("code", pathCode)
+                        .put("statusAction", getStatusAction()).put("prettyPath", getPrettyPath()).put("code", pathCode)
                         .put("extraAttributes", getNonDistinguishingAttributes()).put("coverageValue", coverageValue)
                         .put("hasErrors", hasErrors).put("hasWarnings", hasWarnings).put("confirmStatus", confirmStatus)
                         .put("hasVoted", userForVotelist != null ? userHasVoted(userForVotelist.id) : false)
@@ -2608,7 +2606,7 @@ public class DataSection implements JSONString {
 
         SupplementalDataInfo sdi = sm.getSupplementalDataInfo();
         int workingCoverageValue = Level.valueOf(workingCoverageLevel.toUpperCase()).getLevel();
-        if (sectionId == SectionId.Timezones || pageId == PageId.Timezone_Cities || pageId == PageId.Timezone_Display_Patterns
+        if (sectionId == SectionId.Timezones || pageId == PageId.Timezone_Cities || pageId == PageId.Patterns_for_Timezones
                 || (pageId == null && xpathPrefix.startsWith("//ldml/" + "dates/timeZoneNames"))) {
             // work on zones
             boolean isMetazones = (sectionId == SectionId.Timezones)

@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.unicode.cldr.unittest.TestAll.TestInfo;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.Factory;
@@ -33,7 +32,6 @@ import com.ibm.icu.text.DateTimePatternGenerator;
 import com.ibm.icu.text.DateTimePatternGenerator.VariableField;
 
 public class CheckYear {
-    static TestInfo testInfo = TestInfo.getInstance();
     private static final StandardCodes STANDARD_CODES = StandardCodes.make();
     private static final String LOCALES = ".*";
     private static final String[] STOCK = { "short", "medium", "long", "full" };
@@ -247,7 +245,8 @@ public class CheckYear {
     // TreeSet.class);
 
     public static void main(String[] args) throws IOException {
-        CLDRFile englishFile = testInfo.getEnglish();
+        Factory englishFactory = Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
+        CLDRFile englishFile = englishFactory.make("en", true);
 
         Factory factory = Factory.make(CldrUtility.TMP2_DIRECTORY + "vxml/common/main/", LOCALES);
         String calendarID = "gregorian";

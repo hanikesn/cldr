@@ -246,7 +246,7 @@ public class ConsoleCheckCLDR {
             }
         }
 
-        Phase phase = Phase.BUILD;
+        Phase phase = Phase.SUBMISSION;
         if (options[PHASE].doesOccur) {
             try {
                 phase = Phase.forString(options[PHASE].value);
@@ -1029,7 +1029,7 @@ public class ConsoleCheckCLDR {
             // Moderate Missing Coverage: Modern
             ErrorFile.errorFileWriter.println(ErrorFile.errorFileTable.toTable());
             ErrorFile.errorFileWriter.println(ShowData.dateFooter());
-            ErrorFile.errorFileWriter.println(CldrUtility.ANALYTICS);
+            ErrorFile.errorFileWriter.println(ShowData.ANALYTICS);
             ErrorFile.errorFileWriter.println("</body></html>");
             ErrorFile.errorFileWriter.close();
             ErrorFile.errorFileTable = null;
@@ -1105,7 +1105,7 @@ public class ConsoleCheckCLDR {
             }
             generated_html_index.println(indexTablePrinter.toTable());
             generated_html_index.println(ShowData.dateFooter());
-            generated_html_index.println(CldrUtility.ANALYTICS);
+            generated_html_index.println(ShowData.ANALYTICS);
             generated_html_index.println("</body></html>");
         }
 
@@ -1172,7 +1172,7 @@ public class ConsoleCheckCLDR {
             ConsoleCheckCLDR.ErrorFile.showIndexHead("Error Report Index by Section", "", generated_html_index);
             generated_html_index.println(indexTablePrinter.toTable());
             generated_html_index.println(ShowData.dateFooter());
-            generated_html_index.println(CldrUtility.ANALYTICS);
+            generated_html_index.println(ShowData.ANALYTICS);
             generated_html_index.println("</body></html>");
             generated_html_index.close();
         }

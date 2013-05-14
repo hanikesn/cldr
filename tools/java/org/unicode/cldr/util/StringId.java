@@ -40,14 +40,4 @@ public final class StringId {
         result &= 0x7FFFFFFFFFFFFFFFL;
         return result;
     }
-    /**
-     * Get the hex ID for a string.
-     * 
-     * @param string
-     *            input string.
-     * @return a string with the hex value
-     */
-    public static String getHexId(CharSequence string) {
-        return Long.toHexString(getId(string));
-    }
 }

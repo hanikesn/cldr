@@ -17,7 +17,6 @@ import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CldrUtility;
 import org.unicode.cldr.util.Factory;
 import org.unicode.cldr.util.PathHeader;
-import org.unicode.cldr.util.StringId;
 import org.unicode.cldr.util.XMLSource;
 import org.unicode.cldr.util.XPathParts;
 
@@ -90,7 +89,7 @@ public class CheckDisplayCollisions extends FactoryCheckCLDR {
     transient static final int[] otherOffsets = new int[2];
     static final boolean SKIP_TYPE_CHECK = true;
 
-    Matcher exclusions = Pattern.compile("\\[@alt=\"narrow\"]").matcher(""); // no matches
+    Matcher exclusions = Pattern.compile("XXXX").matcher(""); // no matches
     Matcher typePattern = Pattern.compile("\\[@type=\"([^\"]*+)\"]").matcher("");
     Matcher attributesToIgnore = Pattern.compile("\\[@(?:count|alt)=\"[^\"]*+\"]").matcher("");
     Matcher compactNumberAttributesToIgnore = Pattern.compile("\\[@(?:alt)=\"[^\"]*+\"]").matcher("");
@@ -211,13 +210,7 @@ public class CheckDisplayCollisions extends FactoryCheckCLDR {
                 for (String pathName : paths) {
                     currentAttributesToIgnore.reset(pathName);
                     PathHeader pathHeader = pathHeaderFactory.fromPath(pathName);
-                    if ( finalTesting ) {
-                        collidingTypes.add(pathHeader.getHeaderCode()); // later make this more readable.
-                    } else {
-                        collidingTypes.add("<a href=\"v#/" + getCldrFileToCheck().getLocaleID() + "/" + pathHeader.getPageId() + "/" + StringId.getHexId(pathName)+"\">" + 
-                            pathHeader.getHeaderCode() + "</a>");
-    
-                    }
+                    collidingTypes.add(pathHeader.getHeaderCode()); // later make this more readable.
                 }
             } else {
                 for (String dpath : paths) {
@@ -235,7 +228,6 @@ public class CheckDisplayCollisions extends FactoryCheckCLDR {
                 } else {
                     collidingTypes.remove(typePattern.group(1));
                 }
-                
                 // check one last time...
                 if (collidingTypes.isEmpty()) {
                     return this;
@@ -254,15 +246,7 @@ public class CheckDisplayCollisions extends FactoryCheckCLDR {
                 String thisZone = pathHeader.getHeader();
                 String thisZoneType = pathHeader.getCode();
                 String collisionString = collidingTypes.toString();
-                int csStart, csEnd;
-                if (collisionString.startsWith("[<a")) {
-                    csStart = collisionString.indexOf('>') + 1;
-                    csEnd = collisionString.indexOf('<',csStart);
-                } else {
-                    csStart = collisionString.indexOf('[') + 1;
-                    csEnd = collisionString.indexOf(']',csStart);
-               }
-                collisionString = collisionString.substring(csStart,csEnd);
+                collisionString = collisionString.substring(1, collisionString.length() - 1); // Strip off []
                 int delimiter_index = collisionString.indexOf(':');
                 String collidingZone = collisionString.substring(0, delimiter_index);
                 String collidingZoneType = collisionString.substring(delimiter_index + 2);

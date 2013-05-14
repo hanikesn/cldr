@@ -76,8 +76,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="USD">
 				<symbol>US$</symbol>
 			</currency>
-			<currency type="ZMW">
+			<currency type="ZMK">
 				<symbol>K</symbol>
+			</currency>
+			<currency type="ZMW">
+				<symbol>KR</symbol>
 			</currency>
 		</currencies>
 	</numbers>

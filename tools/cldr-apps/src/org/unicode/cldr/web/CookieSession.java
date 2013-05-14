@@ -23,7 +23,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.xml.bind.DatatypeConverter;
 import org.unicode.cldr.util.Level;
-import org.unicode.cldr.util.StackTracker;
 import org.unicode.cldr.util.StandardCodes;
 
 /**
@@ -31,9 +30,8 @@ import org.unicode.cldr.util.StandardCodes;
  * per-user basis. Instances are typically held by WebContext.session.
  */
 public class CookieSession {
-    private static final boolean DEBUG_INOUT = false;
-    public String id;
     public String ip;
+    public String id;
     public long last;
     public Hashtable stuff = new Hashtable(); // user data
     public Hashtable prefs = new Hashtable(); // user prefs
@@ -184,19 +182,13 @@ public class CookieSession {
      * @param isGuest
      *            True if the user is a guest.
      */
-    
-    public CookieSession(boolean isGuest, String ip, String fromId) {
+    public CookieSession(boolean isGuest, String ip) {
         this.ip = ip;
-        if(fromId == null) {
-            id = newId(isGuest);
-        } else {
-            id = fromId;
-        }
+        id = newId(isGuest);
         touch();
         synchronized (gHash) {
             gHash.put(id, this);
         }
-        if(DEBUG_INOUT) System.out.println("S: new " + id + " - " + user);
     }
 
     /**
@@ -204,7 +196,6 @@ public class CookieSession {
      */
     protected void touch() {
         last = System.currentTimeMillis();
-        if(DEBUG_INOUT) System.out.println("S: touch " + id + " - " + user);
     }
 
     /**
@@ -219,7 +210,6 @@ public class CookieSession {
         }
         // clear out any database sessions in use
         DBUtils.closeDBConnection(conn);
-        if(DEBUG_INOUT) System.out.println("S: Removing session: " + id + " - " + user );
     }
 
     /**
@@ -482,17 +472,16 @@ public class CookieSession {
      */
     public static String cheapEncode(byte b[]) {
         StringBuffer sb = new StringBuffer(DatatypeConverter.printBase64Binary(b));
-        char c;
-        for (int i = 0; i < sb.length() && ((c=sb.charAt(i))!='='); i++) {
-            /* if (c == '=') {
+        for (int i = 0; i < sb.length(); i++) {
+            char c = sb.charAt(i);
+            if (c == '=') {
                 sb.setCharAt(i, ',');
-            } else */ if (c == '/') {
+            } else if (c == '/') {
                 sb.setCharAt(i, '.');
             } else if (c == '+') {
                 sb.setCharAt(i, '_');
             }
         }
-        
         return sb.toString();
     }
 
@@ -665,7 +654,7 @@ public class CookieSession {
 
     private static synchronized CookieSession getSpecialGuest() {
         if (specialGuest == null) {
-            specialGuest = new CookieSession(true, "[throttled]", null);
+            specialGuest = new CookieSession(true, "[throttled]");
             // gHash.put("throttled", specialGuest);
         }
         return specialGuest;
@@ -769,11 +758,10 @@ public class CookieSession {
     }
 
     /**
-     * Get the coverage level for my organization (if I have one)
      * @param locale
      * @return
      */
-    public String getOrgCoverageLevel(String locale) {
+    String getOrgCoverageLevel(String locale) {
         String level;
         String myOrg = getUserOrg();
         if ((myOrg == null) || !WebContext.isCoverageOrganization(myOrg)) {
@@ -788,11 +776,6 @@ public class CookieSession {
         return level;
     }
 
-    /**
-     * Get my actual effective coverage level, including preference settings.
-     * @param locale
-     * @return
-     */
     public String getEffectiveCoverageLevel(String locale) {
         String level = sm.getListSetting(settings, SurveyMain.PREF_COVLEV, WebContext.PREF_COVLEV_LIST, false);
         if ((level == null) || (level.equals(WebContext.COVLEV_RECOMMENDED)) || (level.equals("default"))) {

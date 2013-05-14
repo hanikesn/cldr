@@ -13,7 +13,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 	<localeDisplayNames>
 		<localeDisplayPattern>
 			<localePattern>{0} ({1})</localePattern>
-			<localeSeparator>{0}, {1}</localeSeparator>
+			<localeSeparator>, </localeSeparator>
 		</localeDisplayPattern>
 		<languages>
 			<language type="aa">Afar</language>
@@ -3342,41 +3342,39 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</currencies>
 	</numbers>
 	<units>
-		<unitLength type="long">
-			<unit type="duration-day">
-				<unitPattern count="one">{0} Taag</unitPattern>
-				<unitPattern count="other">{0} Tääg</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="one">{0} Schtund</unitPattern>
-				<unitPattern count="other">{0} Schtunde</unitPattern>
-			</unit>
-			<unit type="duration-minute">
-				<unitPattern count="one">{0} Minuute</unitPattern>
-				<unitPattern count="other">{0} Minuute</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="one">{0} Monet</unitPattern>
-				<unitPattern count="other">{0} Mönet</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="one">{0} Sekunde</unitPattern>
-				<unitPattern count="other">{0} Sekunde</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="one">{0} Wuche</unitPattern>
-				<unitPattern count="other">{0} Wuche</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="one">{0} Jahr</unitPattern>
-				<unitPattern count="other">{0} Jahr</unitPattern>
-			</unit>
-		</unitLength>
+		<unit type="day">
+			<unitPattern count="one">{0} Taag</unitPattern>
+			<unitPattern count="other">{0} Tääg</unitPattern>
+		</unit>
+		<unit type="hour">
+			<unitPattern count="one">{0} Schtund</unitPattern>
+			<unitPattern count="other">{0} Schtunde</unitPattern>
+		</unit>
+		<unit type="minute">
+			<unitPattern count="one">{0} Minuute</unitPattern>
+			<unitPattern count="other">{0} Minuute</unitPattern>
+		</unit>
+		<unit type="month">
+			<unitPattern count="one">{0} Monet</unitPattern>
+			<unitPattern count="other">{0} Mönet</unitPattern>
+		</unit>
+		<unit type="second">
+			<unitPattern count="one">{0} Sekunde</unitPattern>
+			<unitPattern count="other">{0} Sekunde</unitPattern>
+		</unit>
+		<unit type="week">
+			<unitPattern count="one">{0} Wuche</unitPattern>
+			<unitPattern count="other">{0} Wuche</unitPattern>
+		</unit>
+		<unit type="year">
+			<unitPattern count="one">{0} Jahr</unitPattern>
+			<unitPattern count="other">{0} Jahr</unitPattern>
+		</unit>
 	</units>
 	<listPatterns>
 		<listPattern>
-			<listPatternPart type="end" draft="contributed">{0} und {1}</listPatternPart>
 			<listPatternPart type="2" draft="contributed">{0} und {1}</listPatternPart>
+			<listPatternPart type="end" draft="contributed">{0} und {1}</listPatternPart>
 		</listPattern>
 	</listPatterns>
 	<posix>

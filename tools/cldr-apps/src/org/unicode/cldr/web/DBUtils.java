@@ -36,7 +36,6 @@ import org.json.JSONObject;
 import org.unicode.cldr.util.CLDRConfig;
 import org.unicode.cldr.util.CLDRConfigImpl;
 import org.unicode.cldr.util.CLDRLocale;
-import org.unicode.cldr.util.PathHeader;
 import org.unicode.cldr.util.StackTracker;
 
 import com.ibm.icu.text.UnicodeSet;
@@ -345,23 +344,6 @@ public class DBUtils {
         }
     }
 
-    public static int sqlCount(String sql, Object... args) {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        try {
-            conn = DBUtils.getInstance().getDBConnection();
-            ps = prepareForwardReadOnly(conn, sql);
-            setArgs(ps, args);
-            return sqlCount(conn, ps);
-        } catch (SQLException sqe) {
-            SurveyLog.logException(sqe, "running sqlcount " + sql);
-            return -1;
-        } finally {
-            DBUtils.close(ps,conn);
-        }
-    }
-    
-    
     static int sqlCount(Connection conn, PreparedStatement ps) throws SQLException {
         int rv = -1;
         ResultSet rs = ps.executeQuery();
@@ -371,7 +353,7 @@ public class DBUtils {
         rs.close();
         return rv;
     }
-    
+
     static int sqlCount(WebContext ctx, Connection conn, PreparedStatement ps) {
         try {
             return sqlCount(conn, ps);
@@ -696,18 +678,6 @@ public class DBUtils {
     }
 
     /**
-     * Shortcut for certain statements.
-     * 
-     * @param conn
-     * @param str
-     * @return
-     * @throws SQLException
-     */
-    public static final PreparedStatement prepareForwardUpdateable(Connection conn, String str) throws SQLException {
-        return conn.prepareStatement(str, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-    }
-
-    /**
      * prepare statements for this connection
      * 
      * @throws SQLException
@@ -887,7 +857,7 @@ public class DBUtils {
     }
 
     @SuppressWarnings("rawtypes")
-    private static Map[] resultToArrayAssoc(ResultSet rs) throws SQLException {
+    private Map[] resultToArrayAssoc(ResultSet rs) throws SQLException {
         ResultSetMetaData rsm = rs.getMetaData();
         ArrayList<Map<String, Object>> al = new ArrayList<Map<String, Object>>();
         while (rs.next()) {
@@ -896,7 +866,7 @@ public class DBUtils {
         return al.toArray(new Map[al.size()]);
     }
 
-    private static Map<String, Object> assocOfResult(ResultSet rs, ResultSetMetaData rsm) throws SQLException {
+    private Map<String, Object> assocOfResult(ResultSet rs, ResultSetMetaData rsm) throws SQLException {
         Map<String, Object> m = new HashMap<String, Object>(rsm.getColumnCount());
 
         for (int i = 1; i <= rsm.getColumnCount(); i++) {
@@ -1141,12 +1111,8 @@ public class DBUtils {
                 item.put(XPathTable.getStringIDString(xpath)); // add
                                                                // XPATH_STRHASH
                                                                // column
-                PathHeader ph = CookieSession.sm.getSTFactory().getPathHeader(xpath);
-                if(ph!=null) {
-                    item.put(ph.toString()); // add XPATH_CODE
-                } else {
-                    item.put("");
-                }
+                item.put(CookieSession.sm.getSTFactory().getPathHeader(xpath).toString()); // add
+                                                                                           // XPATH_CODE
             }
             if (haslocale >= 0 && locale_name != null) {
                 item.put(locale_name); // add XPATH_STRHASH column
@@ -1171,53 +1137,6 @@ public class DBUtils {
             close(rs, s, conn);
         }
     }
-    
-    /**
-     * query to an array associative maps
-     * @param string
-     * @param args
-     * @return
-     * @throws SQLException
-     * @throws IOException
-     */
-    public static Map[] queryToArrayAssoc(String string, Object... args) throws SQLException, IOException {
-        Connection conn = null;
-        PreparedStatement s = null;
-        ResultSet rs = null;
-        try {
-            conn = getInstance().getDBConnection();
-            s = DBUtils.prepareForwardReadOnly(conn, string);
-            setArgs(s, args);
-            rs = s.executeQuery();
-            return resultToArrayAssoc(rs);
-        } finally {
-            close(rs, s, conn);
-        }
-    }
-
-    /**
-     * query to an array of arrays of objects
-     * @param string
-     * @param args
-     * @return
-     * @throws SQLException
-     * @throws IOException
-     */
-    public static Object[][] queryToArrayArrayObj(String string, Object... args) throws SQLException, IOException {
-        Connection conn = null;
-        PreparedStatement s = null;
-        ResultSet rs = null;
-        try {
-            conn = getInstance().getDBConnection();
-            s = DBUtils.prepareForwardReadOnly(conn, string);
-            setArgs(s, args);
-            rs = s.executeQuery();
-            return resultToArrayArrayObj(rs);
-        } finally {
-            close(rs, s, conn);
-        }
-    }
-
 
     public static String getDbBrokenMessage() {
         final File homeFile = CLDRConfigImpl.homeFile;
@@ -1262,5 +1181,4 @@ public class DBUtils {
 
         return sb.toString();
     }
-
 }

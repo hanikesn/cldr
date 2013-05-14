@@ -2,9 +2,7 @@ package org.unicode.cldr.util;
 
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.unicode.cldr.test.CheckCLDR.Phase;
 
@@ -21,8 +19,7 @@ public class CLDRConfig {
     public enum Environment {
         LOCAL, // < == unknown.
         SMOKETEST, // staging area
-        PRODUCTION, // production server!
-        UNITTEST // unit test setting
+        PRODUCTION // production server!
     };
 
     public static CLDRConfig getInstance() {
@@ -54,7 +51,6 @@ public class CLDRConfig {
     private SupplementalDataInfo supplementalDataInfo;
     private StandardCodes sc;
     private Factory cldrFactory;
-    private Factory supplementalFactory;
     private CLDRFile english;
     private CLDRFile root;
     private RuleBasedCollator col;
@@ -109,15 +105,6 @@ public class CLDRConfig {
         }
         return cldrFactory;
     }
- 
-    public Factory getSupplementalFactory() {
-        synchronized (this) {
-            if (supplementalFactory == null) {
-                supplementalFactory = Factory.make(CldrUtility.DEFAULT_SUPPLEMENTAL_DIRECTORY, ".*");
-            }
-        }
-        return supplementalFactory;
-    }
 
     public CLDRFile getEnglish() {
         synchronized (this) {
@@ -158,17 +145,9 @@ public class CLDRConfig {
     }
 
     private Set<String> shown = new HashSet<String>();
-    
-    private Map<String, String> localSet = null; 
 
     public String getProperty(String key) {
-        String result = null;
-        if(localSet!=null) {
-            result = localSet.get(key);
-        }
-        if (result == null) {
-            result = System.getProperty(key);
-        }
+        String result = System.getProperty(key);
         if (result == null) {
             result = System.getProperty(key.toUpperCase(Locale.ENGLISH));
         }
@@ -202,21 +181,5 @@ public class CLDRConfig {
 
     public void setEnvironment(Environment environment) {
         curEnvironment = environment;
-    }
-
-    /**
-     * For test use only. Will throw an exception in non test environments.
-     * @param k
-     * @param v
-     */
-    public  void setProperty(String k, String v) {
-        if(getEnvironment()!=Environment.UNITTEST) {
-            throw new InternalError("setProperty() only valid in UNITTEST Environment.");
-        }
-        if(localSet==null) {
-            localSet = new ConcurrentHashMap<String, String>();
-        }
-        localSet.put(k, v);
-        shown.remove(k); // show it again with -D
     }
 }

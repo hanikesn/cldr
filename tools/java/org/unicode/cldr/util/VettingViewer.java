@@ -1095,8 +1095,7 @@ public class VettingViewer<T> {
                 || localeFound.equals(XMLSource.CODE_FALLBACK_ID)
             // || voteStatus == VoteStatus.provisionalOrWorse
             ) {
-                result = isMissingOk(path, latin, isAliased) 
-                    || sourceFile.getLocaleID().equals("en") ? MissingStatus.ROOT_OK : MissingStatus.ABSENT;
+                result = isMissingOk(path, latin, isAliased) ? MissingStatus.ROOT_OK : MissingStatus.ABSENT;
             } else if (isAliased) {
                 result = MissingStatus.PRESENT;
                 // } else if (path.contains("decimalFormatLength[@type=\"long\"]") &&

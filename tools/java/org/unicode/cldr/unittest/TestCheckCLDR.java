@@ -32,7 +32,6 @@ import com.ibm.icu.dev.test.TestFmwk;
 import com.ibm.icu.text.UnicodeSet;
 
 public class TestCheckCLDR extends TestFmwk {
-    static TestInfo testInfo = TestInfo.getInstance();
     public static void main(String[] args) {
         new TestCheckCLDR().run(args);
     }
@@ -65,10 +64,11 @@ public class TestCheckCLDR extends TestFmwk {
     }
 
     public static void TestCheckConsistentCasing() {
-        CheckConsistentCasing c = new CheckConsistentCasing(testInfo.getCldrFactory());
-        Map<String, String> options = new LinkedHashMap<String, String>();
+        TestInfo info = TestInfo.getInstance();
+        CheckConsistentCasing c = new CheckConsistentCasing(info.getCldrFactory());
+        Map<String, String> options = new LinkedHashMap();
         List<CheckStatus> possibleErrors = new ArrayList<CheckStatus>();
-        final CLDRFile english = testInfo.getEnglish();
+        final CLDRFile english = info.getEnglish();
         c.setCldrFileToCheck(english, options, possibleErrors);
         for (String path : english) {
             c.check(path, english.getFullXPath(path), english.getStringValue(path), options, possibleErrors);
@@ -80,8 +80,9 @@ public class TestCheckCLDR extends TestFmwk {
      */
 
     public static final String INDIVIDUAL_TESTS = ".*(CheckCasing|CheckCurrencies|CheckDates|CheckExemplars|CheckForCopy|CheckForExemplars|CheckMetazones|CheckNumbers)";
-    static final Factory factory = testInfo.getCldrFactory();
-    static final CLDRFile english = testInfo.getEnglish();
+    static final TestInfo info = TestInfo.getInstance();
+    static final Factory factory = info.getCldrFactory();
+    static final CLDRFile english = info.getEnglish();
 
     private static final boolean DEBUG = true;
 
@@ -103,11 +104,14 @@ public class TestCheckCLDR extends TestFmwk {
         for (String path : english.fullIterable()) {
             sorted.add(pathHeaderFactory.fromPath(path));
         }
-        final String testPath = "//ldml/units/unitLength[@type=\"long\"]/unit[@type=\"duration-day-future\"]/unitPattern[@count=\"0\"]";
+        final String testPath = "//ldml/units/unit[@type=\"day-future\"]/unitPattern[@count=\"0\"]";
         sorted.add(pathHeaderFactory.fromPath(testPath));
 
         for (PathHeader pathHeader : sorted) {
             String path = pathHeader.getOriginalPath();
+            if (path.equals(testPath)) {
+                int x = 0;
+            }
             String value = english.getStringValue(path);
             if (value == null) {
                 value = "?";
@@ -176,7 +180,7 @@ public class TestCheckCLDR extends TestFmwk {
 
         CheckCLDR test = CheckCLDR.getCheckAll(factory, INDIVIDUAL_TESTS);
         CheckCLDR.setDisplayInformation(english);
-        Set<String> unique = new HashSet<String>();
+        Set<String> unique = new HashSet();
 
         LanguageTagParser ltp = new LanguageTagParser();
         int count = 0;
@@ -194,7 +198,7 @@ public class TestCheckCLDR extends TestFmwk {
 
         CheckCLDR test = CheckCLDR.getCheckAll(factory, INDIVIDUAL_TESTS);
         CheckCLDR.setDisplayInformation(english);
-        Set<String> unique = new HashSet<String>();
+        Set<String> unique = new HashSet();
 
         checkLocale(test, "ko", null, unique);
     }
@@ -275,10 +279,11 @@ public class TestCheckCLDR extends TestFmwk {
     }
 
     public void TestCheckNames() {
+        TestInfo info = TestInfo.getInstance();
         CheckCLDR c = new CheckNames();
-        Map<String, String> options = new LinkedHashMap<String, String>();
+        Map<String, String> options = new LinkedHashMap();
         List<CheckStatus> possibleErrors = new ArrayList<CheckStatus>();
-        final CLDRFile english = testInfo.getEnglish();
+        final CLDRFile english = info.getEnglish();
         c.setCldrFileToCheck(english, options, possibleErrors);
         String xpath = "//ldml/localeDisplayNames/languages/language[@type=\"mga\"]";
         c.check(xpath, xpath, "Middle Irish (900-1200) ", options, possibleErrors);

@@ -47,8 +47,7 @@ for( DataSection.DataRow.CandidateItem ci : r.getItems() ) {
 </div>
 
 <script type='text/javascript'>
-alert('BROKEN');
-//showRows('DataSection', '<%= xp %>', '<%= ctx.session.id %>');
+showRows('DataSection', '<%= xp %>', '<%= ctx.session.id %>');
 </script>
 
 <div class='ferrbox'>

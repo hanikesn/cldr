@@ -91,8 +91,7 @@ public class MailSender extends Thread {
     public static final String footer = "\n----------\n"
             + "This email was generated automatically as part of the CLDR survey process\n"
             + "http://www.unicode.org/cldr\n"
-            + "If you have any questions about it,\nplease contact your organization's CLDR Technical Committee member,\nor: surveytool@unicode.org\n"
-            + "TO UNSUBSCRIBE: You must permanently disable your account to stop receiving these emails. See: <http://st.unicode.org/cldr-apps/lock.jsp>";
+            + "If you have any questions about it,\nplease contact your organization's CLDR Technical Committee member,\nor: surveytool@unicode.org\n";
 
     /*
      * public static void sendMail(String to, String subject, String body) {
@@ -136,7 +135,7 @@ public class MailSender extends Thread {
             if (smtp != null) {
                 getInstance().queue(ourMessage);
             }
-            log(to, SurveyMain.isUnofficial()? (subject +"="+body):subject, null);
+            log(to, subject, null);
         } catch (Throwable t) {
             System.err.println("MAIL ERR: for" + to + ", " + t.toString() + " - check cldrmail.log");
             // t.printStackTrace();
@@ -252,11 +251,7 @@ public class MailSender extends Thread {
 
     private Properties getProperties() {
         Properties env = System.getProperties();
-        if(CLDR_SMTP!=null) {
-            env.put("mail.host", CLDR_SMTP);
-        } else {
-            System.out.println("CLDR_SMTP is null, not putting into arrays");
-        }
+        env.put("mail.host", CLDR_SMTP);
         env.put("mail.smtp.port", CLDR_SMTP_PORT);
         // TODO: user, etc
         // env.put("mail.smtp.port", CLDR_SMTP_PORT);

@@ -212,7 +212,7 @@ public class ShowZoneEquivalences {
         }
         CountItems.subheader(out, tabber3);
         out.println("</table>");
-        out.println(CldrUtility.ANALYTICS);
+        out.println(ShowData.ANALYTICS);
         out.println("</body></html>");
         out.close();
     }

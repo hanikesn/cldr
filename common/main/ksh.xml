@@ -13,7 +13,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 	<localeDisplayNames>
 		<localeDisplayPattern>
 			<localePattern draft="unconfirmed">{0} en {1}</localePattern>
-			<localeSeparator draft="unconfirmed">{0} uß {1}</localeSeparator>
+			<localeSeparator draft="unconfirmed"> uß </localeSeparator>
 		</localeDisplayPattern>
 		<languages>
 			<language type="ab" draft="unconfirmed">Abchaasesch</language>
@@ -1078,6 +1078,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<gmtFormat draft="unconfirmed">GMT{0}</gmtFormat>
 			<regionFormat draft="unconfirmed">Zick vun {0}</regionFormat>
 			<fallbackFormat draft="unconfirmed">{1} ({0})</fallbackFormat>
+			<fallbackRegionFormat draft="unconfirmed">Zick vun {1} ({0})</fallbackRegionFormat>
 			<zone type="Etc/Unknown">
 				<exemplarCity draft="unconfirmed">- weße mer nit -</exemplarCity>
 			</zone>
@@ -2223,50 +2224,48 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</currencies>
 	</numbers>
 	<units>
-		<unitLength type="long">
-			<unit type="duration-day">
-				<unitPattern count="zero">{0} Dääsch</unitPattern>
-				<unitPattern count="one">{0} Dääsch</unitPattern>
-				<unitPattern count="other">{0} Dääsch</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="zero">{0} Schtunde</unitPattern>
-				<unitPattern count="one">{0} Schtunde</unitPattern>
-				<unitPattern count="other">{0} Schtunde</unitPattern>
-			</unit>
-			<unit type="duration-minute">
-				<unitPattern count="zero">{0} Menutte</unitPattern>
-				<unitPattern count="one">{0} Menutte</unitPattern>
-				<unitPattern count="other">{0} Menutte</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="zero">{0} Mohnde</unitPattern>
-				<unitPattern count="one">{0} Mohnde</unitPattern>
-				<unitPattern count="other">{0} Mohnde</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="zero">{0} Sekunde</unitPattern>
-				<unitPattern count="one">{0} Sekunde</unitPattern>
-				<unitPattern count="other">{0} Sekunde</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="zero">{0} Woche</unitPattern>
-				<unitPattern count="one">{0} Woche</unitPattern>
-				<unitPattern count="other">{0} Woche</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="zero">{0} Johre</unitPattern>
-				<unitPattern count="one">{0} Johre</unitPattern>
-				<unitPattern count="other">{0} Johre</unitPattern>
-			</unit>
-		</unitLength>
+		<unit type="day">
+			<unitPattern count="zero" draft="unconfirmed">{0} Dääsch</unitPattern>
+			<unitPattern count="one" draft="unconfirmed">{0} Dääsch</unitPattern>
+			<unitPattern count="other" draft="unconfirmed">{0} Dääsch</unitPattern>
+		</unit>
+		<unit type="hour">
+			<unitPattern count="zero" draft="unconfirmed">{0} Schtunde</unitPattern>
+			<unitPattern count="one" draft="unconfirmed">{0} Schtunde</unitPattern>
+			<unitPattern count="other" draft="unconfirmed">{0} Schtunde</unitPattern>
+		</unit>
+		<unit type="minute">
+			<unitPattern count="zero" draft="unconfirmed">{0} Menutte</unitPattern>
+			<unitPattern count="one" draft="unconfirmed">{0} Menutte</unitPattern>
+			<unitPattern count="other" draft="unconfirmed">{0} Menutte</unitPattern>
+		</unit>
+		<unit type="month">
+			<unitPattern count="zero" draft="unconfirmed">{0} Mohnde</unitPattern>
+			<unitPattern count="one" draft="unconfirmed">{0} Mohnde</unitPattern>
+			<unitPattern count="other" draft="unconfirmed">{0} Mohnde</unitPattern>
+		</unit>
+		<unit type="second">
+			<unitPattern count="zero" draft="unconfirmed">{0} Sekunde</unitPattern>
+			<unitPattern count="one" draft="unconfirmed">{0} Sekunde</unitPattern>
+			<unitPattern count="other" draft="unconfirmed">{0} Sekunde</unitPattern>
+		</unit>
+		<unit type="week">
+			<unitPattern count="zero" draft="unconfirmed">{0} Woche</unitPattern>
+			<unitPattern count="one" draft="unconfirmed">{0} Woche</unitPattern>
+			<unitPattern count="other" draft="unconfirmed">{0} Woche</unitPattern>
+		</unit>
+		<unit type="year">
+			<unitPattern count="zero" draft="unconfirmed">{0} Johre</unitPattern>
+			<unitPattern count="one" draft="unconfirmed">{0} Johre</unitPattern>
+			<unitPattern count="other" draft="unconfirmed">{0} Johre</unitPattern>
+		</unit>
 	</units>
 	<listPatterns>
 		<listPattern>
-			<listPatternPart type="start" draft="unconfirmed">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle" draft="unconfirmed">{0}, {1}</listPatternPart>
-			<listPatternPart type="end" draft="unconfirmed">{0} un {1}</listPatternPart>
 			<listPatternPart type="2" draft="unconfirmed">{0} un {1}</listPatternPart>
+			<listPatternPart type="end" draft="unconfirmed">{0} un {1}</listPatternPart>
+			<listPatternPart type="middle" draft="unconfirmed">{0}, {1}</listPatternPart>
+			<listPatternPart type="start" draft="unconfirmed">{0}, {1}</listPatternPart>
 		</listPattern>
 	</listPatterns>
 	<posix>
