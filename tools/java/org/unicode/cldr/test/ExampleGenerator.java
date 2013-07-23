@@ -1306,10 +1306,11 @@ public class ExampleGenerator {
                         localeKeyTypePattern, localePattern, localeSeparator));
             }
             result = formatExampleList(examples);
-        } else if (parts.contains("languages") || parts.contains("scripts") || parts.contains("territories")) {
+        } else if (!parts.contains("types")) {
             //ldml/localeDisplayNames/languages/language[@type="ar"]
             //ldml/localeDisplayNames/scripts/script[@type="Arab"]
             //ldml/localeDisplayNames/territories/territory[@type="CA"]
+            //ldml/localeDisplayNames/types/type[@type="arabext"][@key="numbers"]
             String type = parts.getAttributeValue(-1, "type");
             if (type.contains("_")) {
                 if (value != null && !value.equals(type)) {
@@ -1352,19 +1353,11 @@ public class ExampleGenerator {
                     if (territoryName == null) {
                         territoryName = cldrFile.getStringValue(CLDRFile.getKey(CLDRFile.TERRITORY_NAME, ltp.getRegion()));  
                     }
-                    languageName = languageName.replace('(', '[').replace(')',']').replace('（', '［').replace('）','］');
-                    scriptName = scriptName.replace('(', '[').replace(')',']').replace('（', '［').replace('）','］');
-                    territoryName = territoryName.replace('(', '[').replace(')',']').replace('（', '［').replace('）','］');
-
                     String localePattern = cldrFile.getStringValue("//ldml/localeDisplayNames/localeDisplayPattern/localePattern");
                     String localeSeparator = cldrFile.getStringValue("//ldml/localeDisplayNames/localeDisplayPattern/localeSeparator");
                     String scriptTerritory = format(localeSeparator, scriptName, territoryName);
-                    if (!nameType.equals("script")) {
-                        examples.add(invertBackground(format(localePattern, languageName, territoryName)));
-                    }
-                    if (!nameType.equals("territory")) {
-                        examples.add(invertBackground(format(localePattern, languageName, scriptName)));
-                    }
+                    examples.add(invertBackground(format(localePattern, languageName, territoryName)));
+                    examples.add(invertBackground(format(localePattern, languageName, scriptName)));
                     examples.add(invertBackground(format(localePattern, languageName, scriptTerritory)));
                 } else {
                     int x = 0; // debugging

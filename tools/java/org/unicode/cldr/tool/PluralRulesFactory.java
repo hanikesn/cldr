@@ -26,7 +26,7 @@ import com.ibm.icu.util.ULocale;
  */
 public abstract class PluralRulesFactory extends PluralRules.Factory {
 
-    public abstract boolean hasOverride(ULocale locale);
+    abstract boolean hasOverride(ULocale locale);
 
     static final PluralRulesFactory NORMAL = new PluralRulesFactoryVanilla();
 
@@ -36,7 +36,7 @@ public abstract class PluralRulesFactory extends PluralRules.Factory {
 
     static class PluralRulesFactoryVanilla extends PluralRulesFactory {
         @Override
-        public boolean hasOverride(ULocale locale) {
+        boolean hasOverride(ULocale locale) {
             return false;
         }
         @Override
@@ -55,7 +55,7 @@ public abstract class PluralRulesFactory extends PluralRules.Factory {
 
     static class PluralRulesFactoryWithOverrides extends PluralRulesFactory {
         @Override
-        public boolean hasOverride(ULocale locale) {
+        boolean hasOverride(ULocale locale) {
             return getPluralOverrides().containsKey(locale);
         }
 
