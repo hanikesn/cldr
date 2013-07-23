@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRFile.DtdType;
 import org.unicode.cldr.util.CldrUtility;
+import org.unicode.cldr.util.ElementAttributeInfo;
 import org.unicode.cldr.util.XMLFileReader;
 import org.unicode.cldr.util.XMLFileReader.SimpleHandler;
 import org.unicode.cldr.util.XPathParts;
@@ -34,12 +35,17 @@ public class TestPathsModule extends TestFmwk {
         new TestPathsModule().run(args);
     }
 
+    private static final Matcher DIR_FILTER = Pattern.compile(CldrUtility.getProperty("dir", ".?")).matcher("");
     private static final Matcher FILE_FILTER = Pattern.compile(CldrUtility.getProperty("file", ".?")).matcher("");
     private static final Matcher PATH_FILTER = Pattern.compile(CldrUtility.getProperty("path", ".?")).matcher("");
     private static final Matcher VALUE_FILTER = Pattern.compile(CldrUtility.getProperty("value", ".?")).matcher("");
     private static final Matcher TEST_FILTER = Pattern.compile(CldrUtility.getProperty("test", ".?")).matcher("");
+    static final Relation<String, String> mainInfo = ElementAttributeInfo.getInstance(DtdType.ldml)
+        .getElement2Attributes();
+    static final Relation<String, String> suppInfo = ElementAttributeInfo.getInstance(DtdType.supplementalData)
+        .getElement2Attributes();
 
-    public void TestMain() throws IOException {
+    public void TestPaths() throws IOException {
         Map<String, Exception> cantRead = new LinkedHashMap<String, Exception>();
         List<PathTest> tests = new ArrayList<PathTest>();
         tests.add(new DistinguishingText());
@@ -53,24 +59,33 @@ public class TestPathsModule extends TestFmwk {
             }
         }
 
-        // Only test against /main for now.
-        File dir = new File(CldrUtility.MAIN_DIRECTORY);
-        for (File file : dir.listFiles()) {
-            String fullFileName = file.getCanonicalPath();
-            String filename = file.getName();
-            if (filename.startsWith("#") || !filename.endsWith(".xml") || !FILE_FILTER.reset(filename).find())
+        for (File dir : new File(CldrUtility.COMMON_DIRECTORY).listFiles()) {
+            final String subdirectory = dir.getName();
+            if (!dir.isDirectory() || !DIR_FILTER.reset(subdirectory).find()) {
                 continue;
-            String name = dir.getName() + "/" + file.getName();
-            name = name.substring(0, name.length() - 4); // strip .xml
-            MyHandler myHandler = new MyHandler(dir, filename, tests);
-            try {
-                XMLFileReader reader = new XMLFileReader().setHandler(myHandler);
-                reader.read(fullFileName, XMLFileReader.CONTENT_HANDLER, true);
-            } catch (Exception e) {
-                cantRead.put(name, e);
+            }
+            logln("Testing:\t" + dir);
+
+            for (File file : dir.listFiles()) {
+                String fullFileName = file.getCanonicalPath();
+                String filename = file.getName();
+                if (filename.startsWith("#") || !filename.endsWith(".xml") || !FILE_FILTER.reset(filename).find())
+                    continue;
+                // logln("\tTesting:\t" + file);
+                // System.out.print(".");
+                // System.out.flush();
+                // System.out.println("\t\t" + file);
+                String name = dir.getName() + "/" + file.getName();
+                name = name.substring(0, name.length() - 4); // strip .xml
+                MyHandler myHandler = new MyHandler(dir, filename, tests);
+                try {
+                    XMLFileReader reader = new XMLFileReader().setHandler(myHandler);
+                    reader.read(fullFileName, XMLFileReader.CONTENT_HANDLER, true);
+                } catch (Exception e) {
+                    cantRead.put(name, e);
+                }
             }
         }
-
         for (String name : cantRead.keySet()) {
             Exception exception = cantRead.get(name);
             errln(name + "\t" + exception.getMessage() + "\t" + Arrays.asList(exception.getStackTrace()));
@@ -80,9 +95,10 @@ public class TestPathsModule extends TestFmwk {
         }
     }
 
-    private class MyHandler extends SimpleHandler {
+    class MyHandler extends SimpleHandler {
         final List<PathTest> tests;
 
+        DtdType dtdType = null;
         final XPathParts fullParts = new XPathParts();
 
         public MyHandler(File dir, String filename, List<PathTest> tests2) {
@@ -107,7 +123,7 @@ public class TestPathsModule extends TestFmwk {
 
     }
 
-    private static class PathTest {
+    static class PathTest {
         protected DtdType dtdType;
         protected String locale;
         protected File dir;
@@ -129,10 +145,10 @@ public class TestPathsModule extends TestFmwk {
         }
     }
 
-    private static final Normalizer2 nfkd = Normalizer2.getInstance(null, "nfc", Normalizer2.Mode.DECOMPOSE);
-    private static final UnicodeSet nonspacing = new UnicodeSet("[[:Mn:][:Me:]]");
+    static final Normalizer2 nfkd = Normalizer2.getInstance(null, "nfc", Normalizer2.Mode.DECOMPOSE);
+    static final UnicodeSet nonspacing = new UnicodeSet("[[:Mn:][:Me:]]");
 
-    private class GatherValueCharacters extends PathTest {
+    class GatherValueCharacters extends PathTest {
         UnicodeSet chars = new UnicodeSet();
 
         UnicodeSet temp = new UnicodeSet();
@@ -162,10 +178,11 @@ public class TestPathsModule extends TestFmwk {
         @Override
         public void finish() {
             super.finish();
+            System.out.println(chars);
         }
     }
 
-    private enum OrderedChildren {
+    enum OrderedChildren {
         all, some, none
     }
 
@@ -177,7 +194,8 @@ public class TestPathsModule extends TestFmwk {
      * </ul>
      * Note that a leaf node is a final one OR the last one before any ordered element.
      */
-    private class DistinguishingText extends PathTest {
+    class DistinguishingText extends PathTest {
+
         private Relation<R3<DtdType, String, String>, String> nonFinalNonDistingishing = new Relation(new TreeMap(),
             TreeSet.class);
 
@@ -189,7 +207,7 @@ public class TestPathsModule extends TestFmwk {
             super.test(fullParts, value);
             int size = fullParts.size();
             int firstQ = findFirstQ(fullParts, size);
-            int firstLeaf = firstQ >= 0 ? firstQ : size - 1;
+            int firstLeaf = (firstQ >= 0 ? firstQ : size) - 1;
             for (int i = 0; i < size; ++i) {
                 String element = fullParts.getElement(i);
                 boolean leafElement = i == firstLeaf;
@@ -251,8 +269,7 @@ public class TestPathsModule extends TestFmwk {
             for (R3<DtdType, String, String> item : nonFinalNonDistingishing.keySet()) {
                 List<String> samples = new ArrayList<String>(nonFinalNonDistingishing.getAll(item));
                 if (samples.size() > 5) samples = samples.subList(0, 4);
-                errln(item.get0() + ": Attribute <" + item.get2() + "> in element <" + item.get1() +
-                        "> is not on leaf element and not distinguishing:\t" + samples);
+                errln("Attribute is not on leaf element and not distinguishing:\t" + item + "\t" + samples);
             }
             for (R2<DtdType, String> item : illFormedOrder.keySet()) {
                 List<String> samples = new ArrayList<String>(illFormedOrder.getAll(item));

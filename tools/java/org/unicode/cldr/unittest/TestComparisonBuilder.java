@@ -21,9 +21,6 @@ import com.ibm.icu.dev.util.Relation;
 import com.ibm.icu.impl.Row;
 import com.ibm.icu.impl.Row.R2;
 
-/**
- * Tests the ordering of DTD elements and attributes within the dtd files.
- */
 public class TestComparisonBuilder extends TestFmwk {
     public static void main(String[] args) {
         new TestComparisonBuilder().run(args);
@@ -43,12 +40,7 @@ public class TestComparisonBuilder extends TestFmwk {
         }
     }
 
-    private void dtdAttributes() {
-        // NOTE: This method was originally TestDtdAttributes. It's been disabled
-        // because DTD attributes aren't managed
-        // by FindDtdOrder, which leads to a lot of ordering cycles being found.
-        // There's no point in reordering the dtd contents to make this test pass
-        // unless FindDtdOrder also checks attributes.
+    public void TestDtdAttributes() {
         Builder<String> builder = new Builder<String>(Ordering.NATURAL);
         for (DtdType dtd : DtdType.values()) {
             Relation<String, String> eaInfo = ElementAttributeInfo.getInstance(dtd).getElement2Attributes();
@@ -58,7 +50,6 @@ public class TestComparisonBuilder extends TestFmwk {
                 // logln(dtd + ": " + element + ": " + attributes);
                 builder.add(attributes);
             }
-
         }
         DiscreteComparator<String> comp;
         try {
@@ -67,7 +58,6 @@ public class TestComparisonBuilder extends TestFmwk {
             errln(e.getMessage() + ",\t" + builder.getCycle());
             throw e;
         }
-        
         logln("Attribute Ordering:\t" + comp.getOrdering().toString());
         for (DtdType dtd : DtdType.values()) {
             // check that the ordering is right

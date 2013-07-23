@@ -27,15 +27,11 @@ public class TestAll extends TestGroup {
                         "org.unicode.cldr.unittest.TestLocalCurrency",
                         "org.unicode.cldr.unittest.TestLocale",
                         "org.unicode.cldr.unittest.TestBasic",
-                        "org.unicode.cldr.unittest.TestCasingInfo",
-                        "org.unicode.cldr.unittest.TestKeyboardModifier",
-                        "org.unicode.cldr.unittest.TestLruMap",
                         "org.unicode.cldr.unittest.TestSupplementalInfo",
                         "org.unicode.cldr.unittest.TestPaths",
                         "org.unicode.cldr.unittest.TestPathHeader",
                         "org.unicode.cldr.unittest.TestExternalCodeAPIs",
                         "org.unicode.cldr.unittest.TestMetadata",
-                        "org.unicode.cldr.unittest.TestComparisonBuilder",
                         "org.unicode.cldr.unittest.TestUtilities",
                         "org.unicode.cldr.unittest.NumberingSystemsTest",
                         "org.unicode.cldr.unittest.StandardCodesTest",
@@ -44,7 +40,7 @@ public class TestAll extends TestGroup {
                         "org.unicode.cldr.unittest.TestOutdatedPaths",
                         "org.unicode.cldr.unittest.TestCoverageLevel",
                         "org.unicode.cldr.unittest.TestExampleGenerator",
-                        "org.unicode.cldr.unittest.TestLdml2ICU",
+                       
                 },
                 "All tests in CLDR");
     }

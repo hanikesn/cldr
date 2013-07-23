@@ -91,7 +91,7 @@ public class CLDRTransforms {
         Set<String> ordered;
 
         if (namesMatchingRegex == null) {
-            files = getAvailableIds();
+            files = Arrays.asList(new File(TRANSFORM_DIR).list());
             ordered = r.dependencyOrder.getOrderedItems(files, null, true);
         } else {
             Matcher filter = Pattern.compile(namesMatchingRegex).matcher("");
@@ -106,10 +106,6 @@ public class CLDRTransforms {
         }
         Transliterator.registerAny(); // do this last!
 
-    }
-
-    public static List<String> getAvailableIds() {
-        return Arrays.asList(new File(TRANSFORM_DIR).list());
     }
 
     public Set<String> getOverriddenTransliterators() {
@@ -272,7 +268,7 @@ public class CLDRTransforms {
      * @param directionInfo
      * @return
      */
-    public static String getIcuRulesFromXmlFile(String dir, String cldrFileName, ParsedTransformID directionInfo) {
+    public String getIcuRulesFromXmlFile(String dir, String cldrFileName, ParsedTransformID directionInfo) {
         final MyHandler myHandler = new MyHandler(cldrFileName, directionInfo);
         XMLFileReader xfr = new XMLFileReader().setHandler(myHandler);
         xfr.read(dir + cldrFileName, XMLFileReader.CONTENT_HANDLER | XMLFileReader.ERROR_HANDLER, true);

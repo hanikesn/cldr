@@ -14,7 +14,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<localeDisplayPattern>
 			<localePattern>{0} ({1})</localePattern>
 			<localeSeparator>{0}, {1}</localeSeparator>
-			<localeKeyTypePattern>{0}: {1}</localeKeyTypePattern>
+			<localeKeyTypePattern draft="contributed">{0}: {1}</localeKeyTypePattern>
 		</localeDisplayPattern>
 		<languages>
 			<language type="aa">Αφάρ</language>
@@ -40,7 +40,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="anp">Ανγκικά</language>
 			<language type="apa">Γλώσσα Απάτσι</language>
 			<language type="ar">Αραβικά</language>
-			<language type="ar_001">Σύγχρονα Τυπικά Αραβικά</language>
 			<language type="arc">Αραμαϊκά</language>
 			<language type="arn">Αρουκάνιαν</language>
 			<language type="arp">Αράπαχο</language>
@@ -55,7 +54,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="awa">Αγουαντί</language>
 			<language type="ay">Αϊμάρα</language>
 			<language type="az">Αζερικά</language>
-			<language type="az" alt="short">Αζερικά</language>
+			<language type="az" alt="short" draft="contributed">Αζερικά</language>
 			<language type="ba">Μπασκίρ</language>
 			<language type="bad">Μπάντα</language>
 			<language type="bai">Γλώσσα Μπαμιλέκ</language>
@@ -115,7 +114,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="chp">Τσίπιουαν</language>
 			<language type="chr">Τσερόκι</language>
 			<language type="chy">Σεγιέν</language>
-			<language type="ckb">Κουρδικά Σοράνι</language>
+			<language type="ckb" draft="provisional">Κουρδικά Sorani</language>
 			<language type="cmc">Χαμική γλώσσα</language>
 			<language type="co">Κορσικανικά</language>
 			<language type="cop">Κοπτικά</language>
@@ -165,15 +164,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="en_AU">Αγγλικά Αυστραλίας</language>
 			<language type="en_CA">Αγγλικά Καναδά</language>
 			<language type="en_GB">Αγγλικά Ηνωμένου Βασιλείου</language>
-			<language type="en_GB" alt="short">Αγγλικά (ΗΒ)</language>
-			<language type="en_US">Αγγλικά Αμερικής</language>
-			<language type="en_US" alt="short">Αγγλικά ΗΠΑ</language>
+			<language type="en_US">Αγγλικά Η.Π.Α.</language>
 			<language type="enm">Μέσα Αγγλικά</language>
 			<language type="eo">Εσπεράντο</language>
 			<language type="es">Ισπανικά</language>
 			<language type="es_419">Ισπανικά Λατινικής Αμερικής</language>
 			<language type="es_ES">Ισπανικά Ευρώπης</language>
-			<language type="es_MX">Ισπανικά (Μεξικό)</language>
 			<language type="et">Εσθονικά</language>
 			<language type="eu">Βασκικά</language>
 			<language type="ewo">Εγουόντο</language>
@@ -256,7 +252,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="iu">Ινουκτιτούτ</language>
 			<language type="ja">Ιαπωνικά</language>
 			<language type="jbo">Λόζμπαν</language>
-			<language type="jgo" draft="contributed">Νγκόμπα</language>
 			<language type="jmc" draft="contributed">Μάχαμε</language>
 			<language type="jpr">Ιουδαϊκά-Περσικά</language>
 			<language type="jrb">Ιουδαϊκά-Αραβικά</language>
@@ -284,7 +279,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="kj">Κουανιγιάμα</language>
 			<language type="kk">Καζακικά</language>
 			<language type="kkj" draft="contributed">Κάκο</language>
-			<language type="kl">Καλαάλισουτ</language>
+			<language type="kl">Καλααλισούτ</language>
 			<language type="kln" draft="contributed">Καλεντζίν</language>
 			<language type="km">Καμποτζιανά</language>
 			<language type="kmb">Κιμπούντου</language>
@@ -313,7 +308,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="lag" draft="contributed">Λάνγκι</language>
 			<language type="lah">Λάχδα</language>
 			<language type="lam">Λάμπα</language>
-			<language type="lb">Λουξεμβουργιανά</language>
+			<language type="lb">Λουξεμβουργικά</language>
 			<language type="lez">Λαζγκιάν</language>
 			<language type="lg">Γκάντα</language>
 			<language type="li">Λιμβουργιανά</language>
@@ -347,7 +342,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="mg">Μαλαγάσι</language>
 			<language type="mga">Μέσα Ιρλανδικά</language>
 			<language type="mgh" draft="contributed">Μακούβα-Μέτο</language>
-			<language type="mgo" draft="contributed">Μετά</language>
 			<language type="mh">Μάρσαλ</language>
 			<language type="mi">Μάορι</language>
 			<language type="mic">Μικμάκ</language>
@@ -434,7 +428,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="pra">Γλώσσα Πράκριτ</language>
 			<language type="pro">Παλαιά Προβενσιάλ</language>
 			<language type="ps">Πάστο</language>
-			<language type="ps" alt="variant">Πάστο</language>
+			<language type="ps" alt="variant" draft="contributed">Πάστο</language>
 			<language type="pt">Πορτογαλικά</language>
 			<language type="pt_BR">Πορτογαλικά Βραζιλίας</language>
 			<language type="pt_PT">Πορτογαλικά Ευρώπης</language>
@@ -536,7 +530,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="tli">Τλίνγκιτ</language>
 			<language type="tmh">Ταμασέκ</language>
 			<language type="tn">Τσιγουάνα</language>
-			<language type="to">Τονγκανικά</language>
+			<language type="to">Τονγκάν</language>
 			<language type="tog">Νιάσα Τόνγκα</language>
 			<language type="tpi">Τοκ Πισίν</language>
 			<language type="tr">Τουρκικά</language>
@@ -555,7 +549,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="tzm" draft="contributed">Ταμαζίτ Κεντρικού Μαρόκο</language>
 			<language type="udm">Ουντμούρτ</language>
 			<language type="ug">Ουιγουρικά</language>
-			<language type="ug" alt="variant">Ουιγκούρ</language>
+			<language type="ug" alt="variant" draft="contributed">Ουιγκούρ</language>
 			<language type="uga">Ουγκαρίτικ</language>
 			<language type="uk">Ουκρανικά</language>
 			<language type="umb">Ουμπούντου</language>
@@ -564,7 +558,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="uz">Ουζμπεκικά</language>
 			<language type="vai">Βάι</language>
 			<language type="ve">Βένδα</language>
-			<language type="vi">Βιετναμικά</language>
+			<language type="vi">Βιετναμεζικά</language>
 			<language type="vo">Βόλαπικ</language>
 			<language type="vot">Βότικ</language>
 			<language type="vun" draft="contributed">Βούντζο</language>
@@ -591,7 +585,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<language type="zap">Ζάποτεκ</language>
 			<language type="zbl">Σύμβολα Bliss</language>
 			<language type="zen">Ζενάγκα</language>
-			<language type="zgh">Τυπικά Ταμαζίγκτ Μαρόκου</language>
 			<language type="zh">Κινεζικά</language>
 			<language type="zh_Hans">Απλοποιημένα Κινεζικά</language>
 			<language type="zh_Hant">Παραδοσιακά Κινεζικά</language>
@@ -642,10 +635,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<script type="Hang">Χανγκούλ</script>
 			<script type="Hani">Χαν</script>
 			<script type="Hano">Χανούνου</script>
-			<script type="Hans">Απλοποιημένο</script>
-			<script type="Hans" alt="stand-alone">Απλοποιημένο Χαν</script>
-			<script type="Hant">Παραδοσιακό</script>
-			<script type="Hant" alt="stand-alone">Παραδοσιακό Χαν</script>
+			<script type="Hans">Απλοποιημένο Κινεζικό</script>
+			<script type="Hans" alt="stand-alone">Απλοποιημένα Χαν</script>
+			<script type="Hant">Παραδοσιακό Κινεζικό</script>
+			<script type="Hant" alt="stand-alone">Παραδοσιακά Χαν</script>
 			<script type="Hebr">Εβραϊκό</script>
 			<script type="Hira">Χιραγκάνα</script>
 			<script type="Hmng">Παχάχ Χμονγκ</script>
@@ -783,7 +776,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="AT">Αυστρία</territory>
 			<territory type="AU">Αυστραλία</territory>
 			<territory type="AW">Αρούμπα</territory>
-			<territory type="AX">Νήσοι Όλαντ</territory>
+			<territory type="AX">Νησιά Όλαντ</territory>
 			<territory type="AZ">Αζερμπαϊτζάν</territory>
 			<territory type="BA">Βοσνία - Ερζεγοβίνη</territory>
 			<territory type="BB">Μπαρμπάντος</territory>
@@ -805,14 +798,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="BV">Νήσος Μπουβέ</territory>
 			<territory type="BW">Μποτσουάνα</territory>
 			<territory type="BY">Λευκορωσία</territory>
-			<territory type="BZ">Μπελίζ</territory>
+			<territory type="BZ">Μπελίσε</territory>
 			<territory type="CA">Καναδάς</territory>
-			<territory type="CC">Νήσοι Κόκος [Κίλινγκ]</territory>
+			<territory type="CC">Νησιά Κόκος [Κίλινγκ]</territory>
 			<territory type="CD">Κονγκό - Κινσάσα</territory>
 			<territory type="CD" alt="variant">Κονγκό</territory>
 			<territory type="CF">Κεντροαφρικανική Δημοκρατία</territory>
 			<territory type="CG">Κονγκό - Μπραζαβίλ</territory>
-			<territory type="CG" alt="variant">Κονγκό [Δημοκρατία]</territory>
+			<territory type="CG" alt="variant">Κόνγκο [Δημοκρατία]</territory>
 			<territory type="CH">Ελβετία</territory>
 			<territory type="CI">Ακτή Ελεφαντοστού</territory>
 			<territory type="CI" alt="variant">Ακτή Ελεφαντοστού</territory>
@@ -826,9 +819,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="CU">Κούβα</territory>
 			<territory type="CV">Πράσινο Ακρωτήριο</territory>
 			<territory type="CW">Κουρασάο</territory>
-			<territory type="CX">Νήσος των Χριστουγέννων</territory>
+			<territory type="CX">Νήσος Χριστουγέννων</territory>
 			<territory type="CY">Κύπρος</territory>
-			<territory type="CZ">Τσεχική Δημοκρατία</territory>
+			<territory type="CZ">Τσεχία</territory>
 			<territory type="DE">Γερμανία</territory>
 			<territory type="DG">Ντιέγκο Γκαρσία</territory>
 			<territory type="DJ">Τζιμπουτί</territory>
@@ -847,18 +840,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="EU">Ευρωπαϊκή Ένωση</territory>
 			<territory type="FI">Φινλανδία</territory>
 			<territory type="FJ">Φίτζι</territory>
-			<territory type="FK">Νήσοι Φόκλαντ</territory>
-			<territory type="FK" alt="variant">Νήσοι Φόκλαντ [Νήσοι Μαλβίνας]</territory>
+			<territory type="FK">Νήσοι Φώκλαντ</territory>
+			<territory type="FK" alt="variant">Νήσοι Φώκλαντ (Νήσοι Μαλβίνας)</territory>
 			<territory type="FM">Μικρονησία</territory>
-			<territory type="FO">Νήσοι Φερόες</territory>
+			<territory type="FO">Νήσοι Φερόε</territory>
 			<territory type="FR">Γαλλία</territory>
 			<territory type="GA">Γκαμπόν</territory>
 			<territory type="GB">Ηνωμένο Βασίλειο</territory>
-			<territory type="GB" alt="short" draft="contributed">Η.Β.</territory>
 			<territory type="GD">Γρενάδα</territory>
 			<territory type="GE">Γεωργία</territory>
 			<territory type="GF">Γαλλική Γουιάνα</territory>
-			<territory type="GG">Γκέρνζι</territory>
+			<territory type="GG">Γκερνσέι</territory>
 			<territory type="GH">Γκάνα</territory>
 			<territory type="GI">Γιβραλτάρ</territory>
 			<territory type="GL">Γροιλανδία</territory>
@@ -867,10 +859,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="GP">Γουαδελούπη</territory>
 			<territory type="GQ">Ισημερινή Γουινέα</territory>
 			<territory type="GR">Ελλάδα</territory>
-			<territory type="GS">Νήσοι Νότια Γεωργία και Νότιες Σάντουιτς</territory>
+			<territory type="GS">Νότια Γεωργία και Νότιες Νήσοι Σάντουιτς</territory>
 			<territory type="GT">Γουατεμάλα</territory>
 			<territory type="GU">Γκουάμ</territory>
-			<territory type="GW">Γουινέα Μπισάου</territory>
+			<territory type="GW">Γουινέα-Μπισάου</territory>
 			<territory type="GY">Γουιάνα</territory>
 			<territory type="HK">Χονγκ Κονγκ ΕΔΠ Κίνας</territory>
 			<territory type="HK" alt="short">Χονγκ Κονγκ</territory>
@@ -890,7 +882,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="IR">Ιράν</territory>
 			<territory type="IS">Ισλανδία</territory>
 			<territory type="IT">Ιταλία</territory>
-			<territory type="JE">Τζέρζι</territory>
+			<territory type="JE">Υερσέη</territory>
 			<territory type="JM">Τζαμάικα</territory>
 			<territory type="JO">Ιορδανία</territory>
 			<territory type="JP">Ιαπωνία</territory>
@@ -898,12 +890,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="KG">Κιργιστάν</territory>
 			<territory type="KH">Καμπότζη</territory>
 			<territory type="KI">Κιριμπάτι</territory>
-			<territory type="KM">Κομόρες</territory>
-			<territory type="KN">Άγιος Χριστόφορος και Νέβις</territory>
+			<territory type="KM">Κομόρος</territory>
+			<territory type="KN">Σαιντ Κιτς και Νέβις</territory>
 			<territory type="KP">Βόρεια Κορέα</territory>
 			<territory type="KR">Νότια Κορέα</territory>
 			<territory type="KW">Κουβέιτ</territory>
-			<territory type="KY">Νήσοι Κάιμαν</territory>
+			<territory type="KY">Νήσοι Κέιμαν</territory>
 			<territory type="KZ">Καζακστάν</territory>
 			<territory type="LA">Λάος</territory>
 			<territory type="LB">Λίβανος</territory>
@@ -926,11 +918,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="MK">ΠΓΔΜ</territory>
 			<territory type="MK" alt="variant">ΠΓΔΜ</territory>
 			<territory type="ML">Μάλι</territory>
-			<territory type="MM">Μιανμάρ/Βιρμανία</territory>
+			<territory type="MM">Μιανμάρ [Μπούρμα]</territory>
 			<territory type="MN">Μογγολία</territory>
 			<territory type="MO">Μακάο ΕΔΠ Κίνας</territory>
 			<territory type="MO" alt="short">Μακάο</territory>
-			<territory type="MP">Νήσοι Βόρειες Μαριάνες</territory>
+			<territory type="MP">Βόρειες Μαριάνες Νήσοι</territory>
 			<territory type="MQ">Μαρτινίκα</territory>
 			<territory type="MR">Μαυριτανία</territory>
 			<territory type="MS">Μονσεράτ</territory>
@@ -950,7 +942,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="NL">Ολλανδία</territory>
 			<territory type="NO">Νορβηγία</territory>
 			<territory type="NP">Νεπάλ</territory>
-			<territory type="NR">Ναουρού</territory>
+			<territory type="NR">Ναούρου</territory>
 			<territory type="NU">Νιούε</territory>
 			<territory type="NZ">Νέα Ζηλανδία</territory>
 			<territory type="OM">Ομάν</territory>
@@ -961,8 +953,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="PH">Φιλιππίνες</territory>
 			<territory type="PK">Πακιστάν</territory>
 			<territory type="PL">Πολωνία</territory>
-			<territory type="PM">Σεν Πιερ και Μικελόν</territory>
-			<territory type="PN">Νήσοι Πίτκερν</territory>
+			<territory type="PM">Σαιντ Πιέρ και Μικελόν</territory>
+			<territory type="PN">Νησιά Πίτκερν</territory>
 			<territory type="PR">Πουέρτο Ρίκο</territory>
 			<territory type="PS">Παλαιστινιακά Εδάφη</territory>
 			<territory type="PS" alt="short">Παλαιστίνη</territory>
@@ -984,7 +976,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="SG">Σιγκαπούρη</territory>
 			<territory type="SH">Αγία Ελένη</territory>
 			<territory type="SI">Σλοβενία</territory>
-			<territory type="SJ">Σβάλμπαρντ και Γιαν Μαγιέν</territory>
+			<territory type="SJ">Νησιά Σβάλμπαρντ και Γιαν Μάγεν</territory>
 			<territory type="SK">Σλοβακία</territory>
 			<territory type="SL">Σιέρα Λεόνε</territory>
 			<territory type="SM">Άγιος Μαρίνος</territory>
@@ -996,11 +988,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="SV">Ελ Σαλβαδόρ</territory>
 			<territory type="SX">Άγιος Μαρτίνος (Ολλανδικό τμήμα)</territory>
 			<territory type="SY">Συρία</territory>
-			<territory type="SZ">Σουαζιλάνδη</territory>
+			<territory type="SZ">Ζουαζηλάνδη</territory>
 			<territory type="TA">Τριστάν ντα Κούνια</territory>
-			<territory type="TC">Νήσοι Τερκ και Κάικος</territory>
+			<territory type="TC">Νήσοι Τερκς και Κάικος</territory>
 			<territory type="TD">Τσαντ</territory>
-			<territory type="TF">Γαλλικές περιοχές του νοτίου ημισφαιρίου</territory>
+			<territory type="TF">Γαλλικά Νότια Εδάφη</territory>
 			<territory type="TG">Τόγκο</territory>
 			<territory type="TH">Ταϊλάνδη</territory>
 			<territory type="TJ">Τατζικιστάν</territory>
@@ -1018,8 +1010,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="UA">Ουκρανία</territory>
 			<territory type="UG">Ουγκάντα</territory>
 			<territory type="UM">Απομακρυσμένες Νησίδες Η.Π.Α.</territory>
-			<territory type="US">Ηνωμένες Πολιτείες</territory>
-			<territory type="US" alt="short">ΗΠΑ</territory>
+			<territory type="US">Ηνωμένες Πολιτείες της Αμερικής</territory>
 			<territory type="UY">Ουρουγουάη</territory>
 			<territory type="UZ">Ουζμπεκιστάν</territory>
 			<territory type="VA">Βατικανό</territory>
@@ -1029,9 +1020,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<territory type="VI">Αμερικανικές Παρθένοι Νήσοι</territory>
 			<territory type="VN">Βιετνάμ</territory>
 			<territory type="VU">Βανουάτου</territory>
-			<territory type="WF">Ουάλις και Φουτούνα</territory>
+			<territory type="WF">Ουόλις και Φουτούνα</territory>
 			<territory type="WS">Σαμόα</territory>
-			<territory type="XK" draft="contributed">Κόσοβο</territory>
+			<territory type="XK">Κόσοβο</territory>
 			<territory type="YE">Υεμένη</territory>
 			<territory type="YT">Μαγιότ</territory>
 			<territory type="ZA">Νότια Αφρική</territory>
@@ -1086,61 +1077,59 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<key type="colNumeric" draft="contributed">Αριθμητική ταξινόμηση</key>
 			<key type="colStrength" draft="contributed">Ισχύς ταξινόμησης</key>
 			<key type="currency">Νόμισμα</key>
-			<key type="numbers">Αριθμοί</key>
+			<key type="numbers" draft="contributed">Αριθμοί</key>
 			<key type="timezone" draft="contributed">Ζώνη ώρας</key>
 			<key type="va" draft="contributed">Παραλλαγή τοπικών ρυθμίσεων</key>
 			<key type="variableTop" draft="contributed">Ταξινόμηση ως σύμβολα</key>
 			<key type="x" draft="contributed">Προσωπική χρήση</key>
 		</keys>
 		<types>
-			<type type="arab" key="numbers">Αραβικό-Ινδικά ψηφία</type>
-			<type type="arabext" key="numbers">Εκτεταμένα αραβικό-ινδικά ψηφία</type>
-			<type type="armn" key="numbers">Αρμενικά αριθμητικά</type>
-			<type type="armnlow" key="numbers">Πεζά αρμενικά αριθμητικά</type>
-			<type type="beng" key="numbers">Βεγγαλικά ψηφία</type>
+			<type type="arab" key="numbers" draft="contributed">Αραβικό-Ινδικά ψηφία</type>
+			<type type="arabext" key="numbers" draft="contributed">Εκτεταμένα Αραβικό-Ινδικά ψηφία</type>
+			<type type="armn" key="numbers" draft="contributed">Αρμενικά αριθμητικά</type>
+			<type type="armnlow" key="numbers" draft="contributed">Πεζά αρμενικά αριθμητικά</type>
+			<type type="beng" key="numbers" draft="contributed">Βεγγαλικά ψηφία</type>
 			<type type="big5han" key="collation">Σειρά ταξινόμησης Παραδοσιακών Κινεζικών - Big5</type>
 			<type type="buddhist" key="calendar">Βουδιστικό ημερολόγιο</type>
 			<type type="chinese" key="calendar">Κινεζικό ημερολόγιο</type>
 			<type type="coptic" key="calendar" draft="contributed">Κοπτικό ημερολόγιο</type>
-			<type type="deva" key="numbers">Ψηφία Ντεβαναγκάρι</type>
+			<type type="deva" key="numbers" draft="contributed">Ψηφία Ντεβαναγκάρι</type>
 			<type type="dictionary" key="collation" draft="contributed">Σειρά ταξινόμησης ημερολογίου</type>
 			<type type="ducet" key="collation">Προεπιλεγμένη σειρά ταξινόμησης Unicode</type>
-			<type type="ethi" key="numbers">Αιθιοπικά αριθμητικά</type>
+			<type type="ethi" key="numbers" draft="contributed">Αιθιοπικά αριθμητικά</type>
 			<type type="ethiopic" key="calendar" draft="contributed">Αιθιοπικό ημερολόγιο</type>
 			<type type="ethiopic-amete-alem" key="calendar" draft="contributed">Αιθιοπικό ημερολόγιο Άμετ Άλεμ</type>
 			<type type="finance" key="numbers" draft="contributed">Οικονομικά αριθμητικά</type>
-			<type type="fullwide" key="numbers">Ψηφία πλήρους πλάτους</type>
+			<type type="fullwide" key="numbers" draft="contributed">Ψηφία πλήρους πλάτους</type>
 			<type type="gb2312han" key="collation">Σειρά ταξινόμησης Απλουστευμένων Κινεζικών - GB2312</type>
-			<type type="geor" key="numbers">Γεωργιανά αριθμητικά</type>
+			<type type="geor" key="numbers" draft="contributed">Γεωργιανά αριθμητικά</type>
 			<type type="gregorian" key="calendar">Γρηγοριανό ημερολόγιο</type>
-			<type type="grek" key="numbers">Ελληνικά αριθμητικά</type>
-			<type type="greklow" key="numbers">Ελληνικά αριθμητικά με πεζά γράμματα</type>
-			<type type="gujr" key="numbers">Γκουτζαρατικά ψηφία</type>
-			<type type="guru" key="numbers">Ψηφία Γκουρμούκι</type>
-			<type type="hanidec" key="numbers">Κινεζικά δεκαδικά αριθμητικά</type>
-			<type type="hans" key="numbers">Απλοποιημένα κινεζικά αριθμητικά</type>
-			<type type="hansfin" key="numbers">Απλοποιημένα κινεζικά οικονομικά αριθμητικά</type>
-			<type type="hant" key="numbers">Παραδοσιακά κινεζικά αριθμητικά</type>
-			<type type="hantfin" key="numbers">Παραδοσιακά κινεζικά οικονομικά αριθμητικά</type>
-			<type type="hebr" key="numbers">Εβραϊκά αριθμητικά</type>
+			<type type="grek" key="numbers">Ελληνικοί αριθμοί</type>
+			<type type="greklow" key="numbers">Ελληνικοί αριθμοί με πεζά γράμματα</type>
+			<type type="gujr" key="numbers" draft="contributed">Γκουτζαρατικά ψηφία</type>
+			<type type="guru" key="numbers" draft="contributed">Ψηφία Γκουρμούκι</type>
+			<type type="hanidec" key="numbers" draft="contributed">Κινεζικοί δεκαδικοί αριθμοί</type>
+			<type type="hans" key="numbers" draft="contributed">Απλοποιημένα Κινεζικά αριθμητικά</type>
+			<type type="hansfin" key="numbers" draft="contributed">Απλοποιημένα Κινεζικά οικονομικά αριθμητικά</type>
+			<type type="hant" key="numbers" draft="contributed">Παραδοσιακά Κινεζικά αριθμητικά</type>
+			<type type="hantfin" key="numbers" draft="contributed">Παραδοσιακά Κινεζικά οικονομικά αριθμητικά</type>
+			<type type="hebr" key="numbers" draft="contributed">Εβραϊκά αριθμητικά</type>
 			<type type="hebrew" key="calendar">Εβραϊκό ημερολόγιο</type>
 			<type type="identical" key="colStrength" draft="contributed">Ταξινόμηση όλων</type>
 			<type type="indian" key="calendar">Ινδικό εθνικό ημερολόγιο</type>
 			<type type="islamic" key="calendar">Ισλαμικό ημερολόγιο</type>
 			<type type="islamic-civil" key="calendar">Ισλαμικό αστικό ημερολόγιο</type>
-			<type type="islamic-rgsa" key="calendar" draft="contributed">Ισλαμικό ημερολόγιο [Σαουδική Αραβία, θέαση)</type>
-			<type type="islamic-tbla" key="calendar" draft="contributed">Ισλαμικό ημερολόγιο [δομημένο, αστρονομική εποχή]</type>
 			<type type="japanese" key="calendar">Ιαπωνικό ημερολόγιο</type>
-			<type type="jpan" key="numbers">Ιαπωνικά αριθμητικά</type>
-			<type type="jpanfin" key="numbers">Ιαπωνικά οικονομικά αριθμητικά</type>
-			<type type="khmr" key="numbers">Ψηφία Χμερ</type>
-			<type type="knda" key="numbers">Ψηφία Κανάντα</type>
-			<type type="laoo" key="numbers">Λαοϊκά ψηφία</type>
+			<type type="jpan" key="numbers" draft="contributed">Ιαπωνικά αριθμητικά</type>
+			<type type="jpanfin" key="numbers" draft="contributed">Ιαπωνικά οικονομικά αριθμητικά</type>
+			<type type="khmr" key="numbers" draft="contributed">Ψηφία Χμερ</type>
+			<type type="knda" key="numbers" draft="contributed">Ψηφία Κανάντα</type>
+			<type type="laoo" key="numbers" draft="contributed">Λαοϊκά ψηφία</type>
 			<type type="latn" key="numbers">Ψηφία της Δύσης</type>
 			<type type="lower" key="colCaseFirst" draft="contributed">Ταξινόμηση πεζών χαρακτήρων πρώτα</type>
-			<type type="mlym" key="numbers">Μαλαγιαλαμικά ψηφία</type>
+			<type type="mlym" key="numbers" draft="contributed">Μαλαγιαλαμικά ψηφία</type>
 			<type type="mong" key="numbers" draft="contributed">Μογγολικά ψηφία</type>
-			<type type="mymr" key="numbers">Ψηφία Μιανμάρ</type>
+			<type type="mymr" key="numbers" draft="contributed">Ψηφία Μιανμάρ</type>
 			<type type="native" key="numbers" draft="contributed">Εγγενή ψηφία</type>
 			<type type="no" key="colBackwards" draft="contributed">Κανονικά ταξινόμηση τόνων</type>
 			<type type="no" key="colCaseFirst" draft="contributed">Κανονική ταξινόμηση χαρακτήρων</type>
@@ -1149,7 +1138,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<type type="no" key="colNormalization" draft="contributed">Ταξινόμηση χωρίς κανονικοποίηση</type>
 			<type type="no" key="colNumeric" draft="contributed">Μεμονωμένη ταξινόμηση ψηφίων</type>
 			<type type="non-ignorable" key="colAlternate" draft="contributed">Ταξινόμηση συμβόλων</type>
-			<type type="orya" key="numbers">Οριγικά ψηφία</type>
+			<type type="orya" key="numbers" draft="contributed">Οριγικά ψηφία</type>
 			<type type="persian" key="calendar" draft="contributed">Περσικό ημερολόγιο</type>
 			<type type="phonebook" key="collation">Σειρά ταξινόμησης τηλεφωνικού καταλόγου</type>
 			<type type="phonetic" key="collation" draft="contributed">Φωνητική σειρά ταξινόμησης</type>
@@ -1158,20 +1147,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<type type="quaternary" key="colStrength" draft="contributed">Ταξινόμηση τόνων/χαρακτήρων διάκρισης/χαρακτήρων μεγάλου μεγέθους/χαρακτήρων Κάνα</type>
 			<type type="reformed" key="collation" draft="contributed">Ανασχηματισμένη σειρά ταξινόμησης</type>
 			<type type="roc" key="calendar">Ημερολόγιο της Δημοκρατίας της Κίνας</type>
-			<type type="roman" key="numbers">Λατινικοί αριθμοί</type>
-			<type type="romanlow" key="numbers">Πεζοί λατινικοί αριθμοί</type>
+			<type type="roman" key="numbers" draft="contributed">Λατινικοί αριθμοί</type>
+			<type type="romanlow" key="numbers" draft="contributed">Πεζοί λατινικοί αριθμοί</type>
 			<type type="search" key="collation">Αναζήτηση γενικού τύπου</type>
 			<type type="searchjl" key="collation" draft="contributed">Αναζήτηση κατά αρχικό σύμφωνο Χανγκούλ</type>
 			<type type="secondary" key="colStrength" draft="contributed">Ταξινόμηση τόνων</type>
 			<type type="shifted" key="colAlternate" draft="contributed">Ταξινόμηση με αγνόηση συμβόλων</type>
-			<type type="standard" key="collation">Τυπική σειρά ταξινόμησης</type>
 			<type type="stroke" key="collation">Σειρά ταξινόμησης κινήσεων</type>
-			<type type="taml" key="numbers">Ταμιλικά αριθμητικά</type>
-			<type type="tamldec" key="numbers">Ταμιλικά ψηφία</type>
-			<type type="telu" key="numbers">Τελουγκουϊκά ψηφία</type>
+			<type type="taml" key="numbers" draft="contributed">Ταμιλικά αριθμητικά</type>
+			<type type="tamldec" key="numbers" draft="contributed">Ταμιλικά ψηφία</type>
+			<type type="telu" key="numbers" draft="contributed">Τελουγκουϊκά Ψηφία</type>
 			<type type="tertiary" key="colStrength" draft="contributed">Ταξινόμηση τόνων/χαρακτήρων διάκρισης/χαρακτήρων μεγάλου μεγέθους</type>
-			<type type="thai" key="numbers">Ταϊλανδικά ψηφία</type>
-			<type type="tibt" key="numbers">Θιβετανικά ψηφία</type>
+			<type type="thai" key="numbers" draft="contributed">Ταϊλανδικά ψηφία</type>
+			<type type="tibt" key="numbers" draft="contributed">Θιβετανικά ψηφία</type>
 			<type type="traditional" key="collation">Παραδοσιακή σειρά ταξινόμησης</type>
 			<type type="traditional" key="numbers" draft="contributed">Παραδοσιακά αριθμητικά</type>
 			<type type="unihan" key="collation" draft="contributed">Σειρά ταξινόμησης ριζικής αρίθμησης</type>
@@ -1214,16 +1202,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 		<ellipsis type="final">{0}…</ellipsis>
 		<ellipsis type="initial">…{0}</ellipsis>
 		<ellipsis type="medial">{0}…{1}</ellipsis>
-		<ellipsis type="word-final">{0} …</ellipsis>
-		<ellipsis type="word-initial">… {0}</ellipsis>
-		<ellipsis type="word-medial">{0} … {1}</ellipsis>
 		<moreInformation>;</moreInformation>
 	</characters>
 	<delimiters>
 		<quotationStart>«</quotationStart>
 		<quotationEnd>»</quotationEnd>
-		<alternateQuotationStart>&quot;</alternateQuotationStart>
-		<alternateQuotationEnd>&quot;</alternateQuotationEnd>
+		<alternateQuotationStart>“</alternateQuotationStart>
+		<alternateQuotationEnd>”</alternateQuotationEnd>
 	</delimiters>
 	<dates>
 		<calendars>
@@ -1302,7 +1287,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<dateFormatItem id="MMMMd">d MMMM</dateFormatItem>
 						<dateFormatItem id="MMMMEd">E, d MMMM</dateFormatItem>
 						<dateFormatItem id="ms">mm:ss</dateFormatItem>
-						<dateFormatItem id="y">y</dateFormatItem>
+						<dateFormatItem id="y">y G</dateFormatItem>
 						<dateFormatItem id="yyyy">y G</dateFormatItem>
 						<dateFormatItem id="yyyyM">M/y G</dateFormatItem>
 						<dateFormatItem id="yyyyMd">d/M/y G</dateFormatItem>
@@ -1392,10 +1377,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMM">
 							<greatestDifference id="M">LLL-LLL y</greatestDifference>
-							<greatestDifference id="y">LLL y - LLL y G</greatestDifference>
+							<greatestDifference id="y" draft="contributed">LLL y - LLL y G</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMd">
-							<greatestDifference id="d">dd-dd MMM y G</greatestDifference>
+							<greatestDifference id="d" draft="contributed">dd-dd MMM y G</greatestDifference>
 							<greatestDifference id="M">dd MMM - dd MMM y G</greatestDifference>
 							<greatestDifference id="y">dd MMM y - dd MMM y G</greatestDifference>
 						</intervalFormatItem>
@@ -1406,7 +1391,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMM">
 							<greatestDifference id="M">LLLL-LLLL y G</greatestDifference>
-							<greatestDifference id="y">LLLL y - LLLL y G</greatestDifference>
+							<greatestDifference id="y" draft="contributed">LLLL y - LLLL y G</greatestDifference>
 						</intervalFormatItem>
 					</intervalFormats>
 				</dateTimeFormats>
@@ -1419,7 +1404,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="2">Φεβ</month>
 							<month type="3">Μαρ</month>
 							<month type="4">Απρ</month>
-							<month type="5">Μαΐ</month>
+							<month type="5">Μαϊ</month>
 							<month type="6">Ιουν</month>
 							<month type="7">Ιουλ</month>
 							<month type="8">Αυγ</month>
@@ -1429,18 +1414,18 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<month type="12">Δεκ</month>
 						</monthWidth>
 						<monthWidth type="narrow">
-							<month type="1">Ι</month>
-							<month type="2">Φ</month>
-							<month type="3">Μ</month>
-							<month type="4">Α</month>
-							<month type="5">Μ</month>
-							<month type="6">Ι</month>
-							<month type="7">Ι</month>
-							<month type="8">Α</month>
-							<month type="9">Σ</month>
-							<month type="10">Ο</month>
-							<month type="11">Ν</month>
-							<month type="12">Δ</month>
+							<month type="1" draft="contributed">Ι</month>
+							<month type="2" draft="contributed">Φ</month>
+							<month type="3" draft="contributed">Μ</month>
+							<month type="4" draft="contributed">Α</month>
+							<month type="5" draft="contributed">Μ</month>
+							<month type="6" draft="contributed">Ι</month>
+							<month type="7" draft="contributed">Ι</month>
+							<month type="8" draft="contributed">Α</month>
+							<month type="9" draft="contributed">Σ</month>
+							<month type="10" draft="contributed">Ο</month>
+							<month type="11" draft="contributed">Ν</month>
+							<month type="12" draft="contributed">Δ</month>
 						</monthWidth>
 						<monthWidth type="wide">
 							<month type="1">Ιανουαρίου</month>
@@ -1459,18 +1444,18 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</monthContext>
 					<monthContext type="stand-alone">
 						<monthWidth type="abbreviated">
-							<month type="1">Ιαν</month>
-							<month type="2">Φεβ</month>
-							<month type="3">Μάρ</month>
-							<month type="4">Απρ</month>
-							<month type="5">Μάι</month>
-							<month type="6">Ιούν</month>
-							<month type="7">Ιούλ</month>
-							<month type="8">Αύγ</month>
-							<month type="9">Σεπ</month>
-							<month type="10">Οκτ</month>
-							<month type="11">Νοέ</month>
-							<month type="12">Δεκ</month>
+							<month type="1" draft="contributed">Ιαν</month>
+							<month type="2" draft="contributed">Φεβ</month>
+							<month type="3" draft="contributed">Μάρ</month>
+							<month type="4" draft="contributed">Απρ</month>
+							<month type="5" draft="contributed">Μάι</month>
+							<month type="6" draft="contributed">Ιούν</month>
+							<month type="7" draft="contributed">Ιούλ</month>
+							<month type="8" draft="contributed">Αύγ</month>
+							<month type="9" draft="contributed">Σεπ</month>
+							<month type="10" draft="contributed">Οκτ</month>
+							<month type="11" draft="contributed">Νοέ</month>
+							<month type="12" draft="contributed">Δεκ</month>
 						</monthWidth>
 						<monthWidth type="narrow">
 							<month type="1">Ι</month>
@@ -1514,22 +1499,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<day type="sat">Σάβ</day>
 						</dayWidth>
 						<dayWidth type="narrow">
-							<day type="sun">Κ</day>
-							<day type="mon">Δ</day>
-							<day type="tue">Τ</day>
-							<day type="wed">Τ</day>
-							<day type="thu">Π</day>
-							<day type="fri">Π</day>
-							<day type="sat">Σ</day>
+							<day type="sun" draft="contributed">Κ</day>
+							<day type="mon" draft="contributed">Δ</day>
+							<day type="tue" draft="contributed">Τ</day>
+							<day type="wed" draft="contributed">Τ</day>
+							<day type="thu" draft="contributed">Π</day>
+							<day type="fri" draft="contributed">Π</day>
+							<day type="sat" draft="contributed">Σ</day>
 						</dayWidth>
 						<dayWidth type="short">
-							<day type="sun">Κυ</day>
-							<day type="mon">Δε</day>
-							<day type="tue">Τρ</day>
-							<day type="wed">Τε</day>
-							<day type="thu">Πέ</day>
-							<day type="fri">Πα</day>
-							<day type="sat">Σά</day>
+							<day type="sun" draft="contributed">Κυ</day>
+							<day type="mon" draft="contributed">Δε</day>
+							<day type="tue" draft="contributed">Τρ</day>
+							<day type="wed" draft="contributed">Τε</day>
+							<day type="thu" draft="contributed">Πε</day>
+							<day type="fri" draft="contributed">Πα</day>
+							<day type="sat" draft="contributed">Σα</day>
 						</dayWidth>
 						<dayWidth type="wide">
 							<day type="sun">Κυριακή</day>
@@ -1543,13 +1528,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</dayContext>
 					<dayContext type="stand-alone">
 						<dayWidth type="abbreviated">
-							<day type="sun">Κυρ</day>
-							<day type="mon">Δευ</day>
-							<day type="tue">Τρί</day>
-							<day type="wed">Τετ</day>
-							<day type="thu">Πέμ</day>
-							<day type="fri">Παρ</day>
-							<day type="sat">Σάβ</day>
+							<day type="sun" draft="contributed">Κυρ</day>
+							<day type="mon" draft="contributed">Δευ</day>
+							<day type="tue" draft="contributed">Τρί</day>
+							<day type="wed" draft="contributed">Τετ</day>
+							<day type="thu" draft="contributed">Πέμ</day>
+							<day type="fri" draft="contributed">Παρ</day>
+							<day type="sat" draft="contributed">Σάβ</day>
 						</dayWidth>
 						<dayWidth type="narrow">
 							<day type="sun">Κ</day>
@@ -1561,22 +1546,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 							<day type="sat">Σ</day>
 						</dayWidth>
 						<dayWidth type="short">
-							<day type="sun">Κυ</day>
-							<day type="mon">Δε</day>
-							<day type="tue">Τρ</day>
-							<day type="wed">Τε</day>
-							<day type="thu">Πέ</day>
-							<day type="fri">Πα</day>
-							<day type="sat">Σά</day>
+							<day type="sun" draft="contributed">Κυ</day>
+							<day type="mon" draft="contributed">Δε</day>
+							<day type="tue" draft="contributed">Τρ</day>
+							<day type="wed" draft="contributed">Τε</day>
+							<day type="thu" draft="contributed">Πε</day>
+							<day type="fri" draft="contributed">Πα</day>
+							<day type="sat" draft="contributed">Σα</day>
 						</dayWidth>
 						<dayWidth type="wide">
-							<day type="sun">Κυριακή</day>
-							<day type="mon">Δευτέρα</day>
-							<day type="tue">Τρίτη</day>
-							<day type="wed">Τετάρτη</day>
-							<day type="thu">Πέμπτη</day>
-							<day type="fri">Παρασκευή</day>
-							<day type="sat">Σάββατο</day>
+							<day type="sun" draft="contributed">Κυριακή</day>
+							<day type="mon" draft="contributed">Δευτέρα</day>
+							<day type="tue" draft="contributed">Τρίτη</day>
+							<day type="wed" draft="contributed">Τετάρτη</day>
+							<day type="thu" draft="contributed">Πέμπτη</day>
+							<day type="fri" draft="contributed">Παρασκευή</day>
+							<day type="sat" draft="contributed">Σάββατο</day>
 						</dayWidth>
 					</dayContext>
 				</days>
@@ -1603,22 +1588,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 					</quarterContext>
 					<quarterContext type="stand-alone">
 						<quarterWidth type="abbreviated">
-							<quarter type="1">Τ1</quarter>
-							<quarter type="2">Τ2</quarter>
-							<quarter type="3">Τ3</quarter>
-							<quarter type="4">Τ4</quarter>
+							<quarter type="1" draft="contributed">Τ1</quarter>
+							<quarter type="2" draft="contributed">Τ2</quarter>
+							<quarter type="3" draft="contributed">Τ3</quarter>
+							<quarter type="4" draft="contributed">Τ4</quarter>
 						</quarterWidth>
 						<quarterWidth type="narrow">
-							<quarter type="1">1</quarter>
-							<quarter type="2">2</quarter>
-							<quarter type="3">3</quarter>
-							<quarter type="4">4</quarter>
+							<quarter type="1" draft="contributed">1</quarter>
+							<quarter type="2" draft="contributed">2</quarter>
+							<quarter type="3" draft="contributed">3</quarter>
+							<quarter type="4" draft="contributed">4</quarter>
 						</quarterWidth>
 						<quarterWidth type="wide">
-							<quarter type="1">1ο τρίμηνο</quarter>
-							<quarter type="2">2ο τρίμηνο</quarter>
-							<quarter type="3">3ο τρίμηνο</quarter>
-							<quarter type="4">4ο τρίμηνο</quarter>
+							<quarter type="1" draft="contributed">1ο τρίμηνο</quarter>
+							<quarter type="2" draft="contributed">2ο τρίμηνο</quarter>
+							<quarter type="3" draft="contributed">3ο τρίμηνο</quarter>
+							<quarter type="4" draft="contributed">4ο τρίμηνο</quarter>
 						</quarterWidth>
 					</quarterContext>
 				</quarters>
@@ -1633,9 +1618,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<eras>
 					<eraAbbr>
 						<era type="0">π.Χ.</era>
-						<era type="0" alt="variant">π.Κ.Χ.</era>
 						<era type="1">μ.Χ.</era>
-						<era type="1" alt="variant">ΚΧ</era>
 					</eraAbbr>
 				</eras>
 				<dateFormats>
@@ -1706,10 +1689,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 					<availableFormats>
 						<dateFormatItem id="d">d</dateFormatItem>
 						<dateFormatItem id="Ed">E d</dateFormatItem>
-						<dateFormatItem id="Ehm">E h:mm a</dateFormatItem>
-						<dateFormatItem id="EHm">E HH:mm</dateFormatItem>
-						<dateFormatItem id="Ehms">E h:mm:ss a</dateFormatItem>
-						<dateFormatItem id="EHms">E HH:mm:ss</dateFormatItem>
 						<dateFormatItem id="Gy">y G</dateFormatItem>
 						<dateFormatItem id="GyMMM">LLL y G</dateFormatItem>
 						<dateFormatItem id="GyMMMd">d MMM y G</dateFormatItem>
@@ -1742,9 +1721,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 						<dateFormatItem id="yQQQ">y QQQ</dateFormatItem>
 						<dateFormatItem id="yQQQQ">y QQQQ</dateFormatItem>
 					</availableFormats>
-					<appendItems>
-						<appendItem request="Timezone" draft="contributed">{0} {1}</appendItem>
-					</appendItems>
 					<intervalFormats>
 						<intervalFormatFallback>{0} - {1}</intervalFormatFallback>
 						<intervalFormatItem id="d">
@@ -1823,21 +1799,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMM">
 							<greatestDifference id="M">LLL-LLL y</greatestDifference>
-							<greatestDifference id="y">MMM y - MMM y</greatestDifference>
+							<greatestDifference id="y" draft="contributed">LLL y - LLL y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMd">
-							<greatestDifference id="d">dd-dd MMM y</greatestDifference>
+							<greatestDifference id="d" draft="contributed">dd-dd MMM y</greatestDifference>
 							<greatestDifference id="M">dd MMM - dd MMM y</greatestDifference>
 							<greatestDifference id="y">dd MMM y - dd MMM y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMEd">
-							<greatestDifference id="d">E, dd MMM - E, dd MMM y</greatestDifference>
+							<greatestDifference id="d">E, dd - E, dd MMM y</greatestDifference>
 							<greatestDifference id="M">E, dd MMM - E, dd MMM y</greatestDifference>
 							<greatestDifference id="y">E, dd MMM y - E, dd MMM y</greatestDifference>
 						</intervalFormatItem>
 						<intervalFormatItem id="yMMMM">
 							<greatestDifference id="M">LLLL-LLLL y</greatestDifference>
-							<greatestDifference id="y">LLLL y - LLLL y</greatestDifference>
+							<greatestDifference id="y" draft="contributed">LLLL y - LLLL y</greatestDifference>
 						</intervalFormatItem>
 					</intervalFormats>
 				</dateTimeFormats>
@@ -1907,67 +1883,32 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</field>
 			<field type="year">
 				<displayName>Έτος</displayName>
-				<relative type="-1">προηγούμενο έτος</relative>
-				<relative type="0">φέτος</relative>
-				<relative type="1">επόμενο έτος</relative>
+				<relative type="-1">Προηγούμενο έτος</relative>
+				<relative type="0">Φέτος</relative>
+				<relative type="1">Επόμενο έτος</relative>
 			</field>
 			<field type="month">
 				<displayName>Μήνας</displayName>
-				<relative type="-1">προηγούμενος μήνας</relative>
-				<relative type="0">τρέχων μήνας</relative>
-				<relative type="1">επόμενος μήνας</relative>
+				<relative type="-1">Προηγούμενος μήνας</relative>
+				<relative type="0">Τρέχων μήνας</relative>
+				<relative type="1">Επόμενος μήνας</relative>
 			</field>
 			<field type="week">
 				<displayName>Εβδομάδα</displayName>
-				<relative type="-1">προηγούμενη εβδομάδα</relative>
-				<relative type="0">αυτήν την εβδομάδα</relative>
-				<relative type="1">επόμενη εβδομάδα</relative>
+				<relative type="-1">Προηγούμενη εβδομάδα</relative>
+				<relative type="0">Αυτήν την εβδομάδα</relative>
+				<relative type="1">Επόμενη εβδομάδα</relative>
 			</field>
 			<field type="day">
 				<displayName>Ημέρα</displayName>
-				<relative type="-2">προχθές</relative>
-				<relative type="-1">χθες</relative>
-				<relative type="0">σήμερα</relative>
-				<relative type="1">αύριο</relative>
-				<relative type="2">μεθαύριο</relative>
+				<relative type="-2">Προχτές</relative>
+				<relative type="-1">Χτες</relative>
+				<relative type="0">Σήμερα</relative>
+				<relative type="1">Αύριο</relative>
+				<relative type="2">Μεθαύριο</relative>
 			</field>
 			<field type="weekday">
 				<displayName>Ημέρα εβδομάδας</displayName>
-			</field>
-			<field type="sun">
-				<relative type="-1">προηγούμενη Κυριακή</relative>
-				<relative type="0">αυτήν την Κυριακή</relative>
-				<relative type="1">επόμενη Κυριακή</relative>
-			</field>
-			<field type="mon">
-				<relative type="-1">προηγούμενη Δευτέρα</relative>
-				<relative type="0">αυτήν τη Δευτέρα</relative>
-				<relative type="1">επόμενη Δευτέρα</relative>
-			</field>
-			<field type="tue">
-				<relative type="-1">προηγούμενη Τρίτη</relative>
-				<relative type="0">αυτήν την Τρίτη</relative>
-				<relative type="1">επόμενη Τρίτη</relative>
-			</field>
-			<field type="wed">
-				<relative type="-1">προηγούμενη Τετάρτη</relative>
-				<relative type="0">αυτήν την Τετάρτη</relative>
-				<relative type="1">επόμενη Τετάρτη</relative>
-			</field>
-			<field type="thu">
-				<relative type="-1">επόμενη Πέμπτη</relative>
-				<relative type="0">αυτήν την Πέμπτη</relative>
-				<relative type="1">επόμενη Πέμπτη</relative>
-			</field>
-			<field type="fri">
-				<relative type="-1">προηγούμενη Παρασκευή</relative>
-				<relative type="0">αυτήν την Παρασκευή</relative>
-				<relative type="1">επόμενη Παρασκευή</relative>
-			</field>
-			<field type="sat">
-				<relative type="-1">προηγούμενο Σάββατο</relative>
-				<relative type="0">αυτό το Σάββατο</relative>
-				<relative type="1">επόμενο Σάββατο</relative>
 			</field>
 			<field type="dayperiod">
 				<displayName>π.μ./μ.μ.</displayName>
@@ -1989,10 +1930,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<hourFormat>+HH:mm;-HH:mm</hourFormat>
 			<gmtFormat>GMT{0}</gmtFormat>
 			<gmtZeroFormat>GMT</gmtZeroFormat>
-			<regionFormat>Ώρα ({0})</regionFormat>
-			<regionFormat type="daylight">Θερινή ώρα ({0})</regionFormat>
-			<regionFormat type="standard">Χειμερινή ώρα ({0})</regionFormat>
-			<fallbackFormat>[{1} ({0})]</fallbackFormat>
+			<regionFormat>Ώρα {0}</regionFormat>
+			<fallbackFormat>{1} ({0})</fallbackFormat>
 			<zone type="Etc/Unknown">
 				<exemplarCity>Άγνωστη πόλη</exemplarCity>
 			</zone>
@@ -2000,16 +1939,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Ανδόρα</exemplarCity>
 			</zone>
 			<zone type="Asia/Dubai">
-				<exemplarCity>Ντουμπάι</exemplarCity>
+				<exemplarCity draft="contributed">Ντουμπάι</exemplarCity>
 			</zone>
 			<zone type="Asia/Kabul">
-				<exemplarCity>Καμπούλ</exemplarCity>
+				<exemplarCity draft="contributed">Καμπούλ</exemplarCity>
 			</zone>
 			<zone type="America/Antigua">
-				<exemplarCity>Αντίγκουα</exemplarCity>
+				<exemplarCity draft="contributed">Αντίγκουα</exemplarCity>
 			</zone>
 			<zone type="America/Anguilla">
-				<exemplarCity>Ανγκουίλα</exemplarCity>
+				<exemplarCity>Ανγκουίλλα</exemplarCity>
 			</zone>
 			<zone type="Europe/Tirane">
 				<exemplarCity>Τίρανα</exemplarCity>
@@ -2018,7 +1957,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Γερεβάν</exemplarCity>
 			</zone>
 			<zone type="Africa/Luanda">
-				<exemplarCity>Λουάντα</exemplarCity>
+				<exemplarCity draft="contributed">Λουάντα</exemplarCity>
 			</zone>
 			<zone type="Antarctica/Rothera">
 				<exemplarCity>Ροθέρα</exemplarCity>
@@ -2046,9 +1985,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</zone>
 			<zone type="Antarctica/DumontDUrville">
 				<exemplarCity>Ντιμόντ Ντερβίλ</exemplarCity>
-			</zone>
-			<zone type="Antarctica/Macquarie">
-				<exemplarCity>Μακουάρι</exemplarCity>
 			</zone>
 			<zone type="Antarctica/McMurdo">
 				<exemplarCity>Μακμέρντο</exemplarCity>
@@ -2126,7 +2062,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Σίδνεϊ</exemplarCity>
 			</zone>
 			<zone type="Australia/Brisbane">
-				<exemplarCity>Μπρισμπέιν</exemplarCity>
+				<exemplarCity>Μπρίσμπεϊν</exemplarCity>
 			</zone>
 			<zone type="Australia/Lord_Howe">
 				<exemplarCity>Λορντ Χάουι</exemplarCity>
@@ -2135,52 +2071,49 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Αρούμπα</exemplarCity>
 			</zone>
 			<zone type="Europe/Mariehamn">
-				<exemplarCity>Μαριέχαμν</exemplarCity>
+				<exemplarCity draft="contributed">Μαριέχαμν</exemplarCity>
 			</zone>
 			<zone type="Asia/Baku">
-				<exemplarCity>Μπακού</exemplarCity>
+				<exemplarCity draft="contributed">Μπακού</exemplarCity>
 			</zone>
 			<zone type="Europe/Sarajevo">
-				<exemplarCity>Σαράγεβο</exemplarCity>
+				<exemplarCity draft="contributed">Σαράγεβο</exemplarCity>
 			</zone>
 			<zone type="America/Barbados">
-				<exemplarCity>Μπαρμπάντος</exemplarCity>
+				<exemplarCity>Μπαρμπέιντος</exemplarCity>
 			</zone>
 			<zone type="Asia/Dhaka">
-				<exemplarCity>Ντάκα</exemplarCity>
+				<exemplarCity draft="contributed">Ντάκα</exemplarCity>
 			</zone>
 			<zone type="Europe/Brussels">
 				<exemplarCity>Βρυξέλλες</exemplarCity>
 			</zone>
 			<zone type="Africa/Ouagadougou">
-				<exemplarCity>Ουαγκαντούγκου</exemplarCity>
+				<exemplarCity draft="contributed">Ουαγκαντούγκου</exemplarCity>
 			</zone>
 			<zone type="Europe/Sofia">
 				<exemplarCity>Σόφια</exemplarCity>
 			</zone>
 			<zone type="Asia/Bahrain">
-				<exemplarCity>Μπαχρέιν</exemplarCity>
+				<exemplarCity draft="contributed">Μπαχρέιν</exemplarCity>
 			</zone>
 			<zone type="Africa/Bujumbura">
-				<exemplarCity>Μπουζουμπούρα</exemplarCity>
+				<exemplarCity draft="contributed">Μπουζουμπούρα</exemplarCity>
 			</zone>
 			<zone type="Africa/Porto-Novo">
-				<exemplarCity>Πόρτο-Νόβο</exemplarCity>
+				<exemplarCity draft="contributed">Πόρτο-Νόβο</exemplarCity>
 			</zone>
 			<zone type="America/St_Barthelemy">
-				<exemplarCity>Άγιος Βαρθολομαίος</exemplarCity>
+				<exemplarCity draft="contributed">Άγιος Βαρθολομαίος</exemplarCity>
 			</zone>
 			<zone type="Atlantic/Bermuda">
 				<exemplarCity>Βερμούδα</exemplarCity>
 			</zone>
 			<zone type="Asia/Brunei">
-				<exemplarCity>Μπρουνέι</exemplarCity>
+				<exemplarCity draft="contributed">Μπρουνέι</exemplarCity>
 			</zone>
 			<zone type="America/La_Paz">
-				<exemplarCity>Λα Παζ</exemplarCity>
-			</zone>
-			<zone type="America/Kralendijk">
-				<exemplarCity>Κραλέντικ</exemplarCity>
+				<exemplarCity draft="contributed">Λα Παζ</exemplarCity>
 			</zone>
 			<zone type="America/Eirunepe">
 				<exemplarCity>Εϊρουνέπε</exemplarCity>
@@ -2231,13 +2164,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Νορόνχα</exemplarCity>
 			</zone>
 			<zone type="America/Nassau">
-				<exemplarCity>Νασάου</exemplarCity>
+				<exemplarCity draft="contributed">Νασάου</exemplarCity>
 			</zone>
 			<zone type="Asia/Thimphu">
 				<exemplarCity>Τρίμφου</exemplarCity>
 			</zone>
 			<zone type="Africa/Gaborone">
-				<exemplarCity>Γκαμπορόνε</exemplarCity>
+				<exemplarCity draft="contributed">Γκαμπορόνε</exemplarCity>
 			</zone>
 			<zone type="Europe/Minsk">
 				<exemplarCity>Μινσκ</exemplarCity>
@@ -2260,9 +2193,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Dawson_Creek">
 				<exemplarCity>Ντόσον Κρικ</exemplarCity>
 			</zone>
-			<zone type="America/Creston">
-				<exemplarCity>Κρέστον</exemplarCity>
-			</zone>
 			<zone type="America/Yellowknife">
 				<exemplarCity>Γέλοουναϊφ</exemplarCity>
 			</zone>
@@ -2279,7 +2209,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Ρετζίνα</exemplarCity>
 			</zone>
 			<zone type="America/Winnipeg">
-				<exemplarCity>Γουίνιπεγκ</exemplarCity>
+				<exemplarCity>Γούνιπεγκ</exemplarCity>
 			</zone>
 			<zone type="America/Resolute">
 				<exemplarCity>Ρέσολουτ</exemplarCity>
@@ -2339,7 +2269,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Λουμπουμπάσι</exemplarCity>
 			</zone>
 			<zone type="Africa/Bangui">
-				<exemplarCity>Μπανγκί</exemplarCity>
+				<exemplarCity draft="contributed">Μπανγκί</exemplarCity>
 			</zone>
 			<zone type="Africa/Brazzaville">
 				<exemplarCity>Μπράζαβιλ</exemplarCity>
@@ -2360,7 +2290,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Σαντιάγκο</exemplarCity>
 			</zone>
 			<zone type="Africa/Douala">
-				<exemplarCity>Ντουάλα</exemplarCity>
+				<exemplarCity draft="contributed">Ντουάλα</exemplarCity>
 			</zone>
 			<zone type="Asia/Kashgar">
 				<exemplarCity>Κάσγκαρ</exemplarCity>
@@ -2387,22 +2317,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Αβάνα</exemplarCity>
 			</zone>
 			<zone type="Atlantic/Cape_Verde">
-				<exemplarCity>Πράσινο Ακρωτήριο</exemplarCity>
+				<exemplarCity draft="contributed">Πράσινο Ακρωτήριο</exemplarCity>
 			</zone>
 			<zone type="America/Curacao">
 				<exemplarCity>Κουρασάο</exemplarCity>
 			</zone>
 			<zone type="Indian/Christmas">
-				<exemplarCity>Χριστούγεννα</exemplarCity>
+				<exemplarCity draft="contributed">Χριστούγεννα</exemplarCity>
 			</zone>
 			<zone type="Asia/Nicosia">
 				<exemplarCity>Λευκωσία</exemplarCity>
 			</zone>
 			<zone type="Europe/Prague">
-				<exemplarCity>Πράγα</exemplarCity>
-			</zone>
-			<zone type="Europe/Busingen">
-				<exemplarCity>Μπίσινγκεν</exemplarCity>
+				<exemplarCity draft="contributed">Πράγα</exemplarCity>
 			</zone>
 			<zone type="Europe/Berlin">
 				<exemplarCity>Βερολίνο</exemplarCity>
@@ -2417,10 +2344,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Δομινίκα</exemplarCity>
 			</zone>
 			<zone type="America/Santo_Domingo">
-				<exemplarCity>Άγιος Δομίνικος</exemplarCity>
+				<exemplarCity draft="contributed">Άγιος Δομίνικος</exemplarCity>
 			</zone>
 			<zone type="Africa/Algiers">
-				<exemplarCity>Αλγέρι</exemplarCity>
+				<exemplarCity draft="contributed">Αλγέρι</exemplarCity>
 			</zone>
 			<zone type="Pacific/Galapagos">
 				<exemplarCity>Γκαλαπάγκος</exemplarCity>
@@ -2432,13 +2359,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Ταλίν</exemplarCity>
 			</zone>
 			<zone type="Africa/Cairo">
-				<exemplarCity>Κάιρο</exemplarCity>
+				<exemplarCity draft="contributed">Κάιρο</exemplarCity>
 			</zone>
 			<zone type="Africa/El_Aaiun">
-				<exemplarCity>Ελ Αγιούν</exemplarCity>
+				<exemplarCity draft="contributed">Ελ Αγιούν</exemplarCity>
 			</zone>
 			<zone type="Africa/Asmera">
-				<exemplarCity>Ασμάρα</exemplarCity>
+				<exemplarCity draft="contributed">Ασμάρα</exemplarCity>
 			</zone>
 			<zone type="Atlantic/Canary">
 				<exemplarCity>Κανάρια</exemplarCity>
@@ -2450,7 +2377,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Μαδρίτη</exemplarCity>
 			</zone>
 			<zone type="Africa/Addis_Ababa">
-				<exemplarCity>Αντίς Αμπέμπα</exemplarCity>
+				<exemplarCity draft="contributed">Αντίς Αμπέμπα</exemplarCity>
 			</zone>
 			<zone type="Europe/Helsinki">
 				<exemplarCity>Ελσίνκι</exemplarCity>
@@ -2477,11 +2404,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Παρίσι</exemplarCity>
 			</zone>
 			<zone type="Africa/Libreville">
-				<exemplarCity>Λιμπρεβίλ</exemplarCity>
+				<exemplarCity draft="contributed">Λιμπρεβίλ</exemplarCity>
 			</zone>
 			<zone type="Europe/London">
 				<long>
-					<daylight>Θερινή ώρα Βρετανίας</daylight>
+					<daylight draft="contributed">Θερινή ώρα Βρετανίας</daylight>
 				</long>
 				<exemplarCity>Λονδίνο</exemplarCity>
 			</zone>
@@ -2489,16 +2416,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Γρενάδα</exemplarCity>
 			</zone>
 			<zone type="Asia/Tbilisi">
-				<exemplarCity>Τιφλίδα</exemplarCity>
+				<exemplarCity>Τμπιλίσι</exemplarCity>
 			</zone>
 			<zone type="America/Cayenne">
 				<exemplarCity>Καγιένε</exemplarCity>
 			</zone>
 			<zone type="Europe/Guernsey">
-				<exemplarCity>Γκέρνσεϊ</exemplarCity>
+				<exemplarCity draft="contributed">Γκέρνσεϊ</exemplarCity>
 			</zone>
 			<zone type="Africa/Accra">
-				<exemplarCity>Άκρα</exemplarCity>
+				<exemplarCity draft="contributed">Άκρα</exemplarCity>
 			</zone>
 			<zone type="Europe/Gibraltar">
 				<exemplarCity>Γιβραλτάρ</exemplarCity>
@@ -2516,16 +2443,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Ντανμαρκσάβν</exemplarCity>
 			</zone>
 			<zone type="Africa/Banjul">
-				<exemplarCity>Μπάνζουλ</exemplarCity>
+				<exemplarCity draft="contributed">Μπάνζουλ</exemplarCity>
 			</zone>
 			<zone type="Africa/Conakry">
-				<exemplarCity>Κόνακρι</exemplarCity>
+				<exemplarCity draft="contributed">Κόνακρι</exemplarCity>
 			</zone>
 			<zone type="America/Guadeloupe">
 				<exemplarCity>Γουαδελούπη</exemplarCity>
 			</zone>
 			<zone type="Africa/Malabo">
-				<exemplarCity>Μαλάμπο</exemplarCity>
+				<exemplarCity draft="contributed">Μαλάμπο</exemplarCity>
 			</zone>
 			<zone type="Europe/Athens">
 				<exemplarCity>Αθήνα</exemplarCity>
@@ -2540,22 +2467,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Γκουάμ</exemplarCity>
 			</zone>
 			<zone type="Africa/Bissau">
-				<exemplarCity>Μπισάου</exemplarCity>
+				<exemplarCity draft="contributed">Μπισάου</exemplarCity>
 			</zone>
 			<zone type="America/Guyana">
 				<exemplarCity>Γουιάνα</exemplarCity>
 			</zone>
 			<zone type="Asia/Hong_Kong">
-				<exemplarCity>Χονγκ Κονγκ</exemplarCity>
+				<exemplarCity draft="contributed">Χονγκ Κονγκ</exemplarCity>
 			</zone>
 			<zone type="America/Tegucigalpa">
-				<exemplarCity>Τεγκουσιγκάλπα</exemplarCity>
+				<exemplarCity draft="contributed">Τεγκουσιγκάλπα</exemplarCity>
 			</zone>
 			<zone type="Europe/Zagreb">
-				<exemplarCity>Ζάγκρεμπ</exemplarCity>
+				<exemplarCity draft="contributed">Ζάγκρεμπ</exemplarCity>
 			</zone>
 			<zone type="America/Port-au-Prince">
-				<exemplarCity>Πορτ-ο-Πρενς</exemplarCity>
+				<exemplarCity draft="contributed">Πορτ-ο-Πρενς</exemplarCity>
 			</zone>
 			<zone type="Europe/Budapest">
 				<exemplarCity>Βουδαπέστη</exemplarCity>
@@ -2574,24 +2501,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</zone>
 			<zone type="Europe/Dublin">
 				<long>
-					<daylight>Θερινή ώρα Ιρλανδίας</daylight>
+					<daylight draft="contributed">Θερινή ώρα Ιρλανδίας</daylight>
 				</long>
 				<exemplarCity>Δουβλίνο</exemplarCity>
 			</zone>
 			<zone type="Asia/Jerusalem">
-				<exemplarCity>Ιερουσαλήμ</exemplarCity>
+				<exemplarCity draft="contributed">Ιερουσαλήμ</exemplarCity>
 			</zone>
 			<zone type="Europe/Isle_of_Man">
-				<exemplarCity>Νήσος του Μαν</exemplarCity>
+				<exemplarCity draft="contributed">Νήσος του Μαν</exemplarCity>
 			</zone>
 			<zone type="Asia/Calcutta">
-				<exemplarCity>Καλκούτα</exemplarCity>
+				<exemplarCity draft="contributed">Καλκούτα</exemplarCity>
 			</zone>
 			<zone type="Indian/Chagos">
 				<exemplarCity>Τσάγκος</exemplarCity>
 			</zone>
 			<zone type="Asia/Baghdad">
-				<exemplarCity>Βαγδάτη</exemplarCity>
+				<exemplarCity draft="contributed">Βαγδάτη</exemplarCity>
 			</zone>
 			<zone type="Asia/Tehran">
 				<exemplarCity>Τεχεράνη</exemplarCity>
@@ -2603,25 +2530,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Ρώμη</exemplarCity>
 			</zone>
 			<zone type="Europe/Jersey">
-				<exemplarCity>Τζέρσεϊ</exemplarCity>
+				<exemplarCity draft="contributed">Τζέρσεϊ</exemplarCity>
 			</zone>
 			<zone type="America/Jamaica">
-				<exemplarCity>Τζαμάικα</exemplarCity>
+				<exemplarCity draft="contributed">Τζαμάικα</exemplarCity>
 			</zone>
 			<zone type="Asia/Amman">
-				<exemplarCity>Αμμάν</exemplarCity>
+				<exemplarCity draft="contributed">Αμμάν</exemplarCity>
 			</zone>
 			<zone type="Asia/Tokyo">
 				<exemplarCity>Τόκυο</exemplarCity>
 			</zone>
 			<zone type="Africa/Nairobi">
-				<exemplarCity>Ναϊρόμπι</exemplarCity>
+				<exemplarCity draft="contributed">Ναϊρόμπι</exemplarCity>
 			</zone>
 			<zone type="Asia/Bishkek">
-				<exemplarCity>Μπισκέκ</exemplarCity>
+				<exemplarCity draft="contributed">Μπισκέκ</exemplarCity>
 			</zone>
 			<zone type="Asia/Phnom_Penh">
-				<exemplarCity>Πνομ Πενχ</exemplarCity>
+				<exemplarCity draft="contributed">Πνομ Πενχ</exemplarCity>
 			</zone>
 			<zone type="Pacific/Enderbury">
 				<exemplarCity>Εντερμπέρυ</exemplarCity>
@@ -2636,19 +2563,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Κομόρο</exemplarCity>
 			</zone>
 			<zone type="America/St_Kitts">
-				<exemplarCity>Άγιος Χριστόφορος (Σαιντ Κιτς)</exemplarCity>
+				<exemplarCity draft="contributed">Άγιος Χριστόφορος (Σαιντ Κιτς)</exemplarCity>
 			</zone>
 			<zone type="Asia/Pyongyang">
-				<exemplarCity>Πιονγκγιάνγκ</exemplarCity>
+				<exemplarCity draft="contributed">Πιονγκ Γιανγκ</exemplarCity>
 			</zone>
 			<zone type="Asia/Seoul">
-				<exemplarCity>Σεούλ</exemplarCity>
+				<exemplarCity draft="contributed">Σεούλ</exemplarCity>
 			</zone>
 			<zone type="Asia/Kuwait">
-				<exemplarCity>Κουβέιτ</exemplarCity>
+				<exemplarCity draft="contributed">Κουβέιτ</exemplarCity>
 			</zone>
 			<zone type="America/Cayman">
-				<exemplarCity>Κέιμαν</exemplarCity>
+				<exemplarCity>Κέυμαν</exemplarCity>
 			</zone>
 			<zone type="Asia/Aqtau">
 				<exemplarCity>Ακτάου</exemplarCity>
@@ -2669,22 +2596,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Βιεντιάνε</exemplarCity>
 			</zone>
 			<zone type="Asia/Beirut">
-				<exemplarCity>Βυρητός</exemplarCity>
+				<exemplarCity draft="contributed">Βυρητός</exemplarCity>
 			</zone>
 			<zone type="America/St_Lucia">
-				<exemplarCity>Αγία Λουκία</exemplarCity>
+				<exemplarCity draft="contributed">Αγία Λουκία</exemplarCity>
 			</zone>
 			<zone type="Europe/Vaduz">
 				<exemplarCity>Βαντούζ</exemplarCity>
 			</zone>
 			<zone type="Asia/Colombo">
-				<exemplarCity>Κολόμπο</exemplarCity>
+				<exemplarCity draft="contributed">Κολόμπο</exemplarCity>
 			</zone>
 			<zone type="Africa/Monrovia">
-				<exemplarCity>Μονρόβια</exemplarCity>
+				<exemplarCity draft="contributed">Μονρόβια</exemplarCity>
 			</zone>
 			<zone type="Africa/Maseru">
-				<exemplarCity>Μασέρου</exemplarCity>
+				<exemplarCity draft="contributed">Μασέρου</exemplarCity>
 			</zone>
 			<zone type="Europe/Vilnius">
 				<exemplarCity>Βίλνιους</exemplarCity>
@@ -2696,22 +2623,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Ρίγα</exemplarCity>
 			</zone>
 			<zone type="Africa/Tripoli">
-				<exemplarCity>Τρίπολη</exemplarCity>
+				<exemplarCity draft="contributed">Τρίπολη</exemplarCity>
 			</zone>
 			<zone type="Africa/Casablanca">
-				<exemplarCity>Καζαμπλάνκα</exemplarCity>
+				<exemplarCity draft="contributed">Καζαμπλάνκα</exemplarCity>
 			</zone>
 			<zone type="Europe/Monaco">
 				<exemplarCity>Μονακό</exemplarCity>
 			</zone>
 			<zone type="Europe/Chisinau">
-				<exemplarCity>Κισινάου</exemplarCity>
+				<exemplarCity>Τσισινάου</exemplarCity>
 			</zone>
 			<zone type="Europe/Podgorica">
-				<exemplarCity>Ποντγκόριτσα</exemplarCity>
+				<exemplarCity draft="contributed">Ποντγκόριτσα</exemplarCity>
 			</zone>
 			<zone type="America/Marigot">
-				<exemplarCity>Μάριγκοτ</exemplarCity>
+				<exemplarCity draft="contributed">Μάριγκοτ</exemplarCity>
 			</zone>
 			<zone type="Indian/Antananarivo">
 				<exemplarCity>Ανταναναρίβο</exemplarCity>
@@ -2723,13 +2650,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Μαχούρο</exemplarCity>
 			</zone>
 			<zone type="Europe/Skopje">
-				<exemplarCity>Σκόπια</exemplarCity>
+				<exemplarCity draft="contributed">Σκόπια</exemplarCity>
 			</zone>
 			<zone type="Africa/Bamako">
 				<exemplarCity>Μπαμάκο</exemplarCity>
 			</zone>
 			<zone type="Asia/Rangoon">
-				<exemplarCity>Ρανγκούν</exemplarCity>
+				<exemplarCity draft="contributed">Ρανγκούν</exemplarCity>
 			</zone>
 			<zone type="Asia/Hovd">
 				<exemplarCity>Χοβντ</exemplarCity>
@@ -2741,19 +2668,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Χόιμπαλσαν</exemplarCity>
 			</zone>
 			<zone type="Asia/Macau">
-				<exemplarCity>Μακάο</exemplarCity>
+				<exemplarCity draft="contributed">Μακάο</exemplarCity>
 			</zone>
 			<zone type="Pacific/Saipan">
 				<exemplarCity>Σάιπαν</exemplarCity>
 			</zone>
 			<zone type="America/Martinique">
-				<exemplarCity>Μαρτινίκα</exemplarCity>
+				<exemplarCity draft="contributed">Μαρτινίκα</exemplarCity>
 			</zone>
 			<zone type="Africa/Nouakchott">
-				<exemplarCity>Νουακσότ</exemplarCity>
+				<exemplarCity draft="contributed">Νουακσότ</exemplarCity>
 			</zone>
 			<zone type="America/Montserrat">
-				<exemplarCity>Μονσεράτ</exemplarCity>
+				<exemplarCity draft="contributed">Μονσεράτ</exemplarCity>
 			</zone>
 			<zone type="Europe/Malta">
 				<exemplarCity>Μάλτα</exemplarCity>
@@ -2765,13 +2692,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Μαλδίβες</exemplarCity>
 			</zone>
 			<zone type="Africa/Blantyre">
-				<exemplarCity>Μπλαντάιρ</exemplarCity>
+				<exemplarCity draft="contributed">Μπλαντάιρ</exemplarCity>
 			</zone>
 			<zone type="America/Tijuana">
 				<exemplarCity>Τιχουάνα</exemplarCity>
-			</zone>
-			<zone type="America/Santa_Isabel">
-				<exemplarCity>Σάντα Ιζαμπέλ</exemplarCity>
 			</zone>
 			<zone type="America/Hermosillo">
 				<exemplarCity>Ερμοσίγιο</exemplarCity>
@@ -2782,20 +2706,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Chihuahua">
 				<exemplarCity>Τσιουάουα</exemplarCity>
 			</zone>
-			<zone type="America/Bahia_Banderas">
-				<exemplarCity>Μπαχία Ντε Μπαντέρας</exemplarCity>
-			</zone>
-			<zone type="America/Ojinaga">
-				<exemplarCity>Οχινάγκα</exemplarCity>
-			</zone>
 			<zone type="America/Monterrey">
 				<exemplarCity>Μοντερέι</exemplarCity>
 			</zone>
 			<zone type="America/Mexico_City">
 				<exemplarCity>Πόλη του Μεξικού</exemplarCity>
-			</zone>
-			<zone type="America/Matamoros">
-				<exemplarCity>Ματαμόρος</exemplarCity>
 			</zone>
 			<zone type="America/Merida">
 				<exemplarCity>Μέριντα</exemplarCity>
@@ -2810,25 +2725,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Κουτσίνγκ</exemplarCity>
 			</zone>
 			<zone type="Africa/Maputo">
-				<exemplarCity>Μαπούτο</exemplarCity>
+				<exemplarCity draft="contributed">Μαπούτο</exemplarCity>
 			</zone>
 			<zone type="Africa/Windhoek">
-				<exemplarCity>Βίντχουκ</exemplarCity>
+				<exemplarCity draft="contributed">Βίντχουκ</exemplarCity>
 			</zone>
 			<zone type="Pacific/Noumea">
 				<exemplarCity>Νουμέα</exemplarCity>
 			</zone>
 			<zone type="Africa/Niamey">
-				<exemplarCity>Νιαμέι</exemplarCity>
+				<exemplarCity draft="contributed">Νιαμέι</exemplarCity>
 			</zone>
 			<zone type="Pacific/Norfolk">
 				<exemplarCity>Νόρφολκ</exemplarCity>
 			</zone>
 			<zone type="Africa/Lagos">
-				<exemplarCity>Λάγκος</exemplarCity>
+				<exemplarCity draft="contributed">Λάγκος</exemplarCity>
 			</zone>
 			<zone type="America/Managua">
-				<exemplarCity>Μανάγκουα</exemplarCity>
+				<exemplarCity draft="contributed">Μανάγκουα</exemplarCity>
 			</zone>
 			<zone type="Europe/Amsterdam">
 				<exemplarCity>Άμστερνταμ</exemplarCity>
@@ -2837,7 +2752,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Όσλο</exemplarCity>
 			</zone>
 			<zone type="Asia/Katmandu">
-				<exemplarCity>Κατμαντού</exemplarCity>
+				<exemplarCity draft="contributed">Κατμαντού</exemplarCity>
 			</zone>
 			<zone type="Pacific/Nauru">
 				<exemplarCity>Ναούρου</exemplarCity>
@@ -2852,13 +2767,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Όκλαντ</exemplarCity>
 			</zone>
 			<zone type="Asia/Muscat">
-				<exemplarCity>Μασκάτ</exemplarCity>
+				<exemplarCity draft="contributed">Μασκάτ</exemplarCity>
 			</zone>
 			<zone type="America/Panama">
-				<exemplarCity>Παναμάς</exemplarCity>
+				<exemplarCity draft="contributed">Παναμάς</exemplarCity>
 			</zone>
 			<zone type="America/Lima">
-				<exemplarCity>Λίμα</exemplarCity>
+				<exemplarCity draft="contributed">Λίμα</exemplarCity>
 			</zone>
 			<zone type="Pacific/Tahiti">
 				<exemplarCity>Ταϊτή</exemplarCity>
@@ -2873,28 +2788,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Πορτ Μόρεσμπυ</exemplarCity>
 			</zone>
 			<zone type="Asia/Manila">
-				<exemplarCity>Μανίλα</exemplarCity>
+				<exemplarCity draft="contributed">Μανίλα</exemplarCity>
 			</zone>
 			<zone type="Asia/Karachi">
-				<exemplarCity>Καράτσι</exemplarCity>
+				<exemplarCity draft="contributed">Καράτσι</exemplarCity>
 			</zone>
 			<zone type="Europe/Warsaw">
 				<exemplarCity>Βαρσοβία</exemplarCity>
 			</zone>
 			<zone type="America/Miquelon">
-				<exemplarCity>Μικελόν</exemplarCity>
+				<exemplarCity draft="contributed">Μικελόν</exemplarCity>
 			</zone>
 			<zone type="Pacific/Pitcairn">
 				<exemplarCity>Πίτκερν</exemplarCity>
 			</zone>
 			<zone type="America/Puerto_Rico">
-				<exemplarCity>Πουέρτο Ρίκο</exemplarCity>
+				<exemplarCity draft="contributed">Πουέρτο Ρίκο</exemplarCity>
 			</zone>
 			<zone type="Asia/Gaza">
-				<exemplarCity>Γάζα</exemplarCity>
-			</zone>
-			<zone type="Asia/Hebron">
-				<exemplarCity>Χεμπρόν</exemplarCity>
+				<exemplarCity draft="contributed">Γάζα</exemplarCity>
 			</zone>
 			<zone type="Atlantic/Azores">
 				<exemplarCity>Αζόρες</exemplarCity>
@@ -2903,7 +2815,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Μαδέρα</exemplarCity>
 			</zone>
 			<zone type="Europe/Lisbon">
-				<exemplarCity>Λισαβόνα</exemplarCity>
+				<exemplarCity>Λισσαβώνα</exemplarCity>
 			</zone>
 			<zone type="Pacific/Palau">
 				<exemplarCity>Παλάου</exemplarCity>
@@ -2912,7 +2824,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Ασουνσιόν</exemplarCity>
 			</zone>
 			<zone type="Asia/Qatar">
-				<exemplarCity>Κατάρ</exemplarCity>
+				<exemplarCity draft="contributed">Κατάρ</exemplarCity>
 			</zone>
 			<zone type="Indian/Reunion">
 				<exemplarCity>Ρεϊνιόν</exemplarCity>
@@ -2921,10 +2833,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Βουκουρέστι</exemplarCity>
 			</zone>
 			<zone type="Europe/Belgrade">
-				<exemplarCity>Βελιγράδι</exemplarCity>
+				<exemplarCity draft="contributed">Βελιγράδι</exemplarCity>
 			</zone>
 			<zone type="Europe/Kaliningrad">
-				<exemplarCity>Καλίνινγκραντ</exemplarCity>
+				<exemplarCity>Καλλίπολη</exemplarCity>
 			</zone>
 			<zone type="Europe/Moscow">
 				<exemplarCity>Μόσχα</exemplarCity>
@@ -2936,16 +2848,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Σαμάρα</exemplarCity>
 			</zone>
 			<zone type="Asia/Yekaterinburg">
-				<exemplarCity>Αικατερίνμπουργκ</exemplarCity>
+				<exemplarCity>Αικατερινούπολη</exemplarCity>
 			</zone>
 			<zone type="Asia/Omsk">
 				<exemplarCity>Ομσκ</exemplarCity>
 			</zone>
 			<zone type="Asia/Novosibirsk">
 				<exemplarCity>Νοβοσιμπίρσκ</exemplarCity>
-			</zone>
-			<zone type="Asia/Novokuznetsk">
-				<exemplarCity>Νοβοκουζνέτσκ</exemplarCity>
 			</zone>
 			<zone type="Asia/Krasnoyarsk">
 				<exemplarCity>Κρασνογιάρσκ</exemplarCity>
@@ -2959,14 +2868,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="Asia/Vladivostok">
 				<exemplarCity>Βλαδιβοστόκ</exemplarCity>
 			</zone>
-			<zone type="Asia/Khandyga">
-				<exemplarCity>Χαντίγκα</exemplarCity>
-			</zone>
 			<zone type="Asia/Sakhalin">
 				<exemplarCity>Σακαλίνσκ</exemplarCity>
-			</zone>
-			<zone type="Asia/Ust-Nera">
-				<exemplarCity>Ουστ-Νερά</exemplarCity>
 			</zone>
 			<zone type="Asia/Magadan">
 				<exemplarCity>Μαγκαντάν</exemplarCity>
@@ -2978,10 +2881,10 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Αναντίρ</exemplarCity>
 			</zone>
 			<zone type="Africa/Kigali">
-				<exemplarCity>Κιγκάλι</exemplarCity>
+				<exemplarCity draft="contributed">Κιγκάλι</exemplarCity>
 			</zone>
 			<zone type="Asia/Riyadh">
-				<exemplarCity>Ριάντ</exemplarCity>
+				<exemplarCity draft="contributed">Ριάντ</exemplarCity>
 			</zone>
 			<zone type="Pacific/Guadalcanal">
 				<exemplarCity>Γκουανταλκανάλ</exemplarCity>
@@ -2990,7 +2893,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Μάχε</exemplarCity>
 			</zone>
 			<zone type="Africa/Khartoum">
-				<exemplarCity>Χαρτούμ</exemplarCity>
+				<exemplarCity draft="contributed">Χαρτούμ</exemplarCity>
 			</zone>
 			<zone type="Europe/Stockholm">
 				<exemplarCity>Στοκχόλμη</exemplarCity>
@@ -3002,76 +2905,73 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Αγ. Ελένη</exemplarCity>
 			</zone>
 			<zone type="Europe/Ljubljana">
-				<exemplarCity>Λιουμπλιάνα</exemplarCity>
+				<exemplarCity draft="contributed">Λιουμπλιάνα</exemplarCity>
 			</zone>
 			<zone type="Arctic/Longyearbyen">
-				<exemplarCity>Λόνγκιεαρμπιεν</exemplarCity>
+				<exemplarCity draft="contributed">Λόνγκιεαρμπιεν</exemplarCity>
 			</zone>
 			<zone type="Europe/Bratislava">
-				<exemplarCity>Μπρατισλάβα</exemplarCity>
+				<exemplarCity draft="contributed">Μπρατισλάβα</exemplarCity>
 			</zone>
 			<zone type="Africa/Freetown">
-				<exemplarCity>Φρίταουν</exemplarCity>
+				<exemplarCity draft="contributed">Φρίταουν</exemplarCity>
 			</zone>
 			<zone type="Europe/San_Marino">
-				<exemplarCity>Άγιος Μαρίνος</exemplarCity>
+				<exemplarCity draft="contributed">Άγιος Μαρίνος</exemplarCity>
 			</zone>
 			<zone type="Africa/Dakar">
-				<exemplarCity>Ντακάρ</exemplarCity>
+				<exemplarCity draft="contributed">Ντακάρ</exemplarCity>
 			</zone>
 			<zone type="Africa/Mogadishu">
-				<exemplarCity>Μογκαντίσου</exemplarCity>
+				<exemplarCity draft="contributed">Μογκαντίσου</exemplarCity>
 			</zone>
 			<zone type="America/Paramaribo">
-				<exemplarCity>Παραμαρίμπο</exemplarCity>
-			</zone>
-			<zone type="Africa/Juba">
-				<exemplarCity>Γιούμπα</exemplarCity>
+				<exemplarCity draft="contributed">Παραμαρίμπο</exemplarCity>
 			</zone>
 			<zone type="Africa/Sao_Tome">
 				<exemplarCity>Σάο Τομέ</exemplarCity>
 			</zone>
 			<zone type="America/El_Salvador">
-				<exemplarCity>Ελ Σαλβαδόρ</exemplarCity>
+				<exemplarCity>Σαλβαδόρ</exemplarCity>
 			</zone>
 			<zone type="America/Lower_Princes">
-				<exemplarCity>[Lower Prince's Quarter]</exemplarCity>
+				<exemplarCity draft="contributed">[Lower Prince's Quarter]</exemplarCity>
 			</zone>
 			<zone type="Asia/Damascus">
-				<exemplarCity>Δαμασκός</exemplarCity>
+				<exemplarCity draft="contributed">Δαμασκός</exemplarCity>
 			</zone>
 			<zone type="Africa/Mbabane">
-				<exemplarCity>Μπαμπάνε</exemplarCity>
+				<exemplarCity draft="contributed">Μπαμπάνε</exemplarCity>
 			</zone>
 			<zone type="America/Grand_Turk">
-				<exemplarCity>Γκραντ Τουρκ</exemplarCity>
+				<exemplarCity>Γραντ Τουρκ</exemplarCity>
 			</zone>
 			<zone type="Africa/Ndjamena">
-				<exemplarCity>Ντζαμένα</exemplarCity>
+				<exemplarCity draft="contributed">Ντζαμένα</exemplarCity>
 			</zone>
 			<zone type="Indian/Kerguelen">
 				<exemplarCity>Κέργκουελεν</exemplarCity>
 			</zone>
 			<zone type="Africa/Lome">
-				<exemplarCity>Λομέ</exemplarCity>
+				<exemplarCity draft="contributed">Λομέ</exemplarCity>
 			</zone>
 			<zone type="Asia/Bangkok">
-				<exemplarCity>Μπανγκόκ</exemplarCity>
+				<exemplarCity draft="contributed">Μπανγκόκ</exemplarCity>
 			</zone>
 			<zone type="Asia/Dushanbe">
-				<exemplarCity>Ντουσάμπε</exemplarCity>
+				<exemplarCity draft="contributed">Ντουσάμπε</exemplarCity>
 			</zone>
 			<zone type="Pacific/Fakaofo">
 				<exemplarCity>Φακαόφο</exemplarCity>
 			</zone>
 			<zone type="Asia/Dili">
-				<exemplarCity>Ντίλι</exemplarCity>
+				<exemplarCity draft="contributed">Ντίλι</exemplarCity>
 			</zone>
 			<zone type="Asia/Ashgabat">
-				<exemplarCity>Ασχαμπάτ</exemplarCity>
+				<exemplarCity draft="contributed">Ασχαμπάτ</exemplarCity>
 			</zone>
 			<zone type="Africa/Tunis">
-				<exemplarCity>Τύνιδα</exemplarCity>
+				<exemplarCity draft="contributed">Τύνιδα</exemplarCity>
 			</zone>
 			<zone type="Pacific/Tongatapu">
 				<exemplarCity>Τονγκατάπου</exemplarCity>
@@ -3080,7 +2980,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Κωνσταντινούπολη</exemplarCity>
 			</zone>
 			<zone type="America/Port_of_Spain">
-				<exemplarCity>Πορτ οφ Σπέιν</exemplarCity>
+				<exemplarCity draft="contributed">Πορτ οφ Σπέιν</exemplarCity>
 			</zone>
 			<zone type="Pacific/Funafuti">
 				<exemplarCity>Φουναφούτι</exemplarCity>
@@ -3089,7 +2989,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Ταϊπέι</exemplarCity>
 			</zone>
 			<zone type="Africa/Dar_es_Salaam">
-				<exemplarCity>Νταρ Ες Σαλάμ</exemplarCity>
+				<exemplarCity draft="contributed">Νταρ Ες Σαλάμ</exemplarCity>
 			</zone>
 			<zone type="Europe/Uzhgorod">
 				<exemplarCity>Ουζκόροντ</exemplarCity>
@@ -3098,13 +2998,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Κίεβο</exemplarCity>
 			</zone>
 			<zone type="Europe/Simferopol">
-				<exemplarCity>Συμφερόπολη</exemplarCity>
+				<exemplarCity>Συμφερούπολη</exemplarCity>
 			</zone>
 			<zone type="Europe/Zaporozhye">
 				<exemplarCity>Ζαπορόζιε</exemplarCity>
 			</zone>
 			<zone type="Africa/Kampala">
-				<exemplarCity>Καμπάλα</exemplarCity>
+				<exemplarCity draft="contributed">Καμπάλα</exemplarCity>
 			</zone>
 			<zone type="Pacific/Midway">
 				<exemplarCity>Μίντγουεϊ</exemplarCity>
@@ -3130,14 +3030,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<zone type="America/Yakutat">
 				<exemplarCity>Γιακούτατ</exemplarCity>
 			</zone>
-			<zone type="America/Sitka">
-				<exemplarCity>Σίτκα</exemplarCity>
-			</zone>
 			<zone type="America/Juneau">
 				<exemplarCity>Τζούνο</exemplarCity>
-			</zone>
-			<zone type="America/Metlakatla">
-				<exemplarCity>Μετλακάτλα</exemplarCity>
 			</zone>
 			<zone type="America/Los_Angeles">
 				<exemplarCity>Λος Άντζελες</exemplarCity>
@@ -3155,7 +3049,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Ντένβερ</exemplarCity>
 			</zone>
 			<zone type="America/North_Dakota/Beulah">
-				<exemplarCity>Μπέουλαχ, Βόρεια Ντακότα</exemplarCity>
+				<exemplarCity draft="contributed">Μπέουλαχ, Βόρεια Ντακότα</exemplarCity>
 			</zone>
 			<zone type="America/North_Dakota/New_Salem">
 				<exemplarCity>Νιου Σάλεμ, Βόρεια Ντακότα</exemplarCity>
@@ -3188,7 +3082,7 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Μαρένγκο, Ιντιάνα</exemplarCity>
 			</zone>
 			<zone type="America/Indianapolis">
-				<exemplarCity>Ιντιανάπολις</exemplarCity>
+				<exemplarCity>Ινδιανάπολη</exemplarCity>
 			</zone>
 			<zone type="America/Louisville">
 				<exemplarCity>Λούισβιλ</exemplarCity>
@@ -3200,13 +3094,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Μοντιτσέλο, Κεντάκι</exemplarCity>
 			</zone>
 			<zone type="America/Detroit">
-				<exemplarCity>Ντιτρόιτ</exemplarCity>
+				<exemplarCity>Ντητρόιτ</exemplarCity>
 			</zone>
 			<zone type="America/New_York">
 				<exemplarCity>Νέα Υόρκη</exemplarCity>
 			</zone>
 			<zone type="America/Montevideo">
-				<exemplarCity>Μοντεβιδέο</exemplarCity>
+				<exemplarCity draft="contributed">Μοντεβιδέο</exemplarCity>
 			</zone>
 			<zone type="Asia/Samarkand">
 				<exemplarCity>Σαμαρκάνδη</exemplarCity>
@@ -3215,22 +3109,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Τασκένδη</exemplarCity>
 			</zone>
 			<zone type="Europe/Vatican">
-				<exemplarCity>Βατικανό</exemplarCity>
+				<exemplarCity draft="contributed">Βατικανό</exemplarCity>
 			</zone>
 			<zone type="America/St_Vincent">
-				<exemplarCity>Άγιος Βικέντιος</exemplarCity>
+				<exemplarCity draft="contributed">Άγιος Βικέντιος</exemplarCity>
 			</zone>
 			<zone type="America/Caracas">
 				<exemplarCity>Καράκας</exemplarCity>
 			</zone>
 			<zone type="America/Tortola">
-				<exemplarCity>Τορτόλα</exemplarCity>
+				<exemplarCity draft="contributed">Τορτόλα</exemplarCity>
 			</zone>
 			<zone type="America/St_Thomas">
-				<exemplarCity>Άγιος Θωμάς</exemplarCity>
+				<exemplarCity draft="contributed">Άγιος Θωμάς</exemplarCity>
 			</zone>
 			<zone type="Asia/Saigon">
-				<exemplarCity>Πόλη Χο Τσι Μινχ</exemplarCity>
+				<exemplarCity draft="contributed">Πόλη Χο Τσι Μινχ</exemplarCity>
 			</zone>
 			<zone type="Pacific/Efate">
 				<exemplarCity>Εφάτε</exemplarCity>
@@ -3242,19 +3136,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<exemplarCity>Άπια</exemplarCity>
 			</zone>
 			<zone type="Asia/Aden">
-				<exemplarCity>Άντεν</exemplarCity>
+				<exemplarCity draft="contributed">Άντεν</exemplarCity>
 			</zone>
 			<zone type="Indian/Mayotte">
 				<exemplarCity>Μαγιότε</exemplarCity>
 			</zone>
 			<zone type="Africa/Johannesburg">
-				<exemplarCity>Γιοχάνεσμπουργκ</exemplarCity>
+				<exemplarCity draft="contributed">Γιοχάνεσμπουργκ</exemplarCity>
 			</zone>
 			<zone type="Africa/Lusaka">
-				<exemplarCity>Λουζάκα</exemplarCity>
+				<exemplarCity draft="contributed">Λουζάκα</exemplarCity>
 			</zone>
 			<zone type="Africa/Harare">
-				<exemplarCity>Χαράρε</exemplarCity>
+				<exemplarCity draft="contributed">Χαράρε</exemplarCity>
 			</zone>
 			<metazone type="Afghanistan">
 				<long>
@@ -3285,44 +3179,44 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Alaska">
 				<long>
-					<generic>Ώρα Αλάσκας</generic>
-					<standard>Χειμερινή ώρα Αλάσκας</standard>
-					<daylight>Θερινή ώρα Αλάσκας</daylight>
+					<generic draft="contributed">Ώρα Αλάσκας</generic>
+					<standard draft="contributed">Χειμερινή ώρα Αλάσκας</standard>
+					<daylight draft="contributed">Θερινή ώρα Αλάσκας</daylight>
 				</long>
 			</metazone>
 			<metazone type="Amazon">
 				<long>
-					<generic>Ώρα Αμαζονίου</generic>
-					<standard>Χειμερινή ώρα Αμαζονίου</standard>
-					<daylight>Θερινή ώρα Αμαζονίου</daylight>
+					<generic draft="contributed">Ώρα Αμαζονίου</generic>
+					<standard draft="contributed">Χειμερινή ώρα Αμαζονίου</standard>
+					<daylight draft="contributed">Θερινή ώρα Αμαζονίου</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Central">
 				<long>
-					<generic>Κεντρική ώρα Βόρειας Αμερικής</generic>
-					<standard>Κεντρική χειμερινή ώρα Βόρειας Αμερικής</standard>
-					<daylight>Κεντρική θερινή ώρα Βόρειας Αμερικής</daylight>
+					<generic draft="contributed">Κεντρική ώρα</generic>
+					<standard draft="contributed">Κεντρική χειμερινή ώρα</standard>
+					<daylight draft="contributed">Κεντρική θερινή ώρα</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Eastern">
 				<long>
-					<generic>Ανατολική ώρα Βόρειας Αμερικής</generic>
-					<standard>Ανατολική χειμερινή ώρα Βόρειας Αμερικής</standard>
-					<daylight>Ανατολική θερινή ώρα Βόρειας Αμερικής</daylight>
+					<generic draft="contributed">Ανατολική ώρα</generic>
+					<standard draft="contributed">Ανατολική χειμερινή ώρα</standard>
+					<daylight draft="contributed">Ανατολική θερινή ώρα</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Mountain">
 				<long>
-					<generic>Ορεινή ώρα Βόρειας Αμερικής</generic>
-					<standard>Ορεινή χειμερινή ώρα Βόρειας Αμερικής</standard>
-					<daylight>Ορεινή θερινή ώρα Βόρειας Αμερικής</daylight>
+					<generic draft="contributed">Ορεινή ώρα</generic>
+					<standard draft="contributed">Ορεινή χειμερινή ώρα</standard>
+					<daylight draft="contributed">Ορεινή θερινή ώρα</daylight>
 				</long>
 			</metazone>
 			<metazone type="America_Pacific">
 				<long>
-					<generic>Ώρα Βόρειας Αμερικής</generic>
-					<standard>Χειμερινή ώρα Βόρειας Αμερικής</standard>
-					<daylight>Θερινή ώρα Βόρειας Αμερικής</daylight>
+					<generic draft="contributed">Ώρα Ειρηνικού</generic>
+					<standard draft="contributed">Χειμερινή ώρα Ειρηνικού</standard>
+					<daylight draft="contributed">Θερινή ώρα Ειρηνικού</daylight>
 				</long>
 			</metazone>
 			<metazone type="Anadyr">
@@ -3562,9 +3456,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Europe_Western">
 				<long>
-					<generic>Ώρα Δυτικής Ευρώπης</generic>
-					<standard>Χειμερινή ώρα Δυτικής Ευρώπης</standard>
-					<daylight>Θερινή ώρα Δυτικής Ευρώπης</daylight>
+					<generic draft="contributed">Ώρα Δυτικής Ευρώπης</generic>
+					<standard draft="contributed">Χειμερινή ώρα Δυτικής Ευρώπης</standard>
+					<daylight draft="contributed">Θερινή ώρα Δυτικής Ευρώπης</daylight>
 				</long>
 				<short>
 					<generic>WET</generic>
@@ -3574,9 +3468,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Falkland">
 				<long>
-					<generic>Ώρα Νησιών Φώκλαντ</generic>
-					<standard>Χειμερινή ώρα Νησιών Φώκλαντ</standard>
-					<daylight>Θερινή ώρα Νησιών Φώκλαντ</daylight>
+					<generic>Ώρα Νησιών Φόλκλαντ</generic>
+					<standard>Χειμερινή ώρα Νησιών Φόλκλαντ</standard>
+					<daylight>Θερινή ώρα Νησιών Φόλκλαντ</daylight>
 				</long>
 			</metazone>
 			<metazone type="Fiji">
@@ -3654,9 +3548,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Hawaii_Aleutian">
 				<long>
-					<generic>Ώρα Χαβάης-Αλεούτιων νήσων</generic>
-					<standard>Χειμερινή ώρα Χαβάης-Αλεούτιων νήσων</standard>
-					<daylight>Θερινή ώρα Χαβάης-Αλεούτιων νήσων</daylight>
+					<generic draft="contributed">Ώρα Χαβάης-Αλεούτιων νήσων</generic>
+					<standard draft="contributed">Χειμερινή ώρα Χαβάης-Αλεούτιων νήσων</standard>
+					<daylight draft="contributed">Θερινή ώρα Χαβάης-Αλεούτιων νήσων</daylight>
 				</long>
 			</metazone>
 			<metazone type="Hong_Kong">
@@ -3690,17 +3584,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Indonesia_Central">
 				<long>
-					<standard>Ώρα: Κεντρική Ινδονησία</standard>
+					<standard draft="contributed">Ώρα: Κεντρική Ινδονησία</standard>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Eastern">
 				<long>
-					<standard>Ώρα: Ανατολική Ινδονησία</standard>
+					<standard draft="contributed">Ώρα: Ανατολική Ινδονησία</standard>
 				</long>
 			</metazone>
 			<metazone type="Indonesia_Western">
 				<long>
-					<standard>Ώρα: Δυτική Ινδονησία</standard>
+					<standard draft="contributed">Ώρα: Δυτική Ινδονησία</standard>
 				</long>
 			</metazone>
 			<metazone type="Iran">
@@ -3712,9 +3606,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Irkutsk">
 				<long>
-					<generic>Ώρα Ιρκούτσκ</generic>
-					<standard>Χειμερινή ώρα Ιρκούτσκ</standard>
-					<daylight>Θερινή ώρα Ιρκούτσκ</daylight>
+					<generic draft="contributed">Ώρα Ιρκούτσκ</generic>
+					<standard draft="contributed">Χειμερινή ώρα Ιρκούτσκ</standard>
+					<daylight draft="contributed">Θερινή ώρα Ιρκούτσκ</daylight>
 				</long>
 			</metazone>
 			<metazone type="Israel">
@@ -3740,12 +3634,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Kazakhstan_Eastern">
 				<long>
-					<standard>Ώρα Ανατολικού Καζακστάν</standard>
+					<standard draft="contributed">Ώρα Ανατολικού Καζακστάν</standard>
 				</long>
 			</metazone>
 			<metazone type="Kazakhstan_Western">
 				<long>
-					<standard>Ώρα Δυτικού Καζακστάν</standard>
+					<standard draft="contributed">Ώρα δυτικού Καζακστάν</standard>
 				</long>
 			</metazone>
 			<metazone type="Korea">
@@ -3762,9 +3656,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Krasnoyarsk">
 				<long>
-					<generic>Ώρα Κρασνόγιαρσκ</generic>
-					<standard>Χειμερινή ώρα Κρασνόγιαρσκ</standard>
-					<daylight>Θερινή ώρα Κρασνόγιαρσκ</daylight>
+					<generic draft="contributed">Ώρα Κρασνόγιαρσκ</generic>
+					<standard draft="contributed">Χειμερινή ώρα Κρασνόγιαρσκ</standard>
+					<daylight draft="contributed">Θερινή ώρα Κρασνόγιαρσκ</daylight>
 				</long>
 			</metazone>
 			<metazone type="Kyrgystan">
@@ -3798,9 +3692,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Magadan">
 				<long>
-					<generic>Ώρα Μάγκανταν</generic>
-					<standard>Χειμερινή ώρα Μάγκανταν</standard>
-					<daylight>Θερινή ώρα Μάγκανταν</daylight>
+					<generic draft="contributed">Ώρα Μάγκανταν</generic>
+					<standard draft="contributed">Χειμερινή ώρα Μάγκανταν</standard>
+					<daylight draft="contributed">Θερινή ώρα Μαγκαντάν</daylight>
 				</long>
 			</metazone>
 			<metazone type="Malaysia">
@@ -3837,9 +3731,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Mongolia">
 				<long>
-					<generic>Ώρα Ουλάν Μπατόρ</generic>
-					<standard>Χειμερινή ώρα Ουλάν Μπατόρ</standard>
-					<daylight>Θερινή ώρα Ουλάν Μπατόρ</daylight>
+					<generic draft="contributed">Ώρα Ουλάν Μπατόρ</generic>
+					<standard draft="contributed">Χειμερινή ώρα Ουλάν Μπατόρ</standard>
+					<daylight draft="contributed">Θερινή ώρα Ουλάν Μπατόρ</daylight>
 				</long>
 			</metazone>
 			<metazone type="Moscow">
@@ -3880,9 +3774,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Newfoundland">
 				<long>
-					<generic>Ώρα Νέας Γης</generic>
-					<standard>Χειμερινή ώρα Νέας Γης</standard>
-					<daylight>Θερινή ώρα Νέας Γης</daylight>
+					<generic draft="contributed">Ώρα Νέας Γης</generic>
+					<standard draft="contributed">Χειμερινή ώρα Νέας Γης</standard>
+					<daylight draft="contributed">Θερινή ώρα Νέας Γης</daylight>
 				</long>
 			</metazone>
 			<metazone type="Niue">
@@ -3909,16 +3803,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Novosibirsk">
 				<long>
-					<generic>Ώρα Νοβοσιμπίρσκ</generic>
-					<standard>Χειμερινή ώρα Νοβοσιμπίρσκ</standard>
-					<daylight>Θερινή ώρα Νοβοσιμπίρσκ</daylight>
+					<generic draft="contributed">Ώρα Νοβοσιμπίρσκ</generic>
+					<standard draft="contributed">Χειμερινή ώρα Νοβοσιμπίρσκ</standard>
+					<daylight draft="contributed">Θερινή ώρα Νοβοσιμπίρσκ</daylight>
 				</long>
 			</metazone>
 			<metazone type="Omsk">
 				<long>
-					<generic>Ώρα Ομσκ</generic>
-					<standard>Χειμερινή ώρα Ομσκ</standard>
-					<daylight>Θερινή ώρα Ομσκ</daylight>
+					<generic draft="contributed">Ώρα Ομσκ</generic>
+					<standard draft="contributed">Χειμερινή ώρα Ομσκ</standard>
+					<daylight draft="contributed">Θερινή ώρα Ομσκ</daylight>
 				</long>
 			</metazone>
 			<metazone type="Pakistan">
@@ -3993,9 +3887,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Sakhalin">
 				<long>
-					<generic>Ώρα Σαχαλίνης</generic>
-					<standard>Χειμερινή ώρα Σαχαλίνης</standard>
-					<daylight>Θερινή ώρα Σαχαλίνης</daylight>
+					<generic draft="contributed">Ώρα Σαχαλίνης</generic>
+					<standard draft="contributed">Χειμερινή ώρα Σαχαλίνης</standard>
+					<daylight draft="contributed">Θερινή ώρα Σαχαλίνης</daylight>
 				</long>
 			</metazone>
 			<metazone type="Samara">
@@ -4116,9 +4010,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Vladivostok">
 				<long>
-					<generic>Ώρα Βλαδιβοστόκ</generic>
-					<standard>Χειμερινή ώρα Βλαδιβοστόκ</standard>
-					<daylight>Θερινή ώρα Βλαδιβοστόκ</daylight>
+					<generic draft="contributed">Ώρα Βλαδιβοστόκ</generic>
+					<standard draft="contributed">Χειμερινή ώρα Βλαδιβοστόκ</standard>
+					<daylight draft="contributed">Θερινή ώρα Βλαδιβοστόκ</daylight>
 				</long>
 			</metazone>
 			<metazone type="Volgograd">
@@ -4145,16 +4039,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</metazone>
 			<metazone type="Yakutsk">
 				<long>
-					<generic>Ώρα Γιακούτσκ</generic>
-					<standard>Χειμερινή ώρα Γιακούτσκ</standard>
-					<daylight>Θερινή ώρα Γιακούτσκ</daylight>
+					<generic draft="contributed">Ώρα Γιακούτσκ</generic>
+					<standard draft="contributed">Χειμερινή ώρα Γιακούτσκ</standard>
+					<daylight draft="contributed">Θερινή ώρα Γιακούτσκ</daylight>
 				</long>
 			</metazone>
 			<metazone type="Yekaterinburg">
 				<long>
-					<generic>Ώρα Αικατερίνμπουργκ</generic>
-					<standard>Χειμερινή ώρα Αικατερίνμπουργκ</standard>
-					<daylight>Θερινή ώρα Αικατερίνμπουργκ</daylight>
+					<generic draft="contributed">Ώρα Γεκατερίνμπουργκ</generic>
+					<standard draft="contributed">Χειμερινή ώρα Γεκατερίνμπουργκ</standard>
+					<daylight draft="contributed">Θερινή ώρα Γεκατερίνμπουργκ</daylight>
 				</long>
 			</metazone>
 		</timeZoneNames>
@@ -4173,7 +4067,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<plusSign>+</plusSign>
 			<minusSign>-</minusSign>
 			<exponential>e</exponential>
-			<superscriptingExponent>×</superscriptingExponent>
 			<perMille>‰</perMille>
 			<infinity>∞</infinity>
 			<nan>NaN</nan>
@@ -4214,37 +4107,37 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</decimalFormatLength>
 			<decimalFormatLength type="short">
 				<decimalFormat>
-					<pattern type="1000" count="one">0 χιλ'.'</pattern>
-					<pattern type="1000" count="other">0 χιλ'.'</pattern>
-					<pattern type="10000" count="one">00 χιλ'.'</pattern>
-					<pattern type="10000" count="other">00 χιλ'.'</pattern>
-					<pattern type="100000" count="one">000 χιλ'.'</pattern>
-					<pattern type="100000" count="other">000 χιλ'.'</pattern>
-					<pattern type="1000000" count="one">0 εκ'.'</pattern>
-					<pattern type="1000000" count="other">0 εκ'.'</pattern>
-					<pattern type="10000000" count="one">00 εκ'.'</pattern>
-					<pattern type="10000000" count="other">00 εκ'.'</pattern>
-					<pattern type="100000000" count="one">000 εκ'.'</pattern>
-					<pattern type="100000000" count="other">000 εκ'.'</pattern>
-					<pattern type="1000000000" count="one">0 δισ'.'</pattern>
-					<pattern type="1000000000" count="other">0 δισ'.'</pattern>
-					<pattern type="10000000000" count="one">00 δισ'.'</pattern>
-					<pattern type="10000000000" count="other">00 δισ'.'</pattern>
-					<pattern type="100000000000" count="one">000 δισ'.'</pattern>
-					<pattern type="100000000000" count="other">000 δισ'.'</pattern>
-					<pattern type="1000000000000" count="one">0 τρισ'.'</pattern>
-					<pattern type="1000000000000" count="other">0 τρισ'.'</pattern>
-					<pattern type="10000000000000" count="one">00 τρισ'.'</pattern>
-					<pattern type="10000000000000" count="other">00 τρισ'.'</pattern>
-					<pattern type="100000000000000" count="one">000 τρισ'.'</pattern>
-					<pattern type="100000000000000" count="other">000 τρισ'.'</pattern>
+					<pattern type="1000" count="one" draft="contributed">0 χιλ'.'</pattern>
+					<pattern type="1000" count="other" draft="contributed">0 χιλ'.'</pattern>
+					<pattern type="10000" count="one" draft="contributed">00 χιλ'.'</pattern>
+					<pattern type="10000" count="other" draft="contributed">00 χιλ'.'</pattern>
+					<pattern type="100000" count="one" draft="contributed">000 χιλ'.'</pattern>
+					<pattern type="100000" count="other" draft="contributed">000 χιλ'.'</pattern>
+					<pattern type="1000000" count="one" draft="contributed">0 εκ'.'</pattern>
+					<pattern type="1000000" count="other" draft="contributed">0 εκ'.'</pattern>
+					<pattern type="10000000" count="one" draft="contributed">00 εκ'.'</pattern>
+					<pattern type="10000000" count="other" draft="contributed">00 εκ'.'</pattern>
+					<pattern type="100000000" count="one" draft="contributed">000 εκ'.'</pattern>
+					<pattern type="100000000" count="other" draft="contributed">000 εκ'.'</pattern>
+					<pattern type="1000000000" count="one" draft="contributed">0 δις</pattern>
+					<pattern type="1000000000" count="other" draft="contributed">0 δις</pattern>
+					<pattern type="10000000000" count="one" draft="contributed">00 δις</pattern>
+					<pattern type="10000000000" count="other" draft="contributed">00 δις</pattern>
+					<pattern type="100000000000" count="one" draft="contributed">000 δις</pattern>
+					<pattern type="100000000000" count="other" draft="contributed">000 δις</pattern>
+					<pattern type="1000000000000" count="one" draft="contributed">0 τρις</pattern>
+					<pattern type="1000000000000" count="other" draft="contributed">0 τρις</pattern>
+					<pattern type="10000000000000" count="one" draft="contributed">00 τρις</pattern>
+					<pattern type="10000000000000" count="other" draft="contributed">00 τρις</pattern>
+					<pattern type="100000000000000" count="one" draft="contributed">000 τρις</pattern>
+					<pattern type="100000000000000" count="other" draft="contributed">000 τρις</pattern>
 				</decimalFormat>
 			</decimalFormatLength>
 		</decimalFormats>
 		<scientificFormats numberSystem="latn">
 			<scientificFormatLength>
 				<scientificFormat>
-					<pattern>#E0</pattern>
+					<pattern draft="provisional">[#E0]</pattern>
 				</scientificFormat>
 			</scientificFormatLength>
 		</scientificFormats>
@@ -4259,7 +4152,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currencyFormatLength>
 				<currencyFormat>
 					<pattern>#,##0.00 ¤</pattern>
-					<pattern alt="accounting" draft="contributed">¤ #,##0.00</pattern>
 				</currencyFormat>
 			</currencyFormatLength>
 			<unitPattern count="one">{0} {1}</unitPattern>
@@ -4275,7 +4167,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Ντιράμ Ηνωμένων Αραβικών Εμιράτων</displayName>
 				<displayName count="one">ντιράμ Ηνωμένων Αραβικών Εμιράτων</displayName>
 				<displayName count="other">ντιράμ Ηνωμένων Αραβικών Εμιράτων</displayName>
-				<symbol>AED</symbol>
 			</currency>
 			<currency type="AFA">
 				<displayName>Αφγανί Αφγανιστάν (1927-2002)</displayName>
@@ -4283,10 +4174,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName count="other">αφγάνι Αφγανιστάν (AFA)</displayName>
 			</currency>
 			<currency type="AFN">
-				<displayName>Αφγάνι Αφγανιστάν</displayName>
+				<displayName>Αφγανί Αφγανιστάν</displayName>
 				<displayName count="one">αφγάνι Αφγανιστάν</displayName>
-				<displayName count="other">αφγάνι Αφγανιστάν</displayName>
-				<symbol>AFN</symbol>
+				<displayName count="other">Αφγάνι Αφγανιστάν</displayName>
 			</currency>
 			<currency type="ALK">
 				<displayName count="one" draft="provisional">Παλαιό λεκ Αλβανίας</displayName>
@@ -4301,19 +4191,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Ντραμ Αρμενίας</displayName>
 				<displayName count="one">ντραμ Αρμενίας</displayName>
 				<displayName count="other">ντραμ Αρμενίας</displayName>
-				<symbol>AMD</symbol>
 			</currency>
 			<currency type="ANG">
 				<displayName>Γκίλντα Ολλανδικών Αντιλλών</displayName>
 				<displayName count="one">γκίλντα Ολλανδικών Αντιλλών</displayName>
 				<displayName count="other">γκίλντα Ολλανδικών Αντιλλών</displayName>
-				<symbol>ANG</symbol>
 			</currency>
 			<currency type="AOA">
 				<displayName>Κουάνζα Ανγκόλας</displayName>
 				<displayName count="one">κουάνζα Ανγκόλας</displayName>
 				<displayName count="other">κουάνζα Ανγκόλας</displayName>
-				<symbol>AOA</symbol>
 			</currency>
 			<currency type="AOK">
 				<displayName>Κουάνζα Ανγκόλας (1977-1990)</displayName>
@@ -4343,7 +4230,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Πέσο Αργεντινής</displayName>
 				<displayName count="one">πέσο Αργεντινής</displayName>
 				<displayName count="other">πέσο Αργεντινής</displayName>
-				<symbol>ARS</symbol>
 			</currency>
 			<currency type="ATS">
 				<displayName>Σελίνι Αυστρίας</displayName>
@@ -4354,13 +4240,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δολάριο Αυστραλίας</displayName>
 				<displayName count="one">δολάριο Αυστραλίας</displayName>
 				<displayName count="other">δολάρια Αυστραλίας</displayName>
-				<symbol>A$</symbol>
 			</currency>
 			<currency type="AWG">
-				<displayName>Φλορίνι Αρούμπα</displayName>
-				<displayName count="one">φλορίνι Αρούμπα</displayName>
-				<displayName count="other">φλορίνια Αρούμπα</displayName>
-				<symbol>AWG</symbol>
+				<displayName>Γκίλντα Αρούμπα</displayName>
+				<displayName count="one">γκίλντα Αρούμπα</displayName>
+				<displayName count="other">γκίλντα Αρούμπα</displayName>
 			</currency>
 			<currency type="AZM">
 				<displayName>Μανάτ Αζερμπαϊτζάν (1993-2006)</displayName>
@@ -4371,7 +4255,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Μανάτ Αζερμπαϊτζάν</displayName>
 				<displayName count="one">μανάτ Αζερμπαϊτζάν</displayName>
 				<displayName count="other">μανάτ Αζερμπαϊτζάν</displayName>
-				<symbol>AZN</symbol>
 			</currency>
 			<currency type="BAD">
 				<displayName>Δηνάριο Βοσνίας-Ερζεγοβίνης</displayName>
@@ -4380,9 +4263,8 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="BAM">
 				<displayName>Μετατρέψιμο Μάρκο Βοσνίας-Ερζεγοβίνης</displayName>
-				<displayName count="one">μετατρέψιμο μάρκο Βοσνίας-Ερζεγοβίνης</displayName>
-				<displayName count="other">μετατρέψιμα μάρκα Βοσνίας-Ερζεγοβίνης</displayName>
-				<symbol>BAM</symbol>
+				<displayName count="one">μάρκο Βοσνίας-Ερζεγοβίνης</displayName>
+				<displayName count="other">μάρκα Βοσνίας-Ερζεγοβίνης</displayName>
 			</currency>
 			<currency type="BAN">
 				<displayName count="one" draft="provisional">Νέο δινάριο Βοσνίας-Ερζεγοβίνης</displayName>
@@ -4392,13 +4274,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δολάριο Μπαρμπάντος</displayName>
 				<displayName count="one">δολάριο Μπαρμπάντος</displayName>
 				<displayName count="other">δολάρια Μπαρμπάντος</displayName>
-				<symbol>BBD</symbol>
 			</currency>
 			<currency type="BDT">
 				<displayName>Τάκα Μπαγκλαντές</displayName>
 				<displayName count="one">τάκα Μπαγκλαντές</displayName>
 				<displayName count="other">τάκα Μπαγκλαντές</displayName>
-				<symbol>BDT</symbol>
 			</currency>
 			<currency type="BEC">
 				<displayName>Φράγκο Βελγίου (μετατρέψιμο)</displayName>
@@ -4428,7 +4308,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Λεβ Βουλγαρίας</displayName>
 				<displayName count="one">λεβ Βουλγαρίας</displayName>
 				<displayName count="other">λεβ Βουλγαρίας</displayName>
-				<symbol>BGN</symbol>
 			</currency>
 			<currency type="BGO">
 				<displayName count="one" draft="provisional">Παλαιό λεβ Βουλγαρίας</displayName>
@@ -4438,31 +4317,26 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δηνάριο Μπαχρέιν</displayName>
 				<displayName count="one">δηνάριο Μπαχρέιν</displayName>
 				<displayName count="other">δηνάρια Μπαχρέιν</displayName>
-				<symbol>BHD</symbol>
 			</currency>
 			<currency type="BIF">
 				<displayName>Φράγκο Μπουρούντι</displayName>
 				<displayName count="one">φράγκο Μπουρούντι</displayName>
 				<displayName count="other">φράγκα Μπουρούντι</displayName>
-				<symbol>BIF</symbol>
 			</currency>
 			<currency type="BMD">
 				<displayName>Δολάριο Βερμούδων</displayName>
 				<displayName count="one">δολάριο Βερμούδων</displayName>
 				<displayName count="other">δολάρια Βερμούδων</displayName>
-				<symbol>BMD</symbol>
 			</currency>
 			<currency type="BND">
 				<displayName>Δολάριο Μπρουνέι</displayName>
 				<displayName count="one">δολάριο Μπρουνέι</displayName>
 				<displayName count="other">δολάρια Μπρουνέι</displayName>
-				<symbol>BND</symbol>
 			</currency>
 			<currency type="BOB">
 				<displayName>Μπολιβιάνο Βολιβίας</displayName>
 				<displayName count="one">μπολιβιάνο Βολιβίας</displayName>
 				<displayName count="other">μπολιβιάνο Βολιβίας</displayName>
-				<symbol>BOB</symbol>
 			</currency>
 			<currency type="BOL">
 				<displayName count="one" draft="provisional">Παλαιό βολιβιάνο Βολιβίας</displayName>
@@ -4497,7 +4371,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Ρεάλ Βραζιλίας</displayName>
 				<displayName count="one">ρεάλ Βραζιλίας</displayName>
 				<displayName count="other">ρεάλ Βραζιλίας</displayName>
-				<symbol>R$</symbol>
 			</currency>
 			<currency type="BRN">
 				<displayName>Νέο Κρουζάντο Βραζιλίας</displayName>
@@ -4517,13 +4390,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δολάριο Μπαχάμες</displayName>
 				<displayName count="one">δολάριο Μπαχάμες</displayName>
 				<displayName count="other">δολάρια Μπαχάμες</displayName>
-				<symbol>BSD</symbol>
 			</currency>
 			<currency type="BTN">
 				<displayName>Νγκούλτρουμ Μπουτάν</displayName>
 				<displayName count="one">νγκούλτρουμ Μπουτάν</displayName>
 				<displayName count="other">νγκούλτρουμ Μπουτάν</displayName>
-				<symbol>BTN</symbol>
 			</currency>
 			<currency type="BUK">
 				<displayName>Κιατ Βιρμανίας</displayName>
@@ -4534,7 +4405,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Πούλα Μποτσουάνας</displayName>
 				<displayName count="one">πούλα Μποτσουάνας</displayName>
 				<displayName count="other">πούλα Μποτσουάνας</displayName>
-				<symbol>BWP</symbol>
 			</currency>
 			<currency type="BYB">
 				<displayName>Νέο Ρούβλι Λευκορωσίας (1994-1999)</displayName>
@@ -4545,25 +4415,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Ρούβλι Λευκορωσίας</displayName>
 				<displayName count="one">ρούβλι Λευκορωσίας</displayName>
 				<displayName count="other">ρούβλια Λευκορωσίας</displayName>
-				<symbol>BYR</symbol>
 			</currency>
 			<currency type="BZD">
 				<displayName>Δολάριο Μπελίζ</displayName>
 				<displayName count="one">δολάριο Μπελίζ</displayName>
 				<displayName count="other">δολάρια Μπελίζ</displayName>
-				<symbol>BZD</symbol>
 			</currency>
 			<currency type="CAD">
 				<displayName>Δολάριο Καναδά</displayName>
 				<displayName count="one">δολάριο Καναδά</displayName>
 				<displayName count="other">δολάρια Καναδά</displayName>
-				<symbol>CA$</symbol>
 			</currency>
 			<currency type="CDF">
 				<displayName>Φράγκο Κονγκό</displayName>
 				<displayName count="one">φράγκο Κονγκό</displayName>
 				<displayName count="other">φράγκα Κονγκό</displayName>
-				<symbol>CDF</symbol>
 			</currency>
 			<currency type="CHE">
 				<displayName>Ευρώ WIR</displayName>
@@ -4574,7 +4440,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Φράγκο Ελβετίας</displayName>
 				<displayName count="one">φράγκο Ελβετίας</displayName>
 				<displayName count="other">φράγκα Ελβετίας</displayName>
-				<symbol>CHF</symbol>
 			</currency>
 			<currency type="CHW">
 				<displayName>Φράγκο WIR</displayName>
@@ -4595,29 +4460,25 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Πέσο Χιλής</displayName>
 				<displayName count="one">πέσο Χιλής</displayName>
 				<displayName count="other">πέσο Χιλής</displayName>
-				<symbol>CLP</symbol>
 			</currency>
 			<currency type="CNX">
 				<displayName count="one" draft="provisional">Δολάριο Λαϊκής Τράπεζας Κίνας</displayName>
 				<displayName count="other" draft="provisional">Δολάρια Λαϊκής Τράπεζας Κίνας</displayName>
 			</currency>
 			<currency type="CNY">
-				<displayName>Γουάν Κίνας</displayName>
-				<displayName count="one">γουάν Κίνας</displayName>
-				<displayName count="other">γουάν Κίνας</displayName>
-				<symbol>CN¥</symbol>
+				<displayName>Γιουάν Ρενμίμπι Κίνας</displayName>
+				<displayName count="one">γιουάν Κίνας</displayName>
+				<displayName count="other">γιουάν Κίνας</displayName>
 			</currency>
 			<currency type="COP">
 				<displayName>Πέσο Κολομβίας</displayName>
 				<displayName count="one">πέσο Κολομβίας</displayName>
 				<displayName count="other">πέσο Κολομβίας</displayName>
-				<symbol>COP</symbol>
 			</currency>
 			<currency type="CRC">
 				<displayName>Κολόν Κόστα Ρίκα</displayName>
 				<displayName count="one">κολόν Κόστα Ρίκα</displayName>
 				<displayName count="other">κολόν Κόστα Ρίκα</displayName>
-				<symbol>CRC</symbol>
 			</currency>
 			<currency type="CSD">
 				<displayName>Παλαιό Δηνάριο Σερβίας</displayName>
@@ -4633,19 +4494,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Μετατρέψιμο πέσο Κούβας</displayName>
 				<displayName count="one">μετατρέψιμο πέσο Κούβας</displayName>
 				<displayName count="other">μετατρέψιμα πέσο Κούβας</displayName>
-				<symbol>CUC</symbol>
 			</currency>
 			<currency type="CUP">
 				<displayName>Πέσο Κούβας</displayName>
 				<displayName count="one">πέσο Κούβας</displayName>
 				<displayName count="other">πέσο Κούβας</displayName>
-				<symbol>CUP</symbol>
 			</currency>
 			<currency type="CVE">
 				<displayName>Εσκούδο Πράσινου Ακρωτηρίου</displayName>
 				<displayName count="one">εσκούδο Πράσινου Ακρωτηρίου</displayName>
 				<displayName count="other">εσκούδο Πράσινου Ακρωτηρίου</displayName>
-				<symbol>CVE</symbol>
 			</currency>
 			<currency type="CYP">
 				<displayName>Λίρα Κύπρου</displayName>
@@ -4656,7 +4514,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Κορόνα Τσεχίας</displayName>
 				<displayName count="one">κορόνα Τσεχίας</displayName>
 				<displayName count="other">κορόνες Τσεχίας</displayName>
-				<symbol>CZK</symbol>
 			</currency>
 			<currency type="DDM">
 				<displayName>Οστμάρκ Ανατολικής Γερμανίας</displayName>
@@ -4672,25 +4529,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Φράγκο Τζιμπουτί</displayName>
 				<displayName count="one">φράγκο Τζιμπουτί</displayName>
 				<displayName count="other">φράγκα Τζιμπουτί</displayName>
-				<symbol>DJF</symbol>
 			</currency>
 			<currency type="DKK">
 				<displayName>Κορόνα Δανίας</displayName>
 				<displayName count="one">κορόνα Δανίας</displayName>
 				<displayName count="other">κορόνες Δανίας</displayName>
-				<symbol>DKK</symbol>
 			</currency>
 			<currency type="DOP">
-				<displayName>Πέσο Δομινικανής Δημοκρατίας</displayName>
-				<displayName count="one">πέσο Δομινικανής Δημοκρατίας</displayName>
+				<displayName>Πέσο Δομίνικου</displayName>
+				<displayName count="one">πέσο Δομίνικου</displayName>
 				<displayName count="other">πέσο Δομινικανής Δημοκρατίας</displayName>
-				<symbol>DOP</symbol>
 			</currency>
 			<currency type="DZD">
 				<displayName>Δηνάριο Αλγερίας</displayName>
 				<displayName count="one">δηνάριο Αλγερίας</displayName>
 				<displayName count="other">δηνάρια Αλγερίας</displayName>
-				<symbol>DZD</symbol>
 			</currency>
 			<currency type="ECS">
 				<displayName>Σούκρε Εκουαδόρ</displayName>
@@ -4706,13 +4559,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Λίρα Αιγύπτου</displayName>
 				<displayName count="one">λίρα Αιγύπτου</displayName>
 				<displayName count="other">λίρες Αιγύπτου</displayName>
-				<symbol>EGP</symbol>
 			</currency>
 			<currency type="ERN">
 				<displayName>Νάκφα Ερυθραίας</displayName>
 				<displayName count="one">νάκφα Ερυθραίας</displayName>
 				<displayName count="other">νάκφα Ερυθραίας</displayName>
-				<symbol>ERN</symbol>
 			</currency>
 			<currency type="ESA">
 				<displayName>πεσέτα Ισπανίας (λογαριασμός Α)</displayName>
@@ -4733,13 +4584,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Μπιρ Αιθιοπίας</displayName>
 				<displayName count="one">μπιρ Αιθιοπίας</displayName>
 				<displayName count="other">μπιρ Αιθιοπίας</displayName>
-				<symbol>ETB</symbol>
 			</currency>
 			<currency type="EUR">
 				<displayName>Ευρώ</displayName>
 				<displayName count="one">ευρώ</displayName>
 				<displayName count="other">ευρώ</displayName>
-				<symbol>€</symbol>
 			</currency>
 			<currency type="FIM">
 				<displayName>Μάρκο Φινλανδίας</displayName>
@@ -4750,13 +4599,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δολάριο Φίτζι</displayName>
 				<displayName count="one">δολάριο Φίτζι</displayName>
 				<displayName count="other">δολάρια Φίτζι</displayName>
-				<symbol>FJD</symbol>
 			</currency>
 			<currency type="FKP">
-				<displayName>Λίρα Νησιών Φώκλαντ</displayName>
-				<displayName count="one">λίρα Νησιών Φώκλαντ</displayName>
-				<displayName count="other">λίρες Νησιών Φώκλαντ</displayName>
-				<symbol>FKP</symbol>
+				<displayName>Λίρα Νησιών Φώλκλαντ</displayName>
+				<displayName count="one">λίρα Νησιών Φώλκλαντ</displayName>
+				<displayName count="other">λίρες Νησιών Φώλκλαντ</displayName>
 			</currency>
 			<currency type="FRF">
 				<displayName>Φράγκο Γαλλίας</displayName>
@@ -4767,7 +4614,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Λίρα Στερλίνα Βρετανίας</displayName>
 				<displayName count="one">λίρα στερλίνα Βρετανίας</displayName>
 				<displayName count="other">λίρες στερλίνες Βρετανίας</displayName>
-				<symbol>£</symbol>
 			</currency>
 			<currency type="GEK">
 				<displayName>Κούπον Λάρι Γεωργίας</displayName>
@@ -4778,7 +4624,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Λάρι Γεωργίας</displayName>
 				<displayName count="one">λάρι Γεωργίας</displayName>
 				<displayName count="other">λάρι Γεωργίας</displayName>
-				<symbol>GEL</symbol>
 			</currency>
 			<currency type="GHC">
 				<displayName>Σέντι Γκάνας (1979-2007)</displayName>
@@ -4788,26 +4633,22 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<currency type="GHS">
 				<displayName>Σέντι Γκάνας</displayName>
 				<displayName count="one">σέντι Γκάνας</displayName>
-				<displayName count="other">σέντι Γκάνας</displayName>
-				<symbol>GHS</symbol>
+				<displayName count="other">σέντι Γκανά</displayName>
 			</currency>
 			<currency type="GIP">
 				<displayName>Λίρα Γιβραλτάρ</displayName>
 				<displayName count="one">λίρα Γιβραλτάρ</displayName>
 				<displayName count="other">λίρες Γιβραλτάρ</displayName>
-				<symbol>GIP</symbol>
 			</currency>
 			<currency type="GMD">
 				<displayName>Νταλάσι Γκάμπιας</displayName>
 				<displayName count="one">νταλάσι Γκάμπιας</displayName>
 				<displayName count="other">νταλάσι Γκάμπιας</displayName>
-				<symbol>GMD</symbol>
 			</currency>
 			<currency type="GNF">
 				<displayName>Φράγκο Γουινέας</displayName>
 				<displayName count="one">φράγκο Γουινέας</displayName>
 				<displayName count="other">φράγκα Γουινέας</displayName>
-				<symbol>GNF</symbol>
 			</currency>
 			<currency type="GNS">
 				<displayName>Συλί Γουινέας</displayName>
@@ -4832,7 +4673,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Κουετσάλ Γουατεμάλας</displayName>
 				<displayName count="one">κουετσάλ Γουατεμάλας</displayName>
 				<displayName count="other">κουετσάλ Γουατεμάλας</displayName>
-				<symbol>GTQ</symbol>
 			</currency>
 			<currency type="GWE">
 				<displayName>Γκινέα Εσκούδο Πορτογαλίας</displayName>
@@ -4848,19 +4688,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δολάριο Γουιάνας</displayName>
 				<displayName count="one">δολάριο Γουιάνας</displayName>
 				<displayName count="other">δολάρια Γουιάνας</displayName>
-				<symbol>GYD</symbol>
 			</currency>
 			<currency type="HKD">
 				<displayName>Δολάριο Χονγκ Κονγκ</displayName>
 				<displayName count="one">δολάριο Χονγκ Κονγκ</displayName>
 				<displayName count="other">δολάρια Χονγκ Κονγκ</displayName>
-				<symbol>HK$</symbol>
 			</currency>
 			<currency type="HNL">
 				<displayName>Λεμπίρα Ονδούρας</displayName>
 				<displayName count="one">λεμπίρα Ονδούρας</displayName>
 				<displayName count="other">λεμπίρα Ονδούρας</displayName>
-				<symbol>HNL</symbol>
 			</currency>
 			<currency type="HRD">
 				<displayName>Δηνάριο Κροατίας</displayName>
@@ -4871,25 +4708,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Κούνα Κροατίας</displayName>
 				<displayName count="one">κούνα Κροατίας</displayName>
 				<displayName count="other">κούνα Κροατίας</displayName>
-				<symbol>HRK</symbol>
 			</currency>
 			<currency type="HTG">
 				<displayName>Γκουρντ Αϊτής</displayName>
 				<displayName count="one">γκουρντ Αϊτής</displayName>
 				<displayName count="other">γκουρντ Αϊτής</displayName>
-				<symbol>HTG</symbol>
 			</currency>
 			<currency type="HUF">
 				<displayName>Φιορίνι Ουγγαρίας</displayName>
 				<displayName count="one">φιορίνι Ουγγαρίας</displayName>
 				<displayName count="other">φιορίνια Ουγγαρίας</displayName>
-				<symbol>HUF</symbol>
 			</currency>
 			<currency type="IDR">
-				<displayName>Ρουπία Ινδονησίας</displayName>
-				<displayName count="one">ρουπία Ινδονησίας</displayName>
-				<displayName count="other">ρουπία Ινδονησίας</displayName>
-				<symbol>IDR</symbol>
+				<displayName>Ρούπια Ινδονησίας</displayName>
+				<displayName count="one">ρούπι Ινδονησίας</displayName>
+				<displayName count="other">ρούπια Ινδονησίας</displayName>
 			</currency>
 			<currency type="IEP">
 				<displayName>Λίρα Ιρλανδίας</displayName>
@@ -4910,25 +4743,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Νέο Σέκελ Ισραήλ</displayName>
 				<displayName count="one">νέο σέκελ Ισραήλ</displayName>
 				<displayName count="other">νέα σέκελ Ισραήλ</displayName>
-				<symbol>₪</symbol>
 			</currency>
 			<currency type="INR">
-				<displayName>Ρουπία Ινδίας</displayName>
-				<displayName count="one">ρουπία Ινδίας</displayName>
-				<displayName count="other">ρουπίες Ινδίας</displayName>
-				<symbol>₹</symbol>
+				<displayName>Ρούπια Ινδίας</displayName>
+				<displayName count="one">ρούπι Ινδίας</displayName>
+				<displayName count="other">ρούπια Ινδίας</displayName>
 			</currency>
 			<currency type="IQD">
 				<displayName>Δηνάριο Ιράκ</displayName>
 				<displayName count="one">δηνάριο Ιράκ</displayName>
 				<displayName count="other">δηνάρια Ιράκ</displayName>
-				<symbol>IQD</symbol>
 			</currency>
 			<currency type="IRR">
 				<displayName>Ριάλ Ιράν</displayName>
 				<displayName count="one">ριάλ Ιράν</displayName>
 				<displayName count="other">ριάλ Ιράν</displayName>
-				<symbol>IRR</symbol>
 			</currency>
 			<currency type="ISJ">
 				<displayName>Παλιά κορόνα Ισλανδίας</displayName>
@@ -4939,7 +4768,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Κορόνα Ισλανδίας</displayName>
 				<displayName count="one">κορόνα Ισλανδίας</displayName>
 				<displayName count="other">κορόνες Ισλανδίας</displayName>
-				<symbol>ISK</symbol>
 			</currency>
 			<currency type="ITL">
 				<displayName>Λιρέτα Ιταλίας</displayName>
@@ -4950,101 +4778,85 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δολάριο Τζαμάικας</displayName>
 				<displayName count="one">δολάριο Τζαμάικας</displayName>
 				<displayName count="other">δολάρια Τζαμάικας</displayName>
-				<symbol>JMD</symbol>
 			</currency>
 			<currency type="JOD">
 				<displayName>Δηνάριο Ιορδανίας</displayName>
 				<displayName count="one">δηνάριο Ιορδανίας</displayName>
 				<displayName count="other">δηνάρια Ιορδανίας</displayName>
-				<symbol>JOD</symbol>
 			</currency>
 			<currency type="JPY">
 				<displayName>Γιεν Ιαπωνίας</displayName>
 				<displayName count="one">γιεν Ιαπωνίας</displayName>
 				<displayName count="other">γιεν Ιαπωνίας</displayName>
-				<symbol>JP¥</symbol>
 			</currency>
 			<currency type="KES">
 				<displayName>Σελίνι Κένυας</displayName>
 				<displayName count="one">σελίνι Κένυας</displayName>
 				<displayName count="other">σελίνια Κένυας</displayName>
-				<symbol>KES</symbol>
 			</currency>
 			<currency type="KGS">
 				<displayName>Σομ Κιργιζίας</displayName>
-				<displayName count="one">σομ Κιργιζίας</displayName>
-				<displayName count="other">σομ Κιργιζίας</displayName>
-				<symbol>KGS</symbol>
+				<displayName count="one">σομ Κιργιστάν</displayName>
+				<displayName count="other">σομ Κιργιστάν</displayName>
 			</currency>
 			<currency type="KHR">
 				<displayName>Ρίελ Καμπότζης</displayName>
 				<displayName count="one">ρίελ Καμπότζης</displayName>
 				<displayName count="other">ρίελ Καμπότζης</displayName>
-				<symbol>KHR</symbol>
 			</currency>
 			<currency type="KMF">
-				<displayName>Φράγκο Κομορών</displayName>
-				<displayName count="one">φράγκο Κομορών</displayName>
-				<displayName count="other">φράγκα Κομορών</displayName>
-				<symbol draft="contributed">KMF</symbol>
+				<displayName>Φράγκο Κομόρος</displayName>
+				<displayName count="one">φράγκο Κομόρος</displayName>
+				<displayName count="other">φράγκα Κομόρο</displayName>
 			</currency>
 			<currency type="KPW">
-				<displayName>Γουόν Βόρειας Κορέας</displayName>
+				<displayName>Γον Βόρειας Κορέας</displayName>
 				<displayName count="one">γουόν Βόρειας Κορέας</displayName>
 				<displayName count="other">γουόν Βόρειας Κορέας</displayName>
-				<symbol>KPW</symbol>
 			</currency>
 			<currency type="KRO">
 				<displayName count="one" draft="provisional">Παλιό γον Νότιας Κορέας</displayName>
 				<displayName count="other" draft="provisional">Παλιά γον Νότιας Κορέας</displayName>
 			</currency>
 			<currency type="KRW">
-				<displayName>Γουόν Νότιας Κορέας</displayName>
+				<displayName>Γον Νότιας Κορέας</displayName>
 				<displayName count="one">γουόν Νότιας Κορέας</displayName>
 				<displayName count="other">γουόν Νότιας Κορέας</displayName>
-				<symbol>₩</symbol>
 			</currency>
 			<currency type="KWD">
 				<displayName>Δηνάριο Κουβέιτ</displayName>
 				<displayName count="one">δηνάριο Κουβέιτ</displayName>
 				<displayName count="other">δηνάρια Κουβέιτ</displayName>
-				<symbol>KWD</symbol>
 			</currency>
 			<currency type="KYD">
 				<displayName>Δολάριο Νήσων Κάιμαν</displayName>
 				<displayName count="one">δολάριο Νήσων Κάιμαν</displayName>
 				<displayName count="other">δολάρια Νήσων Κάιμαν</displayName>
-				<symbol>KYD</symbol>
 			</currency>
 			<currency type="KZT">
 				<displayName>Τένγκε Καζακστάν</displayName>
 				<displayName count="one">τένγκε Καζακστάν</displayName>
 				<displayName count="other">τένγκε Καζακστάν</displayName>
-				<symbol>KZT</symbol>
 			</currency>
 			<currency type="LAK">
 				<displayName>Κιπ Λάος</displayName>
 				<displayName count="one">κιπ Λάος</displayName>
 				<displayName count="other">κιπ Λάος</displayName>
-				<symbol>LAK</symbol>
 			</currency>
 			<currency type="LBP">
 				<displayName>Λίρα Λιβάνου</displayName>
 				<displayName count="one">λίρα Λιβάνου</displayName>
 				<displayName count="other">λίρες Λιβάνου</displayName>
-				<symbol>LBP</symbol>
 			</currency>
 			<currency type="LKR">
-				<displayName>Ρουπία Σρι Λάνκα</displayName>
-				<displayName count="one">ρουπία Σρι Λάνκα</displayName>
-				<displayName count="other">ρουπίες Σρι Λάνκα</displayName>
-				<symbol>LKR</symbol>
+				<displayName>Ρούπια Σρι Λάνκα</displayName>
+				<displayName count="one">ρούπι Σρι Λάνκα</displayName>
+				<displayName count="other">ρούπια Σρι Λάνκα</displayName>
 			</currency>
 			<currency type="LRD">
 				<displayName>Δολάριο Λιβερίας</displayName>
 				<displayName count="one">δολάριο Λιβερίας</displayName>
 				<displayName count="other">δολάρια Λιβερίας</displayName>
-				<symbol>LRD</symbol>
 			</currency>
 			<currency type="LSL">
 				<displayName>Λότι Λεσότο</displayName>
@@ -5055,7 +4867,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Λίτα Λιθουανίας</displayName>
 				<displayName count="one">λίτα Λιθουανίας</displayName>
 				<displayName count="other">λίτα Λιθουανίας</displayName>
-				<symbol>LTL</symbol>
 			</currency>
 			<currency type="LTT">
 				<displayName>Ταλόνας Λιθουανίας</displayName>
@@ -5077,7 +4888,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Λατς Λετονίας</displayName>
 				<displayName count="one">λατς Λετονίας</displayName>
 				<displayName count="other">λατς Λετονίας</displayName>
-				<symbol>LVL</symbol>
 			</currency>
 			<currency type="LVR">
 				<displayName>Ρούβλι Λετονίας</displayName>
@@ -5088,13 +4898,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δηνάριο Λιβύης</displayName>
 				<displayName count="one">δηνάριο Λιβύης</displayName>
 				<displayName count="other">δηνάρια Λιβύης</displayName>
-				<symbol>LYD</symbol>
 			</currency>
 			<currency type="MAD">
 				<displayName>Ντιράμ Μαρόκου</displayName>
 				<displayName count="one">ντιράμ Μαρόκου</displayName>
 				<displayName count="other">ντιράμ Μαρόκου</displayName>
-				<symbol>MAD</symbol>
 			</currency>
 			<currency type="MAF">
 				<displayName>Φράγκο Μαρόκου</displayName>
@@ -5110,16 +4918,14 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName count="other" draft="provisional">Κούπον Μολδαβίας</displayName>
 			</currency>
 			<currency type="MDL">
-				<displayName>Λέου Μολδαβίας</displayName>
-				<displayName count="one">λέου Μολδαβίας</displayName>
-				<displayName count="other">λέου Μολδαβίας</displayName>
-				<symbol>MDL</symbol>
+				<displayName>Λέι Μολδαβίας</displayName>
+				<displayName count="one">λέι Μολδαβίας</displayName>
+				<displayName count="other">λέι Μολδαβίας</displayName>
 			</currency>
 			<currency type="MGA">
-				<displayName>Αριάρι Μαδαγασκάρης</displayName>
+				<displayName>Αριανί Μαδαγασκάρης</displayName>
 				<displayName count="one">αριάρι Μαδαγασκάρης</displayName>
 				<displayName count="other">αριάρι Μαδαγασκάρης</displayName>
-				<symbol>MGA</symbol>
 			</currency>
 			<currency type="MGF">
 				<displayName>Φράγκο Μαδαγασκάρης</displayName>
@@ -5130,7 +4936,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δηνάριο Π.Γ.Δ.Μ.</displayName>
 				<displayName count="one">δηνάριο Π.Γ.Δ.Μ.</displayName>
 				<displayName count="other">δηνάρια Π.Γ.Δ.Μ.</displayName>
-				<symbol>MKD</symbol>
 			</currency>
 			<currency type="MKN">
 				<displayName count="one" draft="provisional">Παλιό δηνάριο ΠΓΔΜ</displayName>
@@ -5145,25 +4950,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Κυάτ Μιανμάρ</displayName>
 				<displayName count="one">κυάτ Μιανμάρ</displayName>
 				<displayName count="other">κυάτ Μιανμάρ</displayName>
-				<symbol>MMK</symbol>
 			</currency>
 			<currency type="MNT">
 				<displayName>Τουγκρίκ Μογγολίας</displayName>
 				<displayName count="one">τουγκρίκ Μογγολίας</displayName>
 				<displayName count="other">τουγκρίκ Μογγολίας</displayName>
-				<symbol>MNT</symbol>
 			</currency>
 			<currency type="MOP">
 				<displayName>Πατάκα Μακάο</displayName>
 				<displayName count="one">πατάκα Μακάο</displayName>
 				<displayName count="other">πατάκα Μακάο</displayName>
-				<symbol>MOP</symbol>
 			</currency>
 			<currency type="MRO">
-				<displayName>Ουγκίγια Μαυριτανίας</displayName>
-				<displayName count="one">ουγκίγια Μαυριτανίας</displayName>
-				<displayName count="other">ουγκίγια Μαυριτανίας</displayName>
-				<symbol>MRO</symbol>
+				<displayName>Ουγκουίγκα Μαυριτανίας</displayName>
+				<displayName count="one">ουγκουίγκα Μαυριτανίας</displayName>
+				<displayName count="other">ουγκουίγκα Μαυριτανίας</displayName>
 			</currency>
 			<currency type="MTL">
 				<displayName>Λιρέτα Μάλτας</displayName>
@@ -5176,28 +4977,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName count="other">λίρες Μάλτας</displayName>
 			</currency>
 			<currency type="MUR">
-				<displayName>Ρουπία Μαυρικίου</displayName>
-				<displayName count="one">ρουπία Μαυρικίου</displayName>
-				<displayName count="other">ρουπίες Μαυρικίου</displayName>
-				<symbol>MUR</symbol>
+				<displayName>Ρούπια Μαυρικίου</displayName>
+				<displayName count="one">ρούπι Μαυρικίου</displayName>
+				<displayName count="other">ρούπια Μαυρικίου</displayName>
 			</currency>
 			<currency type="MVR">
 				<displayName>Ρουφίγια Μαλδίβων</displayName>
 				<displayName count="one">ρουφίγια Μαλδίβων</displayName>
 				<displayName count="other">ρουφίγια Μαλδίβων</displayName>
-				<symbol>MVR</symbol>
 			</currency>
 			<currency type="MWK">
 				<displayName>Κουάτσα Μαλάουι</displayName>
 				<displayName count="one">κουάτσα Μαλάουι</displayName>
 				<displayName count="other">κουάτσα Μαλάουι</displayName>
-				<symbol>MWK</symbol>
 			</currency>
 			<currency type="MXN">
 				<displayName>Πέσο Μεξικού</displayName>
 				<displayName count="one">πέσο Μεξικού</displayName>
 				<displayName count="other">πέσο Μεξικού</displayName>
-				<symbol>MX$</symbol>
 			</currency>
 			<currency type="MXP">
 				<displayName>Ασημένιο Πέσο Μεξικού (1861-1992)</displayName>
@@ -5208,7 +5005,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Ρινγκίτ Μαλαισίας</displayName>
 				<displayName count="one">ρινγκίτ Μαλαισίας</displayName>
 				<displayName count="other">ρινγκίτ Μαλαισίας</displayName>
-				<symbol>MYR</symbol>
 			</currency>
 			<currency type="MZE">
 				<displayName>Εσκούδο Μοζαμβίκης</displayName>
@@ -5224,19 +5020,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Μετικάλ Μοζαμβίκης</displayName>
 				<displayName count="one">μετικάλ Μοζαμβίκης</displayName>
 				<displayName count="other">μετικάλ Μοζαμβίκης</displayName>
-				<symbol>MZN</symbol>
 			</currency>
 			<currency type="NAD">
 				<displayName>Δολάριο Ναμίμπια</displayName>
 				<displayName count="one">δολάριο Ναμίμπια</displayName>
 				<displayName count="other">δολάρια Ναμίμπια</displayName>
-				<symbol>NAD</symbol>
 			</currency>
 			<currency type="NGN">
 				<displayName>Νάιρα Νιγηρίας</displayName>
 				<displayName count="one">νάιρα Νιγηρίας</displayName>
 				<displayName count="other">νάιρα Νιγηρίας</displayName>
-				<symbol>NGN</symbol>
 			</currency>
 			<currency type="NIC">
 				<displayName>Κόρδοβα Νικαράγουας</displayName>
@@ -5247,7 +5040,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Χρυσή Κόρδοβα Νικαράγουας</displayName>
 				<displayName count="one">χρυσή κόρδοβα Νικαράγουας</displayName>
 				<displayName count="other">χρυσές κόρδοβα Νικαράγουας</displayName>
-				<symbol>NIO</symbol>
 			</currency>
 			<currency type="NLG">
 				<displayName>Γκίλντα Ολλανδίας</displayName>
@@ -5258,31 +5050,26 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Κορόνα Νορβηγίας</displayName>
 				<displayName count="one">κορόνα Νορβηγίας</displayName>
 				<displayName count="other">κορόνες Νορβηγίας</displayName>
-				<symbol>NOK</symbol>
 			</currency>
 			<currency type="NPR">
-				<displayName>Ρουπία Νεπάλ</displayName>
-				<displayName count="one">ρουπία Νεπάλ</displayName>
-				<displayName count="other">ρουπίες Νεπάλ</displayName>
-				<symbol>NPR</symbol>
+				<displayName>Ρούπια Νεπάλ</displayName>
+				<displayName count="one">ρούπι Νεπάλ</displayName>
+				<displayName count="other">ρούπια Νεπάλ</displayName>
 			</currency>
 			<currency type="NZD">
 				<displayName>Δολάριο Νέας Ζηλανδίας</displayName>
 				<displayName count="one">δολάριο Νέας Ζηλανδίας</displayName>
 				<displayName count="other">δολάρια Νέας Ζηλανδίας</displayName>
-				<symbol>NZ$</symbol>
 			</currency>
 			<currency type="OMR">
 				<displayName>Ριάλ Ομάν</displayName>
 				<displayName count="one">ριάλ Ομάν</displayName>
 				<displayName count="other">ριάλ Ομάν</displayName>
-				<symbol>OMR</symbol>
 			</currency>
 			<currency type="PAB">
 				<displayName>Μπαλμπόα Παναμά</displayName>
 				<displayName count="one">μπαλμπόα Παναμά</displayName>
 				<displayName count="other">μπαλμπόα Παναμά</displayName>
-				<symbol>PAB</symbol>
 			</currency>
 			<currency type="PEI">
 				<displayName>Ίντι Περού</displayName>
@@ -5293,7 +5080,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Νέο Σολ Περού</displayName>
 				<displayName count="one">νέο σολ Περού</displayName>
 				<displayName count="other">νέα Σολ Περού</displayName>
-				<symbol>PEN</symbol>
 			</currency>
 			<currency type="PES">
 				<displayName>Σολ Περού</displayName>
@@ -5304,25 +5090,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Κίνα Παπούα Νέα Γουινέα</displayName>
 				<displayName count="one">κίνα Παπούα Νέα Γουινέα</displayName>
 				<displayName count="other">κίνα Παπούα Νέα Γουινέα</displayName>
-				<symbol>PGK</symbol>
 			</currency>
 			<currency type="PHP">
 				<displayName>Πέσο Φιλιππίνων</displayName>
 				<displayName count="one">πέσο Φιλιππίνων</displayName>
 				<displayName count="other">πέσο Φιλιππίνων</displayName>
-				<symbol>PHP</symbol>
 			</currency>
 			<currency type="PKR">
-				<displayName>Ρουπία Πακιστάν</displayName>
-				<displayName count="one">ρουπία Πακιστάν</displayName>
-				<displayName count="other">ρουπίες Πακιστάν</displayName>
-				<symbol>PKR</symbol>
+				<displayName>Ρούπια Πακιστάν</displayName>
+				<displayName count="one">ρούπι Πακιστάν</displayName>
+				<displayName count="other">ρούπια Πακιστάν</displayName>
 			</currency>
 			<currency type="PLN">
 				<displayName>Ζλότι Πολωνίας</displayName>
 				<displayName count="one">ζλότι Πολωνίας</displayName>
 				<displayName count="other">ζλότι Πολωνίας</displayName>
-				<symbol>PLN</symbol>
 			</currency>
 			<currency type="PLZ">
 				<displayName>Ζλότυ Πολωνίας (1950-1995)</displayName>
@@ -5338,13 +5120,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Γκουαρανί Παραγουάης</displayName>
 				<displayName count="one">γκουαρανί Παραγουάης</displayName>
 				<displayName count="other">γκουαρανί Παραγουάης</displayName>
-				<symbol>PYG</symbol>
 			</currency>
 			<currency type="QAR">
 				<displayName>Ριάλ Κατάρ</displayName>
 				<displayName count="one">ριάλ Κατάρ</displayName>
 				<displayName count="other">ριάλ Κατάρ</displayName>
-				<symbol>QAR</symbol>
 			</currency>
 			<currency type="RHD">
 				<displayName>Δολάριο Ροδεσίας</displayName>
@@ -5357,22 +5137,19 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName count="other">παλιά λέι Ρουμανίας</displayName>
 			</currency>
 			<currency type="RON">
-				<displayName>Λέου Ρουμανίας</displayName>
-				<displayName count="one">λέου Ρουμανίας</displayName>
-				<displayName count="other">λέου Ρουμανίας</displayName>
-				<symbol>RON</symbol>
+				<displayName>Λεβ Ρουμανίας</displayName>
+				<displayName count="one">λεβ Ρουμανίας</displayName>
+				<displayName count="other">λεβ Ρουμανίας</displayName>
 			</currency>
 			<currency type="RSD">
 				<displayName>Δηνάριο Σερβίας</displayName>
 				<displayName count="one">δηνάριο Σερβίας</displayName>
 				<displayName count="other">δηνάρια Σερβίας</displayName>
-				<symbol>RSD</symbol>
 			</currency>
 			<currency type="RUB">
 				<displayName>Ρούβλι Ρωσίας</displayName>
 				<displayName count="one">ρούβλι Ρωσίας</displayName>
 				<displayName count="other">ρούβλια Ρωσίας</displayName>
-				<symbol>RUB</symbol>
 			</currency>
 			<currency type="RUR">
 				<displayName>Ρούβλι Ρωσίας (1991-1998)</displayName>
@@ -5383,25 +5160,21 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Φράγκο Ρουάντας</displayName>
 				<displayName count="one">φράγκο Ρουάντας</displayName>
 				<displayName count="other">φράγκα Ρουάντας</displayName>
-				<symbol>RWF</symbol>
 			</currency>
 			<currency type="SAR">
 				<displayName>Ριάλ Σαουδικής Αραβίας</displayName>
 				<displayName count="one">ριάλ Σαουδικής Αραβίας</displayName>
 				<displayName count="other">ριάλ Σαουδικής Αραβίας</displayName>
-				<symbol>SAR</symbol>
 			</currency>
 			<currency type="SBD">
 				<displayName>Δολάριο Νήσων Σολομώντος</displayName>
 				<displayName count="one">δολάριο Νήσων Σολομώντος</displayName>
 				<displayName count="other">δολάρια Νήσων Σολομώντος</displayName>
-				<symbol>SBD</symbol>
 			</currency>
 			<currency type="SCR">
-				<displayName>Ρουπία Σεϋχελλών</displayName>
-				<displayName count="one">ρουπία Σεϋχελλών</displayName>
-				<displayName count="other">ρουπίες Σεϋχελλών</displayName>
-				<symbol>SCR</symbol>
+				<displayName>Ρούπια Σεϋχέλες</displayName>
+				<displayName count="one">ρούπι Σεϋχέλες</displayName>
+				<displayName count="other">ρούπια Σεϋχέλες</displayName>
 			</currency>
 			<currency type="SDD">
 				<displayName>Δηνάριο Σουδάν</displayName>
@@ -5412,7 +5185,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Λίρα Σουδάν</displayName>
 				<displayName count="one">λίρα Σουδάν</displayName>
 				<displayName count="other">λίρες Σουδάν</displayName>
-				<symbol>SDG</symbol>
 			</currency>
 			<currency type="SDP">
 				<displayName>Παλαιά Λίρα Σουδάν</displayName>
@@ -5423,19 +5195,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Κορόνα Σουηδίας</displayName>
 				<displayName count="one">κορόνα Σουηδίας</displayName>
 				<displayName count="other">κορόνες Σουηδίας</displayName>
-				<symbol>SEK</symbol>
 			</currency>
 			<currency type="SGD">
 				<displayName>Δολάριο Σιγκαπούρης</displayName>
 				<displayName count="one">δολάριο Σιγκαπούρης</displayName>
 				<displayName count="other">δολάρια Σιγκαπούρης</displayName>
-				<symbol>SGD</symbol>
 			</currency>
 			<currency type="SHP">
 				<displayName>Λίρα Αγίας Ελένης</displayName>
 				<displayName count="one">λίρα Αγίας Ελένης</displayName>
 				<displayName count="other">λίρες Αγίας Ελένης</displayName>
-				<symbol>SHP</symbol>
 			</currency>
 			<currency type="SIT">
 				<displayName>Τόλαρ Σλοβενίας</displayName>
@@ -5451,19 +5220,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Λεόνε Σιέρα Λεόνε</displayName>
 				<displayName count="one">λεόνε Σιέρα Λεόνε</displayName>
 				<displayName count="other">λεόνε Σιέρα Λεόνε</displayName>
-				<symbol>SLL</symbol>
 			</currency>
 			<currency type="SOS">
 				<displayName>Σελίνι Σομαλίας</displayName>
 				<displayName count="one">σελίνι Σομαλίας</displayName>
 				<displayName count="other">σελίνια Σομαλίας</displayName>
-				<symbol>SOS</symbol>
 			</currency>
 			<currency type="SRD">
 				<displayName>Δολάριο Σουρινάμ</displayName>
 				<displayName count="one">δολάριο Σουρινάμ</displayName>
 				<displayName count="other">δολάρια Σουρινάμ</displayName>
-				<symbol>SRD</symbol>
 			</currency>
 			<currency type="SRG">
 				<displayName>Γκίλντα Σουρινάμ</displayName>
@@ -5472,15 +5238,13 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="SSP">
 				<displayName>Λίρα Νότιου Σουδάν</displayName>
-				<displayName count="one">λίρα Νότιου Σουδάν</displayName>
-				<displayName count="other">λίρες Νότιου Σουδάν</displayName>
-				<symbol>SSP</symbol>
+				<displayName count="one" draft="contributed">λίρα Νότιου Σουδάν</displayName>
+				<displayName count="other" draft="contributed">λίρες Νότιου Σουδάν</displayName>
 			</currency>
 			<currency type="STD">
 				<displayName>Ντόμπρα Σάο Τομέ και Πρίνσιπε</displayName>
 				<displayName count="one">ντόμπρα Σάο Τόμε και Πρίνσιπε</displayName>
 				<displayName count="other">ντόμπρα Σάο Τόμε και Πρίνσιπε</displayName>
-				<symbol>STD</symbol>
 			</currency>
 			<currency type="SUR">
 				<displayName>Σοβιετικό Ρούβλι</displayName>
@@ -5496,19 +5260,16 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Λίρα Συρίας</displayName>
 				<displayName count="one">λίρα Συρίας</displayName>
 				<displayName count="other">λίρες Συρίας</displayName>
-				<symbol>SYP</symbol>
 			</currency>
 			<currency type="SZL">
-				<displayName>Λιλανγκένι Σουαζιλάνδης</displayName>
-				<displayName count="one">λιλανγκένι Σουαζιλάνδης</displayName>
-				<displayName count="other">λιλανγκένι Σουαζιλάνδης</displayName>
-				<symbol>SZL</symbol>
+				<displayName>Λιλανγκένι Σουαζιλάνδη</displayName>
+				<displayName count="one">λιλανγκένι Σουαζιλάνδη</displayName>
+				<displayName count="other">λιλανγκένι Σουαζιλάνδη</displayName>
 			</currency>
 			<currency type="THB">
 				<displayName>Μπατ Ταϊλάνδης</displayName>
 				<displayName count="one">μπατ Ταϊλάνδης</displayName>
 				<displayName count="other">μπατ Ταϊλάνδης</displayName>
-				<symbol>฿</symbol>
 			</currency>
 			<currency type="TJR">
 				<displayName>Ρούβλι Τατζικιστάν</displayName>
@@ -5516,10 +5277,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName count="other">ρούβλια Τατζικιστάν</displayName>
 			</currency>
 			<currency type="TJS">
-				<displayName>Σομόνι Τατζικιστάν</displayName>
-				<displayName count="one">σομόνι Τατζικιστάν</displayName>
-				<displayName count="other">σομόνι Τατζικιστάν</displayName>
-				<symbol>TJS</symbol>
+				<displayName>Σομόν Τατζικιστάν</displayName>
+				<displayName count="one">σομόν Τατζικιστάν</displayName>
+				<displayName count="other">σομόν Τατζικιστάν</displayName>
 			</currency>
 			<currency type="TMM">
 				<displayName>Μανάτ Τουρκμενιστάν</displayName>
@@ -5527,28 +5287,24 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName count="other">μανάτ Τουρκμενιστάν</displayName>
 			</currency>
 			<currency type="TMT">
-				<displayName>Μάνατ Τουρκμενιστάν</displayName>
-				<displayName count="one">μάνατ Τουρκμενιστάν</displayName>
-				<displayName count="other">μάνατ Τουρκμενιστάν</displayName>
-				<symbol>TMT</symbol>
+				<displayName>Νέο μανάτ Τουρκμενιστάν</displayName>
+				<displayName count="one">Νέο μανάτ Τουρκμενιστάν</displayName>
+				<displayName count="other">Νέα μανάτ Τουρκμενιστάν</displayName>
 			</currency>
 			<currency type="TND">
 				<displayName>Δηνάριο Τυνησίας</displayName>
 				<displayName count="one">δηνάριο Τυνησίας</displayName>
 				<displayName count="other">δηνάρια Τυνησίας</displayName>
-				<symbol>TND</symbol>
 			</currency>
 			<currency type="TOP">
-				<displayName>Παάγκα νήσων Τόγκα</displayName>
-				<displayName count="one">παάγκα νήσων Τόγκα</displayName>
-				<displayName count="other">παάγκα νήσων Τόγκα</displayName>
-				<symbol>TOP</symbol>
+				<displayName>Παάνγκα Τόνγκας</displayName>
+				<displayName count="one">πάνγκα Τόγκα</displayName>
+				<displayName count="other">πάνγκα Τόγκα</displayName>
 			</currency>
 			<currency type="TPE">
 				<displayName>Εσκούδο Τιμόρ</displayName>
 				<displayName count="one">εσκούδο Τιμόρ</displayName>
 				<displayName count="other">εσκούδο Τιμόρ</displayName>
-				<symbol draft="contributed">TPE</symbol>
 			</currency>
 			<currency type="TRL">
 				<displayName>Παλιά Λίρα Τουρκίας</displayName>
@@ -5557,33 +5313,28 @@ For terms of use, see http://www.unicode.org/copyright.html
 			</currency>
 			<currency type="TRY">
 				<displayName>Τουρκική Λίρα</displayName>
-				<displayName count="one">τουρκική λίρα</displayName>
-				<displayName count="other">τουρκικές λίρες</displayName>
-				<symbol>TRY</symbol>
+				<displayName count="one">λίρα Τουρκίας</displayName>
+				<displayName count="other">λίρες Τουρκίας</displayName>
 			</currency>
 			<currency type="TTD">
 				<displayName>Δολάριο Τρινιντάντ και Τομπάγκο</displayName>
-				<displayName count="one">δολάριο Τρινιντάντ και Τομπάγκο</displayName>
-				<displayName count="other">δολάρια Τρινιντάντ και Τομπάγκο</displayName>
-				<symbol>TTD</symbol>
+				<displayName count="one">δολάριο Τρινιδάδ και Τομπάγκο</displayName>
+				<displayName count="other">δολάρια Τρινιδάδ και Τομπάγκο</displayName>
 			</currency>
 			<currency type="TWD">
-				<displayName>Νέο δολάριο Ταϊβάν</displayName>
+				<displayName>Νέο Δολάριο Ταϊβάν</displayName>
 				<displayName count="one">νέο δολάριο Ταϊβάν</displayName>
 				<displayName count="other">νέα δολάρια Ταϊβάν</displayName>
-				<symbol>NT$</symbol>
 			</currency>
 			<currency type="TZS">
 				<displayName>Σελίνι Τανζανίας</displayName>
 				<displayName count="one">σελίνι Τανζανίας</displayName>
-				<displayName count="other">σελίνια Τανζανίας</displayName>
-				<symbol>TZS</symbol>
+				<displayName count="other">σελίνι Τανζανίας</displayName>
 			</currency>
 			<currency type="UAH">
-				<displayName>Γρίβνα Ουκρανίας</displayName>
-				<displayName count="one">γρίβνα Ουκρανίας</displayName>
-				<displayName count="other">γρίβνα Ουκρανίας</displayName>
-				<symbol>UAH</symbol>
+				<displayName>Χρίφνα Ουκρανίας</displayName>
+				<displayName count="one">χρίφνα Ουκρανίας</displayName>
+				<displayName count="other">χρίφνα Ουκρανίας</displayName>
 			</currency>
 			<currency type="UAK">
 				<displayName>Καρμποβανέτς Ουκρανίας</displayName>
@@ -5599,13 +5350,12 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Σελίνι Ουγκάντας</displayName>
 				<displayName count="one">σελίνι Ουγκάντας</displayName>
 				<displayName count="other">σελίνια Ουγκάντας</displayName>
-				<symbol>UGX</symbol>
 			</currency>
 			<currency type="USD">
 				<displayName>Δολάριο ΗΠΑ</displayName>
 				<displayName count="one">δολάριο Η.Π.Α.</displayName>
 				<displayName count="other">δολάρια Η.Π.Α.</displayName>
-				<symbol>$</symbol>
+				<symbol draft="contributed">$</symbol>
 			</currency>
 			<currency type="USN">
 				<displayName>Δολάριο ΗΠΑ (επόμενη ημέρα)</displayName>
@@ -5626,13 +5376,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Πέσο Ουρουγουάης</displayName>
 				<displayName count="one">πέσο Ουρουγουάης</displayName>
 				<displayName count="other">πέσο Ουρουγουάης</displayName>
-				<symbol>UYU</symbol>
 			</currency>
 			<currency type="UZS">
 				<displayName>Σομ Ουζμπεκιστάν</displayName>
 				<displayName count="one">σομ Ουζμπεκιστάν</displayName>
 				<displayName count="other">σομ Ουζμπεκιστάν</displayName>
-				<symbol>UZS</symbol>
 			</currency>
 			<currency type="VEB">
 				<displayName>Μπολιβάρ Βενεζουέλας (1871-2008)</displayName>
@@ -5643,13 +5391,11 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Μπολιβάρ Βενεζουέλας</displayName>
 				<displayName count="one">μπολιβάρ Βενεζουέλας</displayName>
 				<displayName count="other">μπολιβάρ Βενεζουέλας</displayName>
-				<symbol>VEF</symbol>
 			</currency>
 			<currency type="VND">
 				<displayName>Ντονγκ Βιετνάμ</displayName>
 				<displayName count="one">ντονγκ Βιετνάμ</displayName>
 				<displayName count="other">ντονγκ Βιετνάμ</displayName>
-				<symbol>₫</symbol>
 			</currency>
 			<currency type="VNN">
 				<displayName count="one" draft="provisional">Παλαιό ντονγκ Βιετνάμ</displayName>
@@ -5659,19 +5405,17 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Βατού Βανουάτου</displayName>
 				<displayName count="one">βατού Βανουάτου</displayName>
 				<displayName count="other">βατού Βανουάτου</displayName>
-				<symbol>VUV</symbol>
 			</currency>
 			<currency type="WST">
-				<displayName>Τάλα Σαμόα</displayName>
-				<displayName count="one">τάλα Σαμόα</displayName>
-				<displayName count="other">τάλα Σαμόα</displayName>
-				<symbol>WST</symbol>
+				<displayName>Ταλά Δυτικής Σαμόας</displayName>
+				<displayName count="one">τάλα Σαμόας</displayName>
+				<displayName count="other">τάλα Σαμόας</displayName>
 			</currency>
 			<currency type="XAF">
-				<displayName>Φράγκο CFA Κεντρικής Αφρικής</displayName>
-				<displayName count="one">φράγκο CFA Κεντρικής Αφρικής</displayName>
-				<displayName count="other">φράγκα CFA Κεντρικής Αφρικής</displayName>
-				<symbol>FCFA</symbol>
+				<displayName>Φράγκο Κεντρικής Αφρικής</displayName>
+				<displayName count="one">φράγκο Κεντρικής Αφρικής</displayName>
+				<displayName count="other">φράγκα Κεντρικής Αφρικής</displayName>
+				<symbol draft="contributed">FCFA</symbol>
 			</currency>
 			<currency type="XBA">
 				<displayName>Ευρωπαϊκή Σύνθετη Μονάδα</displayName>
@@ -5697,7 +5441,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Δολάριο Ανατολικής Καραϊβικής</displayName>
 				<displayName count="one">δολάριο Ανατολικής Καραϊβικής</displayName>
 				<displayName count="other">δολάρια Ανατολικής Καραϊβικής</displayName>
-				<symbol>EC$</symbol>
 			</currency>
 			<currency type="XDR">
 				<displayName>Ειδικά Δικαιώματα Ανάληψης</displayName>
@@ -5720,16 +5463,15 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName count="other">UIC-φράγκα Γαλλίας</displayName>
 			</currency>
 			<currency type="XOF">
-				<displayName>Φράγκο CFA Δυτικής Αφρικής</displayName>
-				<displayName count="one">φράγκο CFA Δυτικής Αφρικής</displayName>
-				<displayName count="other">φράγκα CFA Δυτικής Αφρικής</displayName>
-				<symbol>CFA</symbol>
+				<displayName>Φράγκο Δυτικής Αφρικής</displayName>
+				<displayName count="one">φράγκο BCEAO CFA</displayName>
+				<displayName count="other">φράγκα BCEAO CFA</displayName>
+				<symbol draft="contributed">CFA</symbol>
 			</currency>
 			<currency type="XPF">
 				<displayName>Φράγκο CFP</displayName>
 				<displayName count="one">φράγκο CFP</displayName>
 				<displayName count="other">φράγκα CFP</displayName>
-				<symbol>CFPF</symbol>
 			</currency>
 			<currency type="XRE">
 				<displayName count="one" draft="provisional">Ταμείο RINET</displayName>
@@ -5749,7 +5491,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Ριάλ Υεμένης</displayName>
 				<displayName count="one">ριάλ Υεμένης</displayName>
 				<displayName count="other">ριάλ Υεμένης</displayName>
-				<symbol>YER</symbol>
 			</currency>
 			<currency type="YUD">
 				<displayName>Μεταλλικό Δηνάριο Γιουγκοσλαβίας</displayName>
@@ -5779,7 +5520,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName>Ραντ Νότιας Αφρικής</displayName>
 				<displayName count="one">ραντ Νότιας Αφρικής</displayName>
 				<displayName count="other">ραντ Νότιας Αφρικής</displayName>
-				<symbol>ZAR</symbol>
 			</currency>
 			<currency type="ZMK">
 				<displayName>Κουάνζα Ζαΐρ (1968-2012)</displayName>
@@ -5787,10 +5527,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName count="other">κουάτσα Ζάμπιας (1968-2012)</displayName>
 			</currency>
 			<currency type="ZMW">
-				<displayName>Κουάτσα Ζάμπιας</displayName>
+				<displayName>Κουάνζα Ζαΐρ</displayName>
 				<displayName count="one">κουάτσα Ζάμπιας</displayName>
 				<displayName count="other">κουάτσα Ζάμπιας</displayName>
-				<symbol>ZMW</symbol>
 			</currency>
 			<currency type="ZRN">
 				<displayName>Νέο Ζαΐρ Ζαΐρ</displayName>
@@ -5817,56 +5556,9 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<displayName count="other" draft="provisional">Δολάρια Ζιμπάμπουε (2008)</displayName>
 			</currency>
 		</currencies>
-		<miscPatterns numberSystem="latn">
-			<pattern type="atLeast">⩾{0}</pattern>
-			<pattern type="range">{0}–{1}</pattern>
-		</miscPatterns>
 	</numbers>
 	<units>
 		<unitLength type="long">
-			<compoundUnit type="per">
-				<compoundUnitPattern>{0} ανά {1}</compoundUnitPattern>
-			</compoundUnit>
-			<unit type="acceleration-g-force">
-				<unitPattern count="one">{0} g</unitPattern>
-				<unitPattern count="other">{0} g</unitPattern>
-			</unit>
-			<unit type="angle-degree">
-				<unitPattern count="one">{0} μοίρα</unitPattern>
-				<unitPattern count="other">{0} μοίρες</unitPattern>
-			</unit>
-			<unit type="angle-minute">
-				<unitPattern count="one">{0} λεπτό</unitPattern>
-				<unitPattern count="other">{0} λεπτά</unitPattern>
-			</unit>
-			<unit type="angle-second">
-				<unitPattern count="one">{0} δευτερόλεπτο</unitPattern>
-				<unitPattern count="other">{0} δευτερόλεπτα</unitPattern>
-			</unit>
-			<unit type="area-acre">
-				<unitPattern count="one">{0} ακρ</unitPattern>
-				<unitPattern count="other">{0} ακρ</unitPattern>
-			</unit>
-			<unit type="area-hectare">
-				<unitPattern count="one">{0} εκτάριο</unitPattern>
-				<unitPattern count="other">{0} εκτάρια</unitPattern>
-			</unit>
-			<unit type="area-square-foot">
-				<unitPattern count="one">{0} τετραγωνικό πόδι</unitPattern>
-				<unitPattern count="other">{0} τετραγωνικά πόδια</unitPattern>
-			</unit>
-			<unit type="area-square-kilometer">
-				<unitPattern count="one">{0} τετραγωνικό χιλιόμετρο</unitPattern>
-				<unitPattern count="other">{0} τετραγωνικά χιλιόμετρα</unitPattern>
-			</unit>
-			<unit type="area-square-meter">
-				<unitPattern count="one">{0} τετραγωνικό μέτρο</unitPattern>
-				<unitPattern count="other">{0} τετραγωνικά μέτρα</unitPattern>
-			</unit>
-			<unit type="area-square-mile">
-				<unitPattern count="one">{0} τετραγωνικό μίλι</unitPattern>
-				<unitPattern count="other">{0} τετραγωνικά μίλια</unitPattern>
-			</unit>
 			<unit type="duration-day">
 				<unitPattern count="one">{0} ημέρα</unitPattern>
 				<unitPattern count="other">{0} ημέρες</unitPattern>
@@ -5890,10 +5582,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<unit type="duration-hour-past">
 				<unitPattern count="one">Πριν από {0} ώρα</unitPattern>
 				<unitPattern count="other">Πριν από {0} ώρες</unitPattern>
-			</unit>
-			<unit type="duration-millisecond">
-				<unitPattern count="one">{0} χιλιοστό του δευτερολέπτου</unitPattern>
-				<unitPattern count="other">{0} χιλιοστά του δευτερολέπτου</unitPattern>
 			</unit>
 			<unit type="duration-minute">
 				<unitPattern count="one">{0} λεπτό</unitPattern>
@@ -5955,616 +5643,35 @@ For terms of use, see http://www.unicode.org/copyright.html
 				<unitPattern count="one">Πριν από {0} έτος</unitPattern>
 				<unitPattern count="other">Πριν από {0} έτη</unitPattern>
 			</unit>
-			<unit type="length-centimeter">
-				<unitPattern count="one">{0} εκατοστό</unitPattern>
-				<unitPattern count="other">{0} εκατοστά</unitPattern>
-			</unit>
-			<unit type="length-foot">
-				<unitPattern count="one">{0} πόδι</unitPattern>
-				<unitPattern count="other">{0} πόδια</unitPattern>
-			</unit>
-			<unit type="length-inch">
-				<unitPattern count="one">{0} ίντσα</unitPattern>
-				<unitPattern count="other">{0} ίντσες</unitPattern>
-			</unit>
-			<unit type="length-kilometer">
-				<unitPattern count="one">{0} χιλιόμετρο</unitPattern>
-				<unitPattern count="other">{0} χιλιόμετρα</unitPattern>
-			</unit>
-			<unit type="length-light-year">
-				<unitPattern count="one">{0} έτος φωτός</unitPattern>
-				<unitPattern count="other">{0} έτη φωτός</unitPattern>
-			</unit>
-			<unit type="length-meter">
-				<unitPattern count="one">{0} μέτρο</unitPattern>
-				<unitPattern count="other">{0} μέτρα</unitPattern>
-			</unit>
-			<unit type="length-mile">
-				<unitPattern count="one">{0} μίλι</unitPattern>
-				<unitPattern count="other">{0} μίλια</unitPattern>
-			</unit>
-			<unit type="length-millimeter">
-				<unitPattern count="one">{0} χιλιοστόμετρο</unitPattern>
-				<unitPattern count="other">{0} χιλιοστόμετρα</unitPattern>
-			</unit>
-			<unit type="length-picometer">
-				<unitPattern count="one">{0} πικόμετρο</unitPattern>
-				<unitPattern count="other">{0} πικόμετρα</unitPattern>
-			</unit>
-			<unit type="length-yard">
-				<unitPattern count="one">{0} γιάρδα</unitPattern>
-				<unitPattern count="other">{0} γιάρδες</unitPattern>
-			</unit>
-			<unit type="mass-gram">
-				<unitPattern count="one">{0} γραμμάριο</unitPattern>
-				<unitPattern count="other">{0} γραμμάρια</unitPattern>
-			</unit>
-			<unit type="mass-kilogram">
-				<unitPattern count="one">{0} χιλιόγραμμο</unitPattern>
-				<unitPattern count="other">{0} χιλιόγραμμα</unitPattern>
-			</unit>
-			<unit type="mass-ounce">
-				<unitPattern count="one">{0} ουγγιά</unitPattern>
-				<unitPattern count="other">{0} ουγγιές</unitPattern>
-			</unit>
-			<unit type="mass-pound">
-				<unitPattern count="one">{0} λίβρα</unitPattern>
-				<unitPattern count="other">{0} λίβρες</unitPattern>
-			</unit>
-			<unit type="power-horsepower">
-				<unitPattern count="one">{0} ίππος</unitPattern>
-				<unitPattern count="other">{0} ίπποι</unitPattern>
-			</unit>
-			<unit type="power-kilowatt">
-				<unitPattern count="one">{0} κιλοβάτ</unitPattern>
-				<unitPattern count="other">{0} κιλοβάτ</unitPattern>
-			</unit>
-			<unit type="power-watt">
-				<unitPattern count="one">{0} watt</unitPattern>
-				<unitPattern count="other">{0} watt</unitPattern>
-			</unit>
-			<unit type="pressure-hectopascal">
-				<unitPattern count="one">{0} εκτοπασκάλ</unitPattern>
-				<unitPattern count="other">{0} εκτοπασκάλ</unitPattern>
-			</unit>
-			<unit type="pressure-inch-hg">
-				<unitPattern count="one">{0} ίντσα στήλης υδραργύρου</unitPattern>
-				<unitPattern count="other">{0} ίντσες στήλης υδραργύρου</unitPattern>
-			</unit>
-			<unit type="pressure-millibar">
-				<unitPattern count="one">{0} μιλιμπάρ</unitPattern>
-				<unitPattern count="other">{0} μιλιμπάρ</unitPattern>
-			</unit>
-			<unit type="speed-kilometer-per-hour">
-				<unitPattern count="one">{0} χιλιόμετρο ανά ώρα</unitPattern>
-				<unitPattern count="other">{0} χιλιόμετρα ανά ώρα</unitPattern>
-			</unit>
-			<unit type="speed-meter-per-second">
-				<unitPattern count="one">{0} μέτρο ανά δευτερόλεπτο</unitPattern>
-				<unitPattern count="other">{0} μέτρα ανά δευτερόλεπτο</unitPattern>
-			</unit>
-			<unit type="speed-mile-per-hour">
-				<unitPattern count="one">{0} μίλι ανά ώρα</unitPattern>
-				<unitPattern count="other">{0} μίλια ανά ώρα</unitPattern>
-			</unit>
-			<unit type="temperature-celsius">
-				<unitPattern count="one">{0} βαθμός Κελσίου</unitPattern>
-				<unitPattern count="other">{0} βαθμοί Κελσίου</unitPattern>
-			</unit>
-			<unit type="temperature-fahrenheit">
-				<unitPattern count="one">{0} βαθμός Φαρενάιτ</unitPattern>
-				<unitPattern count="other">{0} βαθμοί Φαρενάιτ</unitPattern>
-			</unit>
-			<unit type="volume-cubic-kilometer">
-				<unitPattern count="one">{0} κυβικό χιλιόμετρο</unitPattern>
-				<unitPattern count="other">{0} κυβικά χιλιόμετρα</unitPattern>
-			</unit>
-			<unit type="volume-cubic-mile">
-				<unitPattern count="one">{0} κυβικό μίλι</unitPattern>
-				<unitPattern count="other">{0} κυβικά μίλια</unitPattern>
-			</unit>
-			<unit type="volume-liter">
-				<unitPattern count="one">{0} λίτρο</unitPattern>
-				<unitPattern count="other">{0} λίτρα</unitPattern>
-			</unit>
 		</unitLength>
 		<unitLength type="short">
-			<compoundUnit type="per">
-				<compoundUnitPattern>{0}/{1}</compoundUnitPattern>
-			</compoundUnit>
-			<unit type="acceleration-g-force">
-				<unitPattern count="one">{0} g</unitPattern>
-				<unitPattern count="other">{0} g</unitPattern>
-			</unit>
-			<unit type="angle-degree">
-				<unitPattern count="one">{0}°</unitPattern>
-				<unitPattern count="other">{0}°</unitPattern>
-			</unit>
-			<unit type="angle-minute">
-				<unitPattern count="one">{0} λεπ.</unitPattern>
-				<unitPattern count="other">{0} λεπ.</unitPattern>
-			</unit>
-			<unit type="angle-second">
-				<unitPattern count="one">{0} δευτ.</unitPattern>
-				<unitPattern count="other">{0} δευτ.</unitPattern>
-			</unit>
-			<unit type="area-acre">
-				<unitPattern count="one">{0} ac</unitPattern>
-				<unitPattern count="other">{0} ac</unitPattern>
-			</unit>
-			<unit type="area-hectare">
-				<unitPattern count="one">{0} ha</unitPattern>
-				<unitPattern count="other">{0} ha</unitPattern>
-			</unit>
-			<unit type="area-square-foot">
-				<unitPattern count="one">{0} ft²</unitPattern>
-				<unitPattern count="other">{0} ft²</unitPattern>
-			</unit>
-			<unit type="area-square-kilometer">
-				<unitPattern count="one">{0} km²</unitPattern>
-				<unitPattern count="other">{0} km²</unitPattern>
-			</unit>
-			<unit type="area-square-meter">
-				<unitPattern count="one">{0} m²</unitPattern>
-				<unitPattern count="other">{0} m²</unitPattern>
-			</unit>
-			<unit type="area-square-mile">
-				<unitPattern count="one">{0} mi²</unitPattern>
-				<unitPattern count="other">{0} mi²</unitPattern>
-			</unit>
 			<unit type="duration-day">
 				<unitPattern count="one">{0} ημέρα</unitPattern>
 				<unitPattern count="other">{0} ημέρες</unitPattern>
 			</unit>
-			<unit type="duration-day-future">
-				<unitPattern count="one">+{0} ημ.</unitPattern>
-				<unitPattern count="other">+{0} ημ.</unitPattern>
-			</unit>
-			<unit type="duration-day-past">
-				<unitPattern count="one">-{0} ημ.</unitPattern>
-				<unitPattern count="other">-{0} ημ.</unitPattern>
-			</unit>
 			<unit type="duration-hour">
 				<unitPattern count="one">{0} ώρα</unitPattern>
 				<unitPattern count="other">{0} ώρες</unitPattern>
 			</unit>
-			<unit type="duration-hour-future">
-				<unitPattern count="one">+{0} ώρα</unitPattern>
-				<unitPattern count="other">+{0} ώρες</unitPattern>
-			</unit>
-			<unit type="duration-hour-past">
-				<unitPattern count="one">-{0} ώρα</unitPattern>
-				<unitPattern count="other">-{0} ώρες</unitPattern>
-			</unit>
-			<unit type="duration-millisecond">
-				<unitPattern count="one">{0} ms</unitPattern>
-				<unitPattern count="other">{0} ms</unitPattern>
-			</unit>
 			<unit type="duration-minute">
-				<unitPattern count="one">{0} λεπ.</unitPattern>
-				<unitPattern count="other">{0} λεπ.</unitPattern>
-			</unit>
-			<unit type="duration-minute-future">
-				<unitPattern count="one">+{0} λεπ.</unitPattern>
-				<unitPattern count="other">+{0} λεπ.</unitPattern>
-			</unit>
-			<unit type="duration-minute-past">
-				<unitPattern count="one">-{0} λεπ.</unitPattern>
-				<unitPattern count="other">-{0} λεπ.</unitPattern>
+				<unitPattern count="one">{0} λεπτό</unitPattern>
+				<unitPattern count="other">{0} λεπτά</unitPattern>
 			</unit>
 			<unit type="duration-month">
-				<unitPattern count="one">{0} μήν.</unitPattern>
-				<unitPattern count="other">{0} μήν.</unitPattern>
-			</unit>
-			<unit type="duration-month-future">
-				<unitPattern count="one">+{0} μήν.</unitPattern>
-				<unitPattern count="other">+{0} μήν.</unitPattern>
-			</unit>
-			<unit type="duration-month-past">
-				<unitPattern count="one">-{0} μήν.</unitPattern>
-				<unitPattern count="other">-{0} μήν.</unitPattern>
+				<unitPattern count="one">{0} μήνας</unitPattern>
+				<unitPattern count="other">{0} μήνες</unitPattern>
 			</unit>
 			<unit type="duration-second">
-				<unitPattern count="one">{0} δευτ.</unitPattern>
-				<unitPattern count="other">{0} δευτ.</unitPattern>
-			</unit>
-			<unit type="duration-second-future">
-				<unitPattern count="one">+{0} δευτ.</unitPattern>
-				<unitPattern count="other">+{0} δευτ.</unitPattern>
-			</unit>
-			<unit type="duration-second-past">
-				<unitPattern count="one">-{0} δευτ.</unitPattern>
-				<unitPattern count="other">-{0} δευτ.</unitPattern>
+				<unitPattern count="one">{0} δευτερόλεπτο</unitPattern>
+				<unitPattern count="other">{0} δευτερόλεπτα</unitPattern>
 			</unit>
 			<unit type="duration-week">
-				<unitPattern count="one">{0} εβδ.</unitPattern>
-				<unitPattern count="other">{0} εβδ.</unitPattern>
-			</unit>
-			<unit type="duration-week-future">
-				<unitPattern count="one">+{0} εβδ.</unitPattern>
-				<unitPattern count="other">+{0} εβδ.</unitPattern>
-			</unit>
-			<unit type="duration-week-past">
-				<unitPattern count="one">-{0} εβδ.</unitPattern>
-				<unitPattern count="other">-{0} εβδ.</unitPattern>
+				<unitPattern count="one">{0} εβδομάδα</unitPattern>
+				<unitPattern count="other">{0} εβδομάδες</unitPattern>
 			</unit>
 			<unit type="duration-year">
 				<unitPattern count="one">{0} έτος</unitPattern>
 				<unitPattern count="other">{0} έτη</unitPattern>
-			</unit>
-			<unit type="duration-year-future">
-				<unitPattern count="one">+{0} έτ.</unitPattern>
-				<unitPattern count="other">+{0} έτ.</unitPattern>
-			</unit>
-			<unit type="duration-year-past">
-				<unitPattern count="one">-{0} έτ.</unitPattern>
-				<unitPattern count="other">-{0} έτ.</unitPattern>
-			</unit>
-			<unit type="length-centimeter">
-				<unitPattern count="one">{0} εκ.</unitPattern>
-				<unitPattern count="other">{0} εκ.</unitPattern>
-			</unit>
-			<unit type="length-foot">
-				<unitPattern count="one">{0} ft</unitPattern>
-				<unitPattern count="other">{0} ft</unitPattern>
-			</unit>
-			<unit type="length-inch">
-				<unitPattern count="one">{0} in</unitPattern>
-				<unitPattern count="other">{0} in</unitPattern>
-			</unit>
-			<unit type="length-kilometer">
-				<unitPattern count="one">{0} χλμ.</unitPattern>
-				<unitPattern count="other">{0} χλμ.</unitPattern>
-			</unit>
-			<unit type="length-light-year">
-				<unitPattern count="one">{0} ly</unitPattern>
-				<unitPattern count="other">{0} ly</unitPattern>
-			</unit>
-			<unit type="length-meter">
-				<unitPattern count="one">{0} μ.</unitPattern>
-				<unitPattern count="other">{0} μ.</unitPattern>
-			</unit>
-			<unit type="length-mile">
-				<unitPattern count="one">{0} mi</unitPattern>
-				<unitPattern count="other">{0} mi</unitPattern>
-			</unit>
-			<unit type="length-millimeter">
-				<unitPattern count="one">{0} χλστ.</unitPattern>
-				<unitPattern count="other">{0} χλστ.</unitPattern>
-			</unit>
-			<unit type="length-picometer">
-				<unitPattern count="one">{0} pm</unitPattern>
-				<unitPattern count="other">{0} pm</unitPattern>
-			</unit>
-			<unit type="length-yard">
-				<unitPattern count="one">{0} yd</unitPattern>
-				<unitPattern count="other">{0} yd</unitPattern>
-			</unit>
-			<unit type="mass-gram">
-				<unitPattern count="one">{0} γρ.</unitPattern>
-				<unitPattern count="other">{0} γρ.</unitPattern>
-			</unit>
-			<unit type="mass-kilogram">
-				<unitPattern count="one">{0} χλγρ.</unitPattern>
-				<unitPattern count="other">{0} χλγρ.</unitPattern>
-			</unit>
-			<unit type="mass-ounce">
-				<unitPattern count="one">{0} oz</unitPattern>
-				<unitPattern count="other">{0} oz</unitPattern>
-			</unit>
-			<unit type="mass-pound">
-				<unitPattern count="one">{0} lb</unitPattern>
-				<unitPattern count="other">{0} lb</unitPattern>
-			</unit>
-			<unit type="power-horsepower">
-				<unitPattern count="one">{0} hp</unitPattern>
-				<unitPattern count="other">{0} hp</unitPattern>
-			</unit>
-			<unit type="power-kilowatt">
-				<unitPattern count="one">{0} kW</unitPattern>
-				<unitPattern count="other">{0} kW</unitPattern>
-			</unit>
-			<unit type="power-watt">
-				<unitPattern count="one">{0} W</unitPattern>
-				<unitPattern count="other">{0} W</unitPattern>
-			</unit>
-			<unit type="pressure-hectopascal">
-				<unitPattern count="one">{0} hPa</unitPattern>
-				<unitPattern count="other">{0} hPa</unitPattern>
-			</unit>
-			<unit type="pressure-inch-hg">
-				<unitPattern count="one">{0} inHg</unitPattern>
-				<unitPattern count="other">{0} inHg</unitPattern>
-			</unit>
-			<unit type="pressure-millibar">
-				<unitPattern count="one">{0} mbar</unitPattern>
-				<unitPattern count="other">{0} mbar</unitPattern>
-			</unit>
-			<unit type="speed-kilometer-per-hour">
-				<unitPattern count="one">{0} χλμ./ώρα</unitPattern>
-				<unitPattern count="other">{0} χλμ./ώρα</unitPattern>
-			</unit>
-			<unit type="speed-meter-per-second">
-				<unitPattern count="one">{0} μέτρο/δευτ.</unitPattern>
-				<unitPattern count="other">{0} μέτρα/δευτ.</unitPattern>
-			</unit>
-			<unit type="speed-mile-per-hour">
-				<unitPattern count="one">{0} μίλι/ώρα</unitPattern>
-				<unitPattern count="other">{0} μίλια/ώρα</unitPattern>
-			</unit>
-			<unit type="temperature-celsius">
-				<unitPattern count="one">{0}°C</unitPattern>
-				<unitPattern count="other">{0}°C</unitPattern>
-			</unit>
-			<unit type="temperature-fahrenheit">
-				<unitPattern count="one">{0}°F</unitPattern>
-				<unitPattern count="other">{0}°F</unitPattern>
-			</unit>
-			<unit type="volume-cubic-kilometer">
-				<unitPattern count="one">{0} km³</unitPattern>
-				<unitPattern count="other">{0} km³</unitPattern>
-			</unit>
-			<unit type="volume-cubic-mile">
-				<unitPattern count="one">{0} mi³</unitPattern>
-				<unitPattern count="other">{0} mi³</unitPattern>
-			</unit>
-			<unit type="volume-liter">
-				<unitPattern count="one">{0} λίτ.</unitPattern>
-				<unitPattern count="other">{0} λίτ.</unitPattern>
-			</unit>
-			<durationUnit type="hm">
-				<durationUnitPattern>ω:λλ</durationUnitPattern>
-			</durationUnit>
-			<durationUnit type="hms">
-				<durationUnitPattern>ω:λλ:δδ</durationUnitPattern>
-			</durationUnit>
-			<durationUnit type="ms">
-				<durationUnitPattern>λ:δδ</durationUnitPattern>
-			</durationUnit>
-		</unitLength>
-		<unitLength type="narrow">
-			<compoundUnit type="per">
-				<compoundUnitPattern>{0}/{1}</compoundUnitPattern>
-			</compoundUnit>
-			<unit type="acceleration-g-force">
-				<unitPattern count="one">{0} g</unitPattern>
-				<unitPattern count="other">{0} g</unitPattern>
-			</unit>
-			<unit type="angle-degree">
-				<unitPattern count="one">{0}°</unitPattern>
-				<unitPattern count="other">{0}°</unitPattern>
-			</unit>
-			<unit type="angle-minute">
-				<unitPattern count="one">{0}′</unitPattern>
-				<unitPattern count="other">{0}′</unitPattern>
-			</unit>
-			<unit type="angle-second">
-				<unitPattern count="one">{0}″</unitPattern>
-				<unitPattern count="other">{0}″</unitPattern>
-			</unit>
-			<unit type="area-acre">
-				<unitPattern count="one">{0} ac</unitPattern>
-				<unitPattern count="other">{0} ac</unitPattern>
-			</unit>
-			<unit type="area-hectare">
-				<unitPattern count="one">{0} ha</unitPattern>
-				<unitPattern count="other">{0} ha</unitPattern>
-			</unit>
-			<unit type="area-square-foot">
-				<unitPattern count="one">{0} ft²</unitPattern>
-				<unitPattern count="other">{0} ft²</unitPattern>
-			</unit>
-			<unit type="area-square-kilometer">
-				<unitPattern count="one">{0} km²</unitPattern>
-				<unitPattern count="other">{0} km²</unitPattern>
-			</unit>
-			<unit type="area-square-meter">
-				<unitPattern count="one">{0} m²</unitPattern>
-				<unitPattern count="other">{0} m²</unitPattern>
-			</unit>
-			<unit type="area-square-mile">
-				<unitPattern count="one">{0} mi²</unitPattern>
-				<unitPattern count="other">{0} mi²</unitPattern>
-			</unit>
-			<unit type="duration-day">
-				<unitPattern count="one">{0} ημ.</unitPattern>
-				<unitPattern count="other">{0} ημ.</unitPattern>
-			</unit>
-			<unit type="duration-day-future">
-				<unitPattern count="one">+{0} ημ.</unitPattern>
-				<unitPattern count="other">+{0} ημ.</unitPattern>
-			</unit>
-			<unit type="duration-day-past">
-				<unitPattern count="one">-{0} ημ.</unitPattern>
-				<unitPattern count="other">-{0} ημ.</unitPattern>
-			</unit>
-			<unit type="duration-hour">
-				<unitPattern count="one">{0} ώρα</unitPattern>
-				<unitPattern count="other">{0} ώρες</unitPattern>
-			</unit>
-			<unit type="duration-hour-future">
-				<unitPattern count="one">+{0} ώρα</unitPattern>
-				<unitPattern count="other">+{0} ώρες</unitPattern>
-			</unit>
-			<unit type="duration-hour-past">
-				<unitPattern count="one">-{0} ώρα</unitPattern>
-				<unitPattern count="other">-{0} ώρες</unitPattern>
-			</unit>
-			<unit type="duration-millisecond">
-				<unitPattern count="one">{0} ms</unitPattern>
-				<unitPattern count="other">{0} ms</unitPattern>
-			</unit>
-			<unit type="duration-minute">
-				<unitPattern count="one">{0} λεπ.</unitPattern>
-				<unitPattern count="other">{0} λεπ.</unitPattern>
-			</unit>
-			<unit type="duration-minute-future">
-				<unitPattern count="one">+{0} λεπ.</unitPattern>
-				<unitPattern count="other">+{0} λεπ.</unitPattern>
-			</unit>
-			<unit type="duration-minute-past">
-				<unitPattern count="one">-{0} λεπ.</unitPattern>
-				<unitPattern count="other">-{0} λεπ.</unitPattern>
-			</unit>
-			<unit type="duration-month">
-				<unitPattern count="one">{0} μήν.</unitPattern>
-				<unitPattern count="other">{0} μήν.</unitPattern>
-			</unit>
-			<unit type="duration-month-future">
-				<unitPattern count="one">+{0} μήν.</unitPattern>
-				<unitPattern count="other">+{0} μήν.</unitPattern>
-			</unit>
-			<unit type="duration-month-past">
-				<unitPattern count="one">-{0} μήν.</unitPattern>
-				<unitPattern count="other">-{0} μήν.</unitPattern>
-			</unit>
-			<unit type="duration-second">
-				<unitPattern count="one">{0} δευτ.</unitPattern>
-				<unitPattern count="other">{0} δευτ.</unitPattern>
-			</unit>
-			<unit type="duration-second-future">
-				<unitPattern count="one">+{0} δευτ.</unitPattern>
-				<unitPattern count="other">+{0} δευτ.</unitPattern>
-			</unit>
-			<unit type="duration-second-past">
-				<unitPattern count="one">-{0} δευτ.</unitPattern>
-				<unitPattern count="other">-{0} δευτ.</unitPattern>
-			</unit>
-			<unit type="duration-week">
-				<unitPattern count="one">{0} εβδ.</unitPattern>
-				<unitPattern count="other">{0} εβδ.</unitPattern>
-			</unit>
-			<unit type="duration-week-future">
-				<unitPattern count="one">+{0} εβδ.</unitPattern>
-				<unitPattern count="other">+{0} εβδ.</unitPattern>
-			</unit>
-			<unit type="duration-week-past">
-				<unitPattern count="one">-{0} εβδ.</unitPattern>
-				<unitPattern count="other">-{0} εβδ.</unitPattern>
-			</unit>
-			<unit type="duration-year">
-				<unitPattern count="one">{0} έτ.</unitPattern>
-				<unitPattern count="other">{0} έτ.</unitPattern>
-			</unit>
-			<unit type="duration-year-future">
-				<unitPattern count="one">+{0} έτ.</unitPattern>
-				<unitPattern count="other">+{0} έτ.</unitPattern>
-			</unit>
-			<unit type="duration-year-past">
-				<unitPattern count="one">-{0} έτ.</unitPattern>
-				<unitPattern count="other">-{0} έτ.</unitPattern>
-			</unit>
-			<unit type="length-centimeter">
-				<unitPattern count="one">{0} εκ.</unitPattern>
-				<unitPattern count="other">{0} εκ.</unitPattern>
-			</unit>
-			<unit type="length-foot">
-				<unitPattern count="one">{0} ft</unitPattern>
-				<unitPattern count="other">{0} ft</unitPattern>
-			</unit>
-			<unit type="length-inch">
-				<unitPattern count="one">{0} in</unitPattern>
-				<unitPattern count="other">{0} in</unitPattern>
-			</unit>
-			<unit type="length-kilometer">
-				<unitPattern count="one">{0} χλμ.</unitPattern>
-				<unitPattern count="other">{0} χλμ.</unitPattern>
-			</unit>
-			<unit type="length-light-year">
-				<unitPattern count="one">{0} ly</unitPattern>
-				<unitPattern count="other">{0} ly</unitPattern>
-			</unit>
-			<unit type="length-meter">
-				<unitPattern count="one">{0} μ.</unitPattern>
-				<unitPattern count="other">{0} μ.</unitPattern>
-			</unit>
-			<unit type="length-mile">
-				<unitPattern count="one">{0} mi</unitPattern>
-				<unitPattern count="other">{0} mi</unitPattern>
-			</unit>
-			<unit type="length-millimeter">
-				<unitPattern count="one">{0} χλστ.</unitPattern>
-				<unitPattern count="other">{0} χλστ.</unitPattern>
-			</unit>
-			<unit type="length-picometer">
-				<unitPattern count="one">{0} pm</unitPattern>
-				<unitPattern count="other">{0} pm</unitPattern>
-			</unit>
-			<unit type="length-yard">
-				<unitPattern count="one">{0} yd</unitPattern>
-				<unitPattern count="other">{0} yd</unitPattern>
-			</unit>
-			<unit type="mass-gram">
-				<unitPattern count="one">{0} g</unitPattern>
-				<unitPattern count="other">{0} g</unitPattern>
-			</unit>
-			<unit type="mass-kilogram">
-				<unitPattern count="one">{0} kg</unitPattern>
-				<unitPattern count="other">{0} kg</unitPattern>
-			</unit>
-			<unit type="mass-ounce">
-				<unitPattern count="one">{0} oz</unitPattern>
-				<unitPattern count="other">{0} oz</unitPattern>
-			</unit>
-			<unit type="mass-pound">
-				<unitPattern count="one">{0} lb</unitPattern>
-				<unitPattern count="other">{0} lb</unitPattern>
-			</unit>
-			<unit type="power-horsepower">
-				<unitPattern count="one">{0} hp</unitPattern>
-				<unitPattern count="other">{0} hp</unitPattern>
-			</unit>
-			<unit type="power-kilowatt">
-				<unitPattern count="one">{0} kW</unitPattern>
-				<unitPattern count="other">{0} kW</unitPattern>
-			</unit>
-			<unit type="power-watt">
-				<unitPattern count="one">{0} W</unitPattern>
-				<unitPattern count="other">{0} W</unitPattern>
-			</unit>
-			<unit type="pressure-hectopascal">
-				<unitPattern count="one">{0} hPa</unitPattern>
-				<unitPattern count="other">{0} hPa</unitPattern>
-			</unit>
-			<unit type="pressure-inch-hg">
-				<unitPattern count="one">{0} inHg</unitPattern>
-				<unitPattern count="other">{0} inHg</unitPattern>
-			</unit>
-			<unit type="pressure-millibar">
-				<unitPattern count="one">{0} mbar</unitPattern>
-				<unitPattern count="other">{0} mbar</unitPattern>
-			</unit>
-			<unit type="speed-kilometer-per-hour">
-				<unitPattern count="one">{0} χλμ./ώρα</unitPattern>
-				<unitPattern count="other">{0} χλμ./ώρα</unitPattern>
-			</unit>
-			<unit type="speed-meter-per-second">
-				<unitPattern count="one">{0} m/s</unitPattern>
-				<unitPattern count="other">{0} m/s</unitPattern>
-			</unit>
-			<unit type="speed-mile-per-hour">
-				<unitPattern count="one">{0} mi/h</unitPattern>
-				<unitPattern count="other">{0} mi/h</unitPattern>
-			</unit>
-			<unit type="temperature-celsius">
-				<unitPattern count="one">{0}°C</unitPattern>
-				<unitPattern count="other">{0}°C</unitPattern>
-			</unit>
-			<unit type="temperature-fahrenheit">
-				<unitPattern count="one">{0}°F</unitPattern>
-				<unitPattern count="other">{0}°F</unitPattern>
-			</unit>
-			<unit type="volume-cubic-kilometer">
-				<unitPattern count="one">{0} km³</unitPattern>
-				<unitPattern count="other">{0} km³</unitPattern>
-			</unit>
-			<unit type="volume-cubic-mile">
-				<unitPattern count="one">{0} mi³</unitPattern>
-				<unitPattern count="other">{0} mi³</unitPattern>
-			</unit>
-			<unit type="volume-liter">
-				<unitPattern count="one">{0} l</unitPattern>
-				<unitPattern count="other">{0} l</unitPattern>
 			</unit>
 		</unitLength>
 	</units>
@@ -6575,24 +5682,6 @@ For terms of use, see http://www.unicode.org/copyright.html
 			<listPatternPart type="end">{0} και {1}</listPatternPart>
 			<listPatternPart type="2">{0} και {1}</listPatternPart>
 		</listPattern>
-		<listPattern type="duration">
-			<listPatternPart type="start">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle">{0}, {1}</listPatternPart>
-			<listPatternPart type="end">{0} και {1}</listPatternPart>
-			<listPatternPart type="2">{0} και {1}</listPatternPart>
-		</listPattern>
-		<listPattern type="duration-narrow">
-			<listPatternPart type="start" draft="contributed">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle" draft="contributed">{0}, {1}</listPatternPart>
-			<listPatternPart type="end" draft="contributed">{0}, {1}</listPatternPart>
-			<listPatternPart type="2" draft="contributed">{0}, {1}</listPatternPart>
-		</listPattern>
-		<listPattern type="duration-short">
-			<listPatternPart type="start">{0}, {1}</listPatternPart>
-			<listPatternPart type="middle">{0}, {1}</listPatternPart>
-			<listPatternPart type="end">{0}, {1}</listPatternPart>
-			<listPatternPart type="2">{0}, {1}</listPatternPart>
-		</listPattern>
 	</listPatterns>
 	<posix>
 		<messages>
@@ -6601,3 +5690,4 @@ For terms of use, see http://www.unicode.org/copyright.html
 		</messages>
 	</posix>
 </ldml>
+

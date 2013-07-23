@@ -1,56 +1,28 @@
 package org.unicode.cldr.util;
 
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.ibm.icu.dev.util.CollectionUtilities;
 import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.text.UnicodeSet.ComparisonStyle;
 
 public final class PreferredAndAllowedHour implements Comparable<PreferredAndAllowedHour> {
 
-    public enum HourStyle {
-        h, H, k, K;
-        public static boolean isHourCharacter(char c) {
-            try {
-                HourStyle.valueOf(String.valueOf(c));
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
-    }
+    public static final UnicodeSet HOURS = new UnicodeSet("[hHkK]").freeze();
 
-    public final HourStyle preferred;
-    public final Set<HourStyle> allowed;
-
+    public final char preferred;
+    public final Set<Character> allowed;
 
     public PreferredAndAllowedHour(char preferred, Set<Character> allowed) {
-        this(HourStyle.valueOf(String.valueOf(preferred)), mungeSet(allowed));
-    }
-
-    private static EnumSet<HourStyle> mungeSet(Set<Character> allowed) {
-        EnumSet<HourStyle> temp = EnumSet.noneOf(HourStyle.class);
-        for (char c : allowed) {
-            temp.add(HourStyle.valueOf(String.valueOf(c)));
-        }
-        return temp;
-    }
-
-    public PreferredAndAllowedHour(HourStyle preferred, Set<HourStyle> allowed) {
-        this.preferred = preferred;
-        if (preferred == null) {
-            throw new NullPointerException();
-        }
-        this.allowed = allowed;
-        if (!this.allowed.contains(this.preferred)) {
+        if (!allowed.contains(preferred)) {
             throw new IllegalArgumentException("Allowed (" + allowed +
-                    ") must contain preferred(" + preferred +
-                    ")");
+                ") must contain preferred(" + preferred +
+                ")");
         }
+        this.allowed = Collections.unmodifiableSet(allowed);
+        this.preferred = preferred;
     }
 
     public PreferredAndAllowedHour(String preferred2, String allowedString) {
@@ -78,9 +50,9 @@ public final class PreferredAndAllowedHour implements Comparable<PreferredAndAll
 
     @Override
     public int compareTo(PreferredAndAllowedHour arg0) {
-        int diff = preferred.compareTo(arg0.preferred);
-        if (diff != 0) return diff;
-        return CollectionUtilities.compare(allowed, arg0.allowed);
+        if (preferred < arg0.preferred) return -1;
+        if (preferred > arg0.preferred) return 1;
+        return UnicodeSet.compare(allowed, arg0.allowed, ComparisonStyle.LONGER_FIRST);
     }
 
     @Override

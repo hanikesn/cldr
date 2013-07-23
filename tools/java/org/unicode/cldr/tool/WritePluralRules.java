@@ -32,10 +32,6 @@ public class WritePluralRules {
                 continue;
             }
             PluralRules rules = forLocale(locale);
-//            PluralRules existingRules = stringToRules.get(rules.toString());
-//            if (existingRules == null) {
-//                stringToRules.put(rules.toString(), existingRules = rules);
-//            }
             rulesToLocales.put(rules, locale);
         }
         System.out.println(
@@ -52,7 +48,6 @@ public class WritePluralRules {
                         +"    <generation date=\"$Date" +
                         "$\"/>\n"
                         +"    <plurals>\n"
-                        +"        <!-- For a canonicalized list, use WritePluralRules -->\n"
                         +"        <!-- if locale is known to have no plurals, there are no rules -->"
                 );
         TreeSet<Entry<PluralRules, Set<String>>> sorted = new TreeSet<Entry<PluralRules, Set<String>>>(new HackComparator());
@@ -140,7 +135,7 @@ public class WritePluralRules {
     }
     
     static PluralRules forLocale(String locale) {
-        PluralRules override = null; // PluralRulesFactory.getPluralOverrides().get(new ULocale(locale));
+        PluralRules override = PluralRulesFactory.getPluralOverrides().get(new ULocale(locale));
         return override != null 
                 ? override
                         : sInfo.getPlurals(locale).getPluralRules();
