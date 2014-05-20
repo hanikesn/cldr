@@ -55,21 +55,19 @@ if(userAnswer!=null) {
 		//
 	}
 }
-		
-if( 	(userAnswer!=null)
-    &&	(userAnswerInt!=null)
-    &&	(sumAnswer.intValue()==userAnswerInt.intValue())) {
+if(userAnswer!=null&&userAnswerInt!=null&&(sumAnswer==userAnswerInt)) {
 %>
   <b>Attempting to reset password:</b> <%= cs.sm.reg.resetPassword(email, WebContext.userIP(request)) %>
 
 <hr>
 
 If the email address on file is correct, your new password should be on its way. Check your inbox. If you have difficulty still, contact the person who set up your account.
- 
+
 <%
 } else {
 	// put it in the hash
 	cs.stuff.put("sumAnswer",new Integer(hashC));
+	
 	
 	if(userAnswer!=null) {
 		if(userAnswerInt==null) {

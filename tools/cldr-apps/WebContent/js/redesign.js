@@ -274,12 +274,6 @@ function unpackMenuSideBar(json) {
 		$('a[data-original-title="'+surveyCurrentLocale+'"]').click();
 		$('#title-coverage').show();
 	}
-	
-	//reopen the menu to the current page
-	if(surveyCurrentPage) {
-		var menu = $('#locale-menu #'+surveyCurrentPage);
-		menu.closest('.open-menu').click();
-	}
 }
 
 //force to open the sidebar 

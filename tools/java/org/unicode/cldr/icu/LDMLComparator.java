@@ -119,7 +119,7 @@ public class LDMLComparator {
         temp.setStrength(Collator.IDENTICAL);
         temp.setNumericCollation(true);
         // DEFAULT_COLLATION = temp;
-        return temp;
+        return ((RuleBasedCollator)temp).freeze();
     }
 
     Hashtable<String, String> optionTable = new Hashtable<String, String>();
@@ -131,7 +131,7 @@ public class LDMLComparator {
     private String goldFileName;
     private String goldKey;
     private int serialNumber = 0;
-    private Map<String, Object> compareMap = new TreeMap<String, Object>(getDefaultCollation());
+    private Map<String, Object> compareMap = new TreeMap<String, Object>(getDefaultCollation().freeze());
     private Hashtable<String, String> doesNotExist = new Hashtable<String, String>();
     private Hashtable<String, String> requested = new Hashtable<String, String>();
     private Hashtable<String, String> deprecatedLanguageCodes = new Hashtable<String, String>();

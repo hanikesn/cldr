@@ -33,7 +33,6 @@
 		response.sendRedirect(request.getContextPath() + "/survey");
 		return;
 	}
-	cs.userDidAction(); // mark user as not idle
 	UserRegistry.User theirU = cs.sm.reg.get(email.trim());
 	if (theirU == null
 			|| (!theirU.equals(cs.user) && !cs.user.isAdminFor(theirU))) {
@@ -43,7 +42,6 @@
 		return;
 	}
 	boolean isSubmit = true;
-	final String submitButtonText = "NEXT: Submit as " + theirU.email;
 
 	String ident = "";
 	if (theirU.id != cs.user.id) {
@@ -149,30 +147,22 @@
 		<%=all.size()%>
 		entries.
 	</h4>
-<% request.setAttribute("BULK_STAGE", doFinal?"submit":"test"); %>
-<%@include file="/WEB-INF/jspf/bulkinfo.jspf" %>
 
 <% if(!doFinal) { %>
 	<div class='helpHtml'>
-		Please review these items carefully. The "NEXT" button will not appear until the page fully loads. Pressing NEXT will
-		submit these votes.
+		Please review these items carefully.
 		<br>
 		For help, see: <a target='CLDR-ST-DOCS' href='http://cldr.unicode.org/index/survey-tool/upload'>Using Bulk Upload</a> 
 	</div>
-	
-	<%-- <form action='<%=request.getContextPath() + request.getServletPath()%>'
+	<form action='<%=request.getContextPath() + request.getServletPath()%>'
 		method='POST'>
 		<input type='hidden' name='s' value='<%=sid%>' />
                 <input type='hidden' name='email' value='<%=theirU.email%>' /><input
-			type='submit' name='dosubmit' value='<%= submitButtonText %>' />
-	</form> --%>
+			type='submit' name='dosubmit' value='Really Submit As <%= theirU.name %> Vote' />
+	</form>
 <% } else { %>
-	<div class='bulkNextButton'>
-	<b>Submitted!</b><br/>
-	<a href="upload.jsp?s=<%=sid%>&email=<%= theirU.email %>">Another?</a>
-	</div>
 	<div class='helpHtml'>
-		Items listed have been submitted as <%= theirU.email %>
+		Items listed have been submitted.
 		<br>
 		For help, see: <a target='CLDR-ST-DOCS' href='http://cldr.unicode.org/index/survey-tool/upload'>Using Bulk Upload</a> 
 	</div>
@@ -389,8 +379,7 @@
 			method='POST'>
 			<input type='hidden' name='s' value='<%=sid%>' />
                         <input type='hidden' name='email' value='<%=email%>' /><input
-                class='bulkNextButton'
-				type='submit' name='dosubmit' value='<%= submitButtonText %>' />
+				type='submit' name='dosubmit' value='Submit these items as my vote' />
 		</form>
 	<%
 		 }
