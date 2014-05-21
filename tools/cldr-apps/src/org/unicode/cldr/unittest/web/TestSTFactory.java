@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -17,19 +16,14 @@ import org.unicode.cldr.util.CLDRLocale;
 import org.unicode.cldr.util.CLDRPaths;
 import org.unicode.cldr.util.StackTracker;
 import org.unicode.cldr.util.VoteResolver;
-import org.unicode.cldr.util.VoteResolver.Level;
 import org.unicode.cldr.util.VoteResolver.Status;
 import org.unicode.cldr.util.XMLFileReader;
 import org.unicode.cldr.util.XPathParts;
 import org.unicode.cldr.web.BallotBox;
 import org.unicode.cldr.web.BallotBox.InvalidXPathException;
-import org.unicode.cldr.web.BallotBox.VoteNotAcceptedException;
-import org.unicode.cldr.web.CLDRProgressIndicator.CLDRProgressTask;
-import org.unicode.cldr.web.CLDRProgressIndicator;
 import org.unicode.cldr.web.CookieSession;
 import org.unicode.cldr.web.DBUtils;
 import org.unicode.cldr.web.STFactory;
-import org.unicode.cldr.web.SurveyException;
 import org.unicode.cldr.web.SurveyLog;
 import org.unicode.cldr.web.SurveyMain;
 import org.unicode.cldr.web.UserRegistry;
@@ -76,7 +70,7 @@ public class TestSTFactory extends TestFmwk {
         CLDRLocale locale = CLDRLocale.getInstance(file.getLocaleID());
         String currentWinner = file.getStringValue(path);
         boolean didVote = box.userDidVote(getMyUser(), path);
-        StackTraceElement them = StackTracker.currentElement(0);
+        StackTraceElement them = StackTracker.currentElement(1);
         String where = " (" + them.getFileName() + ":" + them.getLineNumber() + "): ";
 
         if (expectString == null)
@@ -104,7 +98,7 @@ public class TestSTFactory extends TestFmwk {
         return didVote ? "(I VOTED)" : "( did NOT VOTE) ";
     }
 
-    public void TestBasicVote() throws SQLException, IOException, InvalidXPathException, VoteNotAcceptedException {
+    public void TestBasicVote() throws SQLException, IOException, InvalidXPathException {
         STFactory fac = getFactory();
 
         final String somePath = "//ldml/localeDisplayNames/keys/key[@type=\"collation\"]";
@@ -112,7 +106,6 @@ public class TestSTFactory extends TestFmwk {
         String changedTo = null;
 
         CLDRLocale locale = CLDRLocale.getInstance("de");
-        CLDRLocale localeSub = CLDRLocale.getInstance("de_CH");
         {
             CLDRFile mt = fac.make(locale, false);
             BallotBox<User> box = fac.ballotBoxForLocale(locale);
@@ -135,14 +128,7 @@ public class TestSTFactory extends TestFmwk {
 
             box.voteForValue(getMyUser(), somePath, changedTo); // vote again
             expect(somePath, changedTo, true, mt, box);
-            
-            Date modDate = mt.getLastModifiedDate(somePath);
-            if(modDate == null) {
-                errln("@1: mod date was null!");
-            } else {
-                logln("@1: mod date " + modDate );
-            }
-            
+
         }
 
         // Restart STFactory.
@@ -153,53 +139,10 @@ public class TestSTFactory extends TestFmwk {
 
             expect(somePath, changedTo, true, mt, box);
 
-            {
-                Date modDate = mt.getLastModifiedDate(somePath);
-                if(modDate == null) {
-                    errln("@2: mod date was null!");
-                } else {
-                    logln("@2: mod date " + modDate );
-                }
-            }
-            CLDRFile mt2= fac.make(locale, true);
-            {
-                Date modDate = mt2.getLastModifiedDate(somePath);
-                if(modDate == null) {
-                    errln("@2a: mod date was null!");
-                } else {
-                    logln("@2a: mod date " + modDate );
-                }
-            }
-            CLDRFile mtMT = fac.make(localeSub, true);
-            {
-                Date modDate = mtMT.getLastModifiedDate(somePath);
-                if(modDate == null) {
-                    errln("@2b: mod date was null!");
-                } else {
-                    logln("@2b: mod date " + modDate );
-                }
-            }
-            CLDRFile mtMTb = fac.make(localeSub, false);
-            {
-                Date modDate = mtMTb.getLastModifiedDate(somePath);
-                if(modDate != null) {
-                    errln("@2c: mod date was " + modDate);
-                } else {
-                    logln("@2c: mod date was " + modDate );
-                }
-            }
             // unvote
             box.voteForValue(getMyUser(), somePath, null);
 
             expect(somePath, originalValue, false, mt, box);
-            {
-                Date modDate = mt.getLastModifiedDate(somePath);
-                if(modDate != null) {
-                    errln("@3: mod date was not null! " + modDate);
-                } else {
-                    logln("@3: mod date " + modDate );
-                }
-            }
         }
         fac = resetFactory();
         {
@@ -287,7 +230,7 @@ public class TestSTFactory extends TestFmwk {
         }
     }
 
-    public void TestSparseVote() throws SQLException, IOException, InvalidXPathException, SurveyException {
+    public void TestSparseVote() throws SQLException, IOException, InvalidXPathException {
         STFactory fac = getFactory();
 
         final String somePath2 = "//ldml/localeDisplayNames/keys/key[@type=\"calendar\"]";
@@ -361,14 +304,6 @@ public class TestSTFactory extends TestFmwk {
     }
 
     public void TestVettingDataDriven() throws SQLException, IOException {
-        runDataDrivenTest(TestSTFactory.class.getSimpleName());
-    }
-    
-    public void TestUserRegistry() throws SQLException, IOException {
-        runDataDrivenTest("TestUserRegistry");
-    }
-    
-    private void runDataDrivenTest(final String fileBasename) throws SQLException, IOException {
         final STFactory fac = getFactory();
         final File targDir = TestAll.getEmptyDir(TestSTFactory.class.getName() + "_output");
 
@@ -376,9 +311,9 @@ public class TestSTFactory extends TestFmwk {
         final XPathParts xpp = new XPathParts(null, null);
         final XPathParts xpp2 = new XPathParts(null, null);
         final Map<String, String> attrs = new TreeMap<String, String>();
+        final Map<String, UserRegistry.User> users = new TreeMap<String, UserRegistry.User>();
         final Map<String, String> vars = new TreeMap<String, String>();
         myReader.setHandler(new XMLFileReader.SimpleHandler() {
-            final Map<String, UserRegistry.User> users = new TreeMap<String, UserRegistry.User>();
             public void handlePathValue(String path, String value) {
 
                 if (value != null && value.startsWith("$")) {
@@ -394,13 +329,12 @@ public class TestSTFactory extends TestFmwk {
                     attrs.put(k, xpp.getAttributeValue(-1, k));
                 }
                 String elem = xpp.getElement(-1);
-                if(false) logln("* <" + elem + " " + attrs.toString() + ">" + value + "</" + elem + ">");
+                logln("* <" + elem + " " + attrs.toString() + ">" + value + "</" + elem + ">");
                 String xpath = attrs.get("xpath");
                 if (xpath != null) {
                     xpath = xpath.trim().replace("'", "\"");
                 }
-                switch(elem) {
-                case "user": {
+                if (elem.equals("user")) {
                     String name = attrs.get("name");
                     String org = attrs.get("org");
                     String locales = attrs.get("locales");
@@ -416,7 +350,7 @@ public class TestSTFactory extends TestFmwk {
                         proto.password = UserRegistry.makePassword(proto.email);
                         proto.userlevel = level.getSTLevel();
                         proto.locales = UserRegistry.normalizeLocaleList(locales);
-                        if(false) System.err.println("locale list was  " + proto.locales);
+                        System.err.println("locale list was  " + proto.locales);
                         u = fac.sm.reg.newUser(null, proto);
                     }
                     if (u == null) {
@@ -425,24 +359,25 @@ public class TestSTFactory extends TestFmwk {
                         logln(name + " = " + u);
                         users.put(name, u);
                     }
-                }
-                break;
-                case "setvar": {
+                } else if (elem.equals("setvar")) {
                     final String id = attrs.get("id");
                     final CLDRLocale locale = CLDRLocale.getInstance(attrs.get("locale"));
                     final String xvalue = fac.make(locale, true).getStringValue(xpath);
                     vars.put(id, xvalue);
                     logln("$" + id + " = '" + xvalue + "' from " + locale + ":" + xpath);
-                }
-                break;
-                case "vote":
-                case "unvote": {
-                    UserRegistry.User u = getUserFromAttrs(attrs, "name");
+                } else if (elem.equals("vote") || elem.equals("unvote")) {
+                    UserRegistry.User u = users.get(attrs.get("name"));
+                    if (u == null) {
+                        throw new IllegalArgumentException("Unknown user " + attrs.get("name") + " - need a <user> element.");
+                    }
 
                     CLDRLocale locale = CLDRLocale.getInstance(attrs.get("locale"));
                     BallotBox<User> box = fac.ballotBoxForLocale(locale);
                     value = value.trim();
-                    boolean needException = getBooleanAttr(attrs, "exception", false);
+                    boolean needException = false;
+                    if (attrs.containsKey("exception") && attrs.get("exception").equals("true")) {
+                        needException = true;
+                    }
                     if (elem.equals("unvote")) {
                         value = null;
                     }
@@ -454,18 +389,17 @@ public class TestSTFactory extends TestFmwk {
                     } catch (InvalidXPathException e) {
                         // TODO Auto-generated catch block
                         errln("Error: invalid xpath exception " + xpath + " : " + e);
-                    } catch (VoteNotAcceptedException iae) {
+                    } catch (IllegalArgumentException iae) {
                         if (needException == true) {
                             logln("Caught expected: " + iae);
                         } else {
                             iae.printStackTrace();
                             errln("Unexpected exceptoin: " + iae);
+                            throw iae;
                         }
                     }
                     logln(u + " " + elem + "d for " + xpath + " = " + value);
-                }
-                break;
-                case "verify": {
+                } else if (elem.equals("verify")) {
                     value = value.trim();
                     if (value.isEmpty())
                         value = null;
@@ -573,99 +507,24 @@ public class TestSTFactory extends TestFmwk {
                             + fullXpathBack + " Resolver=" + box.getResolver(xpath));
                     }
 
-                }
-                break;
-                case "verifyUser":
-                {
-                    final User u = getUserFromAttrs(attrs, "name");
-                    final User onUser = getUserFromAttrs(attrs, "onUser");
-                    
-                    final String action = attrs.get("action");
-                    final boolean allowed = getBooleanAttr(attrs, "allowed", true);
-                    
-                    boolean actualResult = true;
-                    
-//                    <!ATTLIST verifyUser action ( create | delete | modify | list ) #REQUIRED>
-                    final Level uLevel = u.getLevel();
-                    final Level onLevel = onUser.getLevel();
-                    switch(action) {
-                    case "create":
-                        actualResult = actualResult && UserRegistry.userCanCreateUsers(u);
-                        if ( !u.isSameOrg(onUser) ) {
-                            actualResult = actualResult && UserRegistry.userCreateOtherOrgs(u); // if of different org
-                        }
-                        {
-                            // test both of these functions.
-                            final boolean newTest = (uLevel.canCreateOrSetLevelTo(onLevel));
-                            final boolean oldTest = UserRegistry.userCanCreateUsers(u)&&(onUser.userlevel == UserRegistry.userCanCreateUserOfLevel(u, onUser.userlevel));
-                            assertEquals("New(ex) vs old(got) create test: "+  uLevel +"/"+onLevel, newTest, oldTest);
-                            actualResult = actualResult && newTest;
-                        }
-                        break;
-                    case "delete": // assume same perms for now (?)
-                    case "modify":
-                        {
-                            final boolean oldTest = u.isAdminFor(onUser);
-                            final boolean newTest = uLevel.canManageSomeUsers() && uLevel.isManagerFor(u.getOrganization(), onLevel, onUser.getOrganization());
-                            assertEquals("New(ex) vs old(got) manage test: "+  uLevel +"/"+onLevel, newTest, oldTest);
-                            actualResult = actualResult && newTest;
-                        }
-                        break;
-                    default:
-                        errln("Unhandled action: " + action);
-                    }
-                    assertEquals(u.org+":"+uLevel +" "+action+" "+onUser.org+":"+onLevel, allowed, actualResult);
-                }
-                break;
-                case "echo":
-                case "warn":
-                    logln("*** " + elem + "  \"" + value.trim() + "\"");
-                    break;
-                default:   
+                } else if (elem.equals("echo")) {
+                    logln("*** \"" + value.trim() + "\"");
+                } else if (elem.equals("warn")) {
+                    logln("*** Warning: \"" + value.trim() + "\"");
+                } else {
                     throw new IllegalArgumentException("Unknown test element type " + elem);
                 }
-            }
-
-            /**
-             * @param attrs
-             * @return
-             */
-            public boolean getBooleanAttr(final Map<String, String> attrs, String attr, boolean defaultValue) {
-                final String strVal = attrs.get(attr);
-                if(strVal==null || strVal.isEmpty()) {
-                    return defaultValue;
-                }
-                return Boolean.parseBoolean(strVal);
-            }
-
-            /**
-             * @param attrs
-             * @param users
-             * @return
-             * @throws IllegalArgumentException
-             */
-            public UserRegistry.User getUserFromAttrs(final Map<String, String> attrs, String attr)
-                throws IllegalArgumentException {
-                final String attrValue = attrs.get(attr);
-                if (attrValue == null) {
-                    return null;
-                }
-                UserRegistry.User u = users.get(attrValue);
-                if (u == null) {
-                    throw new IllegalArgumentException("Undeclared user: " + attr+"=\"" + attrValue + "\" - are you missing a <user> element?");
-                }
-                return u;
             };
             // public void handleComment(String path, String comment) {};
             // public void handleElementDecl(String name, String model) {};
             // public void handleAttributeDecl(String eName, String aName,
             // String type, String mode, String value) {};
         });
-        final String fileName = fileBasename + ".xml";
+        String fileName = TestSTFactory.class.getSimpleName() + ".xml";
         myReader.read(TestSTFactory.class.getResource("data/" + fileName).toString(), TestAll.getUTF8Data(fileName), -1, true);
     }
 
-    public void TestVettingWithNonDistinguishing() throws SQLException, IOException, InvalidXPathException, SurveyException {
+    public void TestVettingWithNonDistinguishing() throws SQLException, IOException, InvalidXPathException {
         STFactory fac = getFactory();
 
         final String somePath2 = "//ldml/dates/calendars/calendar[@type=\"hebrew\"]/dateFormats/dateFormatLength[@type=\"full\"]/dateFormat[@type=\"standard\"]/pattern[@type=\"standard\"]";
@@ -885,9 +744,7 @@ public class TestSTFactory extends TestFmwk {
             sm.xpt = XPathTable.createTable(conn, sm);
             sm.xpt.getByXpath("//foo/bar[@type='baz']");
             logln(et0.toString());
-            et0 = new ElapsedTimer("close connection");
             DBUtils.closeDBConnection(conn);
-            logln(et0.toString());
             // sm.vet = Vetting.createTable(sm.logger, sm);
 
             // CLDRDBSourceFactory fac = new CLDRDBSourceFactory(sm,
@@ -906,13 +763,8 @@ public class TestSTFactory extends TestFmwk {
     }
 
     private STFactory resetFactory() throws SQLException {
-        if(gFac == null) {
-            logln("STFactory wasn't loaded - not resetting.");
-            return getFactory();
-        } else {
-            logln("--- resetting STFactory() ----- [simulate reload] ------------");
-            return gFac = getFactory().TESTING_shutdownAndRestart();
-        }
+        logln("--- resetting STFactory() ----- [simulate reload] ------------");
+        return gFac = getFactory().TESTING_shutdownAndRestart();
     }
 
     static final Map<String, Object> noDtdPlease = new TreeMap<String, Object>();

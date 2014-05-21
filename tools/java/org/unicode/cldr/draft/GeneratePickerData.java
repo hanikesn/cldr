@@ -23,7 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -191,9 +190,6 @@ class GeneratePickerData {
         buildMainTable();
         addEmojiCharacters();
         addManualCorrections("ManualChanges.txt");
-        
-        writeCategories();
-        
         String categoryData = CATEGORYTABLE.toString(true, outputDirectory);
         writeMainFile(outputDirectory, categoryData);
         // writeMainFile(outputDirectory, categoryData);
@@ -218,26 +214,6 @@ class GeneratePickerData {
             + (Compacter.totalNew / Compacter.totalOld));
         System.out.println("DONE");
     }
-
-    public static void writeCategories() throws FileNotFoundException, IOException {
-        PrintWriter out = getFileWriter(outputDirectory, "categories.txt");
-        for (Entry<String, Map<String, USet>> catData : CategoryTable.categoryTable.entrySet()) {
-            String main = catData.getKey();
-            if (main.equals("Latin")) {
-                break;
-            }
-            Map<String, USet> value = catData.getValue();
-            for (Entry<String, USet> subData : value.entrySet()) {
-                String sub = subData.getKey();
-                if (sub.equals("Emoji") || sub.contains("Emotic")) {
-                    continue;
-                }
-                out.println(main + " ;\t" + sub + " ;\t" + simpleList(subData.getValue().strings));
-            }
-        }
-        out.close();
-    }
-
 
     private static void buildMainTable() throws IOException {
         subheader = new Subheader(unicodeDataDirectory, outputDirectory);
@@ -1168,15 +1144,7 @@ class GeneratePickerData {
         for (String valueAlias : propertyValues) {
             valueChars.clear();
             // valueChars.applyPropertyAlias(propertyAlias, valueAlias);
-            try {
-                ScriptCategories.applyPropertyAlias(propertyAlias, valueAlias, valueChars);
-            } catch (RuntimeException e) {
-                if (propertyAlias == "Script") {
-                    System.out.println("Skipping script " + valueAlias);
-                    continue;
-                }
-                throw e;
-            }
+            ScriptCategories.applyPropertyAlias(propertyAlias, valueAlias, valueChars);
             valueAlias = ScriptCategories.getFixedPropertyValue(propertyAlias, valueAlias, UProperty.NameChoice.SHORT);
 
             if (DEBUG) System.out.println(valueAlias + ": " + valueChars.size() + ", " + valueChars);
@@ -1271,30 +1239,6 @@ class GeneratePickerData {
     }
 
     public static Set<Exception> ERROR_COUNT = new LinkedHashSet<Exception>();
-    
-    /**
-     * Provide a simple list of strings
-     * @param source
-     * @return
-     */
-    public static String simpleList(Iterable<String> source) {
-        StringBuilder b = new StringBuilder();
-        for (String s : source) {
-            if (b.length() != 0) {
-                b.append(' ');
-            }
-            if (Character.offsetByCodePoints(s, 0, 1) == s.length()) {
-                if (s.equals("{")) {
-                    b.append('\\');
-                }
-                b.append(s);
-            } else {
-                b.append('{').append(s).append('}');
-            }
-        }
-        return b.toString();
-    }
-
 
     static class USet {
         Collection<String> strings;
@@ -1315,7 +1259,6 @@ class GeneratePickerData {
                 strings = new TreeSet<String>(sorted);
             }
         }
-        
 
         public String toString() {
             String result = Compacter.appendCompacted(strings);

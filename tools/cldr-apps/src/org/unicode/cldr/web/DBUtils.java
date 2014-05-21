@@ -34,7 +34,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -138,13 +137,6 @@ public class DBUtils {
                 tracker.remove(conn);
             }
             try {
-                if(db_Derby && 
-                    datasource instanceof EmbeddedDataSource &&
-                    !conn.isClosed() && 
-                    !conn.getAutoCommit()) { 
-                	// commit on close if we are using Derby directly
-                    conn.commit();
-                }
                 conn.close();
             } catch (SQLException e) {
                 System.err.println(DBUtils.unchainSqlException(e));
@@ -336,26 +328,23 @@ public class DBUtils {
     public static boolean hasTable(Connection conn, String table) {
         String canonName = canonTableName(table);
         try {
-            ResultSet rs = null;
-            Statement s = null;
-            try {
-                if (db_Derby) {
-                    DatabaseMetaData dbmd = conn.getMetaData();
-                    rs = dbmd.getTables(null, null, canonName, null);
-                } else {
-                    s = conn.createStatement();
-                    rs = s.executeQuery("show tables like '" + canonName + "'");
-                }
-    
-                if (rs.next() == true) {
-                    System.out.println("table " + canonName + " did exist.");
-                    return true;
-                } else {
-                    SurveyLog.debug("table " + canonName + " did not exist.");
-                    return false;
-                }
-            } finally {
-                DBUtils.close(s,rs);
+            ResultSet rs;
+
+            if (db_Derby) {
+                DatabaseMetaData dbmd = conn.getMetaData();
+                rs = dbmd.getTables(null, null, canonName, null);
+            } else {
+                Statement s = conn.createStatement();
+                rs = s.executeQuery("show tables like '" + canonName + "'");
+            }
+
+            if (rs.next() == true) {
+                rs.close();
+                System.out.println("table " + canonName + " did exist.");
+                return true;
+            } else {
+                SurveyLog.debug("table " + canonName + " did not exist.");
+                return false;
             }
         } catch (SQLException se) {
             SurveyMain.busted("While looking for table '" + table + "': ", se);
@@ -730,10 +719,6 @@ public class DBUtils {
         return getDBConnection();
     }
 
-    /**
-     * This connection MAY NOT be held in an object. Hold it and then close it ( DBUtils.close() )
-     * @return
-     */
     public final Connection getDBConnection() {
         return getDBConnection("");
     }
@@ -1542,9 +1527,7 @@ public class DBUtils {
         VOTE_VALUE,
         VOTE_VALUE_ALT,
         VOTE_FLAGGED,
-        FORUM_POSTS,
-        REVIEW_HIDE,
-        REVIEW_POST;
+        FORUM_POSTS;
 
         /**
          * 

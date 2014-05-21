@@ -58,7 +58,7 @@ if(subCtx.userId() == UserRegistry.NO_USER) {
         subCtx.println("<br/> Status: " + status[0]);
        } else {
             StringBuffer sb = new StringBuffer();
-            VettingViewerQueue.getInstance().writeVettingViewerOutput(subCtx.getLocale(), sb, subCtx, subCtx.session, false);
+            VettingViewerQueue.getInstance().writeVettingViewerOutput(subCtx.getLocale(), sb, subCtx, subCtx.session);
             subCtx.println(sb.toString());
        }
 	subCtx.println("</div>");

@@ -273,18 +273,10 @@ public class CLDRConfig extends Properties {
                 curEnvironment = Environment.valueOf(envString.trim());
             }
             if (curEnvironment == null) {
-                curEnvironment = getDefaultEnvironment();
+                curEnvironment = Environment.LOCAL;
             }
         }
         return curEnvironment;
-    }
-    
-    /**
-     * If no environment is defined, what is the default?
-     * @return
-     */
-    protected Environment getDefaultEnvironment() {
-        return Environment.LOCAL;
     }
 
     public void setEnvironment(Environment environment) {

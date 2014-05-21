@@ -117,7 +117,7 @@ public class ShowLanguages {
 
         ShowLocaleCoverage.showCoverage(pw);
         
-        new ShowPlurals().printPlurals(english, null, pw, cldrFactory);
+        ShowPlurals.printPlurals(english, null, pw);
 
         linfo.showCoverageGoals(pw);
 

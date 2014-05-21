@@ -263,8 +263,8 @@ public class SupplementalMapper {
             if (debugResults != null) {
                 System.out.println(fullPath + " successfully matched");
             }
-           // String[] arguments = matcher.value.getInfo();
-            String[] arguments=argInfo.value;
+//            String[] arguments = matcher.value.getInfo();
+            String[] arguments= argInfo.value;
             String cldrValue = pair.getSecond();
             for (PathValueInfo info : regexResult) {
                 List<String> values = info.processValues(arguments, cldrValue);

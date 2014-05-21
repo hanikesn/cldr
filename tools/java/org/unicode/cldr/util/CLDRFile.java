@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,7 +31,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -473,9 +471,8 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             lastFiltered = temp;
         }
 
-        for (String xpath: orderedSet) {
-//        for (Iterator<String> it2 = orderedSet.iterator(); it2.hasNext();) {
-//            String xpath = (String) it2.next();
+        for (Iterator<String> it2 = orderedSet.iterator(); it2.hasNext();) {
+            String xpath = (String) it2.next();
             if (isResolved && xpath.contains("/alias")) {
                 continue;
             }
@@ -616,14 +613,6 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             }
         }
         return result;
-    }
-
-    /**
-     * Get the last modified date (if available) from a distinguished path.
-     * @return date or null if not available.
-     */
-    public Date getLastModifiedDate(String xpath) {
-        return dataSource.getChangeDateAtDPath(xpath);
     }
 
     /**
@@ -1492,9 +1481,9 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     // "gb2312han"};
 
     /*    *//**
-              * Value that contains a node. WARNING: this is not done yet, and may change.
-              * In particular, we don't want to return a Node, since that is mutable, and makes caching unsafe!!
-              */
+             * Value that contains a node. WARNING: this is not done yet, and may change.
+             * In particular, we don't want to return a Node, since that is mutable, and makes caching unsafe!!
+             */
     /*
      * static public class NodeValue extends Value {
      * private Node nodeValue;
@@ -2553,21 +2542,9 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     static MapComparator<String> lengthOrder = new MapComparator<String>().add(
         "full", "long", "medium", "short").freeze();
     static MapComparator<String> dateFieldOrder = new MapComparator<String>().add(
-        "era",
-        "year", "year-short", "year-narrow",
-        "quarter", "quarter-short", "quarter-narrow",
-        "month", "month-short", "month-narrow",
-        "week", "week-short", "week-narrow",
-        "day", "day-short", "day-narrow",
-        "weekday",
-        "sun", "sun-short", "sun-narrow", "mon", "mon-short", "mon-narrow",
-        "tue", "tue-short", "tue-narrow", "wed", "wed-short", "wed-narrow",
-        "thu", "thu-short", "thu-narrow", "fri", "fri-short", "fri-narrow",
-        "sat", "sat-short", "sat-narrow",
-        "dayperiod",
-        "hour", "hour-short", "hour-narrow",
-        "minute", "minute-short", "minute-narrow",
-        "second", "second-short", "second-narrow",
+        "era", "year", "month", "week", "day", "weekday",
+        "sun", "mon", "tue", "wed", "thu", "fri", "sat",
+        "dayperiod", "hour", "minute", "second",
         "zone").freeze();
     static MapComparator<String> countValueOrder = new MapComparator<String>().add(
         "0", "1", "zero", "one", "two", "few", "many", "other").freeze();
@@ -2902,24 +2879,22 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
     }
 
     private static class DistinguishedXPath {
-
         public static final String stats() {
             return "distinguishingMap:" + distinguishingMap.size() + " " +
                 "normalizedPathMap:" + normalizedPathMap.size();
         }
 
-        private static Map<String, String> distinguishingMap = new ConcurrentHashMap<String, String>();
-        private static Map<String, String> normalizedPathMap = new ConcurrentHashMap<String, String>();
-       // private static XPathParts distinguishingParts = new XPathParts(getAttributeOrdering(), null);
+        private static Map<String, String> distinguishingMap = new HashMap<String, String>();
+        private static Map<String, String> normalizedPathMap = new HashMap<String, String>();
+        private static XPathParts distinguishingParts = new XPathParts(getAttributeOrdering(), null);
         static {
             distinguishingMap.put("", ""); // seed this to make the code simpler
         }
 
         public static String getDistinguishingXPath(String xpath, String[] normalizedPath, boolean nonInheriting) {
-       //     synchronized (distinguishingMap) {
+            synchronized (distinguishingMap) {
                 String result = (String) distinguishingMap.get(xpath);
                 if (result == null) {
-                    XPathParts distinguishingParts = new XPathParts(getAttributeOrdering(), null);
                     distinguishingParts.set(xpath);
                     if (distinguishingParts.getDtdData() == null) {
                         distinguishingParts.set(xpath);
@@ -2936,7 +2911,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                     // so we go up to size() - 1.
 
                     // note: each successive item overrides the previous one. That's intended
-                    
+
                     for (int i = 0; i < distinguishingParts.size() - 1; ++i) {
                         // String element = distinguishingParts.getElement(i);
                         // if (atomicElements.contains(element)) break;
@@ -2945,9 +2920,8 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                         }
                         toRemove.clear();
                         Map<String, String> attributes = distinguishingParts.getAttributes(i);
-                        for (String attribute: attributes.keySet()) {
-                     //   for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext();) {
-                      //      String attribute = (String) it.next();
+                        for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext();) {
+                            String attribute = (String) it.next();
                             if (attribute.equals("draft")) {
                                 draft = (String) attributes.get(attribute);
                                 toRemove.add(attribute);
@@ -3013,7 +2987,7 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
                     }
                 }
                 return result;
-      //      }
+            }
         }
 
         public Map<String, String> getNonDistinguishingAttributes(String fullPath, Map<String, String> result,
@@ -3023,22 +2997,21 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
             } else {
                 result.clear();
             }
-            //      synchronized (distinguishingMap) {
-            XPathParts distinguishingParts = new XPathParts(getAttributeOrdering(), null);
-            distinguishingParts.set(fullPath);
-            DtdType type = distinguishingParts.getDtdData().dtdType;
-            for (int i = 0; i < distinguishingParts.size(); ++i) {
-                String element = distinguishingParts.getElement(i);
-                // if (atomicElements.contains(element)) break;
-                Map<String, String> attributes = distinguishingParts.getAttributes(i);
-                for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext();) {
-                    String attribute = it.next();
-                    if (!isDistinguishing(type, element, attribute) && !skipList.contains(attribute)) {
-                        result.put(attribute, attributes.get(attribute));
+            synchronized (distinguishingMap) {
+                distinguishingParts.set(fullPath);
+                DtdType type = distinguishingParts.getDtdData().dtdType;
+                for (int i = 0; i < distinguishingParts.size(); ++i) {
+                    String element = distinguishingParts.getElement(i);
+                    // if (atomicElements.contains(element)) break;
+                    Map<String, String> attributes = distinguishingParts.getAttributes(i);
+                    for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext();) {
+                        String attribute = it.next();
+                        if (!isDistinguishing(type, element, attribute) && !skipList.contains(attribute)) {
+                            result.put(attribute, attributes.get(attribute));
+                        }
                     }
                 }
             }
-            //         }
             return result;
         }
     }
@@ -3370,6 +3343,23 @@ public class CLDRFile implements Freezable<CLDRFile>, Iterable<String> {
         }
         return extraPaths;
     }
+
+    //    private static Set<String> ROOT_COUNT_OTHER = null;
+    //    private Set<String> getRootCountOther() {
+    //        if (ROOT_COUNT_OTHER == null) {
+    //            Set<String> temp = new HashSet<String>();
+    //            Factory cldrFactory = Factory.make(CldrUtility.MAIN_DIRECTORY, ".*");
+    //            CLDRFile root = cldrFactory.make("root", true);
+    //            for (String path : root) {
+    //                if (path.contains("[@count=\"other\"]")) {
+    //                    temp.add(path);
+    //                }
+    //            }
+    //            //showStars(temp, "unitLength");
+    //            ROOT_COUNT_OTHER = Collections.unmodifiableSet(temp);
+    //        }
+    //        return ROOT_COUNT_OTHER;
+    //    }
 
     private Collection<String> getRawExtraPathsPrivate(Collection<String> toAddTo) {
         SupplementalDataInfo supplementalData = SupplementalDataInfo.getInstance(getSupplementalDirectory());

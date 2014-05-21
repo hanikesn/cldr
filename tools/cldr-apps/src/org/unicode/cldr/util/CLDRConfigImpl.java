@@ -15,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
 import org.unicode.cldr.test.CheckCLDR;
-import org.unicode.cldr.util.CLDRConfig.Environment;
 import org.unicode.cldr.web.CookieSession;
 import org.unicode.cldr.web.SurveyLog;
 import org.unicode.cldr.web.SurveyMain;
@@ -63,15 +62,6 @@ public class CLDRConfigImpl extends CLDRConfig implements JSONString {
     boolean isInitted = false;
     private Properties survprops;
 
-    
-    /**
-     * Defaults to SMOKETEST for server
-     * @return
-     */
-    protected Environment getDefaultEnvironment() {
-        return Environment.SMOKETEST;
-    }
-    
     CLDRConfigImpl() {
         // TODO remove this after some time- just warn people about the old message
         final String cwt = System.getProperty("CLDR_WEB_TESTS");
@@ -115,7 +105,7 @@ public class CLDRConfigImpl extends CLDRConfig implements JSONString {
         System.err.println(CLDRConfigImpl.class.getName() + ".init(), cldrHome=" + cldrHome);
         if (cldrHome == null) {
             String homeParent = null;
-            String props[] = { "cldr.home", "catalina.home", "catalina.base", "websphere.base", "websphere.home", "user.dir" };
+            String props[] = { "catalina.home", "websphere.home", "user.dir" };
             for (String prop : props) {
                 if (homeParent == null) {
                     homeParent = System.getProperty(prop);
@@ -128,7 +118,7 @@ public class CLDRConfigImpl extends CLDRConfig implements JSONString {
             }
             if (homeParent == null) {
                 throw new InternalError(
-                    "Could not find cldrHome. please set cldr.home, catalina.base, or user.dir, etc");
+                    "Could not find cldrHome. please set catalina.home, user.dir, etc, or set a servlet parameter cldr.home");
                 // for(Object qq : System.getProperties().keySet()) {
                 // SurveyLog.logger.warning("  >> "+qq+"="+System.getProperties().get(qq));
                 // }
@@ -140,7 +130,7 @@ public class CLDRConfigImpl extends CLDRConfig implements JSONString {
                 createBasicCldr(homeFile); // attempt to create
             }
             if (!homeFile.exists()) {
-                throw new InternalError("{SERVER}/cldr isn't working as a CLDR home. Not a directory: "
+                throw new InternalError("$(catalina.home)/cldr isn't working as a CLDR home. Not a directory: "
                     + homeFile.getAbsolutePath());
             }
             cldrHome = homeFile.getAbsolutePath();

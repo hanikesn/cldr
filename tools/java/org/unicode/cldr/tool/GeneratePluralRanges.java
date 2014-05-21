@@ -13,9 +13,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.unicode.cldr.tool.PluralRulesFactory.SamplePatterns;
-import org.unicode.cldr.util.CLDRConfig;
+import org.unicode.cldr.unittest.TestAll.TestInfo;
 import org.unicode.cldr.util.CLDRFile;
-import org.unicode.cldr.util.Factory;
 import org.unicode.cldr.util.ICUServiceBuilder;
 import org.unicode.cldr.util.LanguageTagParser;
 import org.unicode.cldr.util.Level;
@@ -36,21 +35,15 @@ import com.ibm.icu.util.Output;
 import com.ibm.icu.util.ULocale;
 
 public class GeneratePluralRanges {
-    public GeneratePluralRanges(SupplementalDataInfo supplementalDataInfo) {
-        SUPPLEMENTAL = supplementalDataInfo;
-        prf = PluralRulesFactory.getInstance(SUPPLEMENTAL);
-    }
-    
     private static final boolean MINIMAL = true;
 
     public static void main(String[] args) {
-        CLDRConfig testInfo = ToolConfig.getToolInstance();
-        GeneratePluralRanges me = new GeneratePluralRanges(testInfo.getSupplementalDataInfo());
+        GeneratePluralRanges me = new GeneratePluralRanges();
         me.reformatPluralRanges();
-        //me.generateSamples(testInfo.getEnglish(), testInfo.getCldrFactory());
+        //me.generateSamples();
     }
 
-    private void generateSamples(CLDRFile english, Factory factory) {
+    private void generateSamples() {
         //Map<ULocale, PluralRulesFactory.SamplePatterns> samples = PluralRulesFactory.getLocaleToSamplePatterns();
         // add all the items with plural ranges
         Set<String> sorted = new TreeSet<String>(SUPPLEMENTAL.getPluralRangesLocales());
@@ -82,13 +75,13 @@ public class GeneratePluralRanges {
                 continue; // skip japanese, etc.
             }
 
-            List<RangeSample> list = getRangeInfo(factory.make(locale, true));
+            List<RangeSample> list = getRangeInfo(locale);
             if (list == null) {
                 System.out.println("Failure with " + locale);
                 continue;
             }
             for (RangeSample rangeSample : list) {
-                System.out.println(locale + "\t" + english.getName(locale)
+                System.out.println(locale + "\t" + testInfo.getEnglish().getName(locale)
                     + "\t" + rangeSample.start
                     + "\t" + rangeSample.end
                     + "\t" + (rangeSample.result == null ? "missing" : rangeSample.result)
@@ -102,8 +95,7 @@ public class GeneratePluralRanges {
         }
     }
 
-    public List<RangeSample> getRangeInfo(CLDRFile cldrFile) {
-        String locale = cldrFile.getLocaleID();
+    public static List<RangeSample> getRangeInfo(String locale) {
         if (locale.equals("iw")) {
             locale = "he";
         }
@@ -120,7 +112,7 @@ public class GeneratePluralRanges {
             return null;
         }
         ULocale ulocale = new ULocale(locale);
-        SamplePatterns samplePatterns = prf.getSamplePatterns(ulocale); // CldrUtility.get(samples, ulocale);
+        SamplePatterns samplePatterns = PluralRulesFactory.getSamplePatterns(ulocale); // CldrUtility.get(samples, ulocale);
 //        if (samplePatterns == null && locale.contains("_")) {
 //            ulocale = new ULocale(ulocale.getLanguage());
 //            samplePatterns = CldrUtility.get(samples, ulocale);
@@ -132,6 +124,7 @@ public class GeneratePluralRanges {
         Output<FixedDecimal> maxSample = new Output<FixedDecimal>();
         Output<FixedDecimal> minSample = new Output<FixedDecimal>();
 
+        CLDRFile cldrFile = testInfo.getCldrFactory().make(locale, true);
         ICUServiceBuilder icusb = new ICUServiceBuilder();
         icusb.setCldrFile(cldrFile);
         DecimalFormat nf = icusb.getNumberFormat(1);
@@ -216,10 +209,10 @@ public class GeneratePluralRanges {
             .replace("{0}", numString);
     }
 
-    private final SupplementalDataInfo SUPPLEMENTAL;
-    private final PluralRulesFactory prf;
+    static TestInfo testInfo = TestInfo.getInstance();
 
-    
+    private static final SupplementalDataInfo SUPPLEMENTAL = testInfo.getSupplementalDataInfo();
+
     public static final Comparator<Set<String>> STRING_SET_COMPARATOR = new SetComparator<String, Set<String>>();
     public static final Comparator<Set<Count>> COUNT_SET_COMPARATOR = new SetComparator<Count, Set<Count>>();
 

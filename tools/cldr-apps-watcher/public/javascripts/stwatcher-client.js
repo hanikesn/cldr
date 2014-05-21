@@ -1,32 +1,15 @@
 
-function stwatcher_interval(_config) {
-    var theInterval = -1;
-    var theInterval2 = -1;
-    var refreshTime = 0;
+var theInterval = -1;
+var theInterval2 = -1;
+var refreshTime = 0;
 
-    var stw_config;
-
-    if(_config) {
-	stw_config = _config;
-    } else if(window.default_stw_config) {
-	stw_config = default_stw_config;
-    } else {
-	stw_config  = {
-	    reloadMode: false,
-	    jsonurl: '/latest.json',
-	    polltime: 30
-	};
-    }
-
-    var n = stw_config.polltime;
-    refreshTime = n*1000;
-    console.log("Interval = " + n + " sec");
-    // interval for next time
+var update = function updateNull(){
+    console.log("Real updater not set yet...");
+}
 
 require(["dojo/query", "dojo/request", "dojo/dom", "dojo/dom-construct", "dojo/main", "dojox/charting/Chart", "dojox/charting/axis2d/Default", "dojox/charting/plot2d/Lines", "dojox/charting/action2d/MouseIndicator", "dojox/charting/action2d/MouseZoomAndPan", "dojox/charting/action2d/TouchZoomAndPan", "dojox/charting/plot2d/Indicator", "dojo/domReady!"],
- function stwatcherclient(query,request,dom, dcons, main, Chart, Default, Lines, MouseIndicator, MouseZoomAndPan, TouchZoomAndPan, Indicator) {
-     
-     
+        function stwatcherclient(query,request,dom, dcons, main, Chart, Default, Lines, MouseIndicator, MouseZoomAndPan, TouchZoomAndPan, Indicator) {
+
     var powered = dom.byId('powered');
     powered.appendChild(document.createTextNode(" and dōjō " + main.version));
 
@@ -181,7 +164,6 @@ require(["dojo/query", "dojo/request", "dojo/dom", "dojo/dom-construct", "dojo/m
         var keys = Object.keys(newlist);
         for(var k in keys) {
             var e = keys[k];
-	    if(stw_config.reloadOnly && e != stw_config.reloadOnly) continue;
             var newEntry = newlist[e];
             var oldEntry = null;
             var odiv = obj.div;
@@ -205,17 +187,12 @@ require(["dojo/query", "dojo/request", "dojo/dom", "dojo/dom-construct", "dojo/m
         div: dcons.create("div",{id: "servers", class: "group", innerHTML: "<h3>Servers</h3>" }),
         update: function(obj, e, newEntry, now, json) {
             var oldEntry = obj.list[e];
-            var txtstatus = "unknown";
-	    
+            
             if(newEntry.lastKnownStatus) {
-		txtstatus = (newEntry.lastKnownStatus.up ? "up" : "down");
-	    }
-            oldEntry.subDiv.className = txtstatus;
-
-	    if(stw_config.reloadOnly) {
-		oldEntry.subDiv.getElementsByTagName('h4')[0].innerHTML = txtstatus;
-	    }
-
+                oldEntry.subDiv.className = (newEntry.lastKnownStatus.up ? "up" : "down");
+            } else {
+                oldEntry.subDiv.className = "unknown";
+            }
             var links = oldEntry.links;
             if(!links) {
                 links = dcons.create("ul",{class: "links"});
@@ -223,32 +200,23 @@ require(["dojo/query", "dojo/request", "dojo/dom", "dojo/dom-construct", "dojo/m
                 
                 obj.host = newEntry.host;
                 obj.hostEnt = json.hosts[obj.host];
-		if(stw_config.reloadOnly) {
-                    var urlLink = dcons.create("button",{innerHTML: "Try Now"});
-		    urlLink.onclick = function() {
-			window.location.reload(true);
-		    };
-		    links.appendChild(urlLink);
-		} else {
-		    
-                    {
-			var urlLink = dcons.create("a",{href: obj.hostEnt.servers[e].url, innerHTML: "go"});
-			var urlLi = dcons.create("li");
-			urlLi.appendChild(urlLink);
-			links.appendChild(urlLi);
-                    }
-                    {
-			var urlLink = dcons.create("button",{innerHTML: "history"});
-			var urlLi = dcons.create("li");
-			urlLi.appendChild(urlLink);
-			links.appendChild(urlLi);
-			
-			urlLink.onclick = function() {
+                {
+                    var urlLink = dcons.create("a",{href: obj.hostEnt.servers[e].url, innerHTML: "go"});
+                    var urlLi = dcons.create("li");
+                    urlLi.appendChild(urlLink);
+                    links.appendChild(urlLi);
+                }
+                {
+                    var urlLink = dcons.create("button",{innerHTML: "history"});
+                    var urlLi = dcons.create("li");
+                    urlLi.appendChild(urlLink);
+                    links.appendChild(urlLi);
+                    
+                    urlLink.onclick = function() {
                         show_history(e, obj, json.hosts[obj.host]);
-                            return false;
-			};
-                    }
-		}
+                        return false;
+                    };
+                }
                 
                 oldEntry.subDiv.appendChild(links);
             }
@@ -290,9 +258,6 @@ require(["dojo/query", "dojo/request", "dojo/dom", "dojo/dom-construct", "dojo/m
         }
     };
     
-     if(stw_config.reloadOnly) { // 'only' mode- no header.
-	 servers.div.innerHTML="<h3>Status:</h3>";
-     }
     div.adopt(servers.div);
     
     var hosts = {
@@ -327,16 +292,14 @@ require(["dojo/query", "dojo/request", "dojo/dom", "dojo/dom-construct", "dojo/m
         }
     };
 
-     if(!stw_config.reloadOnly) { // 'only' mode- no hosts.
-	 div.adopt(hosts.div);
-     }
+    div.adopt(hosts.div);
     
     var lastTime=-1;
     var drift =0;
     
-    stw_update = function() {
+    update = function updateReal() {
         request
-            .get(stw_config.jsonurl, {handleAs: 'json'})
+            .get('latest.json', {handleAs: 'json'})
             .then(function(json) {
                 var now = new Date().getTime();
                 drift = now - json.now; // loading 'delay' (or clock skew)
@@ -368,16 +331,18 @@ require(["dojo/query", "dojo/request", "dojo/dom", "dojo/dom-construct", "dojo/m
                 consumeType(hosts, json.hosts, now, json);
             })
             .otherwise(function(err) {
-                setText("#status",  "Error Loading! (will retry) " + err);
-                //clearInterval(theInterval); // do not keep thrashing
+                setText("#status",  "Error Loading! " + err);
+                clearInterval(theInterval); // do not keep thrashing
             });
     };
     
-    setText("#status", "Loading...");
-
-    stw_update();
-    theInterval = setInterval(function(){console.log('Update!'); stw_update();}, refreshTime);
+    setText("#status", "Loading from server...");
+    
+    update(); // fire it off the first time
 });
-}
 
-stwatcher_interval();
+function stwatcher_interval(n) {
+    refreshTime = n*1000;
+    console.log("Interval = " + n + " sec");
+    theInterval = setInterval(function(){update();}, refreshTime);
+}

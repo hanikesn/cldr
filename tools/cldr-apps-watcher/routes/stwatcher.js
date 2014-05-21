@@ -100,7 +100,7 @@ function st_notify(opts) {
                     }
                     smtpTransport.close(); // no more messages
                 });
-	    } else if (false && notify.kind == "xmpp") {
+	    } else if (notify.kind == "xmpp") {
 		var mynotify = notify;
 		if(!notify.xmpp) {
 		    notify.queue = [];
@@ -401,14 +401,10 @@ exports.poll = function() {
 				record.stamp  = new Date(body.status.surveyRunningStamp);
                             }
                         } catch(e) {
-                            var trimbody = body.substring(0,63);
-                            if (body.length > trimbody.length) {
-                                trimbody = trimbody + "…";
-                            }
-                            console.log ("Unable to parse: " + trimbody + " - " + e.toString());
+                            console.log ("Unable to parse: " + body + " - " + e.toString());
 			    record.isSetup = false;
 			    record.isBusted = true;
-			    record.busted = record.statusCode + 'Fail: ' + trimbody;
+			    record.busted = record.statusCode + 'Fail: ' + body;
 			    body = null;
                         }
                     }

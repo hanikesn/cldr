@@ -19,37 +19,30 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
-	String sid = request.getParameter("s");
-	if (!request.getMethod().equals("POST") || (sid == null)) {
+	if (!request.getMethod().equals("POST")) {
 		response.sendRedirect(request.getContextPath() + "/upload.jsp");
-		return;
 	}
 
 	CLDRFile cf = null;
 
-	String email = request.getParameter("email");
+	String sid = request.getParameter("s");
+        String email = request.getParameter("email");
 	final CookieSession cs = CookieSession.retrieve(sid);
-	if (cs == null || cs.user == null) {
+	if (cs == null||cs.user==null) {
 		response.sendRedirect(request.getContextPath() + "/survey");
 		return;
 	}
-	cs.userDidAction(); // mark user as not idle
-	UserRegistry.User theirU = cs.sm.reg.get(email.trim());
-	if (theirU == null
-			|| (!theirU.equals(cs.user) && !cs.user.isAdminFor(theirU))) {
-		response.sendRedirect(request.getContextPath()
-				+ "/upload.jsp?s=" + sid + "&email=" + email.trim()
-				+ "&emailbad=t");
+        UserRegistry.User theirU = cs.sm.reg.get(email.trim());
+        if(theirU==null || (!theirU.equals(cs.user) && !cs.user.isAdminFor(theirU))) {
+		response.sendRedirect(request.getContextPath()+"/upload.jsp?s="+sid+"&email="+email.trim()+"&emailbad=t");
 		return;
-	}
+        }
 	boolean isSubmit = true;
-	final String submitButtonText = "NEXT: Submit as " + theirU.email;
-
-	String ident = "";
-	if (theirU.id != cs.user.id) {
-		ident = "&email=" + theirU.email + "&pw="
-				+ cs.sm.reg.getPassword(null, theirU.id);
-	}
+        
+        String ident = "";
+        if(theirU.id!=cs.user.id) {
+            ident="&email="+theirU.email+"&pw="+cs.sm.reg.getPassword(null, theirU.id);
+        }
 
 	boolean doFinal = (request.getParameter("dosubmit") != null);
 
@@ -149,30 +142,22 @@
 		<%=all.size()%>
 		entries.
 	</h4>
-<% request.setAttribute("BULK_STAGE", doFinal?"submit":"test"); %>
-<%@include file="/WEB-INF/jspf/bulkinfo.jspf" %>
 
 <% if(!doFinal) { %>
 	<div class='helpHtml'>
-		Please review these items carefully. The "NEXT" button will not appear until the page fully loads. Pressing NEXT will
-		submit these votes.
+		Please review these items carefully.
 		<br>
 		For help, see: <a target='CLDR-ST-DOCS' href='http://cldr.unicode.org/index/survey-tool/upload'>Using Bulk Upload</a> 
 	</div>
-	
-	<%-- <form action='<%=request.getContextPath() + request.getServletPath()%>'
+	<form action='<%=request.getContextPath() + request.getServletPath()%>'
 		method='POST'>
 		<input type='hidden' name='s' value='<%=sid%>' />
                 <input type='hidden' name='email' value='<%=theirU.email%>' /><input
-			type='submit' name='dosubmit' value='<%= submitButtonText %>' />
-	</form> --%>
+			type='submit' name='dosubmit' value='Really Submit As <%= theirU.name %> Vote' />
+	</form>
 <% } else { %>
-	<div class='bulkNextButton'>
-	<b>Submitted!</b><br/>
-	<a href="upload.jsp?s=<%=sid%>&email=<%= theirU.email %>">Another?</a>
-	</div>
 	<div class='helpHtml'>
-		Items listed have been submitted as <%= theirU.email %>
+		Items listed have been submitted.
 		<br>
 		For help, see: <a target='CLDR-ST-DOCS' href='http://cldr.unicode.org/index/survey-tool/upload'>Using Bulk Upload</a> 
 	</div>
@@ -389,8 +374,7 @@
 			method='POST'>
 			<input type='hidden' name='s' value='<%=sid%>' />
                         <input type='hidden' name='email' value='<%=email%>' /><input
-                class='bulkNextButton'
-				type='submit' name='dosubmit' value='<%= submitButtonText %>' />
+				type='submit' name='dosubmit' value='Submit these items as my vote' />
 		</form>
 	<%
 		 }

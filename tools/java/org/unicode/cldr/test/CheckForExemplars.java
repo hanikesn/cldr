@@ -61,8 +61,7 @@ public class CheckForExemplars extends FactoryCheckCLDR {
         "/exponential",
         "/nan",
         "/inText",
-        "/orientation",
-        "/symbol[@alt=\"narrow\"]"
+        "/orientation"
     };
 
     static String[] DATE_PARTS = {
@@ -76,7 +75,6 @@ public class CheckForExemplars extends FactoryCheckCLDR {
     static final UnicodeSet START_PAREN = new UnicodeSet("[[:Ps:]]").freeze();
     static final UnicodeSet END_PAREN = new UnicodeSet("[[:Pe:]]").freeze();
     static final UnicodeSet ALL_CURRENCY_SYMBOLS = new UnicodeSet("[[:Sc:]]").freeze();
-    static final UnicodeSet LETTER = new UnicodeSet("[[A-Za-z]]").freeze();
     static final UnicodeSet NUMBERS = new UnicodeSet("[[:N:]]").freeze();
     static final UnicodeSet DISALLOWED_HOUR_FORMAT = new UnicodeSet("[[:letter:]]").remove('H').remove('m').freeze();
 
@@ -355,26 +353,15 @@ public class CheckForExemplars extends FactoryCheckCLDR {
         if (path.contains("/currency") && path.contains("/symbol")) {
             if (null != (disallowed = containsAllCountingParens(exemplars, exemplarsPlusAscii, value))) {
                 disallowed.removeAll(ALL_CURRENCY_SYMBOLS);
-                disallowed.removeAll(LETTER); // Allow ASCII A-Z in currency symbols
-                // String currency = new XPathParts().set(path).getAttributeValue(-2, "type");
-                if (disallowed.size() > 0 ) {
-                    // && asciiNotAllowed(getCldrFileToCheck().getLocaleID(), currency)) {
+                String currency = new XPathParts().set(path).getAttributeValue(-2, "type");
+                if (disallowed.size() > 0 &&
+                    asciiNotAllowed(getCldrFileToCheck().getLocaleID(), currency)) {
                     addMissingMessage(disallowed, CheckStatus.warningType,
                         Subtype.charactersNotInMainOrAuxiliaryExemplars,
                         Subtype.asciiCharactersNotInMainOrAuxiliaryExemplars, "are not in the exemplar characters",
                         result);
                 }
             }
-        } else if (path.contains("/gmtFormat") || path.contains("/gmtZeroFormat")) {
-                if (null != (disallowed = containsAllCountingParens(exemplars, exemplarsPlusAscii, value))) {
-                    disallowed.removeAll(LETTER); // Allow ASCII A-Z in gmtFormat and gmtZeroFormat
-                    if (disallowed.size() > 0 ) {
-                        addMissingMessage(disallowed, CheckStatus.warningType,
-                            Subtype.charactersNotInMainOrAuxiliaryExemplars,
-                            Subtype.asciiCharactersNotInMainOrAuxiliaryExemplars, "are not in the exemplar characters",
-                            result);
-                    }
-                }
         } else if (path.contains("/localeDisplayNames") && !path.contains("/localeDisplayPattern")) {
             // test first for outside of the set.
             if (null != (disallowed = containsAllCountingParens(exemplars, exemplarsPlusAscii, value))) {
@@ -390,7 +377,8 @@ public class CheckForExemplars extends FactoryCheckCLDR {
                         "cannot occur in locale fields", result);
                 }
             }
-        } else if (path.contains("/units")) {
+        }
+        if (path.contains("/units")) {
             String noValidParentheses = IGNORE_PLACEHOLDER_PARENTHESES.matcher(value).replaceAll("");
             disallowed = new UnicodeSet().addAll(START_PAREN).addAll(END_PAREN)
                 .retainAll(noValidParentheses);
@@ -400,11 +388,9 @@ public class CheckForExemplars extends FactoryCheckCLDR {
                     Subtype.parenthesesNotAllowed,
                     "cannot occur in units", result);
             }
-        } else {
-            if (null != (disallowed = containsAllCountingParens(exemplars, exemplarsPlusAscii, value))) {
-                addMissingMessage(disallowed, CheckStatus.warningType, Subtype.charactersNotInMainOrAuxiliaryExemplars,
-                    Subtype.asciiCharactersNotInMainOrAuxiliaryExemplars, "are not in the exemplar characters", result);
-            }
+        } else if (null != (disallowed = containsAllCountingParens(exemplars, exemplarsPlusAscii, value))) {
+            addMissingMessage(disallowed, CheckStatus.warningType, Subtype.charactersNotInMainOrAuxiliaryExemplars,
+                Subtype.asciiCharactersNotInMainOrAuxiliaryExemplars, "are not in the exemplar characters", result);
         }
 
         // check for spaces

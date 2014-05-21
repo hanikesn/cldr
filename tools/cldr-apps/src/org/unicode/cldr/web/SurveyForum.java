@@ -347,8 +347,7 @@ public class SurveyForum {
         if (sessionMessage != null) {
             ctx.println("<hr>" + sessionMessage);
         }
-        if(!ctx.field("isReview").equals("1"))
-            sm.printFooter(ctx);
+        sm.printFooter(ctx);
     }
 
     String returnUrl(WebContext ctx, CLDRLocale locale, int base_xpath) {
@@ -475,18 +474,8 @@ public class SurveyForum {
                 emailNotify(ctx, forum, base_xpath, subj, text, postId);
 
                 //System.err.println(et.toString() + " - # of users:" + emailCount);
-                if(ctx.field("isReview").equals("1")) {
-                    ctx.response.resetBuffer();
-                    try {
-                        JSONArray post = this.toJSON(ctx.session, locale, base_xpath, postId);
-                        ctx.println(post.get(0).toString());
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-                else
-                    ctx.redirect(ctx.base() + "?_=" + ctx.getLocale().toString() + "&" + F_FORUM + "=" + forum + "#post" + postId);
+
+                ctx.redirect(ctx.base() + "?_=" + ctx.getLocale().toString() + "&" + F_FORUM + "=" + forum + "#post" + postId);
                 return;
 
             } else {
@@ -556,7 +545,7 @@ public class SurveyForum {
         }
 
         if (SurveyMain.isPhaseBeta()) {
-            ctx.println("<div class='ferrbox'>Please remember that the Survey Tool is in Beta, therefore your post will be deleted when the beta period closes.</div>");
+            ctx.println("<div class='ferrbox'>Please remember that the SurveyTool is in Beta, therefore your post will be deleted when the beta period closes.</div>");
         }
 
         ctx.println("<b>Subject</b>: <input name='subj' size=40 value='" + subj + "'><br>");
@@ -567,7 +556,7 @@ public class SurveyForum {
             " type=submit value=Post>");
         ctx.println("<input type=submit name=preview value=Preview><br>");
         if (SurveyMain.isPhaseBeta()) {
-            ctx.println("<div class='ferrbox'>Please remember that the Survey Tool is in Beta, therefore your post will be deleted when the beta period closes.</div>");
+            ctx.println("<div class='ferrbox'>Please remember that the SurveyTool is in Beta, therefore your post will be deleted when the beta period closes.</div>");
         }
         ctx.println("</form>");
 
@@ -687,8 +676,8 @@ public class SurveyForum {
                 pAdd = prepare_pAdd(conn);
 
                 pAdd.setInt(1, user.id);
-                DBUtils.setStringUTF8(pAdd, 2, subj);
-                DBUtils.setStringUTF8(pAdd, 3, preparePostText(text));
+                pAdd.setString(2, subj);
+                pAdd.setString(3, preparePostText(text));
                 pAdd.setInt(4, forumNumber);
                 pAdd.setInt(5, replyTo); // record parent
                 pAdd.setString(6, locale.toString()); // real
@@ -1769,8 +1758,8 @@ public class SurveyForum {
 
                         while (rs.next() && true) {
                             int poster = rs.getInt(1);
-                            String subj = DBUtils.getStringUTF8(rs, 2);
-                            String text = DBUtils.getStringUTF8(rs, 3);
+                            String subj = rs.getString(2);
+                            String text = rs.getString(3);
                             java.sql.Timestamp lastDate = rs.getTimestamp(4); // TODO:
                                                                               // timestamp
                             int id = rs.getInt(5);
@@ -1962,10 +1951,6 @@ public class SurveyForum {
     }
 
     public JSONArray toJSON(CookieSession session, CLDRLocale locale, int base_xpath) throws JSONException {
-        return toJSON(session, locale, base_xpath, 0);
-    }
-    
-    public JSONArray toJSON(CookieSession session, CLDRLocale locale, int base_xpath, int ident) throws JSONException {
         boolean canModify = (UserRegistry.userCanAccessForum(session.user, locale));
         if (!canModify)
             return null;
@@ -1978,16 +1963,12 @@ public class SurveyForum {
             Connection conn = null;
             try {
                 conn = sm.dbUtils.getDBConnection();
-                Object[][] o = null;
-                if(ident == 0)
-                    o = DBUtils.sqlQueryArrayArrayObj(conn, "select " + getPallresultfora() + "  FROM " + DBUtils.Table.FORUM_POSTS.toString()
+
+                Object[][] o = DBUtils.sqlQueryArrayArrayObj(conn, "select " + getPallresultfora() + "  FROM " + DBUtils.Table.FORUM_POSTS.toString()
                     + " WHERE (" + DBUtils.Table.FORUM_POSTS + ".forum =? AND " + DBUtils.Table.FORUM_POSTS + " .xpath =?) ORDER BY "
                     + DBUtils.Table.FORUM_POSTS.toString()
                     + ".last_time DESC", forumNumber, base_xpath);
-                else
-                    o = DBUtils.sqlQueryArrayArrayObj(conn, "select " + getPallresultfora() + "  FROM " + DBUtils.Table.FORUM_POSTS.toString()
-                        + " WHERE (" + DBUtils.Table.FORUM_POSTS + ".forum =? AND " + DBUtils.Table.FORUM_POSTS + " .xpath =? AND " + DBUtils.Table.FORUM_POSTS + " .id =?) ORDER BY " + DBUtils.Table.FORUM_POSTS.toString()
-                        + ".last_time DESC", forumNumber, base_xpath, ident);
+
                 // private final static String pAllResult =
                 // DB_POSTS+".poster,"+DB_POSTS+".subj,"+DB_POSTS+".text,"+DB_POSTS+".last_time,"+DB_POSTS+".id,"+DB_POSTS+".forum,"+DB_FORA+".loc";
                 if (o != null) {

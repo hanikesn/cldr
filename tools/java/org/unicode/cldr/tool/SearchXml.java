@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import org.unicode.cldr.test.CoverageLevel2;
 import org.unicode.cldr.tool.Option.Options;
+import org.unicode.cldr.unittest.TestAll.TestInfo;
 import org.unicode.cldr.util.CLDRPaths;
 import org.unicode.cldr.util.Counter;
 import org.unicode.cldr.util.Level;
@@ -115,7 +116,7 @@ public class SearchXml {
         }
 
         if (myOptions.get("PathHeader").doesOccur()) {
-            PATH_HEADER_FACTORY = PathHeader.getFactory(ToolConfig.getToolInstance().getEnglish());
+            PATH_HEADER_FACTORY = PathHeader.getFactory(TestInfo.getInstance().getEnglish());
         }
 
         unique = myOptions.get("unique").doesOccur();

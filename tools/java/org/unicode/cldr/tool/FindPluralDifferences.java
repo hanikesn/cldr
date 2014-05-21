@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.unicode.cldr.unittest.TestAll.TestInfo;
 import org.unicode.cldr.util.CLDRPaths;
 import org.unicode.cldr.util.SupplementalDataInfo;
 import org.unicode.cldr.util.SupplementalDataInfo.PluralInfo;
@@ -113,7 +114,7 @@ public class FindPluralDifferences {
                     }
                     System.out.println(pluralType
                         + "\t" + oldVersion + "➞" + newVersion 
-                        + "\t" + ToolConfig.getToolInstance().getEnglish().getName(locale) 
+                        + "\t" + TestInfo.getInstance().getEnglish().getName(locale) 
                         + "\t" + locale
                         + "\t" + oldKeywords + "\t" + type + "\t" + newKeywords 
                         + "\t" + FindPluralDifferences.show(results));

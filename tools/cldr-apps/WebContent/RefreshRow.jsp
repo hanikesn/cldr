@@ -18,7 +18,7 @@
             String sectionName = WebContext.decodeFieldString(request.getParameter("x"));
             if(sectionName!=null&&sectionName.isEmpty()) sectionName=null;
 			String voteinfo = request.getParameter("voteinfo");
-			//String vhash = request.getParameter("vhash"); /*NOTUSED*/
+			String vhash = request.getParameter("vhash");
 			String fieldHash = request.getParameter(SurveyMain.QUERY_FIELDHASH);
 			String covlev = request.getParameter("p_covlev");
 			Level coverage = Level.OPTIONAL;
@@ -199,13 +199,8 @@
 								.key("dir").value(ctx.getDirectionForLocale())
 								.key("canModify").value(ctx.canModify())
 								.key("locale").value(ctx.getLocale())
-								.key("dataLoadTime").value(et.toString());
-						if(ctx.hasField("dashboard")) {
-							VettingViewerQueue vvq = new VettingViewerQueue();
-							JSONArray issues = VettingViewerQueue.getInstance().getErrorOnPath(ctx.getLocale(), ctx,ctx.session, baseXp);
-							r.key("issues").value(issues);
-						}
-						r.endObject();
+								.key("dataLoadTime").value(et.toString())
+								.endObject();
 					} catch(Throwable t) {
 						SurveyLog.logException(t, "RefreshRow.jsp write");
                         JSONWriter r = new JSONWriter(out).object().

@@ -15,8 +15,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.unicode.cldr.tool.ToolConfig;
-import org.unicode.cldr.util.CLDRConfig;
+import org.unicode.cldr.unittest.TestAll.TestInfo;
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.CLDRFile.DtdType;
 import org.unicode.cldr.util.VoteResolver.Organization;
@@ -66,9 +65,7 @@ public class QuickCheck {
     private static boolean verbose;
 
     public static void main(String[] args) throws IOException {
-        CLDRConfig testInfo = ToolConfig.getToolInstance();
-        Factory factory = testInfo.getCldrFactory();
-        checkStock(factory);
+        checkStock();
         if (true) return;
         verbose = CldrUtility.getProperty("verbose", "false", "true").matches("(?i)T|TRUE");
         localeRegex = CldrUtility.getProperty("locale", ".*");
@@ -326,7 +323,10 @@ public class QuickCheck {
         }
     }
 
-    static void checkStock(Factory factory) {
+    static void checkStock() {
+        TestInfo testInfo = TestInfo.getInstance();
+        Factory factory = testInfo.getCldrFactory();
+
         String[][] items = {
             { "full", "yMMMMEEEEd", "jmmsszzzz" },
             { "long", "yMMMMd", "jmmssz" },

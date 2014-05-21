@@ -48,7 +48,12 @@
                 t.printStackTrace();
             }
         
-        ctx.println("</div>");        
+        ctx.println("</div>");
+        
+        if (!SurveyMain.isUnofficial()) {
+            ctx.println(CldrUtility.ANALYTICS);
+        }
+        
         ctx.println("</body>");
         ctx.println("</html>");
 %>

@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.unicode.cldr.util.CLDRFile;
 import org.unicode.cldr.util.FileCopier;
-import org.unicode.cldr.util.StringArrayToMap;
 
 import com.ibm.icu.dev.util.BagFormatter;
 import com.ibm.icu.util.Calendar;
@@ -22,6 +23,15 @@ import com.ibm.icu.util.Calendar;
  * @author jchye
  */
 class Makefile {
+    public static class Maps {
+        public static Map<String,String> from(String[] arr) {
+            Map<String,String> result=new HashMap<>(arr.length/2);
+            for (int i=0;i<arr.length/2;i+=2) {
+                result.put(arr[i],arr[i+1]);
+            }
+            return result;
+        }
+    }
     private static final Pattern VARIABLE = Pattern.compile("\\$\\([\\w_]++\\)");
 
     private String prefix;
@@ -88,9 +98,7 @@ class Makefile {
             "%version%", CLDRFile.GEN_VERSION
         };
         FileCopier.copyAndReplace(NewLdml2IcuConverter.class, "makefile_header.txt",
-            Charset.forName("UTF-8"),
-            StringArrayToMap.from(params), 
-            out);
+            Charset.forName("UTF-8"),Maps.from(params), out);
 //        FileUtilities.appendFile(NewLdml2IcuConverter.class, "makefile_header.txt",
 //            Charset.forName("UTF-8"), params, out);
 

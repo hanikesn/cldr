@@ -8,10 +8,20 @@ package org.unicode.cldr.unittest.web;
 import java.io.BufferedReader;
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.derby.jdbc.EmbeddedDataSource;
+import org.apache.tomcat.dbcp.dbcp.ConnectionFactory;
+import org.apache.tomcat.dbcp.dbcp.DriverManagerConnectionFactory;
+import org.apache.tomcat.dbcp.dbcp.PoolableConnectionFactory;
+import org.apache.tomcat.dbcp.dbcp.PoolingDataSource;
+import org.apache.tomcat.dbcp.pool.KeyedObjectPool;
+import org.apache.tomcat.dbcp.pool.KeyedObjectPoolFactory;
+import org.apache.tomcat.dbcp.pool.ObjectPool;
+import org.apache.tomcat.dbcp.pool.impl.GenericKeyedObjectPool;
+import org.apache.tomcat.dbcp.pool.impl.GenericObjectPool;
+import org.unicode.cldr.unittest.TestAll.TestInfo;
 import org.unicode.cldr.util.CLDRConfig;
 import org.unicode.cldr.util.CLDRConfig.Environment;
 import org.unicode.cldr.util.CLDRFile;
@@ -119,11 +129,9 @@ public class TestAll extends TestGroup {
         super(new String[] {
             // use class.getName so we are in sync with name changes and
             // removals (if not additions)
-            TestIntHash.class.getName(), 
-            TestXPathTable.class.getName(),
-            TestMisc.class.getName(),
-            TestSTFactory.class.getName(), 
-            TestUserSettingsData.class.getName() }, "All tests in CLDR Web");
+            TestIntHash.class.getName(), TestXPathTable.class.getName(),
+            // TestCacheAndDataSource.class.getName()
+            TestSTFactory.class.getName(), TestUserSettingsData.class.getName() }, "All tests in CLDR Web");
     }
 
     public static final String CLASS_TARGET_NAME = "CLDR.Web";
@@ -314,12 +322,17 @@ public class TestAll extends TestGroup {
      */
     public static DataSource setupDerbyDataSource(File theDir) {
         long start = System.currentTimeMillis();
-        org.apache.derby.jdbc.EmbeddedDataSource ds = new EmbeddedDataSource();
-        if(theDir != null) {
-            ds.setDatabaseName(theDir.getAbsolutePath());
+        String connectURI;
+
+        if (theDir != null) {
+            connectURI = DERBY_PREFIX + theDir.getAbsolutePath();
         } else {
-            ds.setDatabaseName("memory:sttest");
+            connectURI = DERBY_PREFIX + "memory:sttest";
         }
+        ObjectPool connectionPool = new GenericObjectPool(null);
+
+        if (DEBUG)
+            System.err.println("Load pools - " + ElapsedTimer.elapsedTime(start));
         if (isSetup == false || (theDir != null && !theDir.exists())) {
             isSetup = true;
             if (theDir != null) {
@@ -328,9 +341,49 @@ public class TestAll extends TestGroup {
                         + getBaseDir().getAbsolutePath());
             }
 
-            ds.setCreateDatabase("create");
+            String createURI = connectURI + ";create=true";
+            try {
+                new DriverManagerConnectionFactory(createURI, null).createConnection().close();
+            } catch (SQLException e) {
+                SurveyLog.logger.warning("Error on connect to " + createURI + " - " + DBUtils.unchainSqlException(e));
+            }
+            if (DEBUG)
+                SurveyLog.logger.warning("Connect/close to " + createURI);
+        } else {
+            if (theDir != null) {
+                if (DEBUG)
+                    SurveyLog.logger.warning("Using existing: " + theDir.getAbsolutePath() + " baseDir = "
+                        + getBaseDir().getAbsolutePath());
+            } else {
+                if (DEBUG)
+                    SurveyLog.logger.warning("Using " + connectURI);
+            }
         }
-        return ds;
+        if (DEBUG)
+            System.err.println("connect - " + ElapsedTimer.elapsedTime(start));
+        Properties props = new Properties();
+        props.put("poolPreparedStatements", "true");
+        props.put("maxOpenPreparedStatements", "150");
+        props.put("defaultAutoCommit", "false");
+        /*
+         * maxActive="8" maxIdle="4" removeAbandoned="true"
+         * removeAbandonedTimeout="60" logAbandoned="true"
+         * defaultAutoCommit="false" poolPreparedStatements="true"
+         * maxOpenPreparedStatements="150"
+         */
+        ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(connectURI, props);
+        new PoolableConnectionFactory(connectionFactory, connectionPool, new KeyedObjectPoolFactory() {
+
+            @Override
+            public KeyedObjectPool createPool() throws IllegalStateException {
+                return new GenericKeyedObjectPool();
+            }
+        }, null, false, true);
+        PoolingDataSource dataSource = new PoolingDataSource(connectionPool);
+        if (DEBUG)
+            SurveyLog.logger.warning("New datasource off and running: " + connectURI + " setupDerbyDataSource took "
+                + ElapsedTimer.elapsedTime(start));
+        return dataSource;
     }
 
     public static CLDRProgressIndicator getProgressIndicator(TestLog t) {

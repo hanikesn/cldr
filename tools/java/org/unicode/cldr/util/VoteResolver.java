@@ -3,14 +3,12 @@ package org.unicode.cldr.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -84,13 +82,11 @@ public class VoteResolver<T> {
         afghan_mcit("Afghan MCIT"),
         afrigen("Afrigen"),
         apple("Apple"),
-        bangladesh("Bangladesh Computer Council"),
         bangor_univ("Bangor Univ."),
         bhutan("Bhutan DDC"),
         breton("Office of Breton Lang"),
         cherokee("Cherokee Nation"),
         cldr("Cldr"),
-        gaeilge("Foras na Gaeilge"),
         georgia_isi("Georgia ISI"),
         gnome("Gnome Foundation"),
         google("Google"),
@@ -102,7 +98,6 @@ public class VoteResolver<T> {
         kotoistus("Kotoistus (Finnish IT Ctr)"),
         lakota_lc("Lakota LC"),
         lao_dpt("Lao Posts/Telecom??"),
-        longnow("The Long Now Foundation", "Long Now", "PanLex"),
         microsoft("Microsoft"),
         openinstitute("Open Inst (Cambodia)"),
         openoffice_org("Open Office"),
@@ -110,15 +105,12 @@ public class VoteResolver<T> {
         pakistan("Pakistan"),
         sil("SIL"),
         srilanka("Sri Lanka ICTA", "Sri Lanka"),
-        sun("Sun Micro"), // TO REMOVE
+        sun("Sun Micro"),
         surveytool("Survey Tool"),
-        utilika("Utilika Foundation", "Utilika"), // TO REMOVE
+        utilika("Utilika Foundation", "Utilika"),
         welsh_lc("Welsh LC"),
         wikimedia("Wikimedia Foundation"),
-        yahoo("Yahoo"),
-        
-        // To be removed.
-        ;
+        yahoo("Yahoo"), ;
 
         public final String displayName;
 
@@ -340,12 +332,12 @@ public class VoteResolver<T> {
      * Internal class for getting from an organization to its vote.
      */
     private static class OrganizationToValueAndVote<T> {
-        private final Map<Organization, MaxCounter<T>> orgToVotes = new EnumMap<>(Organization.class);
-        private final Counter<T> totalVotes = new Counter<T>();
-        private final Map<Organization, Integer> orgToMax = new EnumMap<>(Organization.class);
-        private final Counter<T> totals = new Counter<T>(true);
+        private Map<Organization, MaxCounter<T>> orgToVotes = new HashMap<Organization, MaxCounter<T>>();
+        private Counter<T> totalVotes = new Counter<T>();
+        private Map<Organization, Integer> orgToMax = new HashMap<Organization, Integer>();
+        private Counter<T> totals = new Counter<T>(true);
         // map an organization to what it voted for.
-        private final Map<Organization, T> orgToAdd = new EnumMap<>(Organization.class);
+        private Map<Organization, T> orgToAdd = new HashMap<Organization, T>();
 
         OrganizationToValueAndVote() {
             for (Organization org : Organization.values()) {
@@ -357,10 +349,8 @@ public class VoteResolver<T> {
          * Call clear before considering each new path
          */
         public void clear() {
-            for (Map.Entry<Organization, MaxCounter<T>> entry : orgToVotes.entrySet()) {
-                //  for (Organization org : orgToVotes.keySet()) {
-                // orgToVotes.get(org).clear();
-                entry.getValue().clear();
+            for (Organization org : orgToVotes.keySet()) {
+                orgToVotes.get(org).clear();
             }
             orgToAdd.clear();
             orgToMax.clear();
@@ -412,12 +402,11 @@ public class VoteResolver<T> {
          */
         private void addInternal(T value, int voter, final VoterInfo info, final int votes) {
             totalVotes.add(value, votes);
-            Organization organization = info.getOrganization();
-            orgToVotes.get(organization).add(value, votes);
+            orgToVotes.get(info.getOrganization()).add(value, votes);
             // add the new votes to orgToMax, if they are greater that what was there
             Integer max = orgToMax.get(info.getOrganization());
             if (max == null || max < votes) {
-                orgToMax.put(organization, votes);
+                orgToMax.put(info.getOrganization(), votes);
             }
         }
 
@@ -431,17 +420,14 @@ public class VoteResolver<T> {
                 conflictedOrganizations.clear();
             }
             totals.clear();
-            for (Map.Entry<Organization, MaxCounter<T>> entry: orgToVotes.entrySet()) {   
-                //   for (Organization org : orgToVotes.keySet()) {
-//                Counter<T> items = orgToVotes.get(org);
-                Counter<T> items= entry.getValue();
+            for (Organization org : orgToVotes.keySet()) {
+                Counter<T> items = orgToVotes.get(org);
                 if (items.size() == 0) {
                     continue;
                 }
                 Iterator<T> iterator = items.getKeysetSortedByCount(false).iterator();
                 T value = iterator.next();
                 long weight = items.getCount(value);
-                Organization org=entry.getKey();
                 // if there is more than one item, check that it is less
                 if (iterator.hasNext()) {
                     T value2 = iterator.next();
@@ -468,10 +454,8 @@ public class VoteResolver<T> {
 
         public int getOrgCount(T winningValue) {
             int orgCount = 0;
-            for (Map.Entry<Organization, MaxCounter<T>> entry : orgToVotes.entrySet()) {  
-//            for (Organization org : orgToVotes.keySet()) {
-//                Counter<T> counter = orgToVotes.get(org);
-                Counter<T> counter= entry.getValue();
+            for (Organization org : orgToVotes.keySet()) {
+                Counter<T> counter = orgToVotes.get(org);
                 long count = counter.getCount(winningValue);
                 if (count > 0) {
                     orgCount++;
@@ -482,25 +466,20 @@ public class VoteResolver<T> {
 
         public int getBestPossibleVote() {
             int total = 0;
-            for (Map.Entry<Organization, Integer> entry : orgToMax.entrySet()) {
-        //    for (Organization org : orgToMax.keySet()) {
-//                total += orgToMax.get(org);
-                total += entry.getValue();
+            for (Organization org : orgToMax.keySet()) {
+                total += orgToMax.get(org);
             }
             return total;
         }
 
         public String toString() {
             String orgToVotesString = "";
-            for (Entry<Organization, MaxCounter<T>> entry : orgToVotes.entrySet()) {
-//            for (Organization org : orgToVotes.keySet()) {
-//                Counter<T> counter = orgToVotes.get(org);
-                Counter<T> counter= entry.getValue();
+            for (Organization org : orgToVotes.keySet()) {
+                Counter<T> counter = orgToVotes.get(org);
                 if (counter.size() != 0) {
                     if (orgToVotesString.length() != 0) {
                         orgToVotesString += ", ";
                     }
-                    Organization org= entry.getKey();
                     orgToVotesString += org + "=" + counter;
                 }
             }

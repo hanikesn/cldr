@@ -50,12 +50,15 @@ class RegexManager {
     private Map<String, String> xpathVariables;
     private VariableReplacer cldrVariables;
 
-//    static class FullMatcher extends RegexFinder {
-//        public FullMatcher(String pattern) {
-//            super(pattern);
-//        }
-//
-//    }
+    static class FullMatcher extends RegexFinder {
+        public FullMatcher(String pattern) {
+            super(pattern);
+        }
+
+        public boolean find(String item, Object context) {
+            return matcher.reset(item).matches();
+        }
+    }
 
     /**
      * Wrapper class for functions that need to be performed on CLDR values as
@@ -243,7 +246,7 @@ class RegexManager {
         }
     }
 
-     static String processString(String value, String[] arguments) {
+    private static String processString(String value, String[] arguments) {
         if (value == null) {
             return null;
         }
@@ -363,7 +366,7 @@ class RegexManager {
     private static Transform<String, Finder> regexTransform = new Transform<String, Finder>() {
         @Override
         public Finder transform(String source) {
-            return new RegexFinder(source);
+            return new FullMatcher(source);
         }
     };
 
@@ -584,7 +587,7 @@ class RegexManager {
                             xpathConverter.add(xpathMatcher, regexResult);
                         }
                     }
-                    xpathMatcher = new RegexFinder(content[0].replace("[@", "\\[@"));
+                    xpathMatcher = new FullMatcher(content[0].replace("[@", "\\[@"));
                     regexResult = new RegexResult();
                 }
                 if (content.length > 1) {
@@ -691,7 +694,7 @@ class RegexManager {
         rbPattern.append(rbPath.substring(lastIndex));
         FallbackInfo info = new FallbackInfo(argsUsed, args.size());
         info.addItem(xpathMatcher, fallbackXpath, fallbackValue.split("\\s"));
-        fallbackConverter.add(new RegexFinder(rbPattern.toString()), info);
+        fallbackConverter.add(new FullMatcher(rbPattern.toString()), info);
     }
 
     void addFallbackValues(Map<String, CldrArray> pathValueMap) {
