@@ -176,9 +176,6 @@ public class ChainedMap {
         for (int i = 0; i < last; ++i) {
             Object key = keys[i];
             map = (Map<Object, Object>) map.get(key);
-            if (map == null) {
-                return null;
-            }
         }
         return map.get(keys[last]);
     }

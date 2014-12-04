@@ -13,7 +13,6 @@ import java.io.PrintWriter;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -159,14 +158,7 @@ public class POSIX_LCCollate {
     private void writeDefinitions(PrintWriter out) {
         // collating-element <A-A> from "<U0041><U0041>"
         StringBuffer buffer = new StringBuffer();
-        Iterator<Object> it = contractions.iterator();
-        while (it.hasNext()) {
-            Object o;
-            try {
-                o = it.next();
-            } catch (NullPointerException ex) {
-                continue;
-            }
+        for (Object o : contractions) {
             buffer.setLength(0);
             String s = (String) o;
             buffer.append("collating-element ")

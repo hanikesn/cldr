@@ -297,7 +297,7 @@ public class TablePrinter {
         if (tableAttributes != null) {
             result.append(' ').append(tableAttributes);
         }
-        result.append(">" + System.lineSeparator());
+        result.append(">\n");
 
         if (caption != null) {
             result.append("<caption>").append(caption).append("</caption>");
@@ -365,7 +365,7 @@ public class TablePrinter {
                 }
                 result.append(columnsFlat[j].isHeader ? "</th>" : "</td>");
             }
-            result.append("</tr>" + System.lineSeparator());
+            result.append("</tr>\n");
         }
         result.append("</table>");
         return result.toString();
@@ -397,7 +397,7 @@ public class TablePrinter {
             result.append('>').append(columnsFlat[j].header).append("</th>");
 
         }
-        result.append("</tr>" + System.lineSeparator());
+        result.append("</tr>\n");
     }
 
     /**
@@ -413,13 +413,12 @@ public class TablePrinter {
         if (!columnsFlat[colIndex].spanRows) return 1;
         Comparable item = sortedFlat[rowIndex][colIndex];
         if (rowIndex > 0 && item.equals(sortedFlat[rowIndex - 1][colIndex])) {
-            if (!breakSpans(sortedFlat, rowIndex, colIndex)) {
+            if (!breakSpans(sortedFlat, rowIndex)) {
                 return 0;
             }
         }
         for (int k = rowIndex + 1; k < sortedFlat.length; ++k) {
-            if (!item.equals(sortedFlat[k][colIndex]) 
-                || breakSpans(sortedFlat, k, colIndex)) {
+            if (!item.equals(sortedFlat[k][colIndex]) || breakSpans(sortedFlat, k)) {
                 return k - rowIndex;
             }
         }
@@ -433,15 +432,13 @@ public class TablePrinter {
      * Only called with rowIndex > 0
      * 
      * @param rowIndex
-     * @param colIndex2 
      * @return
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private boolean breakSpans(Comparable[][] sortedFlat, int rowIndex, int colIndex2) {
-        final int limit = Math.min(breaksSpans.length(), colIndex2);
-        for (int colIndex = 0; colIndex < limit; ++colIndex) {
-            if (breaksSpans.get(colIndex)
-                && sortedFlat[rowIndex][colIndex].compareTo(sortedFlat[rowIndex - 1][colIndex]) != 0) {
+    private boolean breakSpans(Comparable[][] sortedFlat, int rowIndex) {
+        for (int colIndex = 0; colIndex < breaksSpans.length(); ++colIndex) {
+            if (!breaksSpans.get(colIndex)) return false;
+            if (sortedFlat[rowIndex][colIndex].compareTo(sortedFlat[rowIndex - 1][colIndex]) != 0) {
                 return true;
             }
         }

@@ -70,9 +70,8 @@ public class ShowData {
     public static String dateFooter() {
         return "<!-- SVN: $" + // break these apart to prevent SVN replacement in code
             "Date$, $" + // break these apart to prevent SVN replacement in code
-            "Revision: 4538 $ -->" + System.lineSeparator() +
-            "<p>Generation: " + CldrUtility.isoFormat(new java.util.Date()) + "</p>" +
-            System.lineSeparator();
+            "Revision: 4538 $ -->\n" +
+            "<p>Generation: " + CldrUtility.isoFormat(new java.util.Date()) + "</p>\n";
     }
 
     static RuleBasedCollator uca = (RuleBasedCollator) Collator
@@ -230,11 +229,11 @@ public class ShowData {
                 getChartTemplate(
                     "Locale Data Summary for " + getLocaleNameAndCode(locale),
                     ToolConstants.CHART_DISPLAY_VERSION,
-                    "<script>" + System.lineSeparator()
-                        + "if (location.href.split('?')[1].split(',')[0]=='hide') {" + System.lineSeparator()
-                        + "document.write('<style>');" + System.lineSeparator()
-                        + "document.write('.xx {display:none}');" + System.lineSeparator()
-                        + "document.write('</style>');" + System.lineSeparator() + "}" + System.lineSeparator()
+                    "<script>" + CldrUtility.LINE_SEPARATOR
+                        + "if (location.href.split('?')[1].split(',')[0]=='hide') {" + CldrUtility.LINE_SEPARATOR
+                        + "document.write('<style>');" + CldrUtility.LINE_SEPARATOR
+                        + "document.write('.xx {display:none}');" + CldrUtility.LINE_SEPARATOR
+                        + "document.write('</style>');" + CldrUtility.LINE_SEPARATOR + "}" + CldrUtility.LINE_SEPARATOR
                         + "</script>",
                     headerAndFooter);
                 pw.println(headerAndFooter[0]);
@@ -405,8 +404,7 @@ public class ShowData {
                         .append(DataShower.getPrettyValue(value.substring(breakPoint + 2)))
                         .append("</td><td>")
                         .append(CollectionUtilities.join(s.getValue(), ", "))
-                        .append("</td></tr>")
-                        .append(System.lineSeparator());
+                        .append("</td></tr>\n");
                     addRow = true;
                 }
             }
@@ -640,11 +638,11 @@ public class ShowData {
             }
             char firstChar = name.charAt(0);
             if (first) {
-                pw.print(System.lineSeparator()+"<p style='margin-left:5em'>&gt; ");
+                pw.print("\n<p style='margin-left:5em'>&gt; ");
                 lastFirstChar = firstChar;
                 first = false;
             } else if (firstChar != lastFirstChar) {
-                pw.print("</p>"+System.lineSeparator()+"<p style='margin-left:5em'> ");
+                pw.print("</p>\n<p style='margin-left:5em'> ");
                 lastFirstChar = firstChar;
             } else {
                 pw.print(", ");
@@ -712,7 +710,7 @@ public class ShowData {
                 result.setLength(0);
                 continue;
             }
-            result.append(langTagPattern).append(System.lineSeparator());
+            result.append(langTagPattern).append(CldrUtility.LINE_SEPARATOR);
         }
         headerAndFooter[1] = result.toString();
     }

@@ -631,12 +631,9 @@ public class ShowLanguages {
 
         private String filename;
 
-        private String dir;
-        
         public FormattedFileWriter(PrintWriter indexFile, String title, String explanation, boolean skipIndex)
             throws IOException {
             String anchor = FileUtilities.anchorize(title);
-            this.dir = CHART_TARGET_DIR;
             filename = anchor + ".html";
             this.title = title;
             if (!skipIndex) {
@@ -663,7 +660,7 @@ public class ShowLanguages {
 
         public void close() throws IOException {
             out.write("</div>");
-            PrintWriter pw2 = BagFormatter.openUTF8Writer(dir, filename);
+            PrintWriter pw2 = BagFormatter.openUTF8Writer(CHART_TARGET_DIR, filename);
             String[] replacements = { "%header%", "", "%title%", title, "%version%", ToolConstants.CHART_DISPLAY_VERSION,
                 "%date%", CldrUtility.isoFormat(new Date()), "%body%", out.toString() };
             final String templateFileName = "chart-template.html";
@@ -2663,15 +2660,15 @@ public class ShowLanguages {
 
     public static void showContents(Appendable pw, String... items) {
         try {
-            pw.append("</div>" + System.lineSeparator());
-            pw.append("<h3>Contents</h3>" + System.lineSeparator());
-            pw.append("<ol>" + System.lineSeparator());
+            pw.append("</div>\n");
+            pw.append("<h3>Contents</h3>\n");
+            pw.append("<ol>\n");
             for (int i = 0; i < items.length; i += 2) {
-                pw.append("<li><a href='#" + items[i] + "'>" + items[i + 1] + "</a></li>" + System.lineSeparator());
+                pw.append("<li><a href='#" + items[i] + "'>" + items[i + 1] + "</a></li>\n");
             }
-            pw.append("</ol><hr>" + System.lineSeparator());
+            pw.append("</ol><hr>\n");
 
-            pw.append("<div align='center'>" + System.lineSeparator());
+            pw.append("<div align='center'>\n");
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }

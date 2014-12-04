@@ -52,8 +52,7 @@ public class GenerateScriptMetadata {
                 );
             // RTL? LB letters? Shaping Req? IME? Has Case?
         }
-        out.println();
-        out.println("# EOF");
+        out.println("\n# EOF");
         out.close();
     }
 }

@@ -53,14 +53,14 @@ public class ShowPlurals {
         final PrintWriter pw = new PrintWriter(new FormattedFileWriter(index, title, null, false));
         ShowLanguages.showContents(pw, "rules", "Rules", "comparison", "Comparison");
 
-        pw.append("<h2>" + CldrUtility.getDoubleLinkedText("rules", "1. " + section1) + "</h2>" + System.lineSeparator());
+        pw.append("<h2>" + CldrUtility.getDoubleLinkedText("rules", "1. " + section1) + "</h2>\n");
         printPluralTable(english, localeFilter, pw, factory);
 
-        pw.append("<h2>" + CldrUtility.getDoubleLinkedText("comparison", "2. " + section2) + "</h2>" + System.lineSeparator());
+        pw.append("<h2>" + CldrUtility.getDoubleLinkedText("comparison", "2. " + section2) + "</h2>\n");
         pw.append("<p style='text-align:left'>The plural forms are abbreviated by first letter, with 'x' for 'other'. "
             +
             "If values are made redundant by explicit 0 and 1, they are underlined. " +
-            "The fractional and integral results are separated for clarity.</p>" + System.lineSeparator());
+            "The fractional and integral results are separated for clarity.</p>\n");
         PluralSnapshot.writeTables(english, pw);
         appendBlanksForScrolling(pw);
         pw.close();
@@ -68,7 +68,7 @@ public class ShowPlurals {
 
     public void appendBlanksForScrolling(final Appendable pw) {
         try {
-            pw.append(Utility.repeat("<br>", 100)).append(System.lineSeparator());
+            pw.append(Utility.repeat("<br>", 100)).append('\n');
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
@@ -209,7 +209,7 @@ public class ShowPlurals {
                     .finishRow();
             }
         }
-        appendable.append(tablePrinter.toTable()).append(System.lineSeparator());
+        appendable.append(tablePrinter.toTable()).append('\n');
     }
 
     private String getExamples(FixedDecimalSamples exampleList) {
