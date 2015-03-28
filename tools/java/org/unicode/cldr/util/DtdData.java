@@ -388,10 +388,6 @@ public class DtdData extends XMLFileReader.SimpleHandler {
                 + ", value: " + value
                 );
         }
-        // HACK for 1.1.1
-        if (eName.equals("draft")) {
-            eName = "week";
-        }
         addAttribute(eName, aName, type, mode, value);
     }
 

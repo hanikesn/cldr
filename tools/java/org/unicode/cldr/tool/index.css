@@ -11,22 +11,18 @@ td, th {
 }
 td.source, th.source, span.source { 
     border: 1px solid #666666; 
-    background-color: #F8F8F8;
+    background-color: #F0F0F0;
 }
 td.source-image { 
     border: 1px solid #666666; 
-    background-color: #F8F8F8;
+    background-color: #F0F0F0;
     text-align: center;
     font-size: 200%; 
 }
 
-td.target, th.target, span.target, td.targetRight, td.target2, td.target3, td.target4, td.target_nofont{ 
+td.target, th.target, span.target, td.targetRight, td.target2, td.target3, td.target4 { 
     border: 1px solid #666666; 
-    background-color: #F8FFF8 
-}
-td.target_nofont {
-	/* font-family: sans-serif; */
-	line-height: 150%;
+    background-color: #F0FFF0 
 }
 th.source      {
     background-color: #DDDDDD 
@@ -39,10 +35,10 @@ td.target2    {
     color:blue 
     }
 td.target3    { 
-    background-color:#FFFFF8 
+    background-color:#FFFFF0 
     }
 td.target4    { 
-    background-color:#F8FFFF
+    background-color:#F0FFFF
      }
 td.targetRight    { 
     text-align:right 
@@ -50,25 +46,25 @@ td.targetRight    {
 
 td.z0      { 
     border: 1px solid #666666; 
-    background-color: #F8BBF8 
+    background-color: #F0BBF0 
     }
 td.z1      { 
     border: 1px solid #666666; 
-    background-color: #F8CCF8 
+    background-color: #F0CCF0 
     }
 td.z2      { 
     border: 1px solid #666666; 
-    background-color: #F8DDF8; 
+    background-color: #F0DDF0; 
     vertical-align: middle 
     }
 td.z3      { 
     border: 1px solid #666666; 
-    background-color: #F8EEF8; 
+    background-color: #F0EEF0; 
     vertical-align: middle 
     }
 td.z4      { 
     border: 1px solid #666666; 
-    background-color: #F8FFF8; 
+    background-color: #F0FFF0; 
     vertical-align: middle 
     }
 
@@ -87,21 +83,3 @@ td.c01 {text-decoration:underline}
 td.sample {font-size:200%; text-align:center}
 
 .nowrap {white-space: nowrap}
-
-.notTailored {
-    color: #888888;
-}
-
-.notExemplars {
-    color: #c0ffee;
-}
-
-table.center {
-    margin-left:auto; 
-    margin-right:auto;
-  }
-  
-td.plain {
-	padding-top:0.3em;
-	padding-right:1em;
-}
